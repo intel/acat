@@ -7,6 +7,7 @@
 
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,6 +30,8 @@ namespace ACAT.Core.TTSManagement
     /// </summary>
     public class Pronunciations : IDisposable
     {
+        private readonly ILogger<Pronunciations> _logger;
+
         /// <summary>
         /// xml attribute to get the alternate pronunciation
         /// </summary>
@@ -48,6 +51,11 @@ namespace ACAT.Core.TTSManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
+        public Pronunciations(ILogger<Pronunciations> logger = null)
+        {
+            _logger = logger;
+        }
 
         /// <summary>
         /// Holds a mapping between words and their pronunciations
@@ -130,7 +138,7 @@ namespace ACAT.Core.TTSManagement
             {
                 _pronunciationList.Clear();
 
-                Log.Debug("Found pronuncation file " + filePath);
+                _logger?.LogDebug("Found pronuncation file {FilePath}", filePath);
 
                 doc.Load(filePath);
 
@@ -144,7 +152,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Error processing pronunciation file " + filePath + ". Exception: " + ex);
+                _logger?.LogError(ex, "Error processing pronunciation file {FilePath}", filePath);
                 retVal = false;
             }
 
@@ -160,7 +168,7 @@ namespace ACAT.Core.TTSManagement
         /// <returns>true on success</returns>
         public bool Load(CultureInfo ci, String pronunciationsFileName)
         {
-            Log.Debug("Entering...");
+            _logger?.LogDebug("Loading pronunciations for culture {Culture}, file {FileName}", ci.Name, pronunciationsFileName);
 
             String filePath = getPronunciationsFilePath(ci, pronunciationsFileName);
 
@@ -217,7 +225,7 @@ namespace ACAT.Core.TTSManagement
             var strWord = new StringBuilder();
             Pronunciation pronunciation;
 
-            Log.Debug("inputString: " + inputString);
+            _logger?.LogDebug("Processing input string: {InputString}", inputString);
 
             foreach (char ch in inputString)
             {
@@ -242,7 +250,7 @@ namespace ACAT.Core.TTSManagement
 
             var retVal = strOutput.ToString();
 
-            Log.Debug("replacedString: " + retVal);
+            _logger?.LogDebug("Replaced string: {ReplacedString}", retVal);
 
             return retVal;
         }
@@ -273,7 +281,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (IOException ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "IO exception while saving pronunciations");
                 retVal = false;
             }
 
@@ -301,7 +309,7 @@ namespace ACAT.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing Pronunciations");
 
                 if (disposing)
                 {
@@ -333,7 +341,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Exception closing pronunciation file");
             }
         }
 
@@ -356,7 +364,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Exception creating pronunciations file");
                 xmlTextWriter = null;
             }
 
@@ -372,7 +380,7 @@ namespace ACAT.Core.TTSManagement
         {
             var word = XmlUtils.GetXMLAttrString(node, WordAttr).Trim().ToLower();
             var pronunciation = XmlUtils.GetXMLAttrString(node, PronunciationAttr);
-            Log.Debug("word=" + word + " pronunciation=" + pronunciation);
+            _logger?.LogDebug("Adding pronunciation - word: {Word}, pronunciation: {Pronunciation}", word, pronunciation);
 
             Add(new Pronunciation(word, pronunciation));
         }

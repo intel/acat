@@ -113,11 +113,11 @@ namespace ACAT.Core.ActuatorManagement
         {
             SourceActuator.Init();
 
-            Log.Debug("Before Wait");
+            _logger?.LogDebug("Waiting for initialization to complete");
 
             WaitForInit();
 
-            Log.Debug("After Wait");
+            _logger?.LogDebug("Initialization wait completed");
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="enableConfigure">should the config button be enabled</param>
         public void OnEndCalibration(String errorMessage = "", bool enableConfigure = true)
         {
-            Log.Verbose();
+            _logger?.LogTrace("Ending calibration");
 
             if (!String.IsNullOrEmpty((errorMessage)))
             {
@@ -138,7 +138,7 @@ namespace ACAT.Core.ActuatorManagement
                 OnError(errorMessage, enableConfigure);
             }
 
-            Log.Debug("Calling closeCalibrationForm()");
+            _logger?.LogDebug("Closing calibration form");
 
             closeCalibrationForm();
             _calibrationDoneEvent.Set();
@@ -189,11 +189,11 @@ namespace ACAT.Core.ActuatorManagement
                 PostInitError = true;
             }
 
-            Log.Debug("Before Wait");
+            _logger?.LogDebug("Waiting for post-initialization to complete");
 
             WaitForPostInit();
 
-            Log.Debug("After Wait");
+            _logger?.LogDebug("Post-initialization wait completed");
         }
 
         /// <summary>
@@ -239,17 +239,17 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         public void WaitForCalibration()
         {
-            Log.Debug("Waiting for calibration");
+            _logger?.LogDebug("Waiting for calibration to complete");
 
             _calibrationDoneEvent.WaitOne();
 
-            Log.Debug("Calibration event is done");
+            _logger?.LogDebug("Calibration event completed");
 
-            Log.Debug("Waiting for calibration configure dialog");
+            _logger?.LogDebug("Waiting for calibration configure dialog");
 
             _bgTaskDoneEvent.WaitOne();
 
-            Log.Debug("Calibration configure dialog event is done");
+            _logger?.LogDebug("Calibration configure dialog completed");
         }
 
         /// <summary>
@@ -257,16 +257,16 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         public void WaitForInit()
         {
-            Log.Debug("Waiting for initdone");
+            _logger?.LogDebug("Waiting for initialization done event");
             initDoneEvent.WaitOne();
-            Log.Debug("initdone is done");
+            _logger?.LogDebug("Initialization done event signaled");
         }
 
         public void WaitForPostInit()
         {
-            Log.Debug("Waiting for postinitdone");
+            _logger?.LogDebug("Waiting for post-initialization done event");
             postInitDoneEvent.WaitOne();
-            Log.Debug("postinitdone is done");
+            _logger?.LogDebug("Post-initialization done event signaled");
         }
 
         /// <summary>
@@ -293,9 +293,9 @@ namespace ACAT.Core.ActuatorManagement
             _formCreatedEvent.Set();
             if (calibrationForm != null)
             {
-                Log.Debug("Calling calibrationform.ShowDialog");
+                _logger?.LogDebug("Showing calibration form dialog");
                 DialogResult result = calibrationForm.ShowDialog();
-                Log.Debug("Result: " + result);
+                _logger?.LogDebug("Calibration form closed with result: {Result}", result);
 
                 // user closed the calibration form
                 if (result == DialogResult.Cancel)
@@ -306,7 +306,7 @@ namespace ACAT.Core.ActuatorManagement
             }
             else
             {
-                Log.Debug("calibration form IS NULL!!!");
+                _logger?.LogWarning("Calibration form is null");
             }
 
             if (calibrationForm != null)
@@ -323,7 +323,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void bgWorker_RunCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Log.Verbose();
+            _logger?.LogTrace("Background worker run completed");
             _bgTaskDoneEvent.Set();
         }
 
@@ -336,7 +336,7 @@ namespace ACAT.Core.ActuatorManagement
             {
                 if (calibrationForm != null)
                 {
-                    Log.Debug("Closing calibration form, calling Dismiss()");
+                    _logger?.LogDebug("Closing calibration form");
                     calibrationForm.Dismiss();
                     calibrationForm = null;
                 }

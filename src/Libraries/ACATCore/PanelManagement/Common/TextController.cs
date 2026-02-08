@@ -345,7 +345,7 @@ namespace ACAT.Core.PanelManagement.Common
                     caretPos == _autoCompleteCaretPos &&
                     _beforeAutoCompleteCaretPos >= 0)
                 {
-                    _logger.LogDebug("Delete: _autoCompleteCaretPos: {AutoCompleteCaretPos},  _beforeAutoCOmpleteCaretPos: {BeforeAutoCompleteCaretPos}, count: {Count}",
+                    _logger.LogDebug("Delete: _autoCompleteCaretPos: {AutoCompleteCaretPos},  _beforeAutoCompleteCaretPos: {BeforeAutoCompleteCaretPos}, count: {Count}",
                         _autoCompleteCaretPos, _beforeAutoCompleteCaretPos, (_autoCompleteCaretPos - _beforeAutoCompleteCaretPos));
 
                     int prefixLen = _autoCompletePartialWord.Length;
@@ -421,7 +421,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <returns>true on success</returns>
         public bool HandlePunctuation(ArrayList modifiers, char punctuation)
         {
-            _logger.LogTrace("HandlePunctuation called");
+            _logger.LogTrace("HandlePunctuation called with punctuation: {Punctuation}", punctuation);
 
             try
             {

@@ -16,6 +16,7 @@
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Reflection;
@@ -34,6 +35,8 @@ namespace ACAT.Core.PreferencesManagement
     [Serializable]
     public abstract class PreferencesBase : ObservableValidator, IPreferences, IDisposable
     {
+        private static readonly ILogger<PreferencesBase> _logger = LogManager.GetLogger<PreferencesBase>();
+
         [XmlIgnore]
         public bool IsDirty { get; private set; } = false;
 
@@ -103,7 +106,7 @@ namespace ACAT.Core.PreferencesManagement
 
             if (preferences == null)
             {
-                Log.Warn($"Could not load preferences from {preferencesFile} - creating a new one.");
+                _logger.LogWarning("Could not load preferences from {PreferencesFile} - creating a new one", preferencesFile);
                 if (loadDefaultsOnFail == true)
                 {
                     preferences = new T();
@@ -114,7 +117,7 @@ namespace ACAT.Core.PreferencesManagement
             {
                 if (!XmlUtils.XmlFileSave(preferences, preferencesFile))
                 {
-                    Log.Error("Unable to save default preferences!");
+                    _logger.LogError("Unable to save default preferences");
                     preferences = default;
                 }
             }
@@ -145,7 +148,7 @@ namespace ACAT.Core.PreferencesManagement
 
             if (retVal == false)
             {
-                Log.Error("Error saving preferences! file=" + preferencesFile);
+                _logger.LogError("Error saving preferences to file {PreferencesFile}", preferencesFile);
             }
 
             return retVal;

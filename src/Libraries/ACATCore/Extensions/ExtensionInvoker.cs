@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 
@@ -27,6 +28,7 @@ namespace ACAT.Core.Extensions
     /// </summary>
     public class ExtensionInvoker : IExtension
     {
+        private static readonly ILogger<ExtensionInvoker> _logger = LogManager.GetLogger<ExtensionInvoker>();
         /// <summary>
         /// The object whose methods/properties/events are to
         /// be invoked through reflection
@@ -193,7 +195,7 @@ namespace ACAT.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error getting value for property {Property}", property);
             }
 
             return null;
@@ -233,7 +235,7 @@ namespace ACAT.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error invoking extension method {MethodName}", methodName);
             }
 
             return result;
@@ -287,7 +289,7 @@ namespace ACAT.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error setting value for property {Property}", property);
                 retVal = false;
             }
 

@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Security.Permissions;
@@ -20,6 +21,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class WebSearch
     {
+        private static readonly ILogger<WebSearch> _logger = LogManager.GetLogger<WebSearch>();
         /// <summary>
         /// URL to do a google search with "I'm feeling lucky"
         /// </summary>
@@ -131,7 +133,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Could not launch URL using preferred browser.  Trying Internet Explorer. " + ex);
+                _logger.LogError(ex, "Could not launch URL using preferred browser. Trying Internet Explorer");
 
                 try
                 {
@@ -139,7 +141,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex1)
                 {
-                    Log.Exception("Could not launch URL using IE. " + ex1);
+                    _logger.LogError(ex1, "Could not launch URL using IE");
                 }
             }
 

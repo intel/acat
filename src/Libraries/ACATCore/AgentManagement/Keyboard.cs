@@ -143,7 +143,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error sending extended key");
             }
             finally
             {
@@ -290,7 +290,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error sending string");
             }
             finally
             {
@@ -307,7 +307,7 @@ namespace ACAT.Core.AgentManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing Keyboard");
 
                 if (disposing)
                 {
@@ -369,7 +369,7 @@ namespace ACAT.Core.AgentManagement
         private bool shiftNeeded(char c)
         {
             short virtualKey = User32Interop.VkKeyScanEx(c, _keyboardLayout);
-            Log.Debug("virtualKey for [" + c + "] is " + virtualKey);
+            _logger.LogDebug("virtualKey for [{Char}] is {VirtualKey}", c, virtualKey);
             if ((virtualKey & 0x100) == 0x100)
             {
                 _logger.LogDebug("Shift needs to be pressed for [{Char}]", c);

@@ -345,7 +345,7 @@ namespace ACAT.Core.PanelManagement.Common
                     caretPos == _autoCompleteCaretPos &&
                     _beforeAutoCompleteCaretPos >= 0)
                 {
-                    _logger.LogDebug("Delete: _autoCompleteCaretPos: {AutoCompleteCaretPos},  _beforeAutoCompleteCaretPos: {BeforeAutoCompleteCaretPos}, count: {Count}",
+                    _logger.LogDebug("Delete: _autoCompleteCaretPos: {AutoCompleteCaretPos}, _beforeAutoCompleteCaretPos: {BeforeAutoCompleteCaretPos}, count: {Count}",
                         _autoCompleteCaretPos, _beforeAutoCompleteCaretPos, (_autoCompleteCaretPos - _beforeAutoCompleteCaretPos));
 
                     int prefixLen = _autoCompletePartialWord.Length;

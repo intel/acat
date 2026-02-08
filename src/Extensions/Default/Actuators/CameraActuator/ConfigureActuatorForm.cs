@@ -312,7 +312,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 form.Invoke(new MethodInvoker(delegate
                 {
                     labelPrompt.Text = String.Empty;
-                    Log.Debug("Calling startTimer()");
+                    _logger.LogDebug("Calling startTimer()");
                     startTimer(_switchingCamera);
                 }));
             }

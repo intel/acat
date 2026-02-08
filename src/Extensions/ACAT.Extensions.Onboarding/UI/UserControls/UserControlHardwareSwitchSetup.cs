@@ -481,7 +481,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             }
 
             String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, "Click <a href=" + HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName) + "#" + bookmark + ">here</a> for help");
-            Log.Debug(html);
+            _logger.LogDebug("Generated HTML: {Html}", html);
 
             webBrowser.DocumentText = html;
             //webBrowser.DocumentText =

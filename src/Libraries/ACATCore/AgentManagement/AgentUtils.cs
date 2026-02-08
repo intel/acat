@@ -18,12 +18,7 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public class AgentUtils
     {
-        private static ILogger<AgentUtils> _logger;
-
-        public static void SetLogger(ILogger<AgentUtils> logger)
-        {
-            _logger = logger;
-        }
+        private static readonly ILogger<AgentUtils> _logger = LoggingConfiguration.CreateLogger<AgentUtils>();
         /// <summary>
         /// Finds a descendent of the focused element that has the specified
         /// className, controlType and automationID

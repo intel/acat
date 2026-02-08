@@ -362,8 +362,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         private void startStopProcessDataTimer(bool startProcessDataTimer, OnboardingUserState state)
         {
-            Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
-                " | state: " + state.ToString());
+            _logger.LogDebug("startStopProcessDataTimer | startProcessDataTimer: {StartProcessDataTimer} | state: {State}",
+                startProcessDataTimer, state);
 
             if (startProcessDataTimer)
             {

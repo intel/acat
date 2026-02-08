@@ -159,7 +159,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error occurred while saving settings");
                 MessageBox.Show("An error occurred while saving settings.", "Save Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

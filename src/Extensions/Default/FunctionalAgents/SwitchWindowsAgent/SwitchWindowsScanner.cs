@@ -49,7 +49,8 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                             "SwitchWindowsScanner",
                             "Switch Windows Scanner")]
     public partial class SwitchWindowsScanner : GenericScannerForm
-    {        private readonly ILogger<SwitchWindowsScanner> _logger;
+    {
+        private readonly ILogger<SwitchWindowsScanner> _logger;
         /// <summary>
         /// Enables invoking methods and properties in this form
         /// </summary>
@@ -121,6 +122,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         public SwitchWindowsScanner() : base()
         {
+            _logger = LoggingConfiguration.CreateLogger<SwitchWindowsScanner>();
             InitializeComponent();
         }
 

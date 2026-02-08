@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.UI.UserControls;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
     [DesignerCategory("code")]
     public abstract class LargeToolbarUserControl : KeyboardUserControl
     {
+        private readonly ILogger<LargeToolbarUserControl> _logger;
         private readonly TableLayoutPanel ToolbarBox = new()
         {
             Name = "ToolbarBox",
@@ -55,6 +57,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
         }
         public LargeToolbarUserControl(string name)
         {
+            _logger = LoggingConfiguration.CreateLogger<LargeToolbarUserControl>();
             Name = name;
             InitializeButtonsList();
             InitializeComponent();
@@ -154,7 +157,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Log.Debug($"{e.Graphics.DpiX} x {e.Graphics.DpiY}");
+            _logger.LogDebug("{DpiX} x {DpiY}", e.Graphics.DpiX, e.Graphics.DpiY);
 
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             base.OnPaint(e);

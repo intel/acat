@@ -55,7 +55,6 @@ namespace ACAT.Core.AgentManagement.Agents
         public PreferredAgents()
         {
             _logger = LoggingConfiguration.CreateLogger<PreferredAgents>();
-            _logger.LogDebug("PreferredAgents initialized");
             _preferredAgents = new Hashtable();
         }
 

@@ -190,7 +190,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError(ex, "UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception: {Message}", ex.Message);
+                            _logger.LogError(ex, "UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception");
                         }
                     }));
 

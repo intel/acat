@@ -22,6 +22,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
     [Serializable]
     public class DimReductChanSel
     {
+        [NonSerialized]
         private readonly ILogger<DimReductChanSel> _logger;
         // Subset of channels
         public int[] channelSubset;

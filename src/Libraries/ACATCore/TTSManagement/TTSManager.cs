@@ -386,7 +386,7 @@ namespace ACAT.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing TTSManager");
 
                 if (disposing)
                 {
@@ -435,7 +435,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Unable to load TTS Engine" + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                _logger?.LogError(ex, "Unable to load TTS Engine {Type}, assembly: {AssemblyName}", type, type.Assembly.FullName);
                 retVal = false;
             }
 

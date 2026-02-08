@@ -277,7 +277,7 @@ namespace ACAT.Core.WidgetManagement.Layout
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Failed to create widget: {WidgetName}, class: {WidgetClass}", widgetName, widgetClass);
                 widget = null;
             }
 

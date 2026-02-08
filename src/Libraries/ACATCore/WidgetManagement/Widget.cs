@@ -851,7 +851,7 @@ namespace ACAT.Core.WidgetManagement
                     }
                 }
             }
-            //Log.Debug("WidgetName: " + Name + ", retVal : " + retVal);
+            _logger?.LogTrace("CanAddForAnimation: WidgetName={Name}, result={Result}", Name, retVal);
             return retVal;
         }
 

@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Xml;
@@ -25,6 +26,8 @@ namespace ACAT.Core.ThemeManagement
         /// </summary>
         public const String PreviewScannerImageName = "Preview.png";
 
+        private readonly ILogger<Theme> _logger;
+
         /// <summary>
         /// Has this object been disposed?
         /// </summary>
@@ -34,8 +37,9 @@ namespace ACAT.Core.ThemeManagement
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="name">Name of the color scheme</param>
-        private Theme(String name)
+        private Theme(String name, ILogger<Theme> logger = null)
         {
+            _logger = logger;
             Name = name;
             Colors = new ColorSchemes();
         }
@@ -69,7 +73,7 @@ namespace ACAT.Core.ThemeManagement
         /// <param name="themeDir">directory where theme assets are located</param>
         /// <param name="themeFile">name of the theme config file</param>
         /// <returns></returns>
-        public static Theme Create(String themeName, String themeDir, String themeFile)
+        public static Theme Create(String themeName, String themeDir, String themeFile, ILogger<Theme> logger = null)
         {
             Theme theme = null;
 
@@ -88,12 +92,12 @@ namespace ACAT.Core.ThemeManagement
                 var colorSchemesNode = doc.SelectSingleNode("/ACAT/Theme/ColorSchemes");
                 if (colorSchemesNode != null)
                 {
-                    theme = new Theme(themeName) { Colors = ColorSchemes.Create(colorSchemesNode, themeDir) };
+                    theme = new Theme(themeName, logger) { Colors = ColorSchemes.Create(colorSchemesNode, themeDir) };
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                logger?.LogError(ex, "Failed to create theme from file: {ThemeFile}", themeFile);
             }
 
             return theme;
@@ -120,7 +124,7 @@ namespace ACAT.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing Theme");
 
                 if (disposing)
                 {

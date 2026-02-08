@@ -107,7 +107,7 @@ namespace ACAT.Core.UserManagement
 
             var targetDir = Path.Combine(UserManager.CurrentUserDir);
 
-            Log.Debug("Copy directory " + srcDir + "=> " + targetDir);
+            _logger.LogDebug("Copy directory {SourceDir} => {TargetDir}", srcDir, targetDir);
             return FileUtils.CopyDir(srcDir, targetDir);
         }
 
@@ -140,7 +140,7 @@ namespace ACAT.Core.UserManagement
             {
                 MessageBox.Show("Error creating dir. ex: " + ex);
 
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, "Failed to create user directory: {UserName}", userName);
                 retVal = false;
             }
 

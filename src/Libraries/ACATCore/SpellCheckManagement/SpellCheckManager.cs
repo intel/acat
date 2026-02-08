@@ -319,7 +319,7 @@ namespace ACAT.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing SpellCheckManager");
 
                 if (disposing)
                 {
@@ -370,7 +370,7 @@ namespace ACAT.Core.SpellCheckManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Unable to load spellchecker " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                _logger?.LogError(ex, "Unable to load spellchecker {Type}, assembly: {AssemblyName}", type, type.Assembly.FullName);
                 retVal = false;
             }
 

@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
@@ -21,6 +22,8 @@ namespace ACAT.Core.UserManagement
     /// </summary>
     public class ProfileManager
     {
+        private static ILogger<ProfileManager> _logger;
+
         /// <summary>
         /// Name of the default profile
         /// </summary>
@@ -41,6 +44,7 @@ namespace ACAT.Core.UserManagement
         /// </summary>
         static ProfileManager()
         {
+            _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<ProfileManager>();
             _currentProfileName = DefaultProfileName;
         }
 
@@ -112,7 +116,7 @@ namespace ACAT.Core.UserManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Failed to create profile directory: {ProfileName}", profileName);
                 retVal = false;
             }
 

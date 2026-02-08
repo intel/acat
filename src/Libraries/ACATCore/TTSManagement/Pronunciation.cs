@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Core.TTSManagement
@@ -21,6 +22,8 @@ namespace ACAT.Core.TTSManagement
     /// </summary>
     public class Pronunciation : IDisposable
     {
+        private readonly ILogger<Pronunciation> _logger;
+
         /// <summary>
         /// Has this object been disposed
         /// </summary>
@@ -31,9 +34,10 @@ namespace ACAT.Core.TTSManagement
         /// </summary>
         /// <param name="word">original word</param>
         /// <param name="altPronunciation">phonetic spelling</param>
-        public Pronunciation(String word, String altPronunciation)
+        public Pronunciation(String word, String altPronunciation, ILogger<Pronunciation> logger = null)
         {
-            Log.Debug("Entering...word=" + word + " altPronunciation=" + altPronunciation);
+            _logger = logger;
+            _logger?.LogDebug("Creating pronunciation: word={Word}, altPronunciation={AltPronunciation}", word, altPronunciation);
             Word = word;
             AltPronunciation = altPronunciation;
         }

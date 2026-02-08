@@ -197,7 +197,7 @@ namespace ACAT.Core.AgentManagement.Agents
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Exception loading preferred agents: {Exception}", ex.ToString());
+                _logger.LogError(ex, "Exception loading preferred agents");
             }
         }
     }

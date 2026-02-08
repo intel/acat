@@ -88,7 +88,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Error during dimension reduction processing");
             }
             return true;
         }

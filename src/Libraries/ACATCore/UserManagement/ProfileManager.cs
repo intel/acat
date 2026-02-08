@@ -22,7 +22,7 @@ namespace ACAT.Core.UserManagement
     /// </summary>
     public class ProfileManager
     {
-        private static ILogger<ProfileManager> _logger;
+        private static readonly ILogger<ProfileManager> _logger = LoggingConfiguration.CreateLogger<ProfileManager>();
 
         /// <summary>
         /// Name of the default profile
@@ -44,7 +44,6 @@ namespace ACAT.Core.UserManagement
         /// </summary>
         static ProfileManager()
         {
-            _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<ProfileManager>();
             _currentProfileName = DefaultProfileName;
         }
 

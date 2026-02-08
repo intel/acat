@@ -24,7 +24,7 @@ namespace ACAT.Core.UserManagement
     /// </summary>
     public class UserManager
     {
-        private static ILogger<UserManager> _logger;
+        private static readonly ILogger<UserManager> _logger = LoggingConfiguration.CreateLogger<UserManager>();
 
         public const String BaseUserInstallDir = "Install\\Users";
 
@@ -43,7 +43,6 @@ namespace ACAT.Core.UserManagement
         /// </summary>
         static UserManager()
         {
-            _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<UserManager>();
             _currentUserName = DefaultUserName;
         }
 

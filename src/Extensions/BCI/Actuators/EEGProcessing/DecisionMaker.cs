@@ -26,7 +26,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 {
     public class DecisionMaker
     {
-        private static readonly ILogger<DecisionMaker> _defaultLogger = NullLogger<DecisionMaker>.Instance;
+        private static readonly ILogger<DecisionMaker> _nullLogger = NullLogger<DecisionMaker>.Instance;
         private readonly ILogger<DecisionMaker> _logger;
 
         // ************ Params and objects loaded at init
@@ -98,7 +98,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// </summary>
         public DecisionMaker(string TrainedClassifiersFilePath, ILogger<DecisionMaker> logger = null)
         {
-            _logger = logger ?? _defaultLogger;
+            _logger = logger ?? _nullLogger;
             enableLanguageModelProbabilities = false; // by default (actuator will set flag for different type of LM probabilities)
             maxNumberOfSequences = BCIActuatorSettings.Settings.Classifier_MaxDecisionSequences;
             confidenceThreshold = BCIActuatorSettings.Settings.Classifier_ConfidenceThreshold;
@@ -133,7 +133,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// </summary>
         public DecisionMaker(int maxNumberOfSeqs, float confThreshold, ILogger<DecisionMaker> logger = null)
         {
-            _logger = logger ?? _defaultLogger;
+            _logger = logger ?? _nullLogger;
             maxNumberOfSequences = maxNumberOfSeqs;
             confidenceThreshold = confThreshold;
 

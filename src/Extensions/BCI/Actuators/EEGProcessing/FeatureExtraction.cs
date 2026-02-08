@@ -23,6 +23,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
     [Serializable]
     public class FeatureExtraction
     {
+        private readonly ILogger<FeatureExtraction> _logger;
+
         /// <summary>
         /// Path of the trained classifiers
         /// </summary>
@@ -161,8 +164,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// </summary>
         /// <param name="isTraining"></param>
         /// <param name="numGroups"></param>
-        public FeatureExtraction(Dictionary<int, int[]> pSymbolsInGroups, CalibrationParametersForSection pCalibrationParameters, int numRows = 6, int numCols = 6, bool isRowCol = true)
+        public FeatureExtraction(Dictionary<int, int[]> pSymbolsInGroups, CalibrationParametersForSection pCalibrationParameters, int numRows = 6, int numCols = 6, bool isRowCol = true, ILogger<FeatureExtraction> logger = null)
         {
+            _logger = logger;
             // Get parameters from settings
             offsetTarget = BCIActuatorSettings.Settings.Calibration_OffsetTarget;
             windowDuration = BCIActuatorSettings.Settings.FeatureExtraction_WindowDurationInMs / 1000f;
@@ -357,8 +361,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 // Train classifiers
                 trainedClassifiersSessionID = sessionID;
 
-                string txtLog = "Read data " + sessionID;
-                Log.Debug(txtLog);
+                _logger?.LogDebug("Read data {SessionID}", sessionID);
                 FileReader fileReaderObj = new();
                 fileReaderObj.ReadDataAndMarkersFromFiles(sessionID, out rawData, out triggerSignal, out markerValues, out sessionDirectory);
                 //fileReaderObj.ReadDataAndMarkersFromTestFiles(out rawData, out triggerSignal, out markerValues, out sessionDirectory,
@@ -366,20 +369,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                 int numSamples = rawData.GetLength(1);
                 int numColumns = rawData.GetLength(0);
-                txtLog = "Raw data read " + sessionID + " Num samples: " + numSamples + " Num channels: " + numColumns;
-                Log.Debug(txtLog);
+                _logger?.LogDebug("Raw data read {SessionID} Num samples: {NumSamples} Num channels: {NumColumns}", sessionID, numSamples, numColumns);
 
                 //Plots.plotTriggerSignal(triggerSignal);
 
                 // 1.2 Filter
-                Log.Debug("Filtering data");
+                _logger?.LogDebug("Filtering data");
                 _BandPassFilter.FilterData(rawData, triggerSignal, out double[,] filteredData, out int[] delayedTriggerSignal);
-                Log.Debug("Data filtered");
+                _logger?.LogDebug("Data filtered");
 
                 //Plots.plotSignal(filteredData, 1);
 
                 // 1.2 Parse file
-                Log.Debug("Parsing data");
+                _logger?.LogDebug("Parsing data");
                 _DataParserObj.ParseData(filteredData, delayedTriggerSignal, markerValues, _symbolsInGroups, out inputData, out trialTargetness, out trialLabels, out List<int> trialGroups, out List<int> targetLabels, out _, out _, true);
 
                 // ===================== 2. Preprocessing ==========================
@@ -387,8 +389,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 {
                     int[] trialTargetnessArray = trialTargetness.ToArray();
 
-                    txtLog = "Data parsed. Num trials: " + inputData.Count;
-                    Log.Debug(txtLog);
+                    _logger?.LogDebug("Data parsed. Num trials: {Count}", inputData.Count);
 
                     // 2.1 Select subset of channels (if applicable)
                     _DimReductChannelSelectionObj.Reduce(inputData, out inputData);
@@ -400,21 +401,18 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     // ===================== 3. Feature selection ==========================
 
                     // 3.1 PCA (reduce dimensions)
-                    Log.Debug("Applying PCA");
+                    _logger?.LogDebug("Applying PCA");
                     _DimReductPCAObj.Learn(inputData);
                     _DimReductPCAObj.Reduce(inputData, out trialData);
 
                     // 3.2 RDA (transform to scores using crossValidation)
-                    txtLog = "Crossvalidation with " + trialData.Count + " trials";
-                    Log.Debug(txtLog);
+                    _logger?.LogDebug("Crossvalidation with {Count} trials", trialData.Count);
                     scores = _CrossValidationObj.CrossValidate(_DimReductRDAObj, trialData, trialTargetness);
 
                     // Calculate performance
-                    txtLog = "Calculating AUC for " + scores.Count + " trials";
-                    Log.Debug(txtLog);
+                    _logger?.LogDebug("Calculating AUC for {Count} trials", scores.Count);
                     meanAUC = ClassifierUtils.CalculateAUC(scores, trialTargetnessArray, out double[] TPrate, out double[] FPrate);
-                    txtLog = "AUC " + meanAUC;
-                    Log.Debug(txtLog);
+                    _logger?.LogDebug("AUC {MeanAUC}", meanAUC);
                     // 3.3 Train RDA with all data (scores for target/nontarget class distributions are calculated with crossV)
                     _DimReductRDAObj.Learn(trialData, trialTargetness.ToList());
 
@@ -452,7 +450,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger?.LogError(e, e.Message);
                 meanAUC = -1;
 
                 // Save Error in file
@@ -475,26 +473,26 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         {
             // ===================== 2. Preprocessing ==========================
             // 2.1 Select subset of channels (if applicable)
-            Log.Debug("Reducing number of channels for " + inputData.Count + " trials");
+            _logger?.LogDebug("Reducing number of channels for {Count} trials", inputData.Count);
             _DimReductChannelSelectionObj.Reduce(inputData, out inputData);
-            Log.Debug("Number of channels reduced to " + _DimReductChannelSelectionObj.channelSubset.Length);
+            _logger?.LogDebug("Number of channels reduced to {Length}", _DimReductChannelSelectionObj.channelSubset.Length);
 
             // 2.2 Downsample
-            Log.Debug("Downsampling");
+            _logger?.LogDebug("Downsampling");
             _DimReductDownSampleObj.Reduce(inputData, out inputData);
-            Log.Debug("Data downsampled by " + _DimReductDownSampleObj.downsampleRate + " for " + inputData.Count + " trials");
+            _logger?.LogDebug("Data downsampled by {Rate} for {Count} trials", _DimReductDownSampleObj.downsampleRate, inputData.Count);
 
             // ===================== 3. Feature selection ==========================
 
             // PCA (reduce dimensions)"
-            Log.Debug("Starting PCA.reduce for " + inputData.Count + " trials");
+            _logger?.LogDebug("Starting PCA.reduce for {Count} trials", inputData.Count);
             _DimReductPCAObj.Reduce(inputData, out List<double[]> trialData);
-            Log.Debug("PCA reduced for " + trialData.Count);
+            _logger?.LogDebug("PCA reduced for {Count}", trialData.Count);
 
             // RDA (obtain 1-dimensional scores)
-            Log.Debug("Starting RDA.reduce for " + trialData.Count + " trials");
+            _logger?.LogDebug("Starting RDA.reduce for {Count} trials", trialData.Count);
             _DimReductRDAObj.Reduce(trialData, out List<double> scores);
-            Log.Debug("RDA reduced " + scores.Count + " scores");
+            _logger?.LogDebug("RDA reduced {Count} scores", scores.Count);
 
             return scores;
         }
@@ -514,18 +512,18 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             int numSamples = allData.GetLength(1);
             int numColumns = allData.GetLength(0);
             incompleteData = null;
-            Log.Debug("Parsing data from brainflow " + numSamples + " samples and " + numColumns + " columns");
+            _logger?.LogDebug("Parsing data from brainflow {NumSamples} samples and {NumColumns} columns", numSamples, numColumns);
             _DataParserObj.ParseDataFromBrainflow(allData, out double[,] rawData, out int[] triggerSignal, out _);
 
             numSamples = rawData.GetLength(1);
-            Log.Debug("Data parsed " + numSamples + " samples.");
+            _logger?.LogDebug("Data parsed {NumSamples} samples.", numSamples);
 
             _BandPassFilter.FilterData(rawData, triggerSignal, out double[,] filteredData, out int[] delayedTriggerSignal);
 
             // 1.2 Parse file
-            Log.Debug("Parsing data");
+            _logger?.LogDebug("Parsing data");
             _DataParserObj.ParseData(filteredData, delayedTriggerSignal, markerValues, symbolsInGroups, out List<double[,]> trialData, out _, out _, out List<int> trialMarkers, out _, out int incompleteSampleIdx, out incompleteMarkerValues);
-            Log.Debug("Data parsed for " + trialMarkers.Count + " markers and" + trialData.Count + " trials");
+            _logger?.LogDebug("Data parsed for {MarkersCount} markers and {TrialsCount} trials", trialMarkers.Count, trialData.Count);
 
             // trialLabels: if singleBox paradigm: trialLabels[trial1][boxID]
             //              if RC paradigm: trialLabels[trial1][box1 box2 box3] containing all highlighted boxes
@@ -534,13 +532,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             {
                 int startSampleIdx = incompleteSampleIdx - _BandPassFilter.GetGroupDelay();
                 incompleteData = _DataParserObj.GetRemaining(allData, startSampleIdx);
-                Log.Debug("Incomplete data remaining with " + incompleteData.GetLength(1) + " columns and " + incompleteData.GetLength(0) + " samples for " + trialMarkers.Count + " markers");
+                _logger?.LogDebug("Incomplete data remaining with {Columns} columns and {Samples} samples for {MarkersCount} markers", incompleteData.GetLength(1), incompleteData.GetLength(0), trialMarkers.Count);
             }
 
             if (trialData.Count > 0 && trialData.Count == trialMarkers.Count)
             {
                 trialScores = Reduce(trialData);
-                Log.Debug("Reduced " + trialScores.Count + " trials found");
+                _logger?.LogDebug("Reduced {Count} trials found", trialScores.Count);
             }
             return trialScores; // will return null if can't be computed
         }

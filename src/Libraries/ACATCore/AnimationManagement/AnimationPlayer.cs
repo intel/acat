@@ -722,8 +722,6 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace();
-
                 if (disposing)
                 {
                     // dispose all managed resources.
@@ -828,7 +826,6 @@ namespace ACAT.Core.AnimationManagement
         /// <returns>index of the first animation widget</returns>
         private int getFirstAnimatedWidget()
         {
-            _logger.LogTrace();
             for (int ii = 0; ii < _currentAnimation.AnimationWidgetList.Count; ii++)
             {
                 if (_currentAnimation.AnimationWidgetList[ii].UIWidget.CanAddForAnimation())
@@ -1153,8 +1150,6 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborAbove()
         {
-            _logger.LogTrace();
-
             if (_highlightedWidget == null)
             {
                 _logger.LogTrace("_widgethighlighted is null");
@@ -1210,8 +1205,6 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborBelow()
         {
-            _logger.LogTrace();
-
             if (_highlightedWidget == null)
             {
                 _logger.LogTrace("_widgethighlighted is null");
@@ -1267,8 +1260,6 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborLeft()
         {
-            _logger.LogTrace();
-
             if (_highlightedWidget == null)
             {
                 return;
@@ -1418,8 +1409,6 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="playerState">new state</param>
         private void setPlayerState(PlayerState playerState)
         {
-            _logger.LogTrace();
-
             PlayerState oldState = _playerState;
             if (oldState != playerState)
             {

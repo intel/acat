@@ -502,10 +502,6 @@ namespace ACAT.Core.Utility
                 prefix = String.Empty;
                 wordAtCaret = String.Empty;
 
-                _logger.LogTrace();
-
-                //Log.Debug("inputstring: [" + inputString + "]");
-
                 // first get the current sentence
                 int startPos = GetSentenceAtCaret(inputString, caretPos, out string sentenceAtCaret);
                 if (startPos < 0)
@@ -882,7 +878,6 @@ namespace ACAT.Core.Utility
             {
                 sentenceAtCaret = String.Empty;
 
-                _logger.LogTrace();
                 if (String.IsNullOrEmpty(inputString.Trim()))
                 {
                     _logger.LogDebug("returning -1");

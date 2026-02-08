@@ -9,6 +9,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 
@@ -20,6 +21,8 @@ namespace ACAT.Extension
     /// </summary>
     public static class Common
     {
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger("ACAT.Extension.Common");
+
         /// <summary>
         /// System-wide ACAT preference settings
         /// </summary>
@@ -33,7 +36,7 @@ namespace ACAT.Extension
             AppPreferences.DefaultScanTimingsConfigurePanelName = "ScanTimeAdjustScanner";
             AppPreferences.DefaultTryoutPanelName = "DefaultTryoutScanner";
             var assembly = Assembly.GetExecutingAssembly();
-            Log.Debug("Assembly name: " + assembly.FullName);
+            _logger.LogDebug("Assembly name: {AssemblyName}", assembly.FullName);
         }
 
         /// <summary>

@@ -197,7 +197,7 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error launching app");
             }
         }
 

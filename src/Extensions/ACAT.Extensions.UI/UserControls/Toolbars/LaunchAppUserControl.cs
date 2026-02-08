@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,8 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
     [DesignerCategory("code")]
     public class LaunchAppUserControl : LargeToolbarUserControl
     {
+        private static readonly ILogger<LaunchAppUserControl> _logger = LoggingConfiguration.CreateLogger<LaunchAppUserControl>();
+
         private class LaunchButtonSpec : ButtonSpec
         {
             public AppInfo AppInfo { get; set; }
@@ -51,7 +54,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
         public override void OnButtonClicked(object s, EventArgs e)
         {
             string buttonName = e.ToString();
-            Log.Info($"Button clicked: {buttonName}");
+            _logger.LogInformation("Button clicked: {ButtonName}", buttonName);
 
             var dict = Buttons.ToDictionary(x => x.Name);
 

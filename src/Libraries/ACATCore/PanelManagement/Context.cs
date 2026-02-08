@@ -383,7 +383,7 @@ namespace ACAT.Core.PanelManagement
                 retVal = false;
             }
 
-            Log.Debug("Returning " + retVal + " from context init");
+            LogManager.GetLogger(typeof(Context)).LogDebug("Returning {RetVal} from context init", retVal);
             return retVal;
         }
 

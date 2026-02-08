@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -18,6 +19,8 @@ namespace ACAT.Core.PanelManagement.PanelConfig
     /// </summary>
     public class PanelConfigMapEntry
     {
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(PanelConfigMapEntry));
+
         private readonly Dictionary<string, string> _userControlsDict = new();
 
         /// <summary>
@@ -175,7 +178,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         {
             if (FormType == null)
             {
-                Log.Debug("FORM TYPE IS NULL");
+                _logger.LogDebug("FORM TYPE IS NULL");
             }
 
             return "PanelConfigMapEntry. configName: " + ConfigName +

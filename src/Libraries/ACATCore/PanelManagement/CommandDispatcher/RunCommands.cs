@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +18,8 @@ namespace ACAT.Core.PanelManagement.CommandDispatcher
     /// </summary>
     public class RunCommands
     {
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(RunCommands));
+
         /// <summary>
         /// Command dispatcher object. Caller can set this and the dispatcher
         /// will be called to dispatch the command.
@@ -70,7 +73,7 @@ namespace ACAT.Core.PanelManagement.CommandDispatcher
 
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
                 ret = false;
             }
 

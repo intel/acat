@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.AgentManagement.TextControlAgents
 {
@@ -22,6 +23,8 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
     /// </summary>
     public class EditTextControlAgent : TextControlAgentBase
     {
+        private static ILogger<EditTextControlAgent> _logger;
+
         /// <summary>
         /// Handle of the active target window (eg the Notepad window)
         /// </summary>
@@ -209,7 +212,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             triggerTextChanged(this);
             CoreGlobals.Stopwatch2.Stop();
 
-            Log.Debug("onTextChanged() TimeElapsed: " + CoreGlobals.Stopwatch2.ElapsedMilliseconds);
+            _logger?.LogDebug("onTextChanged() TimeElapsed: {ElapsedMs}ms", CoreGlobals.Stopwatch2.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -227,7 +230,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
 
             if (!retVal)
             {
-                Log.Debug("Text element is null");
+                _logger?.LogDebug("Text element is null");
                 return false;
             }
 
@@ -244,7 +247,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
                     AutomationEventManager.RemoveAutomationEventHandler(handleMainWindow,
                                                     TextPattern.TextSelectionChangedEvent,
                                                     textElement);
-                    Log.Debug("Adding onTextChanged event handler");
+                    _logger?.LogDebug("Adding onTextChanged event handler");
                     AutomationEventManager.AddAutomationEventHandler(handleMainWindow,
                                                     TextPattern.TextSelectionChangedEvent,
                                                     textElement,
@@ -252,13 +255,13 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
 
                     if (nativeHandle == 0)
                     {
-                        Log.Debug("handle is zero");
+                        _logger?.LogDebug("handle is zero");
                         retVal = false;
                     }
                 }
                 else
                 {
-                    Log.Debug("Focused element does not support textpattern");
+                    _logger?.LogDebug("Focused element does not support textpattern");
                     retVal = false;
                 }
             }
@@ -267,7 +270,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
                 // exception can be thrown by AddAutomationEventHandler to the effect that
                 // WindowClosed event can only be attached to top level windows.
                 // For instance, the "Start" menu would throw this exception.
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Exception tracking text changes");
                 retVal = false;
             }
 

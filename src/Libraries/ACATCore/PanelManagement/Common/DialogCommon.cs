@@ -21,6 +21,7 @@ using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using ACAT.Core.PanelManagement.PanelConfig;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.PanelManagement.Common
 {
@@ -39,6 +40,8 @@ namespace ACAT.Core.PanelManagement.Common
     /// </summary>
     public class DialogCommon : IDisposable, IPanelCommon
     {
+        private static ILogger<DialogCommon> _logger;
+
         /// <summary>
         /// All dialog forms should derive from IDialogPanel
         /// </summary>
@@ -269,15 +272,16 @@ namespace ACAT.Core.PanelManagement.Common
         {
             if (_syncLock.Status != SyncLock.StatusValues.None)
             {
-                Log.Debug(_form.Name + ", _syncObj.Status: " + _syncLock.Status + ", form already closed.  returning");
+                _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, form already closed. returning", 
+                    _form.Name, _syncLock.Status);
                 return;
             }
 
             _syncLock.Status = SyncLock.StatusValues.Closing;
 
-            Log.Debug("Before animationmangoer.stop");
+            _logger?.LogDebug("Before animationmanager.stop");
             _form.Invoke(new StopDelegate(_animationManager.Stop));
-            Log.Debug("After animationmangoer.stop");
+            _logger?.LogDebug("After animationmanager.stop");
 
             unsubscribeFromEvents();
         }
@@ -339,14 +343,14 @@ namespace ACAT.Core.PanelManagement.Common
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing DialogCommon");
 
                 if (disposing)
                 {
                     PanelManager.Instance.EvtScannerShow -= Instance_EvtScannerShow;
 
                     // dispose all managed resources.
-                    Log.Verbose();
+                    _logger?.LogTrace("Disposing managed resources");
 
                     _animationManager?.Dispose();
 
@@ -388,7 +392,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             var startupArg = createStartupArgForScanner(widget);
 
-            Log.Debug("Creating Panel " + widget.Panel);
+            _logger?.LogDebug("Creating Panel {PanelName}", widget.Panel);
             Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
             var child = panel as IScannerPanel;
             if (child != null)
@@ -427,7 +431,7 @@ namespace ACAT.Core.PanelManagement.Common
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)
             {
-                Log.Error("Error initializing animation manager");
+                _logger?.LogError("Error initializing animation manager");
             }
 
             return retVal;
@@ -447,7 +451,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             if (!retVal)
             {
-                Log.Error("Unable to initialize widget manager");
+                _logger?.LogError("Unable to initialize widget manager");
             }
             else
             {
@@ -555,7 +559,7 @@ namespace ACAT.Core.PanelManagement.Common
                 string value = widget.Value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    Log.Debug("**Actuate** " + widget.Name + " Value: " + value);
+                    _logger?.LogDebug("**Actuate** {WidgetName} Value: {Value}", widget.Name, value);
 
                     _dialogPanel.OnButtonActuated(widget);
                 }
@@ -595,7 +599,7 @@ namespace ACAT.Core.PanelManagement.Common
                     Windows.DockWithScanner(_form, form, Context.AppWindowPosition, false);
                 }
 
-                Log.Debug("Left: " + _form.Left);
+                _logger?.LogDebug("Left: {Left}", _form.Left);
 
                 if (_form.Left < 0)
                 {

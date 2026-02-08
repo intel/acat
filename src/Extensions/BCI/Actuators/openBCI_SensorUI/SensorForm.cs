@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static ACAT.Extensions.BCI.Actuators.openBCISensorUI.OpenBCIDeviceTester;
 using static ACAT.Extensions.BCI.Actuators.openBCISensorUI.UserControlBCISignalCheck;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -28,6 +29,8 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public partial class SensorForm : Form
     {
+        private static ILogger<SensorForm> _logger;
+
         /// <summary>
         /// User control displayed while trying to connect to sensor
         /// </summary>
@@ -210,7 +213,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <param name="state"></param>
         public void changeDeviceTestingState(DeviceTestingState state)
         {
-            Log.Debug("SensorForm | changeDeviceTestingState | state: " + state.ToString());
+            _logger?.LogDebug("SensorForm | changeDeviceTestingState | state: {State}", state);
 
             DeviceTestingState prevDeviceTestingState = _mainFormDeviceTestingState;
             UserControl newUserControl = null;
@@ -339,8 +342,8 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <param name="state"></param>
         private void startStopProcessDataTimer(bool startProcessDataTimer, DeviceTestingState state)
         {
-            Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
-                " | state: " + state.ToString());
+            _logger?.LogDebug("startStopProcessDataTimer | startProcessDataTimer: {StartTimer} | state: {State}", 
+                startProcessDataTimer, state);
 
             if (startProcessDataTimer)
             {
@@ -367,11 +370,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     }
 
                     timerProcessData.Start();
-                    Log.Debug("startStopProcessDataTimer | Started timerProcessData");
+                    _logger?.LogDebug("startStopProcessDataTimer | Started timerProcessData");
                 }
                 catch (Exception e)
                 {
-                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
+                    _logger?.LogError(e, "startStopProcessDataTimer | Exception");
                 }
             }
             else
@@ -388,7 +391,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
+                    _logger?.LogError(e, "startStopProcessDataTimer | Exception");
                 }
             }
         }
@@ -430,7 +433,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             // Check flag to stop this particular timer
             if (_stopTimers || OpenBCIDeviceTester._endSignalCheckTimer)
             {
-                Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | OpenBCIDeviceTester._endSignalCheckTimer");
+                _logger?.LogDebug("ProcessDataSignalCheck_Tick | _stopTimers | OpenBCIDeviceTester._endSignalCheckTimer");
                 startStopProcessDataTimer(false, DeviceTestingState.ExitBCITesting);
                 return;
             }
@@ -543,7 +546,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         private void modifyUserControlsForDebugMode()
         {
-            Log.Debug("SensorForm | modifyUserControlsForDebugMode");
+            _logger?.LogDebug("SensorForm | modifyUserControlsForDebugMode");
 
             _userControlTestBCIConnections.buttonExit.AutoSize = true;
             _userControlTestBCIConnections.buttonExit.Font = new Font("Montserrat Medium", 13F);

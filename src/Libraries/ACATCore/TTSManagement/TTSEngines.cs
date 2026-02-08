@@ -132,12 +132,12 @@ namespace ACAT.Core.TTSManagement
                     ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                     if (descriptor != null && Guid.Equals(guid, descriptor.Id))
                     {
-                        Log.Debug($"Found TTS engine of type {type}");
+                        _logger?.LogDebug("Found TTS engine of type {Type}", type);
                         return type;
                     }
                 }
 
-                Log.Error($"Could not find TTS engine for id {guid}");
+                _logger?.LogError("Could not find TTS engine for id {Guid}", guid);
                 return null;
             }
         }
@@ -205,7 +205,8 @@ namespace ACAT.Core.TTSManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
-                    Log.Debug("Found TTS Engine for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
+                    _logger?.LogDebug("Found TTS Engine for culture {Culture} [{Name}]", 
+                        ci != null ? ci.TwoLetterISOLanguageName : "Neutral", descriptor.Name);
                     return descriptor.Id;
                 }
             }
@@ -299,12 +300,12 @@ namespace ACAT.Core.TTSManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug($"Found TTS Engine of type {type}");
+                    _logger?.LogDebug("Found TTS Engine of type {Type}", type);
                     return type;
                 }
             }
 
-            Log.Error($"Could not find TTS Engine for id {guid}");
+            _logger?.LogError("Could not find TTS Engine for id {Guid}", guid);
             return null;
         }
 
@@ -352,7 +353,7 @@ namespace ACAT.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing TTSEngines");
 
                 if (disposing)
                 {
@@ -400,7 +401,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Could not load assembly " + dllName + ". Exception: " + ex.ToString());
+                _logger?.LogError(ex, "Could not load assembly {DllName}", dllName);
                 _DLLError = true;                return; // skip further processing if there was a DLL error
             }
 

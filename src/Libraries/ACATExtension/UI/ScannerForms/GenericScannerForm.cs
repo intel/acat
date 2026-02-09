@@ -56,9 +56,9 @@ namespace ACAT.Extension.UI.ScannerForms
         protected string _panelClass;
         protected ScannerHelper _scannerHelper;
         private Label label1;
-        public GenericScannerForm(ILogger<GenericScannerForm> logger)
+        public GenericScannerForm(ILogger<GenericScannerForm> logger = null)
         {
-            _logger = logger;
+            _logger = logger ?? LoggingConfiguration.CreateLogger<GenericScannerForm>();
             InitializeComponent();
 
             SubscribeToEvents();

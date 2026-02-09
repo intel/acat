@@ -31,10 +31,10 @@ namespace ACAT.Extension.CommandHandlers
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
         /// <param name="logger">Logger instance</param>
-        public GoBackHandler(String cmd, ILogger<GoBackHandler> logger)
+        public GoBackHandler(String cmd, ILogger<GoBackHandler> logger = null)
             : base(cmd)
         {
-            _logger = logger;
+            _logger = logger ?? LoggingConfiguration.CreateLogger<GoBackHandler>();
         }
 
         /// <summary>

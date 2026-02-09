@@ -30,8 +30,8 @@ namespace ACAT.Extension.UI
         /// <param name="panel">the scanner object</param>
         /// <param name="startupArg">initialization arguments</param>
         /// <param name="logger">Logger instance</param>
-        public ScannerHelper(IScannerPanel panel, StartupArg startupArg, ILogger<ScannerHelper> logger)
-        {            _logger = logger;            DialogMode = startupArg.DialogMode;
+        public ScannerHelper(IScannerPanel panel, StartupArg startupArg, ILogger<ScannerHelper> logger = null)
+        {            _logger = logger ?? LoggingConfiguration.CreateLogger<ScannerHelper>();            DialogMode = startupArg.DialogMode;
 
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;

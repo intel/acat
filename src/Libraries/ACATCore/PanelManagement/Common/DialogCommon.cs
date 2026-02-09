@@ -32,7 +32,7 @@ namespace ACAT.Core.PanelManagement.Common
     /// events are handled and makes it easier for the developer to add
     /// new dialogs to ACAT.
     /// A dialog form will contain a DialogCommon field and
-    /// call the methods in this class whereever they are needed. Refer
+    /// call the methods in this class wherever they are needed. Refer
     /// to the documentation for the methods in this class for info on when these
     /// methods need to be invoked.
     /// This class creates the WidgetManager and PanelAnimationManager objects

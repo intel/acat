@@ -29,10 +29,10 @@ namespace ACAT.Extension.CommandHandlers
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
         /// <param name="logger">Logger instance</param>
-        public DocumentEditingHandler(String cmd, ILogger<DocumentEditingHandler> logger)
+        public DocumentEditingHandler(String cmd, ILogger<DocumentEditingHandler> logger = null)
             : base(cmd)
         {
-            _logger = logger;
+            _logger = logger ?? LoggingConfiguration.CreateLogger<DocumentEditingHandler>();
         }
 
         /// <summary>

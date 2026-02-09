@@ -141,7 +141,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            _logger.LogTrace();
         }
 
         /// <summary>
@@ -187,22 +186,11 @@ namespace ACAT.Extension.UI
         }
 
         /// <summary>
-        /// Pause the application. Call this in the OnPause
-        /// function in the Alphabet scanner.
-        /// </summary>
-        public void OnPause()
-        {
-            _logger.LogTrace();
-        }
-
-        /// <summary>
         /// Resumes the application. Call this in the OnResume
         /// function in the Alphabet scanner.
         /// </summary>
         public void OnResume()
         {
-            _logger.LogTrace();
-
             refreshWordPredictionsAndSetCurrentWord();
         }
 
@@ -285,8 +273,6 @@ namespace ACAT.Extension.UI
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace();
-
                 if (disposing)
                 {
                     // dispose all managed resources.
@@ -325,7 +311,6 @@ namespace ACAT.Extension.UI
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            _logger.LogTrace();
             try
             {
                 if (_form.Visible)
@@ -539,7 +524,7 @@ namespace ACAT.Extension.UI
 
             // check if the current word is a possessive word. If not, we need to create
             // a possessive version of the word and add it as the last word
-            // in the predicton list.
+            // in the prediction list.
             var possessiveWord = string.Empty;
             var wordAtCaret = response.Request.CurrentWord;  // check if it is the same
 
@@ -550,12 +535,11 @@ namespace ACAT.Extension.UI
                 try
                 {
                     agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
-                        _logger.LogDebug("charAtCaret: [" + charAtCaret + "]");
-                    }
-                    catch (InvalidAgentContextException ex)
-                    {
-                        _logger?.LogError(ex, ex.Message);
-                    }
+                    _logger.LogDebug("charAtCaret: [" + charAtCaret + "]");
+                }
+                catch (InvalidAgentContextException ex)
+                {
+                    _logger?.LogError(ex, ex.Message);
                 }
             }
 

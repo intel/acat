@@ -27,9 +27,9 @@ namespace ACAT.Core.UserControlManagement
     {
         private readonly ILogger<UserControlCommon> _logger;
 
-        public UserControlCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, IScannerPanel iScannerPanel, ILogger<UserControlCommon> logger)
+        public UserControlCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, IScannerPanel iScannerPanel, ILogger<UserControlCommon> logger = null)
         {
-            _logger = logger;
+            _logger = logger ?? LoggingConfiguration.CreateLogger<UserControlCommon>();
             ScannerForm = iScannerPanel.Form;
             this.mapEntry = mapEntry;
             ScannerPanel = iScannerPanel;

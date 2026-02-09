@@ -266,8 +266,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            _logger.LogTrace();
-
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
 
             _scannerCommon.OnClosing();
@@ -339,8 +337,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnPause()
         {
-            _logger.LogTrace();
-
             _scannerCommon.OnPause();
         }
 
@@ -350,8 +346,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnResume()
         {
-            _logger.LogTrace();
-
             _scannerCommon.OnResume();
 
             refreshWordPredictionsAndSetCurrentWord();
@@ -496,8 +490,6 @@ namespace ACAT.Extension.UI
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace();
-
                 if (disposing)
                 {
                     // dispose all managed resources.
@@ -518,7 +510,6 @@ namespace ACAT.Extension.UI
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            _logger.LogTrace();
             try
             {
                 if (_form.Visible)

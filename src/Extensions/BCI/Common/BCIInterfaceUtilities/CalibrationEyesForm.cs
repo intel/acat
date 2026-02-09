@@ -309,7 +309,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private void ShowCalibrationEyesSettingsForm()
         {
-            CalibrationEyesSettingsForm calibrationEyesSettingsForm = new();
+            CalibrationEyesSettingsForm calibrationEyesSettingsForm = new(null);
             calibrationEyesSettingsForm.ShowDialog();
             var parameters = calibrationEyesSettingsForm.ResultParameters;
             calibrationEyesSettingsForm.Dispose();

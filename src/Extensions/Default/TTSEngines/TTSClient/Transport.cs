@@ -27,7 +27,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         public Transport()
         {
             _settings = TTSClientSettings.Load();
-            _transportHttp = new TransportHttp();
+            _transportHttp = new TransportHttp(null);
         }
 
         public TTSFormat Format

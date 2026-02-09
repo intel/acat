@@ -52,7 +52,7 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="panelClass">Scanner class</param>
         /// <param name="title">Title of the scanner</param>
-        public WordPredictionSetModeScanner(String panelClass, String title) : base(panelClass, title)
+        public WordPredictionSetModeScanner(String panelClass, String title) : base(panelClass, title, null)
         {
             InitializeComponent();
             _dispatcher = new Dispatcher(this);

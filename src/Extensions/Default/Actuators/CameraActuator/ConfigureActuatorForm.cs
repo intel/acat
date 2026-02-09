@@ -348,7 +348,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             Resize += CalibrateForm_Resize;
 
-            _webcamGestureSelectUserControl = new WebcamGestureSelectUserControl(_cameraActuator);
+            _webcamGestureSelectUserControl = new WebcamGestureSelectUserControl(_cameraActuator, null);
             _webcamGestureSettingsUserControl = new WebcamGestureSettingsUserControl(_cameraActuator);
 
             _webcamGestureSettingsUserControl.EvtPause += _webcamGestureSettingsUserControl_EvtPause;
@@ -372,7 +372,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             };
             _textTimer.Tick += _textTimer_Tick;
 
-            _videoWindowFinder = new VideoWindowFinder();
+            _videoWindowFinder = new VideoWindowFinder(null);
             _videoWindowFinder.EvtVideoWindowDisplayed += _videoWindowFinder_EvtVideoWindowDisplayed;
             _videoWindowFinder.EvtVideoWindowFindStart += _videoWindowFinder_EvtVideoWindowFindStart;
 

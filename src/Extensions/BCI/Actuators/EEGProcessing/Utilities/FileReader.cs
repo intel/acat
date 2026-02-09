@@ -30,7 +30,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities
         /// </summary>
         public FileReader(ILogger<FileReader> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<FileReader>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<FileReader>();
         }
 
         /// <summary>

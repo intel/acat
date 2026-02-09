@@ -33,7 +33,7 @@ namespace ACAT.Core.AgentManagement
         protected TextControlAgentBase appTextInterface { get; set; }
 
         /// <summary>
-        /// Implement this to display a contexutal menu for
+        /// Implement this to display a contextual menu for
         /// the currently active process
         /// </summary>
         /// <param name="monitorInfo">Info  about the active process/window</param>

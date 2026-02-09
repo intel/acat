@@ -713,7 +713,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             _calibrateAndTestInProgress = true;
 
-            _configureActuatorForm = new ConfigureActuatorForm(this);
+            _configureActuatorForm = new ConfigureActuatorForm(this, null);
 
             CameraSensor.showVideoWindow();
 

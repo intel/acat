@@ -39,10 +39,8 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
     /// </summary>
     public class WindowsExplorerAgentBase : GenericAppAgentBase
     {
-        private readonly ILogger<WindowsExplorerAgentBase> _logger;
-
         /// <summary>
-        /// If set to true, the agent will autoswitch the
+        /// If set to true, the agent will auto switch the
         /// scanners depending on which element has focus.
         /// Eg: Alphabet scanner if an edit text window has focus,
         /// the contextual menu if the main document has focus
@@ -87,9 +85,8 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
             get { return new[] { new AgentProcessInfo(ExplorerProcessName) }; }
         }
 
-        public WindowsExplorerAgentBase(ILogger<WindowsExplorerAgentBase> logger)
+        public WindowsExplorerAgentBase()
         {
-            _logger = logger;
             _logger.LogDebug("WindowsExplorerAgentBase Constructed");
             //AgentName = "Windows Explorer Agent";
             //AutoSwitchScanners = true;

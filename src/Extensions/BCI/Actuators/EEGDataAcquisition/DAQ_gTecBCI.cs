@@ -32,7 +32,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
     /// </summary>
     public class DAQ_gTecBCI : BaseDAQ
     {
-        private static readonly ILogger<DAQ_gTecBCI> _logger = LogManager.CreateLogger<DAQ_gTecBCI>();
+        private static readonly ILogger<DAQ_gTecBCI> _logger = LoggingConfiguration.CreateLogger<DAQ_gTecBCI>();
 
         /// <summary>
         /// MInimum duty cycle required to pass trigger test. Set to 0 for no duty cycle requirement

@@ -65,7 +65,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private void AutoCalibrateForm_Shown(object sender, EventArgs e)
         {
 
-            _videoWindowFinder = new VideoWindowFinder();
+            _videoWindowFinder = new VideoWindowFinder(null);
             _videoWindowFinder.EvtVideoWindowDisplayed += _videoWindowFinder_EvtVideoWindowDisplayed;
             _videoWindowFinder.Start();
         }

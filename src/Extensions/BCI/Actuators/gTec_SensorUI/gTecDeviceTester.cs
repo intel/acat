@@ -173,7 +173,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _endSignalCheckTimer = false;
 
             // Create main form
-            _mainForm = new SensorForm(gTecBCI);
+            _mainForm = new SensorForm(gTecBCI, null);
 
             // Set handlers for main events
             if (_Testing_useSensor)

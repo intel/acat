@@ -285,7 +285,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             InitializeComponent();
 
             // Initialize logger
-            _logger = ACATLogManager.CreateLogger<UserControlBCISignalCheck>();
+            _logger = LoggingConfiguration.CreateLogger<UserControlBCISignalCheck>();
 
             // Initialize the DAQ instance
             _daqInstance = DAQFactory.CreateDAQ(DAQDeviceType.OpenBCI);
@@ -1303,9 +1303,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                 result = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                _logger.LogError(e, e.Message);
+                // Exception will propagate to calling method for proper logging
             }
             return result;
         }
@@ -1616,7 +1616,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         private void WebBrowserDesc_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            Utils.HandleHelpNavigaion(e);
+            Utils.HandleHelpNavigation(e);
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected override bool HandleInitialize()
         {
-            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, _keybordUserControlCommon.TextController, _keybordUserControlCommon.ScannerPanel, new PredictionTypes[] { PredictionTypes.Sentences });
+            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, _keybordUserControlCommon.TextController, _keybordUserControlCommon.ScannerPanel, new PredictionTypes[] { PredictionTypes.Sentences }, null);
 
             bool retVal = _userControlWordPredictionCommon.Initialize(_keybordUserControlCommon.RootWidget);
             return retVal;

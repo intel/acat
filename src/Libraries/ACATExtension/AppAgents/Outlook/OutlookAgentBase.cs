@@ -89,8 +89,6 @@ namespace ACAT.Extension.AppAgents.Outlook
     /// </summary>
     public class OutlookAgentBase : GenericAppAgentBase
     {
-        private readonly ILogger<OutlookAgentBase> _logger;
-
         /// <summary>
         /// The window element (eg button, edit box) that has focus
         /// </summary>
@@ -142,9 +140,8 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// <summary>
         /// Initializes an instance of hte class
         /// </summary>
-        public OutlookAgentBase(ILogger<OutlookAgentBase> logger)
+        public OutlookAgentBase()
         {
-            _logger = logger;
             outlookInspector = createOutlookInspector();
         }
 

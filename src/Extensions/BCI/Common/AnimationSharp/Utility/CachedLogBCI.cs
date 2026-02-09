@@ -39,7 +39,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 
         public CachedLogBCI(string baseFileName, string baseDirPath = null, ILogger<CachedLogBCI> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<CachedLogBCI>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<CachedLogBCI>();
             if (!string.IsNullOrEmpty(baseFileName))
             {
                 LogFileName = baseFileName + ".csv";

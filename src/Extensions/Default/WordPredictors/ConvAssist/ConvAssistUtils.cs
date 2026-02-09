@@ -128,7 +128,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
                 newList = sentences.ToList();
             }
-            catch (Exception es)
+            catch
             {
                 // Log exception but continue - return empty list
                 // Note: Static method cannot use injected logger

@@ -2107,7 +2107,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
         private void TestGtecDevice()
         {
-            _gtecDeviceTester = new GTecDeviceTester();
+            _gtecDeviceTester = new GTecDeviceTester(null);
             _gtecDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
             _gtecDeviceTester.initialize();
         }
@@ -2128,7 +2128,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         }
 
         /// <summary>
-        /// Show disclamer
+        /// Show disclaimer
         /// </summary>
         private void showDisclaimer()
         {

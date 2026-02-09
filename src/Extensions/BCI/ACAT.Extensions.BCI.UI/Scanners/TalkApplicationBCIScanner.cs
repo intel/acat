@@ -1646,6 +1646,8 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         private class CommandHandler : RunCommandHandler
         {
+            private static ILogger<TalkApplicationBCIScanner> _logger;
+
             /// <summary>
             /// Initializes a new instance of the class.
             /// </summary>
@@ -1653,6 +1655,15 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             public CommandHandler(String cmd)
                 : base(cmd)
             {
+            }
+
+            /// <summary>
+            /// Sets the logger instance for the command handler
+            /// </summary>
+            /// <param name="logger">logger instance</param>
+            public static void SetLogger(ILogger<TalkApplicationBCIScanner> logger)
+            {
+                _logger = logger;
             }
 
             /// <summary>
@@ -1895,6 +1906,13 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             public Dispatcher(IScannerPanel panel)
                 : base(panel)
             {
+                // Set the logger for CommandHandler
+                var form = panel.Form as TalkApplicationBCIScanner;
+                if (form != null)
+                {
+                    CommandHandler.SetLogger(form._logger);
+                }
+
                 Commands.Add(new CommandHandler("CmdEditScanner"));
                 Commands.Add(new CommandHandler("CmdEntryModeSelect"));
                 Commands.Add(new CommandHandler("CmdMenuScanner"));

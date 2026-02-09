@@ -623,9 +623,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 result = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                _logger.LogError(e, "Exception in removeColumnsFromChan: {Message}", e.Message);
+                // Exception will propagate to calling method for proper logging
             }
             return result;
         }
@@ -774,7 +774,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                _logger.LogError(e, "Exception in ProcessDataSignalCheck: {Message}", e.Message);
+                _logger.LogError(ex, "Exception in ProcessDataSignalCheck: {Message}", ex.Message);
             }
         }
     }

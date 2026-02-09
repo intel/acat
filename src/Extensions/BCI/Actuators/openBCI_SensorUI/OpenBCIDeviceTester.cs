@@ -191,7 +191,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         public OpenBCIDeviceTester()
         {
-            _logger = ACATExtension.GetLogger<OpenBCIDeviceTester>();
             // Do not call init function here
 
             // Call init function after creating object of this class and linking any necessary event handler (ex: EvtBCIDeviceTestingCompleted)

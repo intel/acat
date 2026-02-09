@@ -104,8 +104,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             convAssistSettings = settings;
 
-            _wordPredictionsRequestHandler = new WordPredictionsRequestHandler(this);
-            _sentencePredictionsRequestHandler = new SentencePredictionsRequestHandler(this);
+            _wordPredictionsRequestHandler = new WordPredictionsRequestHandler(this, null);
+            _sentencePredictionsRequestHandler = new SentencePredictionsRequestHandler(this, null);
 
             wpStack = new Stack<object>();
             sentenceStack = new Stack<object>();
@@ -202,7 +202,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             // Now start the named pipe server and wait for the client to connect
             string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Settings");
 
-            namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings);
+            namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings, null);
             pipeCreated = namedPipe.CreatePipeServer(send_params);
 
             if (pipeCreated)

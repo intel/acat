@@ -35,7 +35,7 @@ namespace ACAT.Core.PreferencesManagement
     [Serializable]
     public abstract class PreferencesBase : ObservableValidator, IPreferences, IDisposable
     {
-        private static readonly ILogger<PreferencesBase> _logger = LogManager.GetLogger<PreferencesBase>();
+        private static readonly ILogger<PreferencesBase> _logger = LoggingConfiguration.CreateLogger<PreferencesBase>();
 
         [XmlIgnore]
         public bool IsDirty { get; private set; } = false;

@@ -15,6 +15,7 @@
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Windows.Forms;
@@ -200,7 +201,7 @@ namespace ACAT.Core.ActuatorManagement
                 Hide();
 
                 // var switchCommandMapForm = new SwitchCommandMapForm {Title = "Map Command to Switch " + switchName};
-                var switchCommandMapForm = new SwitchCommandMapForm { Title = "Map Command to Switch " + switchName };
+                var switchCommandMapForm = new SwitchCommandMapForm(LoggingConfiguration.CreateLogger<SwitchCommandMapForm>()) { Title = "Map Command to Switch " + switchName };
                 switchCommandMapForm.ShowDialog();
 
                 Show();

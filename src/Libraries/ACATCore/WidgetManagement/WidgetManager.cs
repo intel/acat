@@ -32,7 +32,7 @@ namespace ACAT.Core.WidgetManagement
     public class WidgetManager : IDisposable
     {
         private readonly ILogger<WidgetManager> _logger;
-        private static readonly ILogger<WidgetManager> _staticLogger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<WidgetManager>();
+        private static readonly ILogger<WidgetManager> _staticLogger = LoggingConfiguration.CreateLogger<WidgetManager>();
 
         /// <summary>
         /// Holds the types of all classes in the executing assembly that
@@ -69,8 +69,8 @@ namespace ACAT.Core.WidgetManagement
         {
             _logger = logger;
 
-            _widgetAttributes = new WidgetAttributes(logger);
-            _layout = new LayoutAttribute(logger);
+            _widgetAttributes = new WidgetAttributes(LoggingConfiguration.CreateLogger<WidgetAttributes>());
+            _layout = new LayoutAttribute(LoggingConfiguration.CreateLogger<LayoutAttribute>());
             _rootWidget = new Widget(control, null);
 
             _logger.LogDebug("control name is {Name}", control.Name);

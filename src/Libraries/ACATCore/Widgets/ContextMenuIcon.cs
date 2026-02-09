@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
 using System.Windows.Forms;
 
 namespace ACAT.Core.Widgets
@@ -20,7 +21,7 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
         public ContextMenuIcon(Control uiControl)
-            : base(uiControl)
+            : base(uiControl, LoggingConfiguration.CreateLogger<ScannerButtonBase>())
         {
             Colors = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.ContextMenuIconSchemeName);
             DisabledButtonColors = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.DisabledContextMenuIconSchemeName);

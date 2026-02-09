@@ -21,7 +21,7 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public partial class ToastForm : Form
     {
-        private static readonly ILogger _logger = LogManager.GetLogger(typeof(ToastForm));
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(ToastForm).Name);
 
         /// <summary>
         /// Thread proc for fading out

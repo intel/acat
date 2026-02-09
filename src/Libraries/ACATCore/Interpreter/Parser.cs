@@ -20,7 +20,7 @@ namespace ACAT.Core.Interpreter
     /// </summary>
     public class Parser
     {
-        private static readonly ILogger<Parser> _logger = LogManager.GetLogger<Parser>();
+        private static readonly ILogger<Parser> _logger = LoggingConfiguration.CreateLogger<Parser>();
         /// <summary>
         /// State of parsing
         /// </summary>

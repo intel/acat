@@ -81,9 +81,9 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
         public CheckBoxWidget(Control uiControl, ILogger<CheckBoxWidget> logger = null)
-            : base(uiControl)
+            : base(uiControl, logger ?? LoggingConfiguration.CreateLogger<LabelWidget>())
         {
-            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<CheckBoxWidget>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<CheckBoxWidget>();
             EvtActuated += CheckBoxWidget_EvtActuated;
             SetToggleState(_toggleState);
         }

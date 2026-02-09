@@ -21,7 +21,7 @@ namespace ACAT.Core.ThemeManagement
     /// </summary>
     public class ColorScheme : IDisposable
     {
-        private static readonly ILogger<ColorScheme> _logger = LogManager.GetLogger<ColorScheme>();
+        private static readonly ILogger<ColorScheme> _logger = LoggingConfiguration.CreateLogger<ColorScheme>();
         /// <summary>
         /// Default bg color to use if not defined in the config file
         /// </summary>

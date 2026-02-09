@@ -30,7 +30,7 @@ namespace ACAT.Core.PanelManagement.Utils
         /// </summary>
         private static readonly Fonts _instance = new();
 
-        private static readonly ILogger<Fonts> _logger = LogManager.GetLogger<Fonts>();
+        private static readonly ILogger<Fonts> _logger = LoggingConfiguration.CreateLogger<Fonts>();
 
         /// <summary>
         /// Collection of installed fonts

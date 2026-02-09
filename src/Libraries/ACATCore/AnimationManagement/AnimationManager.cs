@@ -87,7 +87,7 @@ namespace ACAT.Core.AnimationManagement
 {
     public partial class AnimationManager : IAnimationManager, IDisposable
     {
-        private static readonly ILogger<AnimationManager> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<AnimationManager>();
+        private static readonly ILogger<AnimationManager> _logger = LoggingConfiguration.CreateLogger<AnimationManager>();
 
         /// <summary>
         /// Collection of animations for this panel

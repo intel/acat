@@ -29,7 +29,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
     /// </summary>
     public class PanelConfigMap
     {
-        private static readonly ILogger<PanelConfigMap> _logger = LogManager.GetLogger<PanelConfigMap>();
+        private static readonly ILogger<PanelConfigMap> _logger = LoggingConfiguration.CreateLogger<PanelConfigMap>();
 
         /// <summary>
         /// Name of the panel class config file. This file contains a

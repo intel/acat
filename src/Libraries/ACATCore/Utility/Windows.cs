@@ -1672,14 +1672,14 @@ namespace ACAT.Core.Utility
             }
             else
             {
-                _logger?.LogDebug(\"fgWnd is zero in SetWindowSizePercent\");
+                _logger?.LogDebug("fgWnd is zero in SetWindowSizePercent");
             }
         }
 
         /// <summary>
         /// Shows the child window, assigns parent as the owner
         /// This is just a helper function that takes care of
-        /// cross-thread invokations that would result in .NET
+        /// cross-thread invocations that would result in .NET
         /// exceptions.
         /// </summary>
         /// <param name="parent"></param>

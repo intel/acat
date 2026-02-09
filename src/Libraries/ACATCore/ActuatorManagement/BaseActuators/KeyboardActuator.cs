@@ -26,7 +26,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
                         "Handles Keyboard and Mouse input")]
     public class KeyboardActuator : ActuatorBase
     {
-        private static readonly ILogger<KeyboardActuator> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<KeyboardActuator>();
+        private static readonly ILogger<KeyboardActuator> _logger = LoggingConfiguration.CreateLogger<KeyboardActuator>();
 
         /// <summary>
         /// Indicated whetherthis object been disposed
@@ -109,7 +109,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
         /// <returns>The keyboard switch object</returns>
         public override IActuatorSwitch CreateSwitch()
         {
-            return new KeyboardSwitch();
+            return new KeyboardSwitch(LoggingConfiguration.CreateLogger<KeyboardSwitch>());
         }
 
         //public override IOnboardingExtension GetOnboardingExtension()
@@ -233,7 +233,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
                     {
                         if (string.Compare(keySwitch.HotKey, hotKey, true) == 0)
                         {
-                            return new KeyboardSwitch(keySwitch);
+                            return new KeyboardSwitch(keySwitch, LoggingConfiguration.CreateLogger<KeyboardSwitch>());
                         }
                     }
                 }

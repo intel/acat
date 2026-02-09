@@ -29,7 +29,7 @@ namespace ACAT.Core.UserControlManagement
     /// </summary>
     public class UserControlConfigMap
     {
-        private static readonly ILogger<UserControlConfigMap> _logger = LogManager.GetLogger<UserControlConfigMap>();
+        private static readonly ILogger<UserControlConfigMap> _logger = LoggingConfiguration.CreateLogger<UserControlConfigMap>();
 
         private const String DefaultKey = "panelconfigs";
 

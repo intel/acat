@@ -18,7 +18,7 @@ namespace ACAT.Core.PanelManagement.CommandDispatcher
     /// </summary>
     public class RunCommands
     {
-        private static readonly ILogger _logger = LogManager.GetLogger(typeof(RunCommands));
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(RunCommands).Name);
 
         /// <summary>
         /// Command dispatcher object. Caller can set this and the dispatcher

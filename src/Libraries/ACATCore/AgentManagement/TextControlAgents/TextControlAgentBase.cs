@@ -29,7 +29,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// Keyboard interface to send keystrokes to the target
         /// text window
         /// </summary>
-        private static readonly Keyboard _keyboard = new();
+        private static readonly Keyboard _keyboard = new(LoggingConfiguration.CreateLogger<Keyboard>());
 
         /// <summary>
         /// Logger for the class

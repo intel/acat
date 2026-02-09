@@ -21,7 +21,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class WebSearch
     {
-        private static readonly ILogger<WebSearch> _logger = LogManager.GetLogger<WebSearch>();
+        private static readonly ILogger<WebSearch> _logger = LoggingConfiguration.CreateLogger<WebSearch>();
         /// <summary>
         /// URL to do a google search with "I'm feeling lucky"
         /// </summary>

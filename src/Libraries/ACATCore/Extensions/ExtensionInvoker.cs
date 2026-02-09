@@ -28,7 +28,7 @@ namespace ACAT.Core.Extensions
     /// </summary>
     public class ExtensionInvoker : IExtension
     {
-        private static readonly ILogger<ExtensionInvoker> _logger = LogManager.GetLogger<ExtensionInvoker>();
+        private static readonly ILogger<ExtensionInvoker> _logger = LoggingConfiguration.CreateLogger<ExtensionInvoker>();
         /// <summary>
         /// The object whose methods/properties/events are to
         /// be invoked through reflection

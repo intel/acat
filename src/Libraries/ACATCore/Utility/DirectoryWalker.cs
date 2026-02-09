@@ -64,7 +64,7 @@ namespace ACAT.Core.Utility
         
         public DirectoryWalker(String rootDir, String fileWildCard, ILogger<DirectoryWalker> logger = null)
         {
-            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<DirectoryWalker>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<DirectoryWalker>();
             _rootDir = rootDir;
             _wildCard = fileWildCard;
         }

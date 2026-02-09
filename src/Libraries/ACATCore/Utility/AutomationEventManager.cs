@@ -31,6 +31,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class AutomationEventManager : IDisposable
     {
+        private static readonly ILogger<AutomationEventManager> _staticLogger = LoggingConfiguration.CreateLogger<AutomationEventManager>();
         private readonly ILogger<AutomationEventManager> _logger;
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace ACAT.Core.Utility
                                         AutomationElement element,
                                         AutomationEventHandler eventHandler)
         {
-            _logger?.LogTrace("AddAutomationEventHandler called");
+            _staticLogger?.LogTrace("AddAutomationEventHandler called");
 
             var windowElement = (WindowElement)WindowTable[hWnd];
             if (windowElement == null)
@@ -117,7 +118,7 @@ namespace ACAT.Core.Utility
             }
             else
             {
-                _logger?.LogDebug("Found window element");
+                _staticLogger?.LogDebug("Found window element");
             }
 
             // create the item and add it

@@ -23,6 +23,10 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public abstract class GenericAppAgentBase : AgentBase
     {
+        protected GenericAppAgentBase() : base(LoggingConfiguration.CreateLogger<AgentBase>())
+        {
+        }
+
         /// <summary>
         /// Gets or sets the text control agent object
         /// </summary>

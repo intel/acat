@@ -28,7 +28,7 @@ namespace ACAT.Extension.UI
 
         static DialogUtils()
         {
-            _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<DialogUtils>();
+            _logger = LoggingConfiguration.CreateLogger<DialogUtils>();
         }
 
         /// <summary>

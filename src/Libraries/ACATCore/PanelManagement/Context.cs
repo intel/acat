@@ -16,6 +16,7 @@ using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictorManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -383,7 +384,7 @@ namespace ACAT.Core.PanelManagement
                 retVal = false;
             }
 
-            LogManager.GetLogger(typeof(Context)).LogDebug("Returning {RetVal} from context init", retVal);
+            LoggingConfiguration.CreateLogger<Context>().LogDebug("Returning {RetVal} from context init", retVal);
             return retVal;
         }
 

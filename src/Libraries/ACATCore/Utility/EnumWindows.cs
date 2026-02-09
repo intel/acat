@@ -57,7 +57,7 @@ namespace ACAT.Core.Utility
 
         static EnumWindows()
         {
-            _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger(typeof(EnumWindows));
+            _logger = LoggingConfiguration.CreateLogger(typeof(EnumWindows).Name);
         }
 
         /// <summary>

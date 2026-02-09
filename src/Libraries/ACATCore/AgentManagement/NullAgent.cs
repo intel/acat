@@ -22,6 +22,10 @@ namespace ACAT.Core.AgentManagement
                         "No-op agent")]
     public class NullAgent : AgentBase
     {
+        public NullAgent() : base(LoggingConfiguration.CreateLogger<AgentBase>())
+        {
+        }
+
         /// <summary>
         /// The text interface
         /// </summary>

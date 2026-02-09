@@ -30,6 +30,7 @@ namespace ACAT.Core.TTSManagement
     /// </summary>
     public class Pronunciations : IDisposable
     {
+        private static readonly ILogger<Pronunciations> _staticLogger = LoggingConfiguration.CreateLogger<Pronunciations>();
         private readonly ILogger<Pronunciations> _logger;
 
         /// <summary>
@@ -341,7 +342,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Exception closing pronunciation file");
+                _staticLogger?.LogError(ex, "Exception closing pronunciation file");
             }
         }
 
@@ -364,7 +365,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Exception creating pronunciations file");
+                _staticLogger?.LogError(ex, "Exception creating pronunciations file");
                 xmlTextWriter = null;
             }
 

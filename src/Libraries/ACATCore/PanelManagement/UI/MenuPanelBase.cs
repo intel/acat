@@ -28,7 +28,7 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public partial class MenuPanelBase : Form, IScannerPanel
     {
-        private static readonly ILogger _logger = LogManager.GetLogger(typeof(MenuPanelBase));
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(MenuPanelBase).Name);
 
         /// <summary>
         /// Title of the scanner

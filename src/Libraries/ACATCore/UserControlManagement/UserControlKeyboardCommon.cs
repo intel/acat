@@ -23,7 +23,7 @@ namespace ACAT.Core.UserControlManagement
         private readonly ILogger<UserControlKeyboardCommon> _logger;
 
         public UserControlKeyboardCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel iScannerPanel, ILogger<UserControlKeyboardCommon> logger = null) :
-            base(userControl, mapEntry, iScannerPanel)
+            base(userControl, mapEntry, iScannerPanel, logger ?? LoggingConfiguration.CreateLogger<UserControlCommon>())
         {
             _logger = logger;
             TextController = textController;

@@ -786,7 +786,7 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="control">The .NET UI Control</param>
         public void AddChild(Control control)
         {
-            AddChild(new Widget(control));
+            AddChild(new Widget(control, _logger) { });
         }
 
         /// <summary>

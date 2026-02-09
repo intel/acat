@@ -426,7 +426,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private bool initAnimationManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _animationManager = new PanelAnimationManager();
+            _animationManager = new PanelAnimationManager(LoggingConfiguration.CreateLogger<PanelAnimationManager>());
 
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)
@@ -443,7 +443,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private bool initWidgetManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _widgetManager = new WidgetManager(_form);
+            _widgetManager = new WidgetManager(_form, LoggingConfiguration.CreateLogger<WidgetManager>());
 
             _widgetManager.Layout.SetColorScheme(ColorSchemes.DialogSchemeName);
 

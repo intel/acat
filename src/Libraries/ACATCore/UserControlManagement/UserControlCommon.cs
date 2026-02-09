@@ -286,7 +286,7 @@ namespace ACAT.Core.UserControlManagement
 
         private bool initWidgetManager(UserControlConfigMapEntry mapEntry)
         {
-            WidgetManager = new WidgetManager(UserControl as Control);
+            WidgetManager = new WidgetManager(UserControl as Control, LoggingConfiguration.CreateLogger<WidgetManager>());
             WidgetManager.Layout.SetColorScheme(ColorSchemes.ScannerSchemeName);
             WidgetManager.Layout.SetDisabledButtonColorScheme(ColorSchemes.DisabledScannerButtonSchemeName);
 

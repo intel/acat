@@ -156,7 +156,7 @@ namespace ACAT.Core.PanelManagement.Common
             HideScannerOnIdle = CoreGlobals.AppPreferences.HideScannerOnIdle;
             _syncLock = new SyncLock();
 
-            _userControlManager = new UserControlManager(iScannerPanel, TextController);
+            _userControlManager = new UserControlManager(iScannerPanel, TextController, LoggingConfiguration.CreateLogger<UserControlManager>());
         }
 
         /// <summary>
@@ -1232,7 +1232,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             bool retVal = true;
 
-            _animationManager = new PanelAnimationManager();
+            _animationManager = new PanelAnimationManager(LoggingConfiguration.CreateLogger<PanelAnimationManager>());
             if (_animationManager.Init(panelConfigMapEntry, _rootWidget))
             {
                 _animationManager.EvtPlayerStateChanged += animationManager_EvtPlayerStateChanged;
@@ -1255,7 +1255,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <returns>true on success</returns>
         private bool initWidgetManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _widgetManager = new WidgetManager(ScannerForm);
+            _widgetManager = new WidgetManager(ScannerForm, LoggingConfiguration.CreateLogger<WidgetManager>());
             _widgetManager.Layout.SetColorScheme(ColorSchemes.ScannerSchemeName);
             _widgetManager.Layout.SetDisabledButtonColorScheme(ColorSchemes.DisabledScannerButtonSchemeName);
 

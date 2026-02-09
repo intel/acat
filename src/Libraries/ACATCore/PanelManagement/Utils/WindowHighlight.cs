@@ -12,7 +12,7 @@ namespace ACAT.Core.PanelManagement.Utils
     /// </summary>
     public class WindowHighlight : IDisposable
     {
-        private static readonly ILogger<WindowHighlight> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<WindowHighlight>();
+        private static readonly ILogger<WindowHighlight> _logger = LoggingConfiguration.CreateLogger<WindowHighlight>();
 
         /// <summary>
         /// Scanner form.

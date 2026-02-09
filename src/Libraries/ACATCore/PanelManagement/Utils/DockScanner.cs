@@ -12,7 +12,7 @@ namespace ACAT.Core.PanelManagement.Utils
     /// </summary>
     public class DockScanner : IDisposable
     {
-        private static readonly ILogger _logger = LogManager.GetLogger(typeof(DockScanner));
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(DockScanner).Name);
 
         /// <summary>
         /// If docking to a window, relative position of the dock

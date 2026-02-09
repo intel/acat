@@ -123,7 +123,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         private ActuatorManager(ILogger<ActuatorManager> logger = null)
         {
-            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<ActuatorManager>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<ActuatorManager>();
             _activeSwitches = new Dictionary<String, IActuatorSwitch>();
             _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
             _syncObjectSwitches = new object();

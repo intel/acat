@@ -270,7 +270,7 @@ namespace ACAT.Core.WordPredictorManagement
 
             if (_wordPredictors == null)
             {
-                _wordPredictors = new WordPredictors();
+                _wordPredictors = new WordPredictors(LoggingConfiguration.CreateLogger<WordPredictors>());
 
                 retVal = _wordPredictors.Load(extensionDirs);
             }

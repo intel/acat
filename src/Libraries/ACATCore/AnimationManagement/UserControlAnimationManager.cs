@@ -28,7 +28,7 @@ namespace ACAT.Core.AnimationManagement
 
         public UserControlAnimationManager() : base()
         {
-            _logger = LoggerFactory.GetLogger<UserControlAnimationManager>();
+            _logger = LoggingConfiguration.CreateLogger<UserControlAnimationManager>();
         }
 
         public bool Init(UserControlConfigMapEntry mapentry)

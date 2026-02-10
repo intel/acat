@@ -58,7 +58,7 @@ namespace ACAT.Core.ActuatorManagement
         /// Input config file that contains a list of all actuators and
         /// the switches for each actuator.
         /// </summary>
-        public const String ActuatorSettingsFileName = "ActuatorSettings.xml";
+        public const String ActuatorSettingsFileName = "ActuatorSettings.json";
 
         /// <summary>
         /// Singleton instance

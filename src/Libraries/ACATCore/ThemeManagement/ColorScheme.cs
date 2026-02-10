@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
@@ -372,6 +373,72 @@ namespace ACAT.Core.ThemeManagement
 
             color = XmlUtils.GetXMLAttrString(node, "highlightSelectedForeground");
             colorScheme.SetHighlightSelectedForeground(color);
+
+            return colorScheme;
+        }
+
+        /// <summary>
+        /// Creates a ColorScheme object from JSON configuration
+        /// </summary>
+        /// <param name="colorSchemeJson">The JSON color scheme object</param>
+        /// <param name="imageDir">Directory where the image files are located</param>
+        /// <returns>ColorScheme object</returns>
+        public static ColorScheme CreateFromJson(ColorSchemeJson colorSchemeJson, String imageDir)
+        {
+            if (colorSchemeJson == null)
+            {
+                return null;
+            }
+
+            var colorScheme = new ColorScheme(colorSchemeJson.Name ?? "default");
+
+            // Set background color
+            if (!String.IsNullOrEmpty(colorSchemeJson.Background))
+            {
+                colorScheme.SetBackground(colorSchemeJson.Background);
+            }
+
+            // Load background image if specified
+            if (!String.IsNullOrEmpty(colorSchemeJson.BackgroundImage))
+            {
+                colorScheme.BackgroundImage = loadImage(Path.Combine(imageDir, colorSchemeJson.BackgroundImage));
+            }
+
+            // Set foreground color
+            if (!String.IsNullOrEmpty(colorSchemeJson.Foreground))
+            {
+                colorScheme.SetForeground(colorSchemeJson.Foreground);
+            }
+
+            // Set highlight background color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightBackground))
+            {
+                colorScheme.SetHighlightBackground(colorSchemeJson.HighlightBackground);
+            }
+
+            // Load highlight background image if specified
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightBackgroundImage))
+            {
+                colorScheme.HighlightBackgroundImage = loadImage(Path.Combine(imageDir, colorSchemeJson.HighlightBackgroundImage));
+            }
+
+            // Set highlight foreground color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightForeground))
+            {
+                colorScheme.SetHighlightForeground(colorSchemeJson.HighlightForeground);
+            }
+
+            // Set highlight selected background color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightSelectedBackground))
+            {
+                colorScheme.SetHighlightSelectedBackground(colorSchemeJson.HighlightSelectedBackground);
+            }
+
+            // Set highlight selected foreground color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightSelectedForeground))
+            {
+                colorScheme.SetHighlightSelectedForeground(colorSchemeJson.HighlightSelectedForeground);
+            }
 
             return colorScheme;
         }

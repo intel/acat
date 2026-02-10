@@ -67,6 +67,7 @@
     <Compile Include="ActuatorManagement\BaseActuators\KeyboardHook.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\KeyboardSwitch.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\MouseHook.cs" />
+    <Compile Include="ActuatorManagement\Settings\ActuatorSettingsConverter.cs" />
     <Compile Include="ActuatorManagement\Settings\SwitchSetting.cs" />
     <Compile Include="ActuatorManagement\UI\ActuatorErrorForm.cs">
       <SubType>Form</SubType>
@@ -243,6 +244,7 @@
     <Compile Include="Utility\ControlExtensions.cs" />
     <Compile Include="Utility\ExtensionInstantiator.cs" />
     <Compile Include="Utility\HotkeyManager.cs" />
+    <Compile Include="Utility\JsonConfigurationLoader.cs" />
     <Compile Include="Utility\LogManager.cs" />
     <Compile Include="Utility\TopMostManager.cs" />
     <Compile Include="PreferencesManagement\Attributes\BoolDescriptorAttribute.cs" />

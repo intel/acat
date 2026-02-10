@@ -40,9 +40,11 @@ namespace ACAT.Core.ThemeManagement
         public readonly Dictionary<String, String> ThemesLookupTable = new();
 
         /// <summary>
-        ///  Theme config file name
+        ///  Theme config file names (JSON is preferred, XML is fallback)
         /// </summary>
-        private const String ThemeConfigFileName = "Theme.xml";
+        private const String ThemeConfigFileNameJson = "Theme.json";
+        private const String ThemeConfigFileNameXml = "Theme.xml";
+        private const String ThemeConfigFileName = ThemeConfigFileNameJson; // Default for new themes
 
         /// <summary>
         /// Returns the singleton instance - lazy initialized to get logger from DI container
@@ -151,22 +153,32 @@ namespace ACAT.Core.ThemeManagement
 
         /// <summary>
         /// Initializes the theme manager.  Walks the
-        /// themes root dir.
+        /// themes root dir looking for Theme.json or Theme.xml files
         /// </summary>
         /// <returns></returns>
         public bool Init()
         {
             String userThemesDir = FileUtils.GetUserThemesDir();
 
+            // Look for JSON themes first (preferred), then XML themes (legacy)
             DirectoryWalker walker;
             if (Directory.Exists(userThemesDir))
             {
-                walker = new DirectoryWalker(userThemesDir, "Theme.xml");
+                walker = new DirectoryWalker(userThemesDir, ThemeConfigFileNameJson);
+                walker.Walk(new OnFileFoundDelegate(onFileFound));
+                
+                // Also scan for XML themes for backward compatibility
+                walker = new DirectoryWalker(userThemesDir, ThemeConfigFileNameXml);
                 walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
 
-            walker = new DirectoryWalker(FileUtils.GetThemesDir(), "Theme.xml");
+            walker = new DirectoryWalker(FileUtils.GetThemesDir(), ThemeConfigFileNameJson);
             walker.Walk(new OnFileFoundDelegate(onFileFound));
+            
+            // Also scan for XML themes for backward compatibility
+            walker = new DirectoryWalker(FileUtils.GetThemesDir(), ThemeConfigFileNameXml);
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
+            
             return true;
         }
 
@@ -194,13 +206,18 @@ namespace ACAT.Core.ThemeManagement
                 name = DefaultThemeName;
             }
 
-            var themeFile = Path.Combine(themeDir, ThemeConfigFileName);
+            // Try JSON first, then fallback to XML for backward compatibility
+            var themeFileJson = Path.Combine(themeDir, ThemeConfigFileNameJson);
+            var themeFileXml = Path.Combine(themeDir, ThemeConfigFileNameXml);
+            
+            string themeFile = File.Exists(themeFileJson) ? themeFileJson : themeFileXml;
 
-            _logger?.LogDebug("Creating Theme {ThemeName}, themeDir: {ThemeDir}", name, themeDir);
+            _logger?.LogDebug("Creating Theme {ThemeName}, themeDir: {ThemeDir}, themeFile: {ThemeFile}", 
+                name, themeDir, themeFile);
 
-            // create the Theme object. This parses the Theme xml file and
+            // create the Theme object. This parses the Theme json/xml file and
             // creates the Theme object
-            var theme = Theme.Create(name, themeDir, themeFile);
+            var theme = Theme.Create(name, themeDir, themeFile, LoggingConfiguration.CreateLogger<Theme>());
             if (theme != null)
             {
                 _activeTheme?.Dispose();

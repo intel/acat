@@ -261,7 +261,22 @@ namespace ACAT.Core.TTSManagement
             // If specified file doesn't exist, try alternate formats
             if (string.IsNullOrEmpty(filePath))
             {
+                // Validate pronunciationsFileName is not null or empty
+                if (string.IsNullOrWhiteSpace(pronunciationsFileName))
+                {
+                    _logger?.LogWarning("Pronunciation file name is null or empty for culture {Culture}", ci.Name);
+                    return false;
+                }
+
                 var baseName = Path.GetFileNameWithoutExtension(pronunciationsFileName);
+                
+                // Validate baseName is not empty after extraction
+                if (string.IsNullOrWhiteSpace(baseName))
+                {
+                    _logger?.LogWarning("Invalid pronunciation file name for culture {Culture}: {FileName}", 
+                        ci.Name, pronunciationsFileName);
+                    return false;
+                }
                 
                 // Try JSON format first
                 var jsonFileName = baseName + ".json";
@@ -282,13 +297,14 @@ namespace ACAT.Core.TTSManagement
                 {
                     _logger?.LogDebug("Found JSON pronunciation file: {FilePath}", filePath);
                 }
-            }
 
-            if (string.IsNullOrEmpty(filePath))
-            {
-                _logger?.LogWarning("Pronunciation file not found for culture {Culture}. Tried: {BaseName}.json and {BaseName}.xml", 
-                    ci.Name, Path.GetFileNameWithoutExtension(pronunciationsFileName));
-                return false;
+                // Log with baseName variable (already validated)
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    _logger?.LogWarning("Pronunciation file not found for culture {Culture}. Tried: {BaseName}.json and {BaseName}.xml", 
+                        ci.Name, baseName);
+                    return false;
+                }
             }
 
             return Load(filePath);

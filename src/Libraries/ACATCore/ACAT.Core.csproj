@@ -240,7 +240,9 @@
       <DependentUpon>WebBrowserForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\ControlExtensions.cs" />
+    <Compile Include="Utility\ExtensionInstantiator.cs" />
     <Compile Include="Utility\HotkeyManager.cs" />
+    <Compile Include="Utility\LogManager.cs" />
     <Compile Include="Utility\TopMostManager.cs" />
     <Compile Include="PreferencesManagement\Attributes\BoolDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\Attributes\DescriptorAttribute.cs" />

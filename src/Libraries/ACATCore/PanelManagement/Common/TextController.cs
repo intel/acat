@@ -310,7 +310,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
 
             return abbr;
@@ -345,26 +345,25 @@ namespace ACAT.Core.PanelManagement.Common
                     caretPos == _autoCompleteCaretPos &&
                     _beforeAutoCompleteCaretPos >= 0)
                 {
-                    Log.Debug("Delete: _autoCompleteCaretPos: " + _autoCompleteCaretPos +
-                              ",  _beforeAutoCOmpleteCaretPos: " + _beforeAutoCompleteCaretPos + ", count: " +
-                              (_autoCompleteCaretPos - _beforeAutoCompleteCaretPos));
+                    _logger.LogDebug("Delete: _autoCompleteCaretPos: {AutoCompleteCaretPos}, _beforeAutoCompleteCaretPos: {BeforeAutoCompleteCaretPos}, count: {Count}",
+                        _autoCompleteCaretPos, _beforeAutoCompleteCaretPos, (_autoCompleteCaretPos - _beforeAutoCompleteCaretPos));
 
                     int prefixLen = _autoCompletePartialWord.Length;
-                    Log.Debug("prefixLen: " + prefixLen);
+                    _logger.LogDebug("prefixLen: {PrefixLen}", prefixLen);
                     if (prefixLen > 0)
                     {
                         int start = _autocompleteStartOffset;
-                        Log.Debug("start: " + start);
+                        _logger.LogDebug("start: {Start}", start);
                         start = Math.Max(0, start);
 
-                        Log.Debug("Deleting from " + start + ", numchars: " + (_autoCompleteCaretPos - start));
+                        _logger.LogDebug("Deleting from {Start}, numchars: {NumChars}", start, (_autoCompleteCaretPos - start));
                         context.TextAgent().Delete(start, _autoCompleteCaretPos - start);
-                        Log.Debug("Inserting at " + start + ", string: " + _autoCompletePartialWord);
+                        _logger.LogDebug("Inserting at {Start}, string: {String}", start, _autoCompletePartialWord);
                         context.TextAgent().Insert(start, _autoCompletePartialWord);
                     }
                     else
                     {
-                        Log.Debug("Delete from " + _beforeAutoCompleteCaretPos);
+                        _logger.LogDebug("Delete from {BeforeAutoCompleteCaretPos}", _beforeAutoCompleteCaretPos);
                         context.TextAgent().Delete(_beforeAutoCompleteCaretPos, _autoCompleteCaretPos - _beforeAutoCompleteCaretPos);
                     }
                 }
@@ -379,7 +378,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
             finally
             {
@@ -422,7 +421,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <returns>true on success</returns>
         public bool HandlePunctuation(ArrayList modifiers, char punctuation)
         {
-            Log.Verbose();
+            _logger.LogTrace("HandlePunctuation called with punctuation: {Punctuation}", punctuation);
 
             try
             {
@@ -455,15 +454,15 @@ namespace ACAT.Core.PanelManagement.Common
                 {
                     // delete any spaces before the punctuation
                     context.TextAgent().GetPrecedingWhiteSpaces(out int offset, out int count);
-                    Log.Debug("Preceding whitespace count: " + count);
+                    _logger.LogDebug("Preceding whitespace count: {Count}", count);
                     if (count > 0)
                     {
-                        Log.Debug("Deleting whitespaces from offset " + offset);
+                        _logger.LogDebug("Deleting whitespaces from offset {Offset}", offset);
                         context.TextAgent().Delete(offset, count);
                     }
                 }
 
-                Log.Debug("Sending punctuation");
+                _logger.LogDebug("Sending punctuation");
                 Context.AppAgentMgr.Keyboard.Send(modifiers != null ?
                                                     modifiers.Cast<Keys>().ToList() :
                                                     KeyStateTracker.GetExtendedKeys(), punctuation);
@@ -475,7 +474,7 @@ namespace ACAT.Core.PanelManagement.Common
 
                 _autoCompleteCaretPos = context.TextAgent().GetCaretPos();
 
-                Log.Debug("after actuating, caretpos is " + _autoCompleteCaretPos);
+                _logger.LogDebug("after actuating, caretpos is {CaretPos}", _autoCompleteCaretPos);
 
                 KeyStateTracker.KeyTriggered(punctuation);
 
@@ -483,7 +482,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
             finally
             {
@@ -517,7 +516,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch
             {
-                Log.Error("Invalid virtual key " + value.Substring(1));
+                _logger.LogError("Invalid virtual key {VirtualKey}", value.Substring(1));
             }
         }
 
@@ -535,7 +534,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch
             {
-                Log.Error("Invalid virtual key " + value.Substring(1));
+                _logger.LogError("Invalid virtual key {VirtualKey}", value.Substring(1));
                 return Keys.None;
             }
 
@@ -578,8 +577,8 @@ namespace ACAT.Core.PanelManagement.Common
         {
             try
             {
-                Log.Debug("LastAction: " + _lastAction + ", currentEditingMode: " +
-                          Context.AppAgentMgr.CurrentEditingMode);
+                _logger.LogDebug("LastAction: {LastAction}, currentEditingMode: {CurrentEditingMode}",
+                    _lastAction, Context.AppAgentMgr.CurrentEditingMode);
 
                 using (var context = Context.AppAgentMgr.ActiveContext())
                 {
@@ -608,7 +607,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
 
             _lastAction = LastAction.Unknown;
@@ -627,15 +626,15 @@ namespace ACAT.Core.PanelManagement.Common
                 return;
             }
 
-            Log.Debug("char left of  caret: [" + charAtCaret + "]");
+            _logger.LogDebug("char left of  caret: [{CharAtCaret}]", charAtCaret);
             if (!TextUtils.IsTerminatorOrWhiteSpace(charAtCaret))
             {
-                Log.Debug("no sentence terminator or white space here.  returning");
+                _logger.LogDebug("no sentence terminator or white space here.  returning");
                 return;
             }
 
             int startPos = AgentManager.Instance.TextControlAgent.GetPreviousWordAtCaret(out string word);
-            Log.Debug("Prev word: [" + word + "]");
+            _logger.LogDebug("Prev word: [{Word}]", word);
             if (string.IsNullOrEmpty(word))
             {
                 return;
@@ -643,9 +642,9 @@ namespace ACAT.Core.PanelManagement.Common
 
             bool isFirstWord = AgentManager.Instance.TextControlAgent.IsPreviousWordAtCaretTheFirstWord();
 
-            Log.Debug("Looking up " + word);
+            _logger.LogDebug("Looking up {Word}", word);
             string replacement = Context.AppSpellCheckManager.ActiveSpellChecker.Lookup(word);
-            Log.Debug("Replacement is [" + replacement + "]");
+            _logger.LogDebug("Replacement is [{Replacement}]", replacement);
             if (string.IsNullOrEmpty(replacement) && isFirstWord)
             {
                 replacement = word;
@@ -670,8 +669,8 @@ namespace ACAT.Core.PanelManagement.Common
         {
             try
             {
-                Log.Debug("LastAction: " + _lastAction + ", currentEditingMode: " +
-                          Context.AppAgentMgr.CurrentEditingMode);
+                _logger.LogDebug("LastAction: {LastAction}, currentEditingMode: {CurrentEditingMode}",
+                    _lastAction, Context.AppAgentMgr.CurrentEditingMode);
 
                 if (Context.AppAgentMgr.CurrentEditingMode != EditingMode.TextEntry)
                 {
@@ -715,7 +714,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
 
             _lastAction = LastAction.Unknown;
@@ -760,7 +759,7 @@ namespace ACAT.Core.PanelManagement.Common
                 {
                     int numChars = 2;  // punctuation + space after punctuation
                     context.TextAgent().GetPrecedingCharacters(numChars, out string precedingChars);
-                    Log.Debug("prev " + numChars + " chars are : [" + precedingChars + "]");
+                    _logger.LogDebug("prev {NumChars} chars are : [{PrecedingChars}]", numChars, precedingChars);
                     if (precedingChars.Length == numChars && ResourceUtils.LanguageSettings().IsInsertSpaceAfterChar(precedingChars[0]))
                     {
                         Context.AppAgentMgr.Keyboard.Send(Keys.Back, numChars);
@@ -778,7 +777,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -795,12 +794,12 @@ namespace ACAT.Core.PanelManagement.Common
                 {
                     bool retVal = context.TextAgent().GetCharAtCaret(out char charAtCaret);
 
-                    Log.Debug("charAtCaret is " + Convert.ToInt32(charAtCaret));
+                    _logger.LogDebug("charAtCaret is {CharAtCaretInt}", Convert.ToInt32(charAtCaret));
                     if (!char.IsPunctuation(charAtCaret) && (!retVal || charAtCaret == 0x0D || !char.IsWhiteSpace(charAtCaret)))
                     {
-                        Log.Debug("Sending space suffix... caretpos is " + context.TextAgent().GetCaretPos());
+                        _logger.LogDebug("Sending space suffix... caretpos is {CaretPos}", context.TextAgent().GetCaretPos());
                         Context.AppAgentMgr.Keyboard.Send(KeyStateTracker.GetExtendedKeys(), ' ');
-                        Log.Debug("Done sending space suffix caretPos is " + context.TextAgent().GetCaretPos());
+                        _logger.LogDebug("Done sending space suffix caretPos is {CaretPos}", context.TextAgent().GetCaretPos());
                         KeyStateTracker.KeyTriggered(' ');
                     }
                     else if (char.IsWhiteSpace(charAtCaret))
@@ -812,7 +811,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -831,9 +830,9 @@ namespace ACAT.Core.PanelManagement.Common
             {
                 using AgentContext context = Context.AppAgentMgr.ActiveContext();
                 string textToCaret = context.TextAgent().GetStringToCaret(startPos);
-                Log.Debug("textToCaret : [" + textToCaret + "]");
+                _logger.LogDebug("textToCaret : [{TextToCaret}]", textToCaret);
                 replacement = textToCaret.Replace(word, replacement);
-                Log.Debug("After replacement, replacement : [" + replacement + "]");
+                _logger.LogDebug("After replacement, replacement : [{Replacement}]", replacement);
                 if (isFirstWord)
                 {
                     string cap = TextUtils.Capitalize(replacement);
@@ -843,14 +842,14 @@ namespace ACAT.Core.PanelManagement.Common
                     }
                 }
 
-                Log.Debug("Replace word at " + startPos + ". Length: " + replacement.Length + ". replacement: " +
-                          replacement);
+                _logger.LogDebug("Replace word at {StartPos}. Length: {Length}. replacement: {Replacement}",
+                    startPos, replacement.Length, replacement);
 
                 context.TextAgent().Replace(startPos, word.Length + 1, replacement);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 

@@ -30,7 +30,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
 
         public SerialComm(String portName, ILogger<SerialComm> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<SerialComm>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<SerialComm>();
             _portName = portName;
         }
 

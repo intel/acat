@@ -12,6 +12,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public partial class MenuPanelBase : Form, IScannerPanel
     {
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(MenuPanelBase).Name);
+
         /// <summary>
         /// Title of the scanner
         /// </summary>
@@ -188,7 +191,7 @@ namespace ACAT.Core.PanelManagement
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Error($"Could not initialize form {Name}");
+                _logger.LogError("Could not initialize form {FormName}", Name);
                 return false;
             }
 

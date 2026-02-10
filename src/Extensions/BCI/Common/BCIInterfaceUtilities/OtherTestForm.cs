@@ -41,7 +41,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         public OtherTestForm(ILogger<OtherTestForm> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<OtherTestForm>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<OtherTestForm>();
             InitializeComponent();
             Load += ConfirmBox_Load;
         }

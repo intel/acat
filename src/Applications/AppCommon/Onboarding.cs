@@ -50,7 +50,7 @@ namespace ACAT.Applications
 
         public static bool ResetAllPreferences(List<PreferencesCategory> currentCategory)
         {
-            var logger = LoggingConfiguration.CreateLogger(typeof(AppCommon));
+            var logger = LoggingConfiguration.CreateLogger<AppCommon>();
             try
             {
                 // Reset general preferences  
@@ -91,7 +91,7 @@ namespace ACAT.Applications
 
         private static void CopyPreferencesValues(IPreferences source, IPreferences target)
         {
-            var logger = LoggingConfiguration.CreateLogger(typeof(AppCommon));
+            var logger = LoggingConfiguration.CreateLogger<AppCommon>();
             var sourceType = source.GetType();
             var targetType = target.GetType();
 

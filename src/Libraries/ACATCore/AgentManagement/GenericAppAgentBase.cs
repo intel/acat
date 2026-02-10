@@ -23,13 +23,17 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public abstract class GenericAppAgentBase : AgentBase
     {
+        protected GenericAppAgentBase(ILogger<AgentBase> logger = null) : base(logger ?? LoggingConfiguration.CreateLogger<AgentBase>())
+        {
+        }
+
         /// <summary>
         /// Gets or sets the text control agent object
         /// </summary>
         protected TextControlAgentBase appTextInterface { get; set; }
 
         /// <summary>
-        /// Implement this to display a contexutal menu for
+        /// Implement this to display a contextual menu for
         /// the currently active process
         /// </summary>
         /// <param name="monitorInfo">Info  about the active process/window</param>
@@ -155,7 +159,7 @@ namespace ACAT.Core.AgentManagement
         private void disposeAndCreateTextInterface(WindowActivityMonitorInfo monitorInfo)
         {
             disposeTextInterface();
-            Log.Debug("Calling createEditControlTextInterface");
+            _logger.LogDebug("Calling createEditControlTextInterface");
             var textInterface = createEditControlTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement) ??
                                 createKeyLoggerTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement);
 

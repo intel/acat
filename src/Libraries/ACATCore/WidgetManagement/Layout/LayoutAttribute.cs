@@ -5,8 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
@@ -120,15 +122,32 @@ namespace ACAT.Core.WidgetManagement.Layout
             {
                 _logger?.LogDebug("creating widget with name {WidgetName}", widgetName);
 
-                widget = (Widget)Activator.CreateInstance(classType, widgetName);
+                // Try to create instance using DI container first (if available)
+                if (Context.ServiceProvider != null)
+                {
+                    try
+                    {
+                        widget = ActivatorUtilities.CreateInstance(Context.ServiceProvider, classType, widgetName) as Widget;
+                        _logger?.LogDebug("Widget created with DI: {IsNull}", widget != null ? "Not Null" : "Null");
+                    }
+                    catch
+                    {
+                        // DI creation failed, will try parameterless constructor
+                    }
+                }
 
-                _logger?.LogDebug("Widget created: {IsNull}", widget != null ? "Not Null" : "Null");
+                // Fall back to standard constructor
+                if (widget == null)
+                {
+                    widget = (Widget)Activator.CreateInstance(classType, widgetName);
+                    _logger?.LogDebug("Widget created (standard constructor): {IsNull}", widget != null ? "Not Null" : "Null");
+                }
 
                 widget?.SetLayout(this);
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, ex.Message);
+                _logger?.LogError(ex, "Constructor on type '{ClassType}' not found.", classType.FullName);
             }
 
             return widget;
@@ -148,15 +167,32 @@ namespace ACAT.Core.WidgetManagement.Layout
             {
                 _logger?.LogDebug("creating widget {ClassType}", classType);
 
-                widget = (Widget)Activator.CreateInstance(classType, uiControl);
+                // Try to create instance using DI container first (if available)
+                if (Context.ServiceProvider != null)
+                {
+                    try
+                    {
+                        widget = ActivatorUtilities.CreateInstance(Context.ServiceProvider, classType, uiControl) as Widget;
+                        _logger?.LogDebug("Widget created with DI: {IsNull}", widget != null ? "Not Null" : "Null");
+                    }
+                    catch
+                    {
+                        // DI creation failed, will try standard constructor
+                    }
+                }
 
-                _logger?.LogDebug("Widget created: {IsNull}", widget != null ? "Not Null" : "Null");
+                // Fall back to standard constructor
+                if (widget == null)
+                {
+                    widget = (Widget)Activator.CreateInstance(classType, uiControl);
+                    _logger?.LogDebug("Widget created (standard constructor): {IsNull}", widget != null ? "Not Null" : "Null");
+                }
 
                 widget?.SetLayout(layout: this);
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, ex.Message);
+                _logger?.LogError(ex, "Constructor on type '{ClassType}' not found.", classType.FullName);
             }
 
             return widget;
@@ -277,7 +313,7 @@ namespace ACAT.Core.WidgetManagement.Layout
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Failed to instantiate widget: {WidgetName}, class: {WidgetClass}", widgetName, widgetClass);
                 widget = null;
             }
 

@@ -23,6 +23,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
+using Microsoft.Extensions.Logging;
 //using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
     {
+        /// <summary>
+        /// Logger instance for this class
+        /// </summary>
+        private readonly ILogger<UserControlBCISignalCheck> _logger;
+
         /// <summary>
         /// The DAQ instance for OpenBCI
         /// </summary>
@@ -277,6 +283,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         public UserControlBCISignalCheck(String stepId)
         {
             InitializeComponent();
+
+            // Initialize logger
+            _logger = LoggingConfiguration.CreateLogger<UserControlBCISignalCheck>();
 
             // Initialize the DAQ instance
             _daqInstance = DAQFactory.CreateDAQ(DAQDeviceType.OpenBCI);
@@ -614,7 +623,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -627,7 +636,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         public void initializeBCISignalCheck(bool maxTimeHasElapsed, double maxTimeMins, double minElapsedPrevSignalQualityCheck,
             bool userPassedLastSignalQualityCheck)
         {
-            Log.Debug(String.Format("initializeBCISignalCheck | maxTimeHasElapsed: {0}, " +
+            _logger.LogDebug(String.Format("initializeBCISignalCheck | maxTimeHasElapsed: {0}, " +
                 "minElapsedPrevSignalQualityCheck: {1}, userPassedLastSignalQualityCheck: {2}",
                 maxTimeHasElapsed.ToString(), minElapsedPrevSignalQualityCheck.ToString(), userPassedLastSignalQualityCheck.ToString()));
 
@@ -669,7 +678,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             for (int i = 0; i < _indEegChannels.Length; i++)
                 _indEegChannels_str += (_indEegChannels[i].ToString() + ", ");
 
-            Log.Debug(String.Format("initializeBCISignalCheck | _numChannels: {0}, " + "_samplingRate: {1}, " +
+            _logger.LogDebug(String.Format("initializeBCISignalCheck | _numChannels: {0}, " + "_samplingRate: {1}, " +
                 "_scaleIdx: {2}, _bufSize: {3}\n" +
                 "_indEegChannels_str: {4}",
                 _numChannels.ToString(), _samplingRate.ToString(), _scaleIdx.ToString(), _bufSize.ToString(), _indEegChannels_str));
@@ -845,7 +854,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         //private async Task StartImpedanceTesting()
         private void StartImpedanceTesting()
         {
-            Log.Debug("StartImpedanceTesting");
+            _logger.LogDebug("StartImpedanceTesting");
 
             if (!_runImpedanceTestingCycle && _daqInstance.deviceInitialized)
             {
@@ -855,7 +864,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                 ////// Before running impedance tests ///////
                 //// Stop streaming on board, does not consistently register commands while streaming
-                Log.Debug("Stop streaming");
+                _logger.LogDebug("Stop streaming");
                 ((DAQ_OpenBCI)_daqInstance).Stop_Streaming();
                 Thread.Sleep(50);
 
@@ -866,7 +875,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     EEGChannel currentEegChannel = _eegChannels[_currentImpedanceTestElectrodeIndex];
                     String electrodeName = currentEegChannel._electrodeName;
 
-                    Log.Debug("StartImpedanceTesting loop | _currentImpedanceTestElectrodeIndex: " + _currentImpedanceTestElectrodeIndex.ToString() +
+                    _logger.LogDebug("StartImpedanceTesting loop | _currentImpedanceTestElectrodeIndex: " + _currentImpedanceTestElectrodeIndex.ToString() +
                         " | electrodeName: " + electrodeName.ToString());
 
                     String cmdStartElectrodeImpedanceTest = currentEegChannel.ImpedanceTestingEnableCmd;
@@ -884,7 +893,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     _daqInstance.GetData(); // Clear buffer
 
                     //// Send enable electrode Impedance testing commands
-                    Log.Debug(String.Format("Sending enable electrode {0} Impedance testing command: {1}", electrodeName, cmdStartElectrodeImpedanceTest));
+                    _logger.LogDebug(String.Format("Sending enable electrode {0} Impedance testing command: {1}", electrodeName, cmdStartElectrodeImpedanceTest));
                     ((DAQ_OpenBCI)_daqInstance).Config_Board(cmdStartElectrodeImpedanceTest);
                     Thread.Sleep(750);
 
@@ -892,7 +901,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     _daqInstance.deviceInitialized = true;
 
                     //// Send start streaming
-                    Log.Debug("Start streaming");
+                    _logger.LogDebug("Start streaming");
                     ((DAQ_OpenBCI)_daqInstance).Start_Streaming();
                     Thread.Sleep(50);
 
@@ -910,15 +919,15 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     _daqInstance.deviceInitialized = false;
 
                     //// Stop streaming
-                    Log.Debug("Stop streaming");
+                    _logger.LogDebug("Stop streaming");
                     ((DAQ_OpenBCI)_daqInstance).Stop_Streaming();
                     Thread.Sleep(50);
 
                     // Send command to disable impedance testing for specific electrode
-                    Log.Debug(String.Format("Sending disable electrode {0} impedance testing command: {1}", electrodeName, cmdEndElectrodeImpedanceTest));
+                    _logger.LogDebug(String.Format("Sending disable electrode {0} impedance testing command: {1}", electrodeName, cmdEndElectrodeImpedanceTest));
                     ((DAQ_OpenBCI)_daqInstance).Config_Board(cmdEndElectrodeImpedanceTest);
                     Thread.Sleep(750);
-                    Log.Debug("Completed impedance testing electrode: " + _currentImpedanceTestElectrodeIndex.ToString());
+                    _logger.LogDebug("Completed impedance testing electrode: " + _currentImpedanceTestElectrodeIndex.ToString());
 
                     // Reset back color of impedance result button in Impedance testing page to transparent
                     Invoke(new Action(() =>
@@ -933,7 +942,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                         _currentImpedanceTestElectrodeIndex = 0;
                         if (BCIActuatorSettings.Settings.SignalQuality_StopImpedanceTestAfterOneCycle)
                         {
-                            Log.Debug("SignalQuality_StopImpedanceTestAfterOneCycle = true | Stopping impedance testing");
+                            _logger.LogDebug("SignalQuality_StopImpedanceTestAfterOneCycle = true | Stopping impedance testing");
                             try
                             {
                                 Invoke(new Action(() =>
@@ -948,7 +957,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                             }
                             catch (Exception ex)
                             {
-                                Log.Exception(ex.Message);
+                                _logger.LogError(ex, ex.Message);
                             }
                         }
                     }
@@ -958,18 +967,18 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 //// Do opposite of what was done at the beginning on this function to bring board back to default state
 
                 // Reset board to default parameters
-                Log.Debug("Send command to reset board");
+                _logger.LogDebug("Send command to reset board");
                 ((DAQ_OpenBCI)_daqInstance).Reset_Board(); // Run multiple times?
                 Thread.Sleep(750); // Tested 750 - is ok
-                Log.Debug("Send command to reset board");
+                _logger.LogDebug("Send command to reset board");
                 ((DAQ_OpenBCI)_daqInstance).Reset_Board();
                 Thread.Sleep(4500);
 
-                Log.Debug("Calling Stop()");
+                _logger.LogDebug("Calling Stop()");
                 _daqInstance.Stop();
                 Thread.Sleep(250); // Tested 250 - is ok
 
-                Log.Debug("Calling Start()");
+                _logger.LogDebug("Calling Start()");
                 _daqInstance.Start(); // Also starts streaming
 
                 // Stopped Impedance testing cycle, update UI accordingly
@@ -990,7 +999,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 // save this time as time of last signal quality check completed
                 if (_AllElectrodesOverallSignalQualityResult.allElectrodesUpdatedWithinSession == true)
                 {
-                    Log.Debug("Saving current time as SignalQuality_TimeOfLastImpedanceCheck");
+                    _logger.LogDebug("Saving current time as SignalQuality_TimeOfLastImpedanceCheck");
                     BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck = DateTimeOffset.Now.ToUnixTimeSeconds();
                     BCIActuatorSettings.Save(); // Save settings
                 }
@@ -1029,7 +1038,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
 
             // Removed automatic optical sensor checks below for now - it's likely the optical sensor is still
@@ -1100,7 +1109,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -1161,7 +1170,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -1213,7 +1222,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
 
             return ret;
@@ -1260,7 +1269,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -1294,9 +1303,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                 result = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.Exception(e.Message);
+                // Exception will propagate to calling method for proper logging
             }
             return result;
         }
@@ -1339,7 +1348,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
             }
 
-            Log.Debug("tabControlElectrodeQuality_SelectedIndexChanged" +
+            _logger.LogDebug("tabControlElectrodeQuality_SelectedIndexChanged" +
                 " | _impedanceTestingRunning: " + _impedanceTestingRunning.ToString() +
                 " | _currentBCISignalCheckMode: " + _currentBCISignalCheckMode.ToString());
         }
@@ -1375,7 +1384,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, e.Message);
             }
         }
 
@@ -1420,7 +1429,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, e.Message);
             }
 
             yLimMax = scale;
@@ -1434,13 +1443,13 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <param name="e"></param>
         private void buttonTestImpedance_Click(object sender, EventArgs e)
         {
-            Log.Debug("buttonTestImpedance_Click | _currentImpedanceTestElectrodeIndex: " + _currentImpedanceTestElectrodeIndex.ToString());
+            _logger.LogDebug("buttonTestImpedance_Click | _currentImpedanceTestElectrodeIndex: " + _currentImpedanceTestElectrodeIndex.ToString());
 
             if (_runImpedanceTestingCycle)
             {
                 try
                 {
-                    Log.Debug("Impedance cyclical testing running. Stopping process...");
+                    _logger.LogDebug("Impedance cyclical testing running. Stopping process...");
                     buttonTestImpedance.Enabled = false;
                     buttonTestImpedance.BackColor = Color.Gray;
                     updateImpedanceTestingStateLabels(ImpedanceTestingState.STOP_IN_PROGRESS);
@@ -1450,7 +1459,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex.Message);
+                    _logger.LogError(ex, ex.Message);
                 }
             }
             else if (!_runImpedanceTestingCycle)
@@ -1458,7 +1467,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 // Start impedance testing
                 try
                 {
-                    Log.Debug("Impedances testing not running. Starting process...");
+                    _logger.LogDebug("Impedances testing not running. Starting process...");
                     buttonTestImpedance.Text = "Stop";
                     buttonNext.Enabled = false;
                     buttonNext.BackColor = Color.Gray;
@@ -1468,7 +1477,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex.Message);
+                    _logger.LogError(ex, ex.Message);
                 }
 
                 // Start thread doing impedance testing
@@ -1566,7 +1575,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -1607,7 +1616,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         private void WebBrowserDesc_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            Utils.HandleHelpNavigaion(e);
+            Utils.HandleHelpNavigation(e);
         }
 
         /// <summary>
@@ -1641,7 +1650,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
     }

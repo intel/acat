@@ -19,7 +19,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class ResourceUtils
     {
-        private static ILogger<ResourceUtils> _logger;
+        private static ILogger<ResourceUtils> _logger => LogManager.GetLogger<ResourceUtils>();
         /// <summary>
         /// Name of the language resources dll
         /// </summary>

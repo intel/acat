@@ -92,7 +92,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         public static Tuple<BCIMenuOptions.Options, BCISimpleParameters> ShowDialog(BCICalibrationStatus actuatorResponse, bool enableBeginBtn, Form parent = null, bool setTopMost = false)
         {
-            var confirmBox = new ConfirmBoxCalibrationModes();
+            var confirmBox = new ConfirmBoxCalibrationModes(null);
             //To always display the form in the main screen
             confirmBox.StartPosition = FormStartPosition.Manual;
             confirmBox.Location = confirmBox.primaryScreen.WorkingArea.Location;

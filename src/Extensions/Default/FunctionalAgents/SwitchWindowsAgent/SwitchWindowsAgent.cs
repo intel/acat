@@ -50,8 +50,6 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         private static SwitchWindowsScanner _switchWindowsScanner;
 
-        private readonly ILogger<SwitchWindowsAgent> _logger;
-
         /// <summary>
         /// Meta data for window selected
         /// </summary>
@@ -60,9 +58,8 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public SwitchWindowsAgent(ILogger<SwitchWindowsAgent> logger)
+        public SwitchWindowsAgent(ILogger<SwitchWindowsAgent> logger = null) : base(logger)
         {
-            _logger = logger;
             Name = ClassDescriptorAttribute.GetDescriptor(GetType()).Name;
         }
 

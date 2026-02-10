@@ -318,9 +318,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public void initializeBCISignalCheck(DAQ_gTecBCI gtecbci, bool maxTimeHasElapsed, double maxTimeMins, double minElapsedPrevSignalQualityCheck, bool userPassedLastSignalQualityCheck)
         {
             gTecBCI = gtecbci;
-            Log.Debug(String.Format("initializeBCISignalCheck | maxTimeHasElapsed: {0}, " +
-                "minElapsedPrevSignalQualityCheck: {1}, userPassedLastSignalQualityCheck: {2}",
-                maxTimeHasElapsed.ToString(), minElapsedPrevSignalQualityCheck.ToString(), userPassedLastSignalQualityCheck.ToString()));
+            _logger?.LogDebug("initializeBCISignalCheck | maxTimeHasElapsed: {MaxTimeHasElapsed}, " +
+                "minElapsedPrevSignalQualityCheck: {MinElapsedPrevSignalQualityCheck}, userPassedLastSignalQualityCheck: {UserPassedLastSignalQualityCheck}",
+                maxTimeHasElapsed, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
 
             // Get / inititalize variables related to board config used in data processing
             _indEegChannels = gTecBCI.indEegChannels;
@@ -338,10 +338,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             for (int i = 0; i < _indEegChannels.Length; i++)
                 _indEegChannels_str += (_indEegChannels[i].ToString() + ", ");
 
-            Log.Debug(String.Format("initializeBCISignalCheck | _numChannels: {0}, " + "_samplingRate: {1}, " +
-                "_scaleIdx: {2}, _bufSize: {3}\n" +
-                "_indEegChannels_str: {4}",
-                _numChannels.ToString(), _samplingRate.ToString(), _scaleIdx.ToString(), _bufSize.ToString(), _indEegChannels_str));
+            _logger?.LogDebug("initializeBCISignalCheck | _numChannels: {NumChannels}, " + "_samplingRate: {SamplingRate}, " +
+                "_scaleIdx: {ScaleIdx}, _bufSize: {BufSize}\n" +
+                "_indEegChannels_str: {IndEegChannelsStr}",
+                _numChannels, _samplingRate, _scaleIdx, _bufSize, _indEegChannels_str);
 
             // Set some text fields to smaller font size for 125 scaling (100 scaling is default)
             var tuple = DualMonitor.GetDisplayWidthAndScaling();
@@ -623,9 +623,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 result = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                _logger.LogError(e, "Exception in removeColumnsFromChan: {Message}", e.Message);
+                // Exception will propagate to calling method for proper logging
             }
             return result;
         }
@@ -643,7 +643,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 highlightSelectedTab(0);
             }
 
-            Log.Debug("tabControlElectrodeQuality_SelectedIndexChanged" + " | _currentBCISignalCheckMode: " + _currentBCISignalCheckMode.ToString());
+            _logger?.LogDebug("tabControlElectrodeQuality_SelectedIndexChanged | _currentBCISignalCheckMode: {CurrentBCISignalCheckMode}", _currentBCISignalCheckMode);
         }
 
         /// <summary>
@@ -696,7 +696,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger?.LogError(e, "Exception in GetGraphYLims");
             }
 
             yLimMax = scale;
@@ -774,7 +774,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                _logger.LogError(e, "Exception in ProcessDataSignalCheck: {Message}", e.Message);
+                _logger.LogError(ex, "Exception in ProcessDataSignalCheck: {Message}", ex.Message);
             }
         }
     }

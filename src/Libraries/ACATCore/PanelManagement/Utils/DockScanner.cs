@@ -1,4 +1,5 @@
 ﻿using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -11,6 +12,8 @@ namespace ACAT.Core.PanelManagement.Utils
     /// </summary>
     public class DockScanner : IDisposable
     {
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(DockScanner).Name);
+
         /// <summary>
         /// If docking to a window, relative position of the dock
         /// </summary>
@@ -85,7 +88,7 @@ namespace ACAT.Core.PanelManagement.Utils
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex.ToString());
+                    _logger.LogError(ex, ex.Message);
                     _automationElementDockTo = null;
                 }
             }
@@ -124,7 +127,7 @@ namespace ACAT.Core.PanelManagement.Utils
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogDebug("Disposing DockScanner");
 
                 if (disposing)
                 {

@@ -134,7 +134,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlBCIErrorgTecBoard.buttonRetry_userControlBCIErrorgTecBoard.Click += new EventHandler(this.buttonRetest_Click);
             _userControlBCIErrorgTecBoard.Dock = DockStyle.Fill;
 
-            _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected();
+            _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected(null);
             _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.Click += new EventHandler(this.buttonExit_Click);
             _userControlErrorBluetoothDisconnected.buttonNext_userControlErrorBluetoothDisconnected.Click += new EventHandler(this.buttonNext_Click);
             _userControlErrorBluetoothDisconnected.Dock = DockStyle.Fill;
@@ -154,7 +154,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlPromptBCIFIlterSettings.buttonNext_userControlPromptBCIFIlterSettings.Click += new EventHandler(this.buttonNext_Click);
             _userControlPromptBCIFIlterSettings.Dock = DockStyle.Fill;
 
-            _userControlBCISignalCheck = new UserControlBCISignalCheck();
+            _userControlBCISignalCheck = new UserControlBCISignalCheck(null);
             _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.Click += new EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheck.buttonNext_userControlBCISignalCheck.Click += new EventHandler(this.buttonNext_Click);
             _userControlBCISignalCheck.Dock = DockStyle.Fill;
@@ -362,8 +362,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         private void startStopProcessDataTimer(bool startProcessDataTimer, OnboardingUserState state)
         {
-            Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
-                " | state: " + state.ToString());
+            _logger.LogDebug("startStopProcessDataTimer | startProcessDataTimer: {StartProcessDataTimer} | state: {State}",
+                startProcessDataTimer, state);
 
             if (startProcessDataTimer)
             {

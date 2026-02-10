@@ -60,7 +60,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         public ConfirmBoxTriggerBoxSettings(ILogger<ConfirmBoxTriggerBoxSettings> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<ConfirmBoxTriggerBoxSettings>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<ConfirmBoxTriggerBoxSettings>();
             InitializeComponent();
             label1.Text = StringResources.CalibrationIsEssential;
             Load += ConfirmBox_Load;

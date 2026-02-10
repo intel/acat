@@ -78,7 +78,14 @@ namespace ACAT.Extension.UI
         /// </summary>
         public UserControlWordPredictionCommon(IUserControl userControl, TextController textController, IScannerPanel scannerPanel, PredictionTypes[] predictionTypes, ILogger<UserControlWordPredictionCommon> logger)
         {
-            _logger = logger;
+            if (logger == null)
+            {
+                _logger = LoggingConfiguration.CreateLogger<UserControlWordPredictionCommon>();
+            }
+            else
+            {
+                _logger = logger;
+            }
             _form = scannerPanel.Form;
             _textController = textController;
             _predictionTypes = predictionTypes;
@@ -141,7 +148,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            _logger.LogTrace();
         }
 
         /// <summary>
@@ -187,22 +193,11 @@ namespace ACAT.Extension.UI
         }
 
         /// <summary>
-        /// Pause the application. Call this in the OnPause
-        /// function in the Alphabet scanner.
-        /// </summary>
-        public void OnPause()
-        {
-            _logger.LogTrace();
-        }
-
-        /// <summary>
         /// Resumes the application. Call this in the OnResume
         /// function in the Alphabet scanner.
         /// </summary>
         public void OnResume()
         {
-            _logger.LogTrace();
-
             refreshWordPredictionsAndSetCurrentWord();
         }
 
@@ -226,7 +221,7 @@ namespace ACAT.Extension.UI
 
                 CoreGlobals.Stopwatch1.Stop();
 
-                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                _logger?.LogDebug("TimeElapsed 3 : {ElapsedMs}ms", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
 
                 handled = true;
             }
@@ -246,7 +241,7 @@ namespace ACAT.Extension.UI
 
                 CoreGlobals.Stopwatch1.Stop();
 
-                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                _logger?.LogDebug("TimeElapsed 3 : {ElapsedMs}ms", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
 
                 handled = true;
             }
@@ -266,7 +261,7 @@ namespace ACAT.Extension.UI
 
                 CoreGlobals.Stopwatch1.Stop();
 
-                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                _logger?.LogDebug("TimeElapsed 3 : {ElapsedMs}ms", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
 
                 handled = true;
             }
@@ -285,8 +280,6 @@ namespace ACAT.Extension.UI
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace();
-
                 if (disposing)
                 {
                     // dispose all managed resources.
@@ -325,7 +318,6 @@ namespace ACAT.Extension.UI
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            _logger.LogTrace();
             try
             {
                 if (_form.Visible)
@@ -526,20 +518,20 @@ namespace ACAT.Extension.UI
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex.ToString());
+                    _logger?.LogError(ex, "Exception processing word prediction");
                 }
                 predictedWordList = predictedWordsList1;
                 predictedLettersList = predictedLettersList1;
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Exception processing word prediction");
             }
-            Log.Debug("predictedWordList count: " + predictedWordList.Count());
+            _logger?.LogDebug("predictedWordList count: {Count}", predictedWordList.Count());
 
             // check if the current word is a possessive word. If not, we need to create
             // a possessive version of the word and add it as the last word
-            // in the predicton list.
+            // in the prediction list.
             var possessiveWord = string.Empty;
             var wordAtCaret = response.Request.CurrentWord;  // check if it is the same
 
@@ -550,11 +542,15 @@ namespace ACAT.Extension.UI
                 try
                 {
                     agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
-                        _logger.LogDebug("charAtCaret: [" + charAtCaret + "]");
-                    }
-                    catch (InvalidAgentContextException ex)
-                    {
-                        _logger.LogError(ex, ex.Message);
+                    _logger.LogDebug("charAtCaret: [" + charAtCaret + "]");
+                }
+                catch (InvalidAgentContextException ex)
+                {
+                    _logger?.LogError(ex, ex.Message);
+                }
+            }
+
+            if (string.IsNullOrEmpty(wordAtCaret) ||
                 (charAtCaret == '\0' || charAtCaret == 0x0D || charAtCaret == 0x0A ||
                 TextUtils.IsPunctuationOrWhiteSpace(charAtCaret) ||
                 TextUtils.IsTerminatorOrWhiteSpace(charAtCaret)))

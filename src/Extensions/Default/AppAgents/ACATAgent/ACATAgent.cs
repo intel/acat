@@ -20,5 +20,8 @@ namespace ACAT.Extensions.AppAgents.AcatAgent
                             "Application Agent for the executing assembly")]
     internal class ACATAgent : ACATAgentBase
     {
+        public ACATAgent() : base(null)
+        {
+        }
     }
 }

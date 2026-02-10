@@ -24,7 +24,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     public class SharpDXUtils
     {
-        private static readonly ILogger<SharpDXUtils> _logger = LoggerFactory.GetLogger<SharpDXUtils>();
+        private static readonly ILogger<SharpDXUtils> _logger = LoggingConfiguration.CreateLogger<SharpDXUtils>();
         /// <summary>
         /// Get the border color from the Theme xml file
         /// </summary>

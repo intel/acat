@@ -24,7 +24,7 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
         public RowWidget(Control control)
-            : base(control)
+            : base(control, LoggingConfiguration.CreateLogger<Widget>())
         {
         }
 

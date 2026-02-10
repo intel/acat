@@ -29,7 +29,7 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Logger instance for this class
         /// </summary>
-        private readonly ILogger<AgentBase> _logger;
+        protected readonly ILogger<AgentBase> _logger;
 
         /// <summary>
         /// Used to invoke methods/properties in the agent
@@ -457,8 +457,6 @@ namespace ACAT.Core.AgentManagement
         {
             if (!_disposed)
             {
-                Log.Verbose();
-
                 if (disposing)
                 {
                     _nullTextInterface?.Dispose();

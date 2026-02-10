@@ -64,8 +64,6 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 try
                 {
-                    Log.Verbose();
-
                     if (disposing)
                     {
                         // release managed resources

@@ -37,7 +37,7 @@ namespace ACAT.Extensions.UI.UserControls
         {
             base.Initialize(mapEntry, textController, scanner);
 
-            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, textController, scanner, new PredictionTypes[] { PredictionTypes.Words });
+            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, textController, scanner, new PredictionTypes[] { PredictionTypes.Words }, null);
             bool retVal = _userControlWordPredictionCommon.Initialize(_keybordUserControlCommon.RootWidget);
             return retVal;
         }

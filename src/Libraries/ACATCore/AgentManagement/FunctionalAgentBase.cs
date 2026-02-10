@@ -9,6 +9,7 @@ using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 
 namespace ACAT.Core.AgentManagement
@@ -21,7 +22,7 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        protected FunctionalAgentBase()
+        protected FunctionalAgentBase(ILogger<AgentBase> logger = null) : base(logger)
         {
             CloseEvent = new AutoResetEvent(false);
             ExitCode = CompletionCode.None;

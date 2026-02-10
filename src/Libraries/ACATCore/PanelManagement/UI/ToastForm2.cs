@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Threading;
@@ -20,6 +21,8 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public partial class ToastForm2 : Form
     {
+        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(ToastForm2).Name);
+
         /// <summary>
         /// Thread proc for fading out
         /// </summary>
@@ -88,7 +91,7 @@ namespace ACAT.Core.PanelManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex);
+                    _logger.LogError(ex, ex.Message);
                 }
             }
         }

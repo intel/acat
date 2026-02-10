@@ -334,7 +334,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             var str = e.Url.ToString();
 
-            Log.Debug("Url is [" + str + "]");
+            _logger.LogDebug("Url is [{Url}]", str);
 
             if (str.ToLower().Contains("blank"))
             {

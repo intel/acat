@@ -18,12 +18,7 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public class AgentUtils
     {
-        private static ILogger<AgentUtils> _logger;
-
-        public static void SetLogger(ILogger<AgentUtils> logger)
-        {
-            _logger = logger;
-        }
+        private static readonly ILogger<AgentUtils> _logger = LoggingConfiguration.CreateLogger<AgentUtils>();
         /// <summary>
         /// Finds a descendent of the focused element that has the specified
         /// className, controlType and automationID
@@ -350,8 +345,8 @@ namespace ACAT.Core.AgentManagement
 
             while (parent != null)
             {
-                Log.Debug("parent.ClassName: " + parent.Current.ClassName + ", parent.COntrolType: " +
-                    parent.Current.ControlType.ProgrammaticName + ", parent.AutoId: " + parent.Current.AutomationId);
+                _logger?.LogDebug("parent.ClassName: {ClassName}, parent.ControlType: {ControlType}, parent.AutoId: {AutoId}",
+                    parent.Current.ClassName, parent.Current.ControlType.ProgrammaticName, parent.Current.AutomationId);
 
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
                     String.Compare(parent.Current.ControlType.ProgrammaticName, controlType, true) == 0 &&

@@ -20,7 +20,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class XmlUtils
     {
-        private static ILogger<XmlUtils> _logger;
+        private static ILogger<XmlUtils> _logger => LogManager.GetLogger<XmlUtils>();
         private static readonly object _lock = new();
 
         /// <summary>

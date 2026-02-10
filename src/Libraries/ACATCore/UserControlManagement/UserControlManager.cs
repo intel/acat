@@ -29,6 +29,7 @@ namespace ACAT.Core.UserControlManagement
     /// </summary>
     public class UserControlManager
     {
+        private static readonly ILogger<UserControlManager> _staticLogger = LoggingConfiguration.CreateLogger<UserControlManager>();
         private readonly ILogger<UserControlManager> _logger;
         private int _iterationCount = 0;
         private int _iterations = 1;
@@ -93,7 +94,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception es)
             {
-                _logger.LogError(es, "Error geting widgets: {Exception}", es.ToString());
+                _staticLogger.LogError(es, "Error geting widgets: {Exception}", es.ToString());
             }
             return Widgets;
         }

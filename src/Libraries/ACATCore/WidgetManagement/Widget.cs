@@ -786,7 +786,7 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="control">The .NET UI Control</param>
         public void AddChild(Control control)
         {
-            AddChild(new Widget(control));
+            AddChild(new Widget(control, _logger) { });
         }
 
         /// <summary>
@@ -851,7 +851,7 @@ namespace ACAT.Core.WidgetManagement
                     }
                 }
             }
-            //Log.Debug("WidgetName: " + Name + ", retVal : " + retVal);
+            _logger?.LogTrace("CanAddForAnimation: WidgetName={Name}, result={Result}", Name, retVal);
             return retVal;
         }
 
@@ -1178,7 +1178,7 @@ namespace ACAT.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace("");
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {

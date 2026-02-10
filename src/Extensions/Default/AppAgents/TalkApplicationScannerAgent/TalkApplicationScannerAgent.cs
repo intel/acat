@@ -28,17 +28,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
     internal class TalkApplicationScannerAgent : AgentBase
     {
         /// <summary>
-        /// Logger instance
-        /// </summary>
-        private readonly ILogger<TalkApplicationScannerAgent> _logger;
-
-        /// <summary>
-        /// Logger factory for creating loggers
-        /// </summary>
-        private readonly ILoggerFactory _loggerFactory;
-
-        /// <summary>
-        /// The text control agent responsbile for handling
+        /// The text control agent responsible for handling
         /// editing and caret movement functions
         /// </summary>
         private TextControlAgentBase _textInterface;
@@ -56,12 +46,10 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
         /// <summary>
         /// Initializes a new instance of the TalkApplicationScannerAgent class
         /// </summary>
-        public TalkApplicationScannerAgent(ILogger<TalkApplicationScannerAgent> logger, ILoggerFactory loggerFactory)
+        public TalkApplicationScannerAgent(ILogger<TalkApplicationScannerAgent> logger) : base(logger)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
         }
-        private Control textBoxControl;
+        //private Control textBoxControl;
 
         /// <summary>
         /// Gets the list of process supported by this agent
@@ -189,7 +177,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
             bool handled = false;
 
             //_textInterface = new EditTextControlAgent(handle, automationElement, ref handled);
-            var textControlLogger = _loggerFactory.CreateLogger<TalkApplicationTextControlAgent>();
+            var textControlLogger = LoggingConfiguration.CreateLogger<TalkApplicationTextControlAgent>();
             _textInterface = new TalkApplicationTextControlAgent(textControlLogger, textBoxControl, handle, automationElement, ref handled);
             _textInterface.EvtTextChanged += _textInterface_EvtTextChanged;
             setTextInterface(_textInterface);

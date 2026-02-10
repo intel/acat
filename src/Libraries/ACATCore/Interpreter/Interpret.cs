@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -29,6 +30,8 @@ namespace ACAT.Core.Interpreter
     /// </summary>
     public class Interpret
     {
+        private static readonly ILogger<Interpret> _logger = LoggingConfiguration.CreateLogger<Interpret>();
+
 #pragma warning disable IDE0051
 
         /// <summary>
@@ -223,12 +226,12 @@ namespace ACAT.Core.Interpreter
                 }
                 else
                 {
-                    Log.Debug("Error executing verb " + actionVerb.Action + ". Mi is null");
+                    _logger.LogDebug("Error executing verb {Action}. Mi is null", actionVerb.Action);
                 }
             }
             catch (Exception e)
             {
-                Log.Exception("Error executing verb " + actionVerb.Action + ". Exception: " + e.ToString());
+                _logger.LogError(e, "Error executing verb {Action}", actionVerb.Action);
                 retVal = false;
             }
 

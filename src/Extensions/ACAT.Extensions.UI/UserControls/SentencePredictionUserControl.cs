@@ -31,18 +31,16 @@ namespace ACAT.Extensions.UI.UserControls
                     "User Control for Sentence Prediction")]
     public partial class SentencePredictionUserControl : KeyboardUserControl
     {
-        private readonly ILogger<SentencePredictionUserControl> _logger;
         private UserControlWordPredictionCommon _userControlWordPredictionCommon;
 
         public SentencePredictionUserControl()
         {
-            _logger = LoggingConfiguration.CreateLogger<SentencePredictionUserControl>();
             InitializeComponent();
         }
 
         protected override bool HandleInitialize()
         {
-            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, _keybordUserControlCommon.TextController, _keybordUserControlCommon.ScannerPanel, new PredictionTypes[] { PredictionTypes.Sentences });
+            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, _keybordUserControlCommon.TextController, _keybordUserControlCommon.ScannerPanel, new PredictionTypes[] { PredictionTypes.Sentences }, null);
 
             bool retVal = _userControlWordPredictionCommon.Initialize(_keybordUserControlCommon.RootWidget);
             return retVal;

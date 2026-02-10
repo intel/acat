@@ -23,6 +23,7 @@ namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviation : IDisposable
     {
+        private static readonly ILogger<Abbreviation> _staticLogger = LoggingConfiguration.CreateLogger<Abbreviation>();
         private readonly ILogger<Abbreviation> _logger;
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Exception converting abbreviation mode");
+                _staticLogger?.LogError(ex, "Exception converting abbreviation mode");
             }
 
             return retVal;

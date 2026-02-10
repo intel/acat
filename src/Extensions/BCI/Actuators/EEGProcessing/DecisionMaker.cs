@@ -16,6 +16,8 @@ using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +26,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 {
     public class DecisionMaker
     {
+        private static readonly ILogger<DecisionMaker> _nullLogger = NullLogger<DecisionMaker>.Instance;
+        private readonly ILogger<DecisionMaker> _logger;
+
         // ************ Params and objects loaded at init
 
         /// <summary>
@@ -91,8 +96,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <summary>
         /// Constructor (Params read from settings)
         /// </summary>
-        public DecisionMaker(string TrainedClassifiersFilePath)
+        public DecisionMaker(string TrainedClassifiersFilePath, ILogger<DecisionMaker> logger = null)
         {
+            _logger = logger ?? _nullLogger;
             enableLanguageModelProbabilities = false; // by default (actuator will set flag for different type of LM probabilities)
             maxNumberOfSequences = BCIActuatorSettings.Settings.Classifier_MaxDecisionSequences;
             confidenceThreshold = BCIActuatorSettings.Settings.Classifier_ConfidenceThreshold;
@@ -110,23 +116,24 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 {
                     TrainedClassifiersObj = BinaryUtils.ReadFromBinaryFile<FeatureExtraction>(TrainedClassifiersFilePath);
 
-                    string logTxt = "Decision maker created with calibration file " + TrainedClassifiersObj.trainedClassifiersSessionID + ". AUC: " + TrainedClassifiersObj.meanAUC + " Max number of sequences: " + maxNumberOfSequences + ". Confidence threshold: " + confidenceThreshold;
-                    Log.Debug(logTxt);
+                    _logger.LogDebug("Decision maker created with calibration file {SessionID}. AUC: {MeanAUC} Max number of sequences: {MaxSequences}. Confidence threshold: {ConfidenceThreshold}", 
+                        TrainedClassifiersObj.trainedClassifiersSessionID, TrainedClassifiersObj.meanAUC, maxNumberOfSequences, confidenceThreshold);
                 }
                 else
-                    Log.Debug("Calibration file does not exist");
+                    _logger.LogDebug("Calibration file does not exist");
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, "Exception in DecisionMaker constructor");
             }
         }
 
         /// <summary>
         /// Constructor (Params as input)
         /// </summary>
-        public DecisionMaker(int maxNumberOfSeqs, float confThreshold)
+        public DecisionMaker(int maxNumberOfSeqs, float confThreshold, ILogger<DecisionMaker> logger = null)
         {
+            _logger = logger ?? _nullLogger;
             maxNumberOfSequences = maxNumberOfSeqs;
             confidenceThreshold = confThreshold;
 
@@ -135,7 +142,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             if (File.Exists(filePath))
                 TrainedClassifiersObj = BinaryUtils.ReadFromBinaryFile<FeatureExtraction>(filePath);
             else
-                Log.Debug("Calibration file does not exist");
+                _logger.LogDebug("Calibration file does not exist");
 
             _likelihoodsTarget = new Dictionary<int, List<double>>();
             _likelihoodsNontarget = new Dictionary<int, List<double>>();
@@ -193,7 +200,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 TrainedClassifiersObj.UpdateChannelSubset(availableChannels);
 
                 List<string> markerValuesString = markerValues.ConvertAll(x => x.ToString());
-                Log.Debug("Reduce data w/ " + data2parse.Length + " samples and " + String.Join(", ", markerValuesString) + " markers");
+                _logger.LogDebug("Reduce data w/ {SampleCount} samples and {Markers} markers", data2parse.Length, String.Join(", ", markerValuesString));
 
                 // Append incomplete data and markers
                 double[,] allDataToParse;
@@ -203,7 +210,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     // Concatenate markers
                     allMarkersToParse = incompleteMarkers;
                     allMarkersToParse.AddRange(markerValues);
-                    Log.Debug("Markers concatenated. Total markers: " + allMarkersToParse.Count);
+                    _logger.LogDebug("Markers concatenated. Total markers: {TotalMarkers}", allMarkersToParse.Count);
 
                     // Concatenate data
                     int numColumns = data2parse.GetLength(0);
@@ -217,7 +224,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         for (int sampleIdx = 0; sampleIdx < data2parse.GetLength(1); sampleIdx++)
                             allDataToParse[columnIdx, sampleIdx + incompleteData.GetLength(1)] = data2parse[columnIdx, sampleIdx];
                     }
-                    Log.Debug("Data concatenated. Total data: " + allDataToParse.GetLength(1) + " containing " + incompleteData.GetLength(1) + " from previous iterations and " + data2parse.GetLength(1) + " from current iteration");
+                    _logger.LogDebug("Data concatenated. Total data: {TotalData} containing {PreviousData} from previous iterations and {CurrentData} from current iteration", 
+                        allDataToParse.GetLength(1), incompleteData.GetLength(1), data2parse.GetLength(1));
                 }
                 else
                 {
@@ -229,14 +237,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 List<double> trialScores = TrainedClassifiersObj.Reduce(allDataToParse, allMarkersToParse, flashingSequence, out incompleteData, out incompleteMarkers);
 
                 if (trialScores != null)
-                    Log.Debug("Data reduced " + trialScores.Count + " trial scores found");
+                    _logger.LogDebug("Data reduced {TrialScoreCount} trial scores found", trialScores.Count);
                 else
-                    Log.Debug("Data not reduced. Scores returned null. Will reduce in new iteration");
+                    _logger.LogDebug("Data not reduced. Scores returned null. Will reduce in new iteration");
 
                 List<double> appendedTrialScores = new();
                 if (incompleteTrialScores != null)
                 {
-                    Log.Debug("Creating appended list with " + incompleteTrialScores.Count + " scores");
+                    _logger.LogDebug("Creating appended list with {IncompleteScoreCount} scores", incompleteTrialScores.Count);
                     appendedTrialScores = new List<double>(incompleteTrialScores);
                 }
                 if (trialScores != null && trialScores.Count > 0)
@@ -244,18 +252,20 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     // Append trial scores
                     if (appendedTrialScores != null && appendedTrialScores.Count > 0)
                     {
-                        Log.Debug("Adding current " + trialScores.Count + " scores to appended trialscores");
+                        _logger.LogDebug("Adding current {CurrentScoreCount} scores to appended trialscores", trialScores.Count);
                         appendedTrialScores.AddRange(trialScores);
 
                         if (incompleteTrialScores != null)
-                            Log.Debug("Appended trialScores. Total scores: " + appendedTrialScores.Count + " with " + incompleteTrialScores.Count + " from previous iteration and " + trialScores.Count + " from current iteration");
+                            _logger.LogDebug("Appended trialScores. Total scores: {TotalScores} with {PreviousScores} from previous iteration and {CurrentScores} from current iteration", 
+                                appendedTrialScores.Count, incompleteTrialScores.Count, trialScores.Count);
                         else
-                            Log.Debug("Appended trialScores. Total scores: " + appendedTrialScores.Count + " with 0 from previous iteration and " + trialScores.Count + " from current iteration");
+                            _logger.LogDebug("Appended trialScores. Total scores: {TotalScores} with 0 from previous iteration and {CurrentScores} from current iteration", 
+                                appendedTrialScores.Count, trialScores.Count);
                     }
                     else
                     {
                         appendedTrialScores = trialScores;
-                        Log.Debug("No trial scores from previous iterations. Current " + trialScores.Count + " will be used");
+                        _logger.LogDebug("No trial scores from previous iterations. Current {CurrentScoreCount} will be used", trialScores.Count);
                     }
                 }
 
@@ -268,22 +278,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         // List<double> completeTrialScores = new List<double>(appendedTrialScores);
                         List<double> completeTrialScores = new(appendedTrialScores.GetRange(0, flashingSequence.Count));
 
-                        Log.Debug("Calculating probabilities for " + completeTrialScores.Count + " scores corresponding to " + flashingSequence.Count + " trials");
+                        _logger.LogDebug("Calculating probabilities for {CompleteScoreCount} scores corresponding to {TrialCount} trials", completeTrialScores.Count, flashingSequence.Count);
                         ComputePosteriorProbs(completeTrialScores.ToArray(), flashingSequence, out decided, out decidedButtonID, out repetition, out posteriorProbs, out eegProbs, out nextCharacterProbs);
-                        Log.Debug("Posterior probabilities calculated. Repetition: " + repetition + " , Decided: " + decided + " , Decided button ID: " + decidedButtonID);
+                        _logger.LogDebug("Posterior probabilities calculated. Repetition: {Repetition} , Decided: {Decided} , Decided button ID: {DecidedButtonID}", repetition, decided, decidedButtonID);
 
                         if (appendedTrialScores.Count > flashingSequence.Count)
                         {
                             incompleteTrialScores = new List<double>(appendedTrialScores.GetRange(flashingSequence.Count, appendedTrialScores.Count - flashingSequence.Count));
-                            Log.Debug("Incomplete Trial scores " + incompleteTrialScores.Count + " saved for next iteration");
+                            _logger.LogDebug("Incomplete Trial scores {IncompleteScoreCount} saved for next iteration", incompleteTrialScores.Count);
                         }
                     }
                     else
                     {
                         if (trialScores != null)
-                            Log.Debug("Incomplete trial scores. Expected: " + flashingSequence.Count + " Calculated: " + trialScores.Count + " Waiting for new repetition");
+                            _logger.LogDebug("Incomplete trial scores. Expected: {ExpectedCount} Calculated: {CalculatedCount} Waiting for new repetition", flashingSequence.Count, trialScores.Count);
                         else
-                            Log.Debug("Incomplete trial scores. Expected: " + flashingSequence.Count + " Calculated: 0  Waiting for new repetition");
+                            _logger.LogDebug("Incomplete trial scores. Expected: {ExpectedCount} Calculated: 0  Waiting for new repetition", flashingSequence.Count);
 
                         if (incompleteTrialScores == null)
                             incompleteTrialScores = appendedTrialScores;
@@ -294,7 +304,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, "Exception in ComputePosteriorProbs");
             }
         }
 
@@ -371,7 +381,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         // Add next character probabilities
                         if (enableLanguageModelProbabilities && _languageModelProbabilities != null)
                         {
-                            Log.Debug("Adding language model probabilities");
+                            _logger.LogDebug("Adding language model probabilities");
                             if (_languageModelProbabilities.ContainsKey(buttonID))
                             {
                                 buttonLogPosterior += Math.Log(Math.Sqrt(_languageModelProbabilities[buttonID]));
@@ -427,8 +437,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     decided = false;
                     if (maxProb > confidenceThreshold || _sequenceCount == maxNumberOfSequences)
                     {
-                        string txtLog = "Decision made. Repetition: " + _sequenceCount + " Probability: " + maxProb;
-                        Log.Debug(txtLog);
+                        _logger.LogDebug("Decision made. Repetition: {SequenceCount} Probability: {MaxProb}", _sequenceCount, maxProb);
                         decided = true;
                         _sequenceCount = 0;
                         _likelihoodsTarget = new Dictionary<int, List<double>>();
@@ -440,14 +449,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     }
 
                     if (posteriorProbs == null || posteriorProbs.Count == 0)
-                        Log.Debug("Zero posteriorProbs");
+                        _logger.LogDebug("Zero posteriorProbs");
                 }
                 else
-                    Log.Debug("Error when computing probabilities, trialScore is null or 0, returning null and restarting algorithm");
+                    _logger.LogDebug("Error when computing probabilities, trialScore is null or 0, returning null and restarting algorithm");
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, "Exception in ComputePosteriorProbs");
             }
         }
 
@@ -456,7 +465,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// </summary>
         public void RestartProbabilities()
         {
-            Log.Debug("Restarting probabilities");
+            _logger.LogDebug("Restarting probabilities");
             _sequenceCount = 0;
             _likelihoodsTarget = new Dictionary<int, List<double>>();
             _likelihoodsNontarget = new Dictionary<int, List<double>>();

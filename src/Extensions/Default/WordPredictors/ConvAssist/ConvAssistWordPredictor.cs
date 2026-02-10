@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //#define DEBUG_CONVASSIST
 
+using ACAT.Core.PanelManagement;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.UserManagement;
@@ -93,19 +94,27 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         private Task wordPredictionTask;
 
         /// <summary>
+        /// Initializes an instance of the class with default logger
+        /// </summary>
+        public ConvAssistWordPredictor() : this(Context.ServiceProvider?.GetService(typeof(ILogger<ConvAssistWordPredictor>)) as ILogger<ConvAssistWordPredictor> 
+            ?? LoggingConfiguration.CreateLogger<ConvAssistWordPredictor>())
+        {
+        }
+
+        /// <summary>
         /// Initializes and instance of the class
         /// </summary>
         public ConvAssistWordPredictor(ILogger<ConvAssistWordPredictor> logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Settings.PreferencesFilePath = getUserRelativePath(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, SettingsFileName, true);
 
             settings = Settings.Load();
 
             convAssistSettings = settings;
 
-            _wordPredictionsRequestHandler = new WordPredictionsRequestHandler(this);
-            _sentencePredictionsRequestHandler = new SentencePredictionsRequestHandler(this);
+            _wordPredictionsRequestHandler = new WordPredictionsRequestHandler(this, null);
+            _sentencePredictionsRequestHandler = new SentencePredictionsRequestHandler(this, null);
 
             wpStack = new Stack<object>();
             sentenceStack = new Stack<object>();
@@ -202,7 +211,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             // Now start the named pipe server and wait for the client to connect
             string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Settings");
 
-            namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings);
+            namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings, LoggingConfiguration.CreateLogger<NamedPipeServerConvAssist>());
             pipeCreated = namedPipe.CreatePipeServer(send_params);
 
             if (pipeCreated)
@@ -250,7 +259,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
         /// <summary>
-        /// Send a request message Syncronously
+        /// Send a request message Synchronously
         /// </summary>
         /// <param name="text">Text to send to the client</param>
         /// <returns>Sentences predictions</returns>
@@ -263,7 +272,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
         /// <summary>
-        /// Send a request message Syncronously
+        /// Send a request message Synchronously
         /// </summary>
         /// <param name="text">Text to send to the client</param>
         /// <returns>Sentences predictions</returns>

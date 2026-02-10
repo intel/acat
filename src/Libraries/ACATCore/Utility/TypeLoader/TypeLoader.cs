@@ -10,7 +10,7 @@ namespace ACAT.Core.Utility.TypeLoader
     public class TypeLoader<TInterface> : ITypeLoader<TInterface>
         where TInterface : class, IPluginExtension
     {
-        private readonly ILogger<TypeLoader<TInterface>> _logger;
+        private readonly ILogger<TypeLoader<TInterface>> _logger = LogManager.GetLogger<TypeLoader<TInterface>>();
         private readonly Dictionary<Guid, Type> _typeCache = new();
 
         public IReadOnlyDictionary<Guid, Type> LoadedTypes => _typeCache;

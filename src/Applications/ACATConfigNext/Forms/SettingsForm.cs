@@ -6,6 +6,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension;
 using ACATConfigNext.UserControls;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace ACATConfigNext.Forms
     public class SettingsForm : Form
     {
         private readonly ILogger<SettingsForm> _logger;
+        private readonly IServiceProvider _serviceProvider;
         private TableLayoutPanel basePanel;
         private FlowLayoutPanel leftPanel;
         private TableLayoutPanel navPanel;
@@ -42,13 +44,13 @@ namespace ACATConfigNext.Forms
 
         private bool _isDirty = false;
 
-        public SettingsForm(ILogger<SettingsForm> logger)
+        public SettingsForm(ILogger<SettingsForm> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
+            _serviceProvider = serviceProvider;
             WpfInitializationHelper.EnsureApplicationResources();
 
             InitializeComponent();
-
         }
 
         private FlowLayoutPanel CreateLeftPanel() 
@@ -159,7 +161,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error occurred while saving settings");
                 MessageBox.Show("An error occurred while saving settings.", "Save Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -410,6 +412,12 @@ namespace ACATConfigNext.Forms
             }
         }
 
+        private object CreateExtensionInstance(Type type)
+        {
+            // Use shared helper method for consistent extension instantiation across all applications
+            return ExtensionHelper.CreateExtensionInstance(_serviceProvider, type, _logger);
+        }
+
 
         private IEnumerable<IExtension> LoadSettings(string category)
         {
@@ -431,7 +439,7 @@ namespace ACATConfigNext.Forms
                     {
                         var wordPredictorTypes = Context.AppWordPredictionManager.WordPredictorExtensions;
                         var wordPredictorExtensions = wordPredictorTypes
-                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                            .Select(type => CreateExtensionInstance(type) as IExtension)
                             .Where(instance => instance != null);
                         return wordPredictorExtensions;
 
@@ -443,7 +451,7 @@ namespace ACATConfigNext.Forms
                     {
                         var ttsEngineTypes = Context.AppTTSManager.GetExtensions();
                         var ttsExtensions = ttsEngineTypes
-                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                            .Select(type => CreateExtensionInstance(type) as IExtension)
                             .Where(instance => instance != null);
                         return ttsExtensions;
                     }

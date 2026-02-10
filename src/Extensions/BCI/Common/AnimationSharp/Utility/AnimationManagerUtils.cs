@@ -27,7 +27,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
     /// </summary>
     public class AnimationManagerUtils
     {
-        private static readonly ILogger<AnimationManagerUtils> _logger = LoggerFactory.GetLogger<AnimationManagerUtils>();
+        private static readonly ILogger<AnimationManagerUtils> _logger = LoggingConfiguration.CreateLogger<AnimationManagerUtils>();
         /// <summary>
         /// String messages for BCI
         /// </summary>

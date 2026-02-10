@@ -74,7 +74,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         public static bool ShowFormDialog(Form parent = null, bool setTopMost = false)
         {
-            var confirmBox = new RemapCalibrationForm();
+            var confirmBox = new RemapCalibrationForm(null);
             //To always display the form in the main screen
             confirmBox.StartPosition = FormStartPosition.Manual;
             confirmBox.Location = confirmBox.primaryScreen.WorkingArea.Location;

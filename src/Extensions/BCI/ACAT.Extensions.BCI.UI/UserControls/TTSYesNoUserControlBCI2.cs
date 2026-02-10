@@ -37,7 +37,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
         public TTSYesNoUserControlBCI2(ILogger<TTSYesNoUserControlBCI2> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<TTSYesNoUserControlBCI2>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<TTSYesNoUserControlBCI2>();
             InitializeComponent();
         }
 

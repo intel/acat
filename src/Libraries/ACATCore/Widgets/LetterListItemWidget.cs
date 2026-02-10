@@ -26,9 +26,9 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
         public LetterListItemWidget(Control control, ILogger<LetterListItemWidget> logger = null)
-            : base(control)
+            : base(control, logger ?? LoggingConfiguration.CreateLogger<ScannerButtonBase>())
         {
-            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<LetterListItemWidget>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<LetterListItemWidget>();
             if (button != null)
             {
                 button.AutoEllipsis = true;

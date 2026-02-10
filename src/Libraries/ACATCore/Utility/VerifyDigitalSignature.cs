@@ -9,11 +9,13 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.Pkcs;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
     public class VerifyDigitalSignature
     {
+        private static ILogger<VerifyDigitalSignature> _logger => LogManager.GetLogger<VerifyDigitalSignature>();
 #if ENABLE_DIGITAL_VERIFICATION
         private static string[] _dllFiles =
         {
@@ -77,7 +79,7 @@ namespace ACAT.Core.Utility
             int formatType = 0;
             const int ErrCertExpired = -2146762495;
 
-            Log.Debug("Verify digital signature for " + fileName);
+            _logger?.LogDebug("Verify digital signature for {FileName}", fileName);
 
             if (!CryptoInterop.CryptQueryObject(
                 CryptoInterop.CERT_QUERY_OBJECT_FILE,
@@ -93,14 +95,14 @@ namespace ACAT.Core.Utility
                 ref context
             ))
             {
-                Log.Debug((new Win32Exception(Marshal.GetLastWin32Error())).Message);
+                _logger?.LogDebug("Crypto query failed: {Message}", (new Win32Exception(Marshal.GetLastWin32Error())).Message);
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
 
             int data = 0;
             if (!CryptoInterop.CryptMsgGetParam(msgHandle, CryptoInterop.CMSG_ENCODED_MESSAGE, 0, null, ref data))
             {
-                Log.Debug((new Win32Exception(Marshal.GetLastWin32Error())).Message);
+                _logger?.LogDebug("CryptMsgGetParam failed: {Message}", (new Win32Exception(Marshal.GetLastWin32Error())).Message);
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
 
@@ -111,13 +113,13 @@ namespace ACAT.Core.Utility
             try
             {
                 signedCms.CheckSignature(false);
-                Log.Debug("Signature check passed");
+                _logger?.LogDebug("Signature check passed");
             }
             catch (Exception e)
             {
                 if (e.HResult != ErrCertExpired)
                 {
-                    Log.Exception(e);
+                    _logger?.LogError(e, "Signature check failed");
                     throw (e);
                 }
             }

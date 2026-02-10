@@ -96,7 +96,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public SAPIEngine(ILogger<SAPIEngine> logger)
+        public SAPIEngine(ILogger<SAPIEngine> logger = null)
         {
             _logger = logger;
             SAPISettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);

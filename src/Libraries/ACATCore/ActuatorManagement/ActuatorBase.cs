@@ -278,25 +278,25 @@ namespace ACAT.Core.ActuatorManagement
             // enumerate the switches in this actuator and create
             // each switch object using the switch ClassFactory
 
-            Log.Debug("Loading switches");
+            _logger?.LogDebug("Loading switches");
             foreach (var switchSetting in switchSettings)
             {
                 var actuatorSwitch = CreateSwitch();
                 if (actuatorSwitch != null)
                 {
-                    Log.Debug("name=" + switchSetting.Name);
+                    _logger?.LogDebug("Loading switch: {SwitchName}", switchSetting.Name);
                     if (!_switches.ContainsKey(switchSetting.Name))
                     {
                         if (actuatorSwitch.Load(switchSetting) && actuatorSwitch.Init())
                         {
-                            Log.Debug("Adding switch " + actuatorSwitch.Name);
+                            _logger?.LogDebug("Adding switch {SwitchName}", actuatorSwitch.Name);
                             actuatorSwitch.Actuator = this;
                             _switches.Add(actuatorSwitch.Name, actuatorSwitch);
                         }
                     }
                     else
                     {
-                        Log.Warn("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
+                        _logger?.LogWarning("Warning. Switch {SwitchName} defined more than once", actuatorSwitch.Name);
                     }
                 }
             }
@@ -426,7 +426,7 @@ namespace ACAT.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing ActuatorBase");
 
                 if (disposing)
                 {
@@ -454,8 +454,7 @@ namespace ACAT.Core.ActuatorManagement
             }
             catch (Exception e)
             {
-                Log.Warn("VisionAcutator switch, invalid action specified " + action);
-                Log.Exception(e);
+                _logger?.LogWarning(e, "VisionActuator switch, invalid action specified {Action}", action);
             }
 
             return retVal;
@@ -477,7 +476,7 @@ namespace ACAT.Core.ActuatorManagement
                 var imageSwitch = switchObj;
                 if (String.Compare(imageSwitch.Source, gesture, true) == 0)
                 {
-                    Log.Debug("Found switch object " + switchObj.Name + " for gesture" + gesture);
+                    _logger?.LogDebug("Found switch object {SwitchName} for gesture {Gesture}", switchObj.Name, gesture);
                     return CreateSwitch(switchObj);
                 }
             }
@@ -577,7 +576,7 @@ namespace ACAT.Core.ActuatorManagement
             bool actuate = true;
             parsedGesture = String.Empty;
 
-            Log.Debug(strData);
+            _logger?.LogDebug("Parsing actuator message: {Data}", strData);
 
             var tokens = strData.Split(';');
             foreach (var token in tokens)
@@ -696,7 +695,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="enableConfigure">should the configure button b e enabled</param>
         protected void UpdateCalibrationStatus(String caption, String prompt, int timeout = 0, bool enableConfigure = true, string buttonText = "")
         {
-            Log.Debug("Calling ActuatorManager.Instance.UpdateCalibrationStatus");
+            _logger?.LogDebug("Calling ActuatorManager.Instance.UpdateCalibrationStatus");
             ActuatorManager.Instance.UpdateCalibrationStatus(this, caption, prompt, timeout, enableConfigure, buttonText);
         }
 
@@ -714,7 +713,7 @@ namespace ACAT.Core.ActuatorManagement
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, "Exception parsing long value");
             }
 
             return retVal;

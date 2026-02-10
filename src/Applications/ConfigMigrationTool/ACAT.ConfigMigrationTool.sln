@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11429.125 d18.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.ConfigMigrationTool", "ACAT.ConfigMigrationTool\ACAT.ConfigMigrationTool.csproj", "{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{784A36A0-57B5-41C6-8C9B-A65905C6B586}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.ConfigMigrationTool.Tests", "ACAT.ConfigMigrationTool.Tests\ACAT.ConfigMigrationTool.Tests.csproj", "{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_signed|x64 = Debug_signed|x64
+		Debug_TestGTEC|x64 = Debug_TestGTEC|x64
+		Debug|x64 = Debug|x64
+		Release_signed|x64 = Release_signed|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Debug|x64.ActiveCfg = Debug|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Debug|x64.Build.0 = Debug|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Release_signed|x64.Build.0 = Release_signed|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Release|x64.ActiveCfg = Release|x64
+		{ABD1CD29-C771-AB88-8DE6-9F631E22B26E}.Release|x64.Build.0 = Release|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Debug|x64.ActiveCfg = Debug|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Debug|x64.Build.0 = Debug|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Release_signed|x64.Build.0 = Release_signed|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Release|x64.ActiveCfg = Release|x64
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23ABC1B9-BE05-3797-AEE0-6F0D3B024184} = {784A36A0-57B5-41C6-8C9B-A65905C6B586}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91FEAE68-2B7B-4EB5-9064-17FC36FE0D98}
+	EndGlobalSection
+EndGlobal

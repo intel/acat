@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.IO;
@@ -23,6 +24,8 @@ namespace ACAT.Core.UserManagement
     /// </summary>
     public class UserManager
     {
+        private static readonly ILogger<UserManager> _logger = LoggingConfiguration.CreateLogger<UserManager>();
+
         public const String BaseUserInstallDir = "Install\\Users";
 
         /// <summary>
@@ -103,7 +106,7 @@ namespace ACAT.Core.UserManagement
 
             var targetDir = Path.Combine(UserManager.CurrentUserDir);
 
-            Log.Debug("Copy directory " + srcDir + "=> " + targetDir);
+            _logger.LogDebug("Copy directory {SourceDir} => {TargetDir}", srcDir, targetDir);
             return FileUtils.CopyDir(srcDir, targetDir);
         }
 
@@ -136,7 +139,7 @@ namespace ACAT.Core.UserManagement
             {
                 MessageBox.Show("Error creating dir. ex: " + ex);
 
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Failed to create user directory: {UserName}", userName);
                 retVal = false;
             }
 

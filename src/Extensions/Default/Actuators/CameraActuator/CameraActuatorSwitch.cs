@@ -24,6 +24,7 @@
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Extensions.Actuators.CameraActuator
 {
@@ -34,11 +35,14 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         /// </summary>
         private bool _disposed;
 
+        private readonly ILogger<CameraActuatorSwitch> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class
         /// </summary>
-        public CameraActuatorSwitch()
+        public CameraActuatorSwitch(ILogger<CameraActuatorSwitch> logger = null)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -46,9 +50,10 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         /// members over from switchObj
         /// </summary>
         /// <param name="switchObj">Switch object to clone</param>
-        public CameraActuatorSwitch(IActuatorSwitch switchObj)
+        public CameraActuatorSwitch(IActuatorSwitch switchObj, ILogger<CameraActuatorSwitch> logger = null)
             : base(switchObj)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -61,7 +66,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger?.LogTrace("Disposing CameraActuatorSwitch");
 
                     if (disposing)
                     {

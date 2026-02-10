@@ -13,6 +13,7 @@
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlErrorBluetoothDisconnected : UserControl
     {
+        private readonly ILogger<UserControlErrorBluetoothDisconnected> _logger;
+
         // Timer to update the lists of paired / unpaired devices
         private Timer _updateTimer;
 
@@ -36,8 +39,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Constructor for user control which handles Unicorn bluetooth device connection
         /// </summary>
-        public UserControlErrorBluetoothDisconnected()
+        public UserControlErrorBluetoothDisconnected(ILogger<UserControlErrorBluetoothDisconnected> logger)
         {
+            _logger = logger;
             InitializeComponent();
 
             // Disable Next button until something in list is selected
@@ -70,7 +74,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 BCIActuatorSettings.Settings.GTecDeviceName = selectedDevice;
                 BCIActuatorSettings.Save();
-                Log.Debug("Saved BCIGtecActuatorSettings.Settings.GTecDeviceName to ACAT settings: " + BCIActuatorSettings.Settings.GTecDeviceName);
+                _logger.LogDebug("Saved BCIGtecActuatorSettings.Settings.GTecDeviceName to ACAT settings: " + BCIActuatorSettings.Settings.GTecDeviceName);
             }
         }
 
@@ -94,7 +98,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Exception("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
+                    _logger.LogError(e, "startStopUpdateBluetoothListTimer | Exception when starting: {Exception}", e.ToString());
                 }
             }
             else
@@ -112,7 +116,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Exception("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
+                    _logger.LogError(e, "startStopUpdateBluetoothListTimer | Exception: {Exception}", e.ToString());
                 }
             }
         }
@@ -143,7 +147,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="eventParams">Any extra params sent with bluetooth event request</param>
         public void bluetoothResultHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
-            Log.Debug("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString());
+            _logger.LogDebug("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString());
 
              if (!this.IsHandleCreated || this.IsDisposed) { return; }
 
@@ -186,7 +190,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         }
                         catch (Exception ex)
                         {
-                            Log.Exception("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception: " + ex.Message);
+                            _logger.LogError(ex, "UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception");
                         }
                     }));
 

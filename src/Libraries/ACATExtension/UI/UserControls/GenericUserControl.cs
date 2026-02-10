@@ -17,6 +17,7 @@ using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -26,6 +27,8 @@ namespace ACAT.Extension.UI.UserControls
     [DesignerCategory("Code")]
     public abstract class GenericUserControl : UserControl, IUserControl
     {
+        protected ILogger _logger;
+
         public event AnimationPlayerStateChanged EvtPlayerStateChanged;
 
         /// <summary>
@@ -73,7 +76,7 @@ namespace ACAT.Extension.UI.UserControls
 
         public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
-            Log.Debug("GenericUserControl onWidgetActuated");
+            _logger?.LogDebug("GenericUserControl onWidgetActuated");
             handled = false;
         }
 

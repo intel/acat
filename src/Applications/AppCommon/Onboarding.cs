@@ -5,6 +5,7 @@ using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extensions.Onboarding.UI;
 using ACAT.Extensions.Onboarding.UI.Forms;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -49,6 +50,7 @@ namespace ACAT.Applications
 
         public static bool ResetAllPreferences(List<PreferencesCategory> currentCategory)
         {
+            var logger = LoggingConfiguration.CreateLogger<AppCommon>();
             try
             {
                 // Reset general preferences  
@@ -82,13 +84,14 @@ namespace ACAT.Applications
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                logger.LogError(ex, "Error resetting preferences");
                 return false;
             }
         }
 
         private static void CopyPreferencesValues(IPreferences source, IPreferences target)
         {
+            var logger = LoggingConfiguration.CreateLogger<AppCommon>();
             var sourceType = source.GetType();
             var targetType = target.GetType();
 
@@ -110,7 +113,7 @@ namespace ACAT.Applications
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug($"Could not copy property {prop.Name}: {ex.Message}");
+                        logger.LogDebug("Could not copy property {PropertyName}: {Message}", prop.Name, ex.Message);
                     }
                 }
             }

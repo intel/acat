@@ -8,6 +8,7 @@
 using System;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
@@ -17,6 +18,13 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class TextUtils
     {
+        private static ILogger<TextUtils> _logger;
+
+        static TextUtils()
+        {
+            _logger = LoggingConfiguration.CreateLogger<TextUtils>();
+        }
+
         /// <summary>
         /// Converts a byte array into a hex string
         /// </summary>
@@ -40,7 +48,7 @@ namespace ACAT.Core.Utility
         /// <returns></returns>
         public static String Capitalize(String word)
         {
-            Log.Debug(word);
+            _logger?.LogDebug("{Word}", word);
             if (String.IsNullOrEmpty(word))
             {
                 return word;
@@ -59,7 +67,7 @@ namespace ACAT.Core.Utility
             }
 
             char c = word[index];
-            Log.Debug("index: " + index + "c: " + c.ToString());
+            _logger?.LogDebug("index: {Index}, c: {Char}", index, c);
 
             if (!Char.IsLetter(c) || Char.IsUpper(c))
             {
@@ -69,7 +77,7 @@ namespace ACAT.Core.Utility
             word = word.Remove(index, 1);
             c = Char.ToUpper(c);
             word = word.Insert(index, c.ToString());
-            Log.Debug("returning " + word);
+            _logger?.LogDebug("returning {Word}", word);
             return word;
         }
 
@@ -95,7 +103,7 @@ namespace ACAT.Core.Utility
 
                 if (String.IsNullOrEmpty(inputString))
                 {
-                    Log.Debug("NULL string. return true " + insertOrReplaceOffset);
+                    _logger?.LogDebug("NULL string. return true {Offset}", insertOrReplaceOffset);
                     return true;
                 }
 
@@ -113,12 +121,12 @@ namespace ACAT.Core.Utility
 
                 int index = caretPos;
                 insertOrReplaceOffset = caretPos;
-                Log.Debug("index: " + index + ", inputString[index] is [" + inputString[index] + "]");
+                _logger.LogDebug("index: " + index + ", inputString[index] is [" + inputString[index] + "]");
                 // cursor is not within a word
                 if (Char.IsWhiteSpace(inputString[index]))
                 {
                     insertOrReplaceOffset = caretPos + 1;
-                    Log.Debug("iswhiespace. return true " + insertOrReplaceOffset);
+                    _logger.LogDebug("iswhiespace. return true " + insertOrReplaceOffset);
                     return true;
                 }
 
@@ -127,7 +135,7 @@ namespace ACAT.Core.Utility
                 if (IsSentenceTerminator(inputString[index]))
                 {
                     insertOrReplaceOffset = caretPos + 1;
-                    Log.Debug("is sentence terminator. return true " + insertOrReplaceOffset);
+                    _logger.LogDebug("is sentence terminator. return true " + insertOrReplaceOffset);
                     return true;
                 }
 
@@ -135,19 +143,19 @@ namespace ACAT.Core.Utility
                 if (IsWordElement(inputString[index]))
                 {
                     insertOrReplaceOffset = getWordToReplace(inputString, caretPos, out wordToReplace);
-                    Log.Debug("iswordelement is true.  return false " + insertOrReplaceOffset);
+                    _logger.LogDebug("iswordelement is true.  return false " + insertOrReplaceOffset);
                     return false;
                 }
                 else
                 {
                     insertOrReplaceOffset = caretPos + 1;
-                    Log.Debug("iswordelement is false.  return true " + insertOrReplaceOffset);
+                    _logger.LogDebug("iswordelement is false.  return true " + insertOrReplaceOffset);
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 insertOrReplaceOffset = 0;
                 wordToReplace = String.Empty;
                 return true;
@@ -209,7 +217,7 @@ namespace ACAT.Core.Utility
 
                 int startPos = index + 1;
 
-                Log.Debug("startPos = " + startPos);
+                _logger.LogDebug("startPos = " + startPos);
 
                 index = startPos;
 
@@ -221,21 +229,21 @@ namespace ACAT.Core.Utility
 
                 int endPos = index - 1;
 
-                Log.Debug("endPos = " + endPos);
+                _logger.LogDebug("endPos = " + endPos);
 
                 int count = endPos - startPos + 1;
 
-                Log.Debug("count = " + count);
+                _logger.LogDebug("count = " + count);
 
                 paragraphAtCaret = (count > 0) ? inputString.Substring(startPos, count) : String.Empty;
 
-                Log.Debug("para: [" + paragraphAtCaret + "]");
+                _logger.LogDebug("para: [" + paragraphAtCaret + "]");
 
                 return startPos;
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 paragraphAtCaret = String.Empty;
                 return 0;
             }
@@ -400,7 +408,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 paragraphAtCaret = String.Empty;
                 return 0;
             }
@@ -424,7 +432,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 word = String.Empty;
                 return 0;
             }
@@ -471,7 +479,7 @@ namespace ACAT.Core.Utility
             offset = index;
             count = caretPos - offset;
 
-            Log.Debug("offset: " + offset + ", caretPos: " + caretPos + ", count: " + count);
+            _logger.LogDebug("offset: " + offset + ", caretPos: " + caretPos + ", count: " + count);
 
             return true;
         }
@@ -494,21 +502,17 @@ namespace ACAT.Core.Utility
                 prefix = String.Empty;
                 wordAtCaret = String.Empty;
 
-                Log.Verbose();
-
-                //Log.Debug("inputstring: [" + inputString + "]");
-
                 // first get the current sentence
                 int startPos = GetSentenceAtCaret(inputString, caretPos, out string sentenceAtCaret);
                 if (startPos < 0)
                 {
-                    Log.Debug("returning " + startPos);
+                    _logger.LogDebug("returning " + startPos);
                     return startPos;
                 }
 
                 if (String.IsNullOrEmpty(sentenceAtCaret))
                 {
-                    Log.Debug("returning " + startPos);
+                    _logger.LogDebug("returning " + startPos);
                     return startPos;
                 }
 
@@ -516,27 +520,27 @@ namespace ACAT.Core.Utility
 
                 //Log.Debug("Calling getwordatcaret. InputString: [" + inputString + "]");
                 int wordPos = GetWordAtCaret(inputString, caretPos, out string w);
-                Log.Debug("startPos: " + startPos + "wordPos: " + wordPos + " wordPos-startPos: " + (wordPos - startPos));
-                Log.Debug("Getwordatcaret returned [" + w + "]");
+                _logger.LogDebug("startPos: " + startPos + "wordPos: " + wordPos + " wordPos-startPos: " + (wordPos - startPos));
+                _logger.LogDebug("Getwordatcaret returned [" + w + "]");
                 int count = wordPos - startPos;
-                Log.Debug("count: " + count);
+                _logger.LogDebug("count: " + count);
                 if (count > 0)
                 {
-                    Log.Debug("Getting substring: startPos: " + startPos + ", count: " + count);
+                    _logger.LogDebug("Getting substring: startPos: " + startPos + ", count: " + count);
                 }
 
                 prefix = (count > 0) ? inputString.Substring(startPos, count) : String.Empty;
 
-                Log.Debug("prefix: [" + prefix + "]");
+                _logger.LogDebug("prefix: [" + prefix + "]");
 
                 if (!String.IsNullOrEmpty(w))
                 {
-                    Log.Debug("caretPos: " + caretPos + " wordPos: " + wordPos);
+                    _logger.LogDebug("caretPos: " + caretPos + " wordPos: " + wordPos);
                     count = caretPos - wordPos;
 
                     if (count > 0)
                     {
-                        Log.Debug("calling w.Substring starting at 0, count = " + count);
+                        _logger.LogDebug("calling w.Substring starting at 0, count = " + count);
                     }
 
                     if (count >= w.Length)
@@ -551,12 +555,12 @@ namespace ACAT.Core.Utility
                     wordAtCaret = String.Empty;
                 }
 
-                Log.Debug("returning " + startPos);
+                _logger.LogDebug("returning " + startPos);
                 return startPos;
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 prefix = String.Empty;
                 wordAtCaret = String.Empty;
                 return 0;
@@ -614,13 +618,13 @@ namespace ACAT.Core.Utility
 
                 word = (count > 0) ? input.Substring(startPos, count) : String.Empty;
 
-                Log.Debug("word: " + word);
+                _logger.LogDebug("word: " + word);
 
                 return startPos;
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 word = String.Empty;
                 return 0;
             }
@@ -661,14 +665,14 @@ namespace ACAT.Core.Utility
                 int index = caretPos;
                 offset = caretPos;
                 int endPos = caretPos;
-                Log.Debug("endPos: " + endPos);
+                _logger.LogDebug("endPos: " + endPos);
 
                 while (index >= 0 && Char.IsWhiteSpace(inputString[index]))
                 {
                     index--;
                 }
 
-                Log.Debug("HARRIS Before: index: " + index + " char:  [" + inputString[index] + "]");
+                _logger.LogDebug("HARRIS Before: index: " + index + " char:  [" + inputString[index] + "]");
 
                 /*
                 while (index >= 0 && (IsTerminator(inputString[index]) || inputString[index] == '-'))
@@ -689,8 +693,8 @@ namespace ACAT.Core.Utility
                     index--;
                 }
 
-                Log.Debug("HARRIS After index: " + index + " char:  [" + inputString[index] + "]");
-                Log.Debug("HARRIS Count dash: " + countDash);
+                _logger.LogDebug("HARRIS After index: " + index + " char:  [" + inputString[index] + "]");
+                _logger.LogDebug("HARRIS Count dash: " + countDash);
 
                 if (countDash > 1)
                 {
@@ -735,7 +739,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 offset = 0;
                 count = 0;
                 return false;
@@ -777,14 +781,14 @@ namespace ACAT.Core.Utility
                 int index = caretPos;
                 offset = caretPos;
                 int endPos = caretPos;
-                Log.Debug("endPos: " + endPos);
+                _logger.LogDebug("endPos: " + endPos);
 
                 while (index >= 0 && Char.IsWhiteSpace(inputString[index]))
                 {
                     index--;
                 }
 
-                Log.Debug("HARRIS Before: index: " + index + " char:  [" + inputString[index] + "]");
+                _logger.LogDebug("HARRIS Before: index: " + index + " char:  [" + inputString[index] + "]");
 
                 /*
                 while (index >= 0 && (IsTerminator(inputString[index]) || inputString[index] == '-'))
@@ -805,8 +809,8 @@ namespace ACAT.Core.Utility
                     index--;
                 }
 
-                Log.Debug("HARRIS After index: " + index + " char:  [" + inputString[index] + "]");
-                Log.Debug("HARRIS Count dash: " + countDash);
+                _logger.LogDebug("HARRIS After index: " + index + " char:  [" + inputString[index] + "]");
+                _logger.LogDebug("HARRIS Count dash: " + countDash);
 
                 if (countDash > 1)
                 {
@@ -852,7 +856,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 offset = 0;
                 count = 0;
                 return false;
@@ -874,10 +878,9 @@ namespace ACAT.Core.Utility
             {
                 sentenceAtCaret = String.Empty;
 
-                Log.Verbose();
                 if (String.IsNullOrEmpty(inputString.Trim()))
                 {
-                    Log.Debug("returning -1");
+                    _logger.LogDebug("returning -1");
                     return -1;
                 }
 
@@ -913,12 +916,12 @@ namespace ACAT.Core.Utility
 
                 int count = endPos - startPos + 1;
                 sentenceAtCaret = (count > 0) ? inputString.Substring(startPos, count) : String.Empty;
-                Log.Debug("returning " + startPos);
+                _logger.LogDebug("returning " + startPos);
                 return startPos;
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 sentenceAtCaret = String.Empty;
                 return 0;
             }
@@ -1035,13 +1038,13 @@ namespace ACAT.Core.Utility
             {
                 int startPos = caretPos;
 
-                //Log.Debug("inputString: [" + inputString + "], caretPos: " + caretPos);
-                Log.Debug("caretPos: " + caretPos);
+                //_logger.LogDebug("inputString: [" + inputString + "], caretPos: " + caretPos);
+                _logger.LogDebug("caretPos: " + caretPos);
 
                 wordAtCaret = String.Empty;
                 if (String.IsNullOrEmpty(inputString))
                 {
-                    Log.Debug("inputstring is empty. returning");
+                    _logger.LogDebug("inputstring is empty. returning");
                     return -1;
                 }
 
@@ -1107,21 +1110,21 @@ namespace ACAT.Core.Utility
 
                 if (endPos >= startPos)
                 {
-                    Log.Debug("wordAtCaret: Getting substring from startPos: " + startPos + ", length: " + (endPos - startPos));
+                    _logger.LogDebug("wordAtCaret: Getting substring from startPos: " + startPos + ", length: " + (endPos - startPos));
                     wordAtCaret = inputString.Substring(startPos, endPos - startPos).Trim();
-                    Log.Debug("wordAtCaret: [" + wordAtCaret + "]");
+                    _logger.LogDebug("wordAtCaret: [" + wordAtCaret + "]");
                 }
                 else
                 {
                     wordAtCaret = String.Empty;
                 }
 
-                Log.Debug("returning " + startPos + ", wordatCaret: " + wordAtCaret);
+                _logger.LogDebug("returning " + startPos + ", wordatCaret: " + wordAtCaret);
                 return startPos;
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex.ToString());
                 wordAtCaret = String.Empty;
                 return 0;
             }
@@ -1286,12 +1289,12 @@ namespace ACAT.Core.Utility
         {
             int startPos = caretPos;
 
-            Log.Debug("Enter startPos: " + startPos);
+            _logger.LogDebug("Enter startPos: " + startPos);
             while (startPos >= 0)
             {
                 if (!IsWordElement(inputString[startPos]))
                 {
-                    Log.Debug("Breaking. No word element at : " + startPos);
+                    _logger.LogDebug("Breaking. No word element at : " + startPos);
                     break;
                 }
 
@@ -1300,7 +1303,7 @@ namespace ACAT.Core.Utility
 
             startPos++;
 
-            Log.Debug("1 startPos: " + startPos);
+            _logger.LogDebug("1 startPos: " + startPos);
 
             if (startPos < 0)
             {
@@ -1309,36 +1312,36 @@ namespace ACAT.Core.Utility
 
             int endPos = caretPos;
 
-            Log.Debug("endPos: " + endPos);
+            _logger.LogDebug("endPos: " + endPos);
 
             while (endPos < inputString.Length)
             {
                 if (!IsWordElement(inputString[endPos]))
                 {
-                    Log.Debug("Breaking. No word element at : " + endPos);
+                    _logger.LogDebug("Breaking. No word element at : " + endPos);
                     break;
                 }
 
                 endPos++;
             }
 
-            Log.Debug("After loop endPos : " + endPos);
+            _logger.LogDebug("After loop endPos : " + endPos);
 
             if (endPos > inputString.Length)
             {
                 endPos = inputString.Length;
             }
 
-            Log.Debug("getWordAt: startpos, endpos = " + startPos + ", " + endPos);
+            _logger.LogDebug("getWordAt: startpos, endpos = " + startPos + ", " + endPos);
 
             int count = endPos - startPos;
 
-            Log.Debug("count:  " + count);
-            Log.Debug("Calling substring: " + startPos + ", " + (endPos - startPos));
+            _logger.LogDebug("count:  " + count);
+            _logger.LogDebug("Calling substring: " + startPos + ", " + (endPos - startPos));
 
             wordAtCaret = (count > 0) ? inputString.Substring(startPos, endPos - startPos) : String.Empty;
 
-            Log.Debug("returning startPos : " + startPos);
+            _logger.LogDebug("returning startPos : " + startPos);
 
             return startPos;
         }

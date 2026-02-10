@@ -11,6 +11,8 @@ using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.TTSManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -51,9 +53,20 @@ namespace ACAT.Core.TTSManagement
         private const int _minNormalizedVolume = 0;
 
         /// <summary>
-        /// Singleton instance of the manager
+        /// Singleton instance of the manager - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly TTSManager _instance = new();
+        private static readonly Lazy<TTSManager> _instance = new Lazy<TTSManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<TTSManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<TTSManager>)) as ILogger<TTSManager>
+                ?? LogManager.GetLogger<TTSManager>();
+            return new TTSManager(logger);
+        });
+
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<TTSManager> _logger;
 
         /// <summary>
         /// Has this object been disposed
@@ -68,8 +81,9 @@ namespace ACAT.Core.TTSManagement
         /// <summary>
         /// Initializes the singleton instance of the class
         /// </summary>
-        private TTSManager()
+        private TTSManager(ILogger<TTSManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ActiveEngine = TTSEngines.NullTTSEngine;
             Context.EvtCultureChanged += Context_EvtCultureChanged;
         }
@@ -91,7 +105,7 @@ namespace ACAT.Core.TTSManagement
         /// </summary>
         public static TTSManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -379,7 +393,7 @@ namespace ACAT.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing TTSManager");
 
                 if (disposing)
                 {
@@ -418,7 +432,15 @@ namespace ACAT.Core.TTSManagement
 
             try
             {
-                var ttsEngine = (ITTSEngine)Activator.CreateInstance(type);
+                // Use ExtensionInstantiator to create instance with proper dependency injection
+                var ttsEngine = ExtensionInstantiator.CreateExtensionInstance(Context.ServiceProvider, type, _logger) as ITTSEngine;
+
+                if (ttsEngine == null)
+                {
+                    _logger.LogError("Failed to create TTS Engine instance for type {Type}", type);
+                    return false;
+                }
+
                 retVal = ttsEngine.Init(ci);
                 if (retVal)
                 {
@@ -428,7 +450,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Unable to load TTS Engine" + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                _logger.LogError(ex, "Unable to load TTS Engine {Type}, assembly: {AssemblyName}", type, type.Assembly.FullName);
                 retVal = false;
             }
 

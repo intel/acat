@@ -6,10 +6,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.ThemeManagement
 {
@@ -25,6 +27,8 @@ namespace ACAT.Core.ThemeManagement
     ///
     public class ThemeManager : IDisposable
     {
+        private readonly ILogger<ThemeManager> _logger;
+
         /// <summary>
         /// Name of the default theme
         /// </summary>
@@ -41,9 +45,15 @@ namespace ACAT.Core.ThemeManagement
         private const String ThemeConfigFileName = "Theme.xml";
 
         /// <summary>
-        /// Returns the singleton instance
+        /// Returns the singleton instance - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly ThemeManager _instance = new();
+        private static readonly Lazy<ThemeManager> _instance = new Lazy<ThemeManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<ThemeManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<ThemeManager>)) as ILogger<ThemeManager>
+                ?? LogManager.GetLogger<ThemeManager>();
+            return new ThemeManager(logger);
+        });
 
         /// <summary>
         /// The current active ksin
@@ -58,8 +68,9 @@ namespace ACAT.Core.ThemeManagement
         /// <summary>
         /// Initializes the singleton instance of the manager
         /// </summary>
-        private ThemeManager()
+        private ThemeManager(ILogger<ThemeManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ActiveThemeName = DefaultThemeName;
             DefaultTheme = Theme.Create(ActiveThemeName);
             _activeTheme = Theme.Create(ActiveThemeName);
@@ -75,7 +86,7 @@ namespace ACAT.Core.ThemeManagement
         /// </summary>
         public static ThemeManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -85,7 +96,7 @@ namespace ACAT.Core.ThemeManagement
         {
             get
             {
-                Log.Debug("Active Theme name is " + _activeTheme.Name);
+                _logger?.LogDebug("Active Theme name is {ThemeName}", _activeTheme.Name);
                 return _activeTheme;
             }
         }
@@ -168,12 +179,12 @@ namespace ACAT.Core.ThemeManagement
         public bool SetActiveTheme(String name)
         {
             bool retVal = true;
-            Log.Debug("Set active Theme to " + name);
+            _logger?.LogDebug("Set active Theme to {ThemeName}", name);
 
             var themeDir = GetThemeDir(name);
             if (String.IsNullOrEmpty(themeDir))
             {
-                Log.Error($"Could not find Theme {name}, using default.");
+                _logger?.LogError("Could not find Theme {ThemeName}, using default", name);
                 themeDir = GetThemeDir(DefaultThemeName);
                 if (String.IsNullOrEmpty(themeDir))
                 {
@@ -185,7 +196,7 @@ namespace ACAT.Core.ThemeManagement
 
             var themeFile = Path.Combine(themeDir, ThemeConfigFileName);
 
-            Log.Debug($"Creating Theme {name}, themeDir: {themeDir}");
+            _logger?.LogDebug("Creating Theme {ThemeName}, themeDir: {ThemeDir}", name, themeDir);
 
             // create the Theme object. This parses the Theme xml file and
             // creates the Theme object
@@ -196,11 +207,11 @@ namespace ACAT.Core.ThemeManagement
 
                 _activeTheme = theme;
                 ActiveThemeName = name;
-                Log.Debug("$Created Theme successfully. active Theme is {_activeTheme.Name}.");
+                _logger.LogDebug("Created Theme successfully. active Theme is {ThemeName}", _activeTheme.Name);
             }
             else
             {
-                Log.Error($"Error creating theme with name {theme}");
+                _logger.LogError("Error creating theme with name {ThemeName}", name);
                 retVal = false;
             }
 
@@ -216,7 +227,7 @@ namespace ACAT.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing ThemeManager");
 
                 if (disposing)
                 {
@@ -243,7 +254,7 @@ namespace ACAT.Core.ThemeManagement
             var file = new FileInfo(filePath);
             if (!ThemesLookupTable.ContainsKey(file.Directory.Name))
             {
-                Log.Debug("Adding Theme: " + file.Directory.Name + ", themeDir: " + file.Directory.FullName);
+                _logger?.LogDebug("Adding Theme: {ThemeName}, themeDir: {ThemeDir}", file.Directory.Name, file.Directory.FullName);
                 ThemesLookupTable.Add(file.Directory.Name, file.Directory.FullName);
             }
         }

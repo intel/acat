@@ -22,6 +22,7 @@ using ACATResources;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -214,7 +215,7 @@ namespace ACAT.Extension.AppAgents.Outlook
 
             controlType = monitorInfo.FocusedElement.Current.ControlType;
 
-            Log.Debug("OutlookWindowType: " + outlookWindowType + ", subType: " + outlookControlSubType);
+            _logger.LogDebug("OutlookWindowType: " + outlookWindowType + ", subType: " + outlookControlSubType);
 
             String title = PanelTitle;
 
@@ -256,7 +257,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         {
             handled = true;
 
-            Log.Debug(command);
+            _logger.LogDebug(command);
             switch (command)
             {
                 case "GotoInbox":
@@ -588,7 +589,7 @@ namespace ACAT.Extension.AppAgents.Outlook
       
                 if (String.Compare(info1.Title, "TODO", true) == 0)
                 {
-                    Log.Debug("YES!  Found Attach file window");
+                    _logger.LogDebug("YES!  Found Attach file window");
                     var automationElement = AgentUtils.GetElementOrAncestorByAutomationId(
                                                                     info1.FocusedElement,
                                                                     "Edit",
@@ -596,13 +597,13 @@ namespace ACAT.Extension.AppAgents.Outlook
                                                                     "1148");
                     if (automationElement != null)
                     {
-                        Log.Debug("element is not null");
+                        _logger.LogDebug("element is not null");
                         AgentUtils.InsertTextIntoElement(automationElement, _fileAttachment);
                         SendKeys.Send("{ENTER}");
                     }
                     else
                     {
-                        Log.Debug("element is null");
+                        _logger.LogDebug("element is null");
                     }
 
                     break;
@@ -652,25 +653,25 @@ namespace ACAT.Extension.AppAgents.Outlook
                                                                             IntPtr handle,
                                                                             AutomationElement editTextElement)
         {
-            Log.Debug("subtype = " + outlookControlSubType);
+            _logger.LogDebug("subtype = " + outlookControlSubType);
 
             TextControlAgentBase textInterface;
 
-            Log.Debug("outlookcontrolsubtype: " + outlookControlSubType);
+            _logger.LogDebug("outlookcontrolsubtype: " + outlookControlSubType);
             if (isMessageBodyField(outlookControlSubType))
             {
-                Log.Debug("creating outlookagentkeylogger with learn, spell and abbr" + outlookControlSubType);
+                _logger.LogDebug("creating outlookagentkeylogger with learn, spell and abbr" + outlookControlSubType);
 
                 textInterface = new OutlookAgentKeyLoggerTextInterface();
             }
             else if (isSubjectField(outlookControlSubType))
             {
-                Log.Debug("iSSubjectfield creating outlookagentkeylogger WITHOUT learn");
+                _logger.LogDebug("iSSubjectfield creating outlookagentkeylogger WITHOUT learn");
                 textInterface = new OutlookAgentKeyLoggerTextInterface(false);
             }
             else
             {
-                Log.Debug("creating outlookagentkeylogger WITHOUT learn, spellcheck and smart puncutationss");
+                _logger.LogDebug("creating outlookagentkeylogger WITHOUT learn, spellcheck and smart puncutationss");
 
                 textInterface = new OutlookAgentKeyLoggerTextInterface(false, true, false, false);
             }
@@ -687,7 +688,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// <returns>name of the panel</returns>
         protected String getContextualMenuForWindow(OutlookWindowTypes windowType, ref String title)
         {
-            Log.Debug("windowType: " + windowType);
+            _logger.LogDebug("windowType: " + windowType);
 
             String scannerName;
             title = PanelTitle;
@@ -993,9 +994,9 @@ namespace ACAT.Extension.AppAgents.Outlook
             fileBrowserAgent.GetInvoker().SetValue("IncludeFileExtensions", new[] { "*.", "txt", "doc", "docx" });
             fileBrowserAgent.GetInvoker().SetValue("ActionVerb", "Attach");
 
-            Log.Debug("Calling ActivateAgent");
+            _logger.LogDebug("Calling ActivateAgent");
             await Context.AppAgentMgr.ActivateAgent(fileBrowserAgent as IFunctionalAgent);
-            Log.Debug("Returned from ActivateAgent");
+            _logger.LogDebug("Returned from ActivateAgent");
             _fileAttachment = fileBrowserAgent.GetInvoker().GetStringValue("SelectedFile");
         }
 

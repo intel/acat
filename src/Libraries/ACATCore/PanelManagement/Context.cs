@@ -16,6 +16,7 @@ using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictorManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,17 +38,17 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public class Context
     {
-        private static readonly AbbreviationsManager _abbreviationsManager;
-        private static readonly ActuatorManager _actuatorManager;
-        private static readonly AgentManager _agentManager;
-        private static readonly AutomationEventManager _automationEventManager;
-        private static readonly CommandManager _commandManager;
+        private static readonly Lazy<AbbreviationsManager> _abbreviationsManager = new Lazy<AbbreviationsManager>(() => AbbreviationsManager.Instance);
+        private static readonly Lazy<ActuatorManager> _actuatorManager = new Lazy<ActuatorManager>(() => ActuatorManager.Instance);
+        private static readonly Lazy<AgentManager> _agentManager = new Lazy<AgentManager>(() => AgentManager.Instance);
+        private static readonly Lazy<AutomationEventManager> _automationEventManager = new Lazy<AutomationEventManager>(() => AutomationEventManager.Instance);
+        private static readonly Lazy<CommandManager> _commandManager = new Lazy<CommandManager>(() => CommandManager.Instance);
         private static readonly List<String> _extensionDirs = new();
-        private static readonly PanelManager _panelManager;
-        private static readonly SpellCheckManager _spellCheckManager;
-        private static readonly ThemeManager _themeManager;
-        private static readonly TTSManager _ttsManager;
-        private static readonly WordPredictionManager _wordPredictionManager;
+        private static readonly Lazy<PanelManager> _panelManager = new Lazy<PanelManager>(() => PanelManager.Instance);
+        private static readonly Lazy<SpellCheckManager> _spellCheckManager = new Lazy<SpellCheckManager>(() => SpellCheckManager.Instance);
+        private static readonly Lazy<ThemeManager> _themeManager = new Lazy<ThemeManager>(() => ThemeManager.Instance);
+        private static readonly Lazy<TTSManager> _ttsManager = new Lazy<TTSManager>(() => TTSManager.Instance);
+        private static readonly Lazy<WordPredictionManager> _wordPredictionManager = new Lazy<WordPredictionManager>(() => WordPredictionManager.Instance);
 
         /// <summary>
         /// Error message if there was an error during initialization
@@ -77,17 +78,8 @@ namespace ACAT.Core.PanelManagement
             AppQuit = false;
             AppWindowPosition = Windows.WindowPosition.CenterScreen;
 
-            //Initialize all the manager singleton objects
-            _abbreviationsManager = AbbreviationsManager.Instance;
-            _actuatorManager = ActuatorManager.Instance;
-            _agentManager = AgentManager.Instance;
-            _panelManager = PanelManager.Instance;
-            _ttsManager = TTSManager.Instance;
-            _automationEventManager = AutomationEventManager.Instance;
-            _wordPredictionManager = WordPredictionManager.Instance;
-            _spellCheckManager = SpellCheckManager.Instance;
-            _themeManager = ThemeManager.Instance;
-            _commandManager = CommandManager.Instance;
+            // Manager singleton objects will be initialized lazily on first access
+            // This allows Context.ServiceProvider to be set before managers are created
         }
 
         /// <summary>
@@ -120,7 +112,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static AbbreviationsManager AppAbbreviationsManager
         {
-            get { return _abbreviationsManager; }
+            get { return _abbreviationsManager.Value; }
         }
 
         /// <summary>
@@ -128,7 +120,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static ActuatorManager AppActuatorManager
         {
-            get { return _actuatorManager; }
+            get { return _actuatorManager.Value; }
         }
 
         /// <summary>
@@ -136,7 +128,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static AgentManager AppAgentMgr
         {
-            get { return _agentManager; }
+            get { return _agentManager.Value; }
         }
 
         /// <summary>
@@ -144,12 +136,12 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static AutomationEventManager AppAutomationEventManger
         {
-            get { return _automationEventManager; }
+            get { return _automationEventManager.Value; }
         }
 
         public static CommandManager AppCommandManager
         {
-            get { return _commandManager; }
+            get { return _commandManager.Value; }
         }
 
         /// <summary>
@@ -157,7 +149,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static PanelManager AppPanelManager
         {
-            get { return _panelManager; }
+            get { return _panelManager.Value; }
         }
 
         /// <summary>
@@ -170,7 +162,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static SpellCheckManager AppSpellCheckManager
         {
-            get { return _spellCheckManager; }
+            get { return _spellCheckManager.Value; }
         }
 
         /// <summary>
@@ -178,7 +170,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static ThemeManager AppThemeManager
         {
-            get { return _themeManager; }
+            get { return _themeManager.Value; }
         }
 
         /// <summary>
@@ -186,7 +178,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static TTSManager AppTTSManager
         {
-            get { return _ttsManager; }
+            get { return _ttsManager.Value; }
         }
 
         /// <summary>
@@ -199,7 +191,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static WordPredictionManager AppWordPredictionManager
         {
-            get { return _wordPredictionManager; }
+            get { return _wordPredictionManager.Value; }
         }
 
         /// <summary>
@@ -233,6 +225,11 @@ namespace ACAT.Core.PanelManagement
         /// when the application is launched
         /// </summary>
         public static bool ShowTalkWindowOnStartup { get; set; }
+
+        /// <summary>
+        /// Gets or sets the service provider for dependency injection in extension instantiation
+        /// </summary>
+        public static IServiceProvider ServiceProvider { get; set; }
 
         ///// <summary>
         ///// Changes the culture to the specified culture
@@ -383,7 +380,7 @@ namespace ACAT.Core.PanelManagement
                 retVal = false;
             }
 
-            Log.Debug("Returning " + retVal + " from context init");
+            LoggingConfiguration.CreateLogger<Context>().LogDebug("Returning {RetVal} from context init", retVal);
             return retVal;
         }
 

@@ -18,6 +18,7 @@
 
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
 using System.Threading;
@@ -36,6 +37,11 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
     ///
     public class WinsockClientActuatorBase : ActuatorBase
     {
+        /// <summary>
+        /// Logger instance for this class
+        /// </summary>
+        private readonly ILogger<WinsockClientActuatorBase> _logger;
+
         /// <summary>
         /// Socket client class that handles the client connection
         /// </summary>
@@ -70,8 +76,9 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public WinsockClientActuatorBase()
+        public WinsockClientActuatorBase(ILogger<WinsockClientActuatorBase> logger)
         {
+            _logger = logger;
             socketClient = null;
         }
 
@@ -150,7 +157,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("Disposing WinsockClientActuatorBase");
 
                     _quitConnect = true;
                     _evtConnectRetry.Set();
@@ -191,7 +198,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
         protected virtual void onDataReceived(System.Net.IPAddress address, byte[] data)
         {
             string strData = Encoding.ASCII.GetString(data, 0, data.Length);
-            Log.Debug("Received data: " + strData);
+            _logger.LogDebug("Received data: {Data}", strData);
 
             // parse the string, find the switch that causes the trigger
             IActuatorSwitch switchObj = WinsockCommon.parseAndGetSwitch(strData, Switches, CreateSwitch);
@@ -225,7 +232,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error sending message");
             }
             return -1;
         }
@@ -259,7 +266,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
         /// <param name="address">Tcp/ip server address</param>
         private void _socketClient_OnClientConnected(System.Net.IPAddress address)
         {
-            Log.Debug("Connected to" + address);
+            _logger.LogDebug("Connected to {Address}", address);
             onConnected(address);
         }
 
@@ -269,7 +276,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
         /// <param name="addr">Address of the tcp/ip server</param>
         private void _socketClient_OnClientConnectionClosed(System.Net.IPAddress addr)
         {
-            Log.Debug("Disconnected from " + addr);
+            _logger.LogDebug("Disconnected from {Address}", addr);
             closeClientSocket(socketClient);
             socketClient = null;
             _evtConnectRetry.Set();
@@ -312,19 +319,19 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
             {
                 try
                 {
-                    Log.Debug("Trying to connecting to tcp/ip server");
+                    _logger.LogDebug("Trying to connecting to tcp/ip server");
                     socketClient ??= createSocketClient();
 
                     if (socketClient != null)
                     {
                         if (!socketClient.Connect())
                         {
-                            Log.Debug("Tcp/ip server not detected.  Will retry...");
+                            _logger.LogDebug("Tcp/ip server not detected.  Will retry...");
                             Thread.Sleep(waitInterval);
                         }
                         else
                         {
-                            Log.Debug("Successfully connected to tcp/ip server");
+                            _logger.LogDebug("Successfully connected to tcp/ip server");
                             _evtConnectRetry.WaitOne();
                             _evtConnectRetry.Reset();
                         }
@@ -336,11 +343,11 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception("Error connecting to server " + ex);
+                    _logger.LogError(ex, "Error connecting to server");
                 }
             }
 
-            Log.Debug("Thread exited");
+            _logger.LogDebug("Thread exited");
         }
 
         /// <summary>

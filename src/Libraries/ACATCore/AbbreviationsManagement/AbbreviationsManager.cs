@@ -15,16 +15,26 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Core.AbbreviationsManagement
 {
     public class AbbreviationsManager : IDisposable
     {
+        private readonly ILogger<AbbreviationsManager> _logger;
+
         /// <summary>
-        /// Static singleton instance
+        /// Static singleton instance - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly AbbreviationsManager _instance = new();
+        private static readonly Lazy<AbbreviationsManager> _instance = new Lazy<AbbreviationsManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise create standalone logger
+            ILogger<AbbreviationsManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<AbbreviationsManager>)) as ILogger<AbbreviationsManager>
+                ?? LoggingConfiguration.CreateLogger<AbbreviationsManager>();
+            return new AbbreviationsManager(logger);
+        });
 
         /// <summary>
         /// Has this object been disposed
@@ -34,8 +44,9 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private AbbreviationsManager()
+        private AbbreviationsManager(ILogger<AbbreviationsManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Context.EvtCultureChanged += Context_EvtCultureChanged;
         }
 
@@ -44,7 +55,7 @@ namespace ACAT.Core.AbbreviationsManagement
         /// </summary>
         public static AbbreviationsManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -86,8 +97,6 @@ namespace ACAT.Core.AbbreviationsManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
-
                 if (disposing)
                 {
                     Context.EvtCultureChanged -= Context_EvtCultureChanged;

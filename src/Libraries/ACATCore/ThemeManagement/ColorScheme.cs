@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.IO;
@@ -20,6 +21,7 @@ namespace ACAT.Core.ThemeManagement
     /// </summary>
     public class ColorScheme : IDisposable
     {
+        private static readonly ILogger<ColorScheme> _logger = LoggingConfiguration.CreateLogger<ColorScheme>();
         /// <summary>
         /// Default bg color to use if not defined in the config file
         /// </summary>
@@ -523,7 +525,7 @@ namespace ACAT.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing ColorScheme");
 
                 if (disposing)
                 {
@@ -564,16 +566,16 @@ namespace ACAT.Core.ThemeManagement
                 return null;
             }
 
-            Log.Debug("imagePath: " + bitmapFile);
+            _logger.LogDebug("imagePath: {BitmapFile}", bitmapFile);
 
             if (File.Exists(bitmapFile))
             {
-                Log.Debug("File exists. Loading image");
+                _logger.LogDebug("File exists. Loading image");
                 retVal = Image.FromFile(bitmapFile);
             }
             else
             {
-                Log.Error($"Could not find bitmap file {bitmapFile}");
+                _logger.LogError("Could not find bitmap file {BitmapFile}", bitmapFile);
             }
 
             return retVal;

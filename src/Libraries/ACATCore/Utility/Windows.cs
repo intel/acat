@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility.Mouse;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +27,8 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class Windows
     {
+        private static ILogger<Windows> _logger => LogManager.GetLogger<Windows>();
+
         private const int GCL_HICON = -14;
         private const int GCL_HICONSM = -34;
         private const int GWL_STYLE = (-16);
@@ -179,7 +182,7 @@ namespace ACAT.Core.Utility
             {
                 //if (value > _widestScannerWidth)
                 {
-                    Log.Debug("Widest scanner width: " + value);
+                    _logger?.LogDebug("Widest scanner width: {Width}", value);
                     _widestScannerWidth = value;
                 }
             }
@@ -331,19 +334,19 @@ namespace ACAT.Core.Utility
                             break;
                     }
 
-                    Log.Debug("screenOffset=" + screenOffset + " moveX=" + moveX.ToString() + " moveY=" + moveY.ToString());
+                    _logger?.LogDebug("screenOffset={ScreenOffset} moveX={MoveX} moveY={MoveY}", screenOffset, moveX, moveY);
                     User32Interop.SetWindowPos(handle.ToInt32(), 0, moveX, moveY, (r.Width - scannerForm.Width), r.Height, 0x0040 | 0x0004);
                 }
             }
             else
             {
-                Log.Debug("fgWnd is zero");
+                _logger?.LogDebug("fgWnd is zero");
             }
         }
 
         public static void DockWindow(IntPtr fgWindow, Form panel, WindowPosition scannerPosition)
         {
-            Log.Debug("fgWindow is null is : " + (fgWindow == IntPtr.Zero));
+            _logger?.LogDebug("fgWindow is null is: {IsNull}", fgWindow == IntPtr.Zero);
 
             if (fgWindow == IntPtr.Zero)
             {
@@ -353,31 +356,31 @@ namespace ACAT.Core.Utility
             Process process = WindowActivityMonitor.GetProcessForWindow(fgWindow);
             if (process.ProcessName == Process.GetCurrentProcess().ProcessName)
             {
-                Log.Debug("#$#$#$#$   This is an ACAT Window!!!!!");
+                _logger?.LogDebug("#$#$#$#$ This is an ACAT Window!!!!!");
                 return;
             }
 
             if (panel != null)
             {
-                Log.Debug("#$#$#$#$  Calling IsDialog");
+                _logger?.LogDebug("#$#$#$#$ Calling IsDialog");
 
                 if (!IsDialog(fgWindow))
                 {
-                    Log.Debug("#$#$#$#$  Returned from IsDialog");
+                    _logger?.LogDebug("#$#$#$#$ Returned from IsDialog");
 
-                    Log.Debug("#$#$#$#$  Calling DockAppWindowWithScanner for form " + (panel as Form).Name);
+                    _logger?.LogDebug("#$#$#$#$ Calling DockAppWindowWithScanner for form {FormName}", (panel as Form).Name);
                     DockAppWindowWithScanner(scannerPosition, fgWindow, panel);
                 }
                 else
                 {
-                    Log.Debug("#$#$#$#$  Window is a dialog. will not dock");
+                    _logger?.LogDebug("#$#$#$#$ Window is a dialog. will not dock");
                 }
             }
         }
 
         public static void DockWindowWithLargestScanner(IntPtr fgWindow, Form panel, WindowPosition scannerPosition)
         {
-            Log.Debug("#$#$#$#$  fgWindow is null is : " + (fgWindow == IntPtr.Zero));
+            _logger?.LogDebug("#$#$#$#$ fgWindow is null is: {IsNull}", fgWindow == IntPtr.Zero);
 
             if (fgWindow == IntPtr.Zero)
             {
@@ -393,7 +396,7 @@ namespace ACAT.Core.Utility
             Process process = WindowActivityMonitor.GetProcessForWindow(fgWindow);
             if (process.ProcessName == Process.GetCurrentProcess().ProcessName)
             {
-                Log.Debug("#$#$#$#$   This is an ACAT Window!!!!!");
+                _logger?.LogDebug("#$#$#$#$ This is an ACAT Window!!!!!");
                 return;
             }
 
@@ -430,7 +433,7 @@ namespace ACAT.Core.Utility
             }
             else
             {
-                Log.Debug("Window is a dialog. will not dock");
+                _logger?.LogDebug("Window is a dialog. will not dock");
             }
         }
 
@@ -555,7 +558,7 @@ namespace ACAT.Core.Utility
         /// <returns>the icon, null if it can't find one</returns>
         public static Icon GetAppIcon(IntPtr winHandle)
         {
-            Log.Debug("hWnd=" + winHandle);
+            _logger?.LogDebug("GetAppIcon: hWnd={HWnd}", winHandle);
 
             IntPtr hIcon = User32Interop.SendMessage(winHandle, WM_GETICON, ICON_BIG, 0);
 
@@ -870,7 +873,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Exception in GetVisible");
                 return false;
             }
         }
@@ -1014,7 +1017,7 @@ namespace ACAT.Core.Utility
                 retVal = (!windowPattern.Current.CanMinimize && !windowPattern.Current.CanMaximize) || windowPattern.Current.IsModal;
             }
 
-            Log.Debug("returning " + retVal);
+            _logger?.LogDebug("IsDialog returning {Result}", retVal);
 
             return retVal;
         }
@@ -1461,7 +1464,7 @@ namespace ACAT.Core.Utility
                 }
                 else
                 {
-                    Log.Debug("Trying to set trackbar outside legal bounds!");
+                    _logger?.LogDebug("Trying to set trackbar outside legal bounds!");
                 }
             }
         }
@@ -1495,7 +1498,7 @@ namespace ACAT.Core.Utility
             {
                 form.StartPosition = FormStartPosition.Manual;
 
-                Log.Debug("Before setposition " + position);
+                _logger?.LogDebug("Before setposition {Position}", position);
 
                 switch (position)
                 {
@@ -1530,7 +1533,7 @@ namespace ACAT.Core.Utility
                             (Screen.PrimaryScreen.WorkingArea.Height - form.Height) / 2);
                         break;
                 }
-                Log.Debug("After setposition " + position);
+                _logger?.LogDebug("After setposition {Position}", position);
             }
             catch
             {
@@ -1585,11 +1588,11 @@ namespace ACAT.Core.Utility
         /// <param name="position">Where to set the position</param>
         public static void SetWindowPositionAndNotify(Form form, WindowPosition position)
         {
-            Log.Debug("Setting position to " + position);
+            _logger?.LogDebug("Setting position to {Position}", position);
             SetWindowPosition(form, position);
             if (EvtWindowPositionChanged != null)
             {
-                Log.Debug("Calling evtpositionchanged with " + position);
+                _logger?.LogDebug("Calling evtpositionchanged with {Position}", position);
 
                 EvtWindowPositionChanged(form, position);
             }
@@ -1616,7 +1619,7 @@ namespace ACAT.Core.Utility
         /// <param name="percent">percentage of display monitor width</param>
         public static void SetWindowSizePercent(IntPtr handle, WindowPosition scannerPosition, int percent)
         {
-            Log.Debug("Entering...scannerPosition=" + scannerPosition.ToString() + " percent=" + percent.ToString());
+            _logger?.LogDebug("Entering...scannerPosition={Position} percent={Percent}", scannerPosition, percent);
             int moveX = 0;
             int moveY = 0; // not really using Y-axis yet but something to keep in mind for the future
 
@@ -1636,7 +1639,7 @@ namespace ACAT.Core.Utility
 
                 if (r.Width > 0 && r.Height > 0)
                 {
-                    Log.Debug("Resize window to " + (r.Width * percent) / 100 + ", " + r.Height);
+                    _logger?.LogDebug("Resize window to {Width}, {Height}", (r.Width * percent) / 100, r.Height);
 
                     switch (scannerPosition)
                     {
@@ -1661,22 +1664,22 @@ namespace ACAT.Core.Utility
                             break;
                     }
 
-                    Log.Debug("screenOffset=" + screenOffset + " moveX=" + moveX.ToString() + " moveY=" +
-                              moveY.ToString());
+                    _logger?.LogDebug("screenOffset={ScreenOffset} moveX={MoveX} moveY={MoveY}",
+                              screenOffset, moveX, moveY);
                     User32Interop.SetWindowPos(handle.ToInt32(), 0, moveX, moveY, (r.Width * percent) / 100, r.Height,
                         0x0040 | 0x0004);
                 }
             }
             else
             {
-                Log.Debug("fgWnd is zero");
+                _logger?.LogDebug("fgWnd is zero in SetWindowSizePercent");
             }
         }
 
         /// <summary>
         /// Shows the child window, assigns parent as the owner
         /// This is just a helper function that takes care of
-        /// cross-thread invokations that would result in .NET
+        /// cross-thread invocations that would result in .NET
         /// exceptions.
         /// </summary>
         /// <param name="parent"></param>
@@ -1712,7 +1715,7 @@ namespace ACAT.Core.Utility
                 child.ShowDialog(parent);
                 if (child.Owner == null)
                 {
-                    Log.Debug("child.parent is null");
+                    _logger?.LogDebug("child.parent is null");
                 }
             }
         }
@@ -1838,7 +1841,7 @@ namespace ACAT.Core.Utility
                 Process process = WindowActivityMonitor.GetProcessForWindow(fgWindow);
                 if (process.ProcessName == Process.GetCurrentProcess().ProcessName)
                 {
-                    Log.Debug("This is an ACAT WIndow!");
+                    _logger?.LogDebug("This is an ACAT Window!");
                     return;
                 }
 

@@ -13,6 +13,7 @@
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement
 {
     public class FileWriter
     {
+        private static readonly ILogger<FileWriter> _logger = LoggingConfiguration.CreateLogger<FileWriter>();
         /// <summary>
         /// Directory for session
         /// </summary>
@@ -172,8 +174,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement
                             }
                             catch (Exception ex)
                             {
-                                Log.Exception(data[channelIdx, sampleIdx].ToString());
-                                Log.Exception(ex.ToString());
+                                _logger.LogError(ex, "Error writing data at channel {ChannelIdx}, sample {SampleIdx}, value: {Value}", channelIdx, sampleIdx, data[channelIdx, sampleIdx]);
                             }
                             if (channelIdx < numChannels - 1)
                                 stringBuilder.Append(", ");
@@ -188,7 +189,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error writing data to file");
             }
             finally
             {

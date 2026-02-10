@@ -1,4 +1,5 @@
 ﻿using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -11,6 +12,8 @@ namespace ACAT.Core.PanelManagement.Utils
     /// </summary>
     public class WindowHighlight : IDisposable
     {
+        private static readonly ILogger<WindowHighlight> _logger = LoggingConfiguration.CreateLogger<WindowHighlight>();
+
         /// <summary>
         /// Scanner form.
         /// </summary>
@@ -58,7 +61,7 @@ namespace ACAT.Core.PanelManagement.Utils
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
                 _automationElement = null;
             }
         }
@@ -84,12 +87,12 @@ namespace ACAT.Core.PanelManagement.Utils
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("");
 
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     stopTimer();
 
@@ -97,13 +100,13 @@ namespace ACAT.Core.PanelManagement.Utils
                     {
                         try
                         {
-                            Log.Debug("Disposing highlight overlay window");
+                            _logger.LogDebug("Disposing highlight overlay window");
                             _outlineWindow.Dispose();
                             _outlineWindow = null;
                         }
                         catch (Exception ex)
                         {
-                            Log.Exception(ex.ToString());
+                            _logger.LogError(ex, ex.Message);
                         }
                     }
 
@@ -130,7 +133,7 @@ namespace ACAT.Core.PanelManagement.Utils
 
         private void highlightWindow(AutomationElement focusedElement)
         {
-            Log.Verbose();
+            _logger.LogTrace("");
             try
             {
                 lock (_sync)
@@ -149,14 +152,14 @@ namespace ACAT.Core.PanelManagement.Utils
                         }
                         catch (Exception exp)
                         {
-                            Log.Exception(exp.ToString());
+                            _logger.LogError(exp, exp.Message);
                         }
                     }));
                 }
             }
             catch (Exception e)
             {
-                Log.Exception(e.ToString());
+                _logger.LogError(e, e.Message);
             }
         }
 

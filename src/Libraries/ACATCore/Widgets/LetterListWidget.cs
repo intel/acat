@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms;
@@ -24,7 +25,7 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
         public LetterListWidget(Control control)
-            : base(control)
+            : base(control, LoggingConfiguration.CreateLogger<Widget>())
         {
             AddForAnimation = false;
         }

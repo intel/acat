@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -60,9 +61,20 @@ namespace ACAT.Core.PanelManagement
         public static String UiRootDir = "";
 
         /// <summary>
-        /// Singleton instance of PanelManager
+        /// Singleton instance of PanelManager - lazy initialized to get logger from DI container
         /// </summary>
-        private static PanelManager _instance;
+        private static readonly Lazy<PanelManager> _instance = new Lazy<PanelManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<PanelManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<PanelManager>)) as ILogger<PanelManager>
+                ?? LogManager.GetLogger<PanelManager>();
+            return new PanelManager(logger);
+        });
+
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<PanelManager> _logger;
 
         /// <summary>
         /// Represents the stack of panels
@@ -82,8 +94,9 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Initializes an instance of the PanelManager
         /// </summary>
-        public PanelManager()
+        public PanelManager(ILogger<PanelManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Context.AppAgentMgr.EvtPanelRequest += AppAgent_EvtPanelRequest;
             Context.AppAgentMgr.EvtFocusChanged += AppAgent_EvtFocusChanged;
             Context.EvtCultureChanged += Context_EvtCultureChanged;
@@ -153,7 +166,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static PanelManager Instance
         {
-            get { return _instance ??= new PanelManager(); }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -247,7 +260,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public void CloseCurrentPanel()
         {
-            Log.Verbose();
+            _logger?.LogTrace("CloseCurrentPanel");
 
             if (_stack.Count > 0)
             {
@@ -563,7 +576,7 @@ namespace ACAT.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Dispose");
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
@@ -584,7 +597,7 @@ namespace ACAT.Core.PanelManagement
         {
             _actuatorCalibrationInProgress = false;
 
-            Log.Debug("Resuming WindowActivityMonitor");
+            _logger?.LogDebug("Resuming WindowActivityMonitor");
 
             WindowActivityMonitor.Resume();
 
@@ -606,7 +619,7 @@ namespace ACAT.Core.PanelManagement
         {
             _actuatorCalibrationInProgress = true;
 
-            Log.Debug("Pausing WindowActivityMonitor");
+            _logger?.LogDebug("Pausing WindowActivityMonitor");
 
             WindowActivityMonitor.Pause();
 
@@ -730,7 +743,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="e">event args</param>
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
-            Log.Debug("Display Resolution changed. Working area is " + Screen.PrimaryScreen.WorkingArea);
+            _logger?.LogDebug("Display Resolution changed. Working area is {WorkingArea}", Screen.PrimaryScreen.WorkingArea);
 
             EvtDisplaySettingsChanged?.Invoke(sender, e);
         }

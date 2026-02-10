@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
@@ -17,6 +18,7 @@ namespace ACAT.Core.Utility
     [Serializable]
     public class GlobalPreferences
     {
+        private static ILogger<GlobalPreferences> _logger => LogManager.GetLogger<GlobalPreferences>();
         public static String DefaultPreferencesFilePath = String.Empty;
 
         public static String LogFileName = String.Empty;
@@ -53,7 +55,7 @@ namespace ACAT.Core.Utility
 
             if (retVal == null)
             {
-                Log.Error($"Could not load global preferences from {prefFile}. Creating a new one.");
+                _logger?.LogError("Could not load global preferences from {PrefFile}. Creating a new one.", prefFile);
                 if (loadDefaultsOnFail)
                 {
                     retVal = new GlobalPreferences();
@@ -66,7 +68,7 @@ namespace ACAT.Core.Utility
 
             if (!XmlUtils.XmlFileSave(retVal, prefFile))
             {
-                Log.Error("Unable to save global preferences!");
+                _logger?.LogError("Unable to save global preferences!");
                 retVal = null;
             }
 
@@ -107,7 +109,7 @@ namespace ACAT.Core.Utility
 
             if (retVal == false)
             {
-                Log.Error("Error saving preferences! file=" + preferencesFile);
+                _logger?.LogError("Error saving preferences! file={PreferencesFile}", preferencesFile);
             }
 
             return retVal;

@@ -11,6 +11,8 @@ using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WordPredictorManagement.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,15 +30,23 @@ namespace ACAT.Core.WordPredictorManagement
     /// </summary>
     public class WordPredictionManager : IDisposable
     {
+        private readonly ILogger<WordPredictionManager> _logger;
+
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
         public static string WordPredictorsRootName = "";
 
         /// <summary>
-        /// Word prediction manager instance
+        /// Word prediction manager instance - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly WordPredictionManager _instance = new();
+        private static readonly Lazy<WordPredictionManager> _instance = new Lazy<WordPredictionManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<WordPredictionManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<WordPredictionManager>)) as ILogger<WordPredictionManager>
+                ?? LogManager.GetLogger<WordPredictionManager>();
+            return new WordPredictionManager(logger);
+        });
 
         /// <summary>
         /// Current User's current profile directory
@@ -66,8 +76,11 @@ namespace ACAT.Core.WordPredictorManagement
         /// <summary>
         /// Initializes and instance of the WordPredictionManager class.
         /// </summary>
-        private WordPredictionManager()
+        /// <param name="logger">Logger instance</param>
+        private WordPredictionManager(ILogger<WordPredictionManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             AppDomain currentDomain = AppDomain.CurrentDomain;
 
             Context.EvtCultureChanged += Context_EvtCultureChanged;
@@ -84,7 +97,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// </summary>
         public static WordPredictionManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         public IEnumerable<IWordPredictor> WordPredictorsList
@@ -264,7 +277,7 @@ namespace ACAT.Core.WordPredictorManagement
 
             if (_wordPredictors == null)
             {
-                _wordPredictors = new WordPredictors();
+                _wordPredictors = new WordPredictors(LoggingConfiguration.CreateLogger<WordPredictors>());
 
                 retVal = _wordPredictors.Load(extensionDirs);
             }
@@ -385,7 +398,7 @@ namespace ACAT.Core.WordPredictorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("");
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
@@ -427,7 +440,15 @@ namespace ACAT.Core.WordPredictorManagement
 
             try
             {
-                var wordPredictor = (IWordPredictor)Activator.CreateInstance(type);
+                // Use ExtensionInstantiator to create instance with proper dependency injection
+                var wordPredictor = ExtensionInstantiator.CreateExtensionInstance(Context.ServiceProvider, type, _logger) as IWordPredictor;
+
+                if (wordPredictor == null)
+                {
+                    _logger.LogError("Failed to create WordPredictor instance for type {Type}", type);
+                    return false;
+                }
+
                 retVal = wordPredictor.Init(ci);
                 if (retVal)
                 {
@@ -436,7 +457,7 @@ namespace ACAT.Core.WordPredictorManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                _logger.LogError(ex, "Unable to load WordPredictor {Type}, assembly: {Assembly}", type, type.Assembly.FullName);
                 retVal = false;
             }
 

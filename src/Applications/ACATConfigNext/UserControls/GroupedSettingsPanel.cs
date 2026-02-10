@@ -1,5 +1,6 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,9 +19,11 @@ namespace ACATConfigNext.UserControls
 {
     internal class GroupedSettingsPanel : UserControl
     {
+        private readonly ILogger<GroupedSettingsPanel> _logger;
         private TableLayoutPanel basePanel;
-        public GroupedSettingsPanel(Action<UserControl, string> showPanel, IEnumerable<IExtension> acat_extensions, PropertyChangedEventHandler settingsChangedHandler)
+        public GroupedSettingsPanel(Action<UserControl, string> showPanel, IEnumerable<IExtension> acat_extensions, PropertyChangedEventHandler settingsChangedHandler, ILogger<GroupedSettingsPanel> logger = null)
         {
+            _logger = logger;
             basePanel = new TableLayoutPanel()
             {
                 BackColor = Color.Transparent,
@@ -153,7 +156,8 @@ namespace ACATConfigNext.UserControls
         {
             control.Click += (s, e) =>
             {
-                Log.Debug("Clicked on control: " + control.Name);
+                var logger = LoggingConfiguration.CreateLogger<GroupedSettingsPanel>();
+                logger.LogDebug("Clicked on control: {ControlName}", control.Name);
                 Control clickedControl = s as Control;
 
                 while (clickedControl != null && clickedControl is not TableLayoutPanel)
@@ -166,7 +170,7 @@ namespace ACATConfigNext.UserControls
                     var extension = panel.Tag as IExtension;
                     if (extension != null)
                     {
-                        Log.Debug("Showing acat_extensions for: " + extension.Descriptor.Name);
+                        logger.LogDebug("Showing acat_extensions for: {ExtensionName}", extension.Descriptor.Name);
                         MethodInfo method = extension.GetType().GetMethod("GetPreferences");
 
                         var prefs = method?.Invoke(extension, null) as PreferencesBase;
@@ -179,12 +183,12 @@ namespace ACATConfigNext.UserControls
                             method = extension.GetType().GetMethod("ShowPreferencesDialog");
                             if (method != null)
                             {
-                                Log.Debug("Showing preferences dialog for: " + extension.Descriptor.Name);
+                                logger.LogDebug("Showing preferences dialog for: {ExtensionName}", extension.Descriptor.Name);
                                 method.Invoke(extension, null);
                             }
                             else
                             {
-                                Log.Error("No preferences method found for extension: " + extension.Descriptor.Name);
+                                logger.LogError("No preferences method found for extension: {ExtensionName}", extension.Descriptor.Name);
                             }
                         }
                     }

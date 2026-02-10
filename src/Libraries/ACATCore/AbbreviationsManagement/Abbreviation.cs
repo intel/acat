@@ -15,6 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text.RegularExpressions;
 
@@ -22,6 +23,9 @@ namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviation : IDisposable
     {
+        private static readonly ILogger<Abbreviation> _staticLogger = LoggingConfiguration.CreateLogger<Abbreviation>();
+        private readonly ILogger<Abbreviation> _logger;
+
         /// <summary>
         /// Has this object been disposed
         /// </summary>
@@ -33,8 +37,9 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <param name="mnemonic">abbreviation</param>
         /// <param name="expansion">abbreviation expansion</param>
         /// <param name="mode">mode of expansion - speech or text</param>
-        public Abbreviation(String mnemonic, String expansion, String mode)
+        public Abbreviation(String mnemonic, String expansion, String mode, ILogger<Abbreviation> logger = null)
         {
+            _logger = logger;
             Mode = Convert(mode);
             init(mnemonic, expansion, Mode);
         }
@@ -45,8 +50,9 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <param name="mnemonic">abbreviation</param>
         /// <param name="expansion">abbreviation expansion</param>
         /// <param name="mode">mode of expansion - speech or text</param>
-        public Abbreviation(String mnemonic, String expansion, AbbreviationMode mode)
+        public Abbreviation(String mnemonic, String expansion, AbbreviationMode mode, ILogger<Abbreviation> logger = null)
         {
+            _logger = logger;
             init(mnemonic, expansion, mode);
         }
 
@@ -90,7 +96,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _staticLogger?.LogError(ex, "Exception converting abbreviation mode");
             }
 
             return retVal;

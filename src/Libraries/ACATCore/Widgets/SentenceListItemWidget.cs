@@ -7,6 +7,7 @@
 
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -18,13 +19,18 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class SentenceListItemWidget : ScannerButtonBase
     {
+        private readonly ILogger<SentenceListItemWidget> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
-        public SentenceListItemWidget(Control control)
-            : base(control)
+        /// <param name="logger">Logger instance</param>
+        public SentenceListItemWidget(Control control, ILogger<SentenceListItemWidget> logger)
+            : base(control, logger)
         {
+            _logger = logger;
+
             if (button != null)
             {
                 button.AutoEllipsis = true;
@@ -43,7 +49,7 @@ namespace ACAT.Core.Widgets
         {
             String text = GetText().Trim();
             AddForAnimation = !String.IsNullOrEmpty(text) && text != ". . .";
-            Log.Debug("SentenceListItem " + Name + ", AddForAnimation: " + AddForAnimation + ", Text: [" + text + "]");
+            _logger.LogDebug("SentenceListItem {Name}, AddForAnimation: {AddForAnimation}, Text: [{Text}]", Name, AddForAnimation, text);
             return AddForAnimation;
         }
     }

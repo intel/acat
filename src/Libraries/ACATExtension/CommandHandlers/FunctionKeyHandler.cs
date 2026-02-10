@@ -8,6 +8,7 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -21,13 +22,17 @@ namespace ACAT.Extension.CommandHandlers
     /// </summary>
     public class FunctionKeyHandler : RunCommandHandler
     {
+        private readonly ILogger<FunctionKeyHandler> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
-        public FunctionKeyHandler(String cmd)
+        /// <param name="logger">Logger instance</param>
+        public FunctionKeyHandler(String cmd, ILogger<FunctionKeyHandler> logger = null)
             : base(cmd)
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<FunctionKeyHandler>();
         }
 
         /// <summary>
@@ -63,7 +68,7 @@ namespace ACAT.Extension.CommandHandlers
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
                 retVal = false;
             }
 

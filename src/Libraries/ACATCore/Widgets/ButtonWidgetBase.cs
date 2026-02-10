@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System.Windows.Forms;
 
 namespace ACAT.Core.Widgets
@@ -18,6 +19,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class ButtonWidgetBase : Widget, IButtonWidget
     {
+        private readonly ILogger<ButtonWidgetBase> _logger;
+
         /// <summary>
         /// The widgetAttribute object that encapsulates all
         /// the attributes for this widget
@@ -33,9 +36,12 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public ButtonWidgetBase(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public ButtonWidgetBase(Control uiControl, ILogger<ButtonWidgetBase> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
+
             widgetAttribute = null;
             Value = null;
 
@@ -78,7 +84,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {

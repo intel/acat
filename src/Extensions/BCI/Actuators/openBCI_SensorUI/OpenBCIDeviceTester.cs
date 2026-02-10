@@ -18,6 +18,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -32,6 +33,8 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public class OpenBCIDeviceTester
     {
+        private readonly ILogger<OpenBCIDeviceTester> _logger = LogManager.GetLogger<OpenBCIDeviceTester>();
+
         /// <summary>
         /// Variables representing all the different states in testing process (state machine)
         /// </summary>
@@ -199,12 +202,12 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         public void initialize()
         {
-            Log.Debug("OpenBCIDeviceTester | initialize");
+            _logger.LogDebug("Initializing OpenBCIDeviceTester");
 
             // Close main form if for some reason it's opened at this point
             if (_mainForm != null && _mainForm.IsDisposed == false)
             {
-                Log.Debug("OpenBCIDeviceTester | _mainForm != null && _mainForm.IsDisposed == false");
+                _logger.LogDebug("Main form is open and not disposed, closing it");
                 _mainForm.Close();
                 _mainForm.Dispose();
             }
@@ -216,7 +219,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception during initialization");
             }
 
             if (ExitOnboardingEarly)
@@ -314,7 +317,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <param name="e"></param>
         private void _mainForm_EvtFormClosed(object sender, FormClosedEventArgs e)
         {
-            Log.Debug("OpenBCIDeviceTester | _mainForm_EvtFormClosed | _deviceTestingState: " + _deviceTestingState.ToString());
+            _logger.LogDebug("Main form closed with DeviceTestingState: {DeviceTestingState}", _deviceTestingState);
 
             if (_deviceTestingState == DeviceTestingState.ReceivedBCIError_LostDataConnection)
             {
@@ -372,9 +375,10 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 bool maxTimeHasElapsed = false;
                 if (minElapsedPrevSignalQualityCheck >= maxTimeMins)
                     maxTimeHasElapsed = true;
-                Log.Debug(String.Format("startSignalQualityTestingState | newDeviceTestingState == DeviceTestingState.BCISignalCheckStartRequired" +
-                    "\ntimestampPrevImpedanceTest: {0}, timestampNow: {1}, secDiff: {2}", timestampPrevImpedanceTest.ToString(), timestampNow.ToString(), secDiff.ToString()));
-                Log.Debug(String.Format("minElapsedPrevSignalQualityCheck: {0}, maxTimeMins: {1}, maxTimeHasElapsed: {2}", minElapsedPrevSignalQualityCheck.ToString(), maxTimeMins.ToString(), maxTimeHasElapsed.ToString()));
+                _logger.LogDebug("Signal quality test timing - PrevTest: {PrevTestTimestamp}, Now: {NowTimestamp}, SecDiff: {SecDiff}", 
+                    timestampPrevImpedanceTest, timestampNow, secDiff);
+                _logger.LogDebug("Signal quality elapsed check - MinElapsed: {MinElapsed}min, MaxTime: {MaxTime}min, HasElapsed: {HasElapsed}", 
+                    minElapsedPrevSignalQualityCheck, maxTimeMins, maxTimeHasElapsed);
 
                 // Always check if user passed the last overall signal quality check that was executed
                 // If max time has not passed, but user did not pass their most recent overall signal quality check,
@@ -454,7 +458,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <param name="currentDeviceTestingState"></param>
         private void finishSignalQualityTestingState(DeviceTestingState currentDeviceTestingState)
         {
-            Log.Debug("OpenBCIDeviceTester | finishSignalQualityTestingState | currentDeviceTestingState: " + currentDeviceTestingState.ToString());
+            _logger.LogDebug("Finishing signal quality testing with state: {DeviceTestingState}", currentDeviceTestingState);
 
             // Next button selected from BCI signal check start required screen
             if (currentDeviceTestingState == DeviceTestingState.BCISignalCheckStartRequired)
@@ -530,20 +534,20 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
                 if (userPassedLastSignalQualityCheck)
                 {
-                    Log.Debug("User passed most recent signal quality check");
+                    _logger.LogDebug("User passed most recent signal quality check");
                     exitBCIOnboarding = true;
                 }
 
                 // Check if testing parameter set to ignore signal quality check result
                 if (BCIActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
                 {
-                    Log.Debug("BCIActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
+                    _logger.LogDebug("Ignoring signal test result during onboarding (Testing_IgnoreSignalTestResultDuringOnboarding enabled)");
                     exitBCIOnboarding = true;
 
                     if (!userPassedLastSignalQualityCheck)
                     {
                         // Exit anyways regardless of signal quality result
-                        Log.Debug("User did not pass signal quality check but set testing parameter to ignore result. Exiting as if user did pass the check");
+                        _logger.LogDebug("User did not pass signal quality check but testing parameter is set to ignore - exiting anyway");
                     }
                 }
 
@@ -581,7 +585,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 else
                 {
                     // Display message to user prompting them to improve signal quality before moving on
-                    Log.Debug("Not exiting | Did not pass signal quality criteria");
+                    _logger.LogDebug("Not exiting - user did not pass signal quality criteria");
                     _ = ConfirmBoxOneOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
                         "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
                         "\nPlease refer to the user guide for help", "", StringResources.OK, _mainForm, false);
@@ -614,7 +618,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         private void retestBCIConnections()
         {
-            Log.Debug("retestBCIConnections(). deviceTestingState: " + _deviceTestingState);
+            _logger.LogDebug("Retesting BCI connections with state: {DeviceTestingState}", _deviceTestingState);
 
             // If already on Optical sensor error screen -> retest button does not check all BCI connections from the beginning, tests optical sensor right away
             // _requestTestTriggerBox goes to correct user control when test completed
@@ -663,7 +667,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             try
             {
                 _Testing_useSensor_TestIndex += 1;
-                Log.Debug("OpenBCIDeviceTester | _mainForm_EvtButtonExitClicked_DEBUG | _Testing_useSensor_TestIndex: " + _Testing_useSensor_TestIndex.ToString());
+                _logger.LogDebug("DEBUG Exit button clicked, test index: {TestIndex}", _Testing_useSensor_TestIndex);
                 if (_Testing_useSensor_TestIndex < _DebugStates.Length)
                 {
                     DeviceTestingState newState = _DebugStates[_Testing_useSensor_TestIndex];
@@ -695,7 +699,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Exception("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
+                _logger.LogError(e, "Exception in DEBUG exit button handler");
             }
         }
 
@@ -742,7 +746,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
             }
 
-            Log.Debug("startBCIDeviceTesting | Calling InitDAQ()");
+            _logger.LogDebug("Starting BCI device testing - calling InitDAQ()");
 
             // Call async function which connects to BCI sensor + starts task that controls TriggerBox flashing and tests optical sensor by request
             if (_Testing_useSensor == true)
@@ -787,7 +791,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in changeTriggerBoxColor");
             }
         }
 
@@ -806,7 +810,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in changeDeviceTestingState");
             }
         }
 
@@ -817,7 +821,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <returns></returns>
         public async Task InitDAQ() // Original function
         {
-            Log.Debug("InitDAQ()");
+            _logger.LogDebug("Initializing DAQ");
             _initDAQTaskStopped = false;
 
             while (!_endTasks)
@@ -831,31 +835,31 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     BaseDAQ.ExitCodes exitCode = ((DAQ_OpenBCI)_daqInstance).getUsbDongleConnected();
                     if (exitCode == BaseDAQ.ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
                     {
-                        Log.Debug("OpenBCIDeviceTester | _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle");
+                        _logger.LogDebug("USB dongle connection error detected, state: ReceivedBCIError_UsbDongle");
                         _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle;
                         changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_UsbDongle);
                     }
                     else
                     {
-                        Log.Debug("InitDAQ | exitCode: " + exitCode.ToString());
+                        _logger.LogDebug("InitDAQ exit code: {ExitCode}", exitCode);
                         bool success = _daqInstance.Start("");
                         if (success)
                         {
-                            Log.Debug("DAQ_OpenBCI.Start() | true");
+                            _logger.LogDebug("DAQ_OpenBCI started successfully");
 
                             // Check latency setting of port is set correctly
                             bool latencyPortOk = ((DAQ_OpenBCI)_daqInstance).CheckLatencyPort();
                             if (latencyPortOk)
                             {
-                                Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | true");
+                                _logger.LogDebug("DAQ_OpenBCI latency port check passed");
 
                                 if (_daqInstance.deviceInitialized)
                                 {
-                                    Log.Debug("DAQ_OpenBCI.deviceInitialized | true");
+                                    _logger.LogDebug("DAQ_OpenBCI device initialized successfully");
 
          
                                     // BCI impedence / railing integration - debugging option, go straight to signal check screens without checking optical sensor
-                                    Log.Debug("_Testing_BCIOnboardingIgnoreOpticalSensorChecks == true");
+                                    _logger.LogDebug("Testing mode enabled - ignoring optical sensor checks during onboarding");
 
                                     // Go to first stage of signal quality checking process
                                     startSignalQualityTestingState(DeviceTestingState.BCISignalCheckStartRequired);
@@ -863,12 +867,12 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                                 }
                                 else
                                 {
-                                    Log.Debug("DAQ_OpenBCI.deviceInitialized | false");
+                                    _logger.LogDebug("DAQ_OpenBCI device initialization failed");
                                 }
                             }
                             else
                             {
-                                Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | false | _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig");
+                                _logger.LogDebug("DAQ_OpenBCI latency port check failed, state: ReceivedBCIError_PortConfig");
                                 _daqInstance.Stop();
                                 _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig;
                                 changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_PortConfig);
@@ -876,7 +880,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                         }
                         else
                         {
-                            Log.Debug("OpenBCIDeviceTester | _deviceTestingState = DeviceTestingState.ReceivedBCIError_CytonBoard");
+                            _logger.LogDebug("Cyton board connection error detected, state: ReceivedBCIError_CytonBoard");
                             _deviceTestingState = DeviceTestingState.ReceivedBCIError_CytonBoard;
                             changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_CytonBoard);
                         }
@@ -887,7 +891,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
 
             _initDAQTaskStopped = true;
-            Log.Debug("InitDAQ | hole | _initDAQ_TaskStopped = true");
+            _logger.LogDebug("InitDAQ task stopped");
             // return;
         }
 

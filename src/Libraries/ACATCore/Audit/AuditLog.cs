@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,8 @@ namespace ACAT.Core.Audit
     /// </summary>
     public class AuditLog
     {
+        private static ILogger<AuditLog> _logger;
+
         /// <summary>
         /// Full path to the log file
         /// </summary>
@@ -59,6 +62,8 @@ namespace ACAT.Core.Audit
         /// </summary>
         static AuditLog()
         {
+            _logger = LoggingConfiguration.CreateLogger<AuditLog>();
+
             string logFileFolder = FileUtils.GetLogsDir();
 
             loadFilters();
@@ -67,7 +72,7 @@ namespace ACAT.Core.Audit
             {
                 if (!Directory.Exists(logFileFolder))
                 {
-                    Log.Debug("Creating log directory.");
+                    _logger.LogDebug("Creating log directory.");
                     Directory.CreateDirectory(logFileFolder);
                 }
             }
@@ -89,7 +94,7 @@ namespace ACAT.Core.Audit
 
             LogFileFullPath = Path.Combine(logFileFolder, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
 
-            Log.Debug("LogFileFullPath=" + LogFileFullPath);
+            _logger.LogDebug("LogFileFullPath=" + LogFileFullPath);
 
             /*
             objMutex = new Mutex(false, MutexName);

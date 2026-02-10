@@ -8,6 +8,7 @@
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,9 @@ namespace ACAT.Core.WidgetManagement
     /// </summary>
     public class WidgetManager : IDisposable
     {
+        private readonly ILogger<WidgetManager> _logger;
+        private static readonly ILogger<WidgetManager> _staticLogger = LoggingConfiguration.CreateLogger<WidgetManager>();
+
         /// <summary>
         /// Holds the types of all classes in the executing assembly that
         /// derive from the Widget class
@@ -59,14 +63,18 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// Initializes a new instance of WidgetManager
         /// </summary>
-        public WidgetManager(Control control)
+        /// <param name="control">Root control</param>
+        /// <param name="logger">Logger instance</param>
+        public WidgetManager(Control control, ILogger<WidgetManager> logger)
         {
-            _widgetAttributes = new WidgetAttributes();
-            _layout = new LayoutAttribute();
-            _rootWidget = new Widget(control);
+            _logger = logger;
 
-            Log.Debug("control name is " + control.Name);
-            Log.Debug("_rootWidget.name is " + _rootWidget.Name);
+            _widgetAttributes = new WidgetAttributes(LoggingConfiguration.CreateLogger<WidgetAttributes>());
+            _layout = new LayoutAttribute(LoggingConfiguration.CreateLogger<LayoutAttribute>());
+            _rootWidget = new Widget(control, null);
+
+            _logger.LogDebug("control name is {Name}", control.Name);
+            _logger.LogDebug("_rootWidget.name is {Name}", _rootWidget.Name);
         }
 
         /// <summary>
@@ -123,7 +131,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Could not find widgettype " + widgetTypeName + ", exception: " + ex);
+                _staticLogger.LogError(ex, "Could not find widgettype {WidgetTypeName}", widgetTypeName);
             }
 
             return retVal;
@@ -190,18 +198,18 @@ namespace ACAT.Core.WidgetManagement
 
             if (retVal)
             {
-                Log.Debug("configPath: " + configPath);
+                _logger.LogDebug("configPath: {ConfigPath}", configPath);
 
                 retVal = Layout.Load(configPath, _rootWidget);
                 if (retVal)
                 {
-                    Log.Debug($"Layout for root widget {Layout.RootWidget.Name}");
+                    _logger.LogDebug("Layout for root widget {Name}", Layout.RootWidget.Name);
                     retrieveAndSetWidgetAttribute(Layout.RootWidget);
                 }
             }
             else
             {
-                Log.Error($"Could not load WidgetAttributes from configFile [{configPath}]");
+                _logger.LogError("Could not load WidgetAttributes from configFile [{ConfigPath}]", configPath);
             }
 
             return retVal;
@@ -216,7 +224,7 @@ namespace ACAT.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("");
 
                 if (disposing)
                 {
@@ -258,7 +266,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _staticLogger.LogError(ex, ex.Message);
                 retVal = false;
             }
 
@@ -297,7 +305,7 @@ namespace ACAT.Core.WidgetManagement
                 }
                 else
                 {
-                    Log.Error("Extension directory does not exist: " + extensionDir);
+                    _staticLogger.LogError("Extension directory does not exist: {ExtensionDir}", extensionDir);
                 }
             }
 
@@ -331,19 +339,19 @@ namespace ACAT.Core.WidgetManagement
         {
             try
             {
-                Log.Debug("Found dll " + dllName);
+                _staticLogger.LogDebug("Found dll {DllName}", dllName);
                 loadTypesFromAssembly(Assembly.LoadFile(dllName));
             }
             catch (Exception ex)
             {
-                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
+                _staticLogger.LogError(ex, "Could get types from assembly {DllName}", dllName);
                 if (ex is ReflectionTypeLoadException)
                 {
                     var typeLoadException = (ReflectionTypeLoadException)ex;
                     var exceptions = typeLoadException.LoaderExceptions;
                     foreach (var e in exceptions)
                     {
-                        Log.Debug("Loader exception: " + e);
+                        _staticLogger.LogDebug("Loader exception: {Exception}", e);
                     }
                 }
             }
@@ -374,7 +382,7 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="widget"></param>
         private void retrieveAndSetWidgetAttribute(Widget widget)
         {
-            Log.Debug("widget.Name=" + widget.Name);
+            _logger.LogDebug("widget.Name={Name}", widget.Name);
 
             if (widget is IButtonWidget && WidgetAttributes.Contains(widget.Name))
             {

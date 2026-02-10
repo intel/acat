@@ -6,6 +6,8 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension;
 using ACATConfigNext.UserControls;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +20,8 @@ namespace ACATConfigNext.Forms
 {
     public class SettingsForm : Form
     {
+        private readonly ILogger<SettingsForm> _logger;
+        private readonly IServiceProvider _serviceProvider;
         private TableLayoutPanel basePanel;
         private FlowLayoutPanel leftPanel;
         private TableLayoutPanel navPanel;
@@ -40,12 +44,13 @@ namespace ACATConfigNext.Forms
 
         private bool _isDirty = false;
 
-        public SettingsForm()
+        public SettingsForm(ILogger<SettingsForm> logger, IServiceProvider serviceProvider)
         {
+            _logger = logger;
+            _serviceProvider = serviceProvider;
             WpfInitializationHelper.EnsureApplicationResources();
 
             InitializeComponent();
-
         }
 
         private FlowLayoutPanel CreateLeftPanel() 
@@ -156,7 +161,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error occurred while saving settings");
                 MessageBox.Show("An error occurred while saving settings.", "Save Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -183,7 +188,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "An error occurred while canceling changes");
                 MessageBox.Show("An error occurred while canceling changes.", "Cancel Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -215,7 +220,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "An error occurred while exiting");
                 MessageBox.Show("An error occurred while saving settings.", "Save Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -401,10 +406,16 @@ namespace ACATConfigNext.Forms
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug($"Could not copy property {prop.Name}: {ex.Message}");
+                        _logger.LogDebug("Could not copy property {PropertyName}: {Message}", prop.Name, ex.Message);
                     }
                 }
             }
+        }
+
+        private object CreateExtensionInstance(Type type)
+        {
+            // Use shared helper method for consistent extension instantiation across all applications
+            return ExtensionHelper.CreateExtensionInstance(_serviceProvider, type, _logger);
         }
 
 
@@ -428,7 +439,7 @@ namespace ACATConfigNext.Forms
                     {
                         var wordPredictorTypes = Context.AppWordPredictionManager.WordPredictorExtensions;
                         var wordPredictorExtensions = wordPredictorTypes
-                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                            .Select(type => CreateExtensionInstance(type) as IExtension)
                             .Where(instance => instance != null);
                         return wordPredictorExtensions;
 
@@ -440,7 +451,7 @@ namespace ACATConfigNext.Forms
                     {
                         var ttsEngineTypes = Context.AppTTSManager.GetExtensions();
                         var ttsExtensions = ttsEngineTypes
-                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                            .Select(type => CreateExtensionInstance(type) as IExtension)
                             .Where(instance => instance != null);
                         return ttsExtensions;
                     }

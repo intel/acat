@@ -12,11 +12,13 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility.NamedPipe
 {
     public sealed class PipeServer : IDisposable
     {
+        private readonly ILogger<PipeServer> _logger;
         private CancellationToken cancellationToken;
         private readonly CancellationTokenSource cancellationTokenSource;
         private bool disposed;
@@ -34,8 +36,10 @@ namespace ACAT.Core.Utility.NamedPipe
         /// Allow the pipe to be visible by all the users
         /// Current user and Administrator user
         /// </param>
-        public PipeServer(string pipeName, PipeDirection pipeDirection, bool allowAllReadWrite = false)
+        /// <param name="logger">Logger for dependency injection</param>
+        public PipeServer(string pipeName, PipeDirection pipeDirection, bool allowAllReadWrite = false, ILogger<PipeServer> logger = null)
         {
+            _logger = logger;
             if (!allowAllReadWrite)
             {
                 ServerStream = new NamedPipeServerStream(
@@ -203,7 +207,7 @@ namespace ACAT.Core.Utility.NamedPipe
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in ReadCallback: " + ex.Message);
+                _logger?.LogError(ex, "Error in ReadCallback: {Message}", ex.Message);
 
                 // Check to make sure the Pipe is still around
                 try
@@ -214,7 +218,7 @@ namespace ACAT.Core.Utility.NamedPipe
                 catch (Exception e)
                 {
                    // Something happened to the pipe. Just send an Exit message to the client
-                    Log.Debug("Pipe is not connected. Sending exit message to client. " + e.Message);
+                    _logger?.LogDebug("Pipe is not connected. Sending exit message to client. {Message}", e.Message);
                     OnMessageReceived(new MessageReceivedEventArgs("quit"));
                 }
             }

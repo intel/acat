@@ -13,6 +13,7 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
     internal class TalkApplicationScannerAgent : AgentBase
     {
         /// <summary>
-        /// The text control agent responsbile for handling
+        /// The text control agent responsible for handling
         /// editing and caret movement functions
         /// </summary>
         private TextControlAgentBase _textInterface;
@@ -41,6 +42,14 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
         /// The text box into which the user types text
         /// </summary>
         private Control textBoxControl;
+
+        /// <summary>
+        /// Initializes a new instance of the TalkApplicationScannerAgent class
+        /// </summary>
+        public TalkApplicationScannerAgent(ILogger<TalkApplicationScannerAgent> logger) : base(logger)
+        {
+        }
+        //private Control textBoxControl;
 
         /// <summary>
         /// Gets the list of process supported by this agent
@@ -102,25 +111,25 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Verbose();
+            _logger.LogTrace("OnFocusChanged");
 
             _windowHandle = monitorInfo.FgHwnd;
 
-            Log.Debug("window handle: " + _windowHandle);
+            _logger.LogDebug("window handle: {WindowHandle}", _windowHandle);
 
             if (monitorInfo.IsNewFocusedElement || monitorInfo.IsNewWindow)
             {
                 var automationElement = getTalkTextWinAutomationElement();
                 if (automationElement != null)
                 {
-                    Log.Debug("found automationelement for the text box");
+                    _logger.LogDebug("found automationelement for the text box");
 
                     disposeTextInterface();
                     createTalkWindowTextInterface(monitorInfo.FgHwnd, automationElement);
                 }
                 else
                 {
-                    Log.Error("DID NOT find automationelement for the text box");
+                    _logger.LogError("DID NOT find automationelement for the text box");
                     textBoxControl = null;
                 }
             }
@@ -168,7 +177,8 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
             bool handled = false;
 
             //_textInterface = new EditTextControlAgent(handle, automationElement, ref handled);
-            _textInterface = new TalkApplicationTextControlAgent(textBoxControl, handle, automationElement, ref handled);
+            var textControlLogger = LoggingConfiguration.CreateLogger<TalkApplicationTextControlAgent>();
+            _textInterface = new TalkApplicationTextControlAgent(textControlLogger, textBoxControl, handle, automationElement, ref handled);
             _textInterface.EvtTextChanged += _textInterface_EvtTextChanged;
             setTextInterface(_textInterface);
 
@@ -182,7 +192,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
         {
             if (_textInterface != null)
             {
-                Log.Debug("Disposing old text interface");
+                _logger.LogDebug("Disposing old text interface");
                 _textInterface.EvtTextChanged -= _textInterface_EvtTextChanged;
                 _textInterface.Dispose();
                 _textInterface = null;

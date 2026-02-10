@@ -10,6 +10,7 @@ using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,6 +58,8 @@ namespace ACAT.Core.WidgetManagement
     /// </summary>
     public class Widget : IDisposable
     {
+        private readonly ILogger<Widget> _logger;
+
         /// <summary>
         /// The enabled state of the widget.
         /// </summary>
@@ -113,8 +116,11 @@ namespace ACAT.Core.WidgetManagement
         /// Initializes an instance of the widget class
         /// </summary>
         /// <param name="control">The .NET Control that represents this widget</param>
-        public Widget(Control control)
+        /// <param name="logger">Logger instance</param>
+        public Widget(Control control, ILogger<Widget> logger)
         {
+            _logger = logger;
+
             UIControl = control;
 
             _children = new List<Widget>();
@@ -167,8 +173,9 @@ namespace ACAT.Core.WidgetManagement
         /// Initializes an instance of the Widget class with the name
         /// </summary>
         /// <param name="name"></param>
-        public Widget(String name)
-            : this((Control)null)
+        /// <param name="logger">Logger instance</param>
+        public Widget(String name, ILogger<Widget> logger = null)
+            : this((Control)null, logger)
         {
             widgetName = name;
         }
@@ -752,22 +759,22 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         public virtual void Actuate(bool repeatActuate = false)
         {
-            Log.Debug("LARAM " + widgetName + "!!!!!!!!!!!!!!!!" + " repeatActuate =  " + repeatActuate);
+            _logger.LogDebug("LARAM {WidgetName}!!!!!!!!!!!!!!!!  repeatActuate =  {RepeatActuate}", widgetName, repeatActuate);
 
             if (!Enabled)
             {
-                Log.Debug("LARAM " + widgetName + " is not enabled.  Will not actuate");
+                _logger.LogDebug("LARAM {WidgetName} is not enabled.  Will not actuate", widgetName);
             }
             else
             {
                 if (EvtActuated != null)
                 {
-                    Log.Debug("LARAM EvtActuated is not null.  Calling actuate for " + widgetName);
+                    _logger.LogDebug("LARAM EvtActuated is not null.  Calling actuate for {WidgetName}", widgetName);
                     EvtActuated(this, new WidgetActuatedEventArgs(this, repeatActuate));
                 }
                 else
                 {
-                    Log.Debug("LARAM EvtActuated is null for " + widgetName);
+                    _logger.LogDebug("LARAM EvtActuated is null for {WidgetName}", widgetName);
                 }
             }
         }
@@ -779,7 +786,7 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="control">The .NET UI Control</param>
         public void AddChild(Control control)
         {
-            AddChild(new Widget(control));
+            AddChild(new Widget(control, _logger) { });
         }
 
         /// <summary>
@@ -844,7 +851,7 @@ namespace ACAT.Core.WidgetManagement
                     }
                 }
             }
-            //Log.Debug("WidgetName: " + Name + ", retVal : " + retVal);
+            _logger?.LogTrace("CanAddForAnimation: WidgetName={Name}, result={Result}", Name, retVal);
             return retVal;
         }
 
@@ -881,7 +888,7 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         public void Dump()
         {
-            Log.Debug("Widget Name: " + Name);
+            _logger.LogDebug("Widget Name: {Name}", Name);
 
             if (_children.Count == 0)
             {
@@ -942,7 +949,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
 
             return true;
@@ -1171,7 +1178,7 @@ namespace ACAT.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {
@@ -1285,7 +1292,7 @@ namespace ACAT.Core.WidgetManagement
             handled = false;
             if (EvtHighlightOn != null)
             {
-                Log.Debug("EvtHighlightOn is not null. Triggering event");
+                _logger.LogDebug("EvtHighlightOn is not null. Triggering event");
 
                 Delegate[] delegates = EvtHighlightOn.GetInvocationList();
                 bool eventHandled = false;
@@ -1301,11 +1308,11 @@ namespace ACAT.Core.WidgetManagement
                 }
 
                 handled = eventHandled;
-                Log.Debug("EvtHighlightOn returned. handled = " + handled);
+                _logger.LogDebug("EvtHighlightOn returned. handled = {Handled}", handled);
             }
             else
             {
-                Log.Debug("EvtHighlightOn is null!");
+                _logger.LogDebug("EvtHighlightOn is null!");
             }
         }
 
@@ -1436,7 +1443,7 @@ namespace ACAT.Core.WidgetManagement
         {
             if (Enabled && EvtMouseClicked != null)
             {
-                Log.Debug("Widget control_MouseClick");
+                _logger.LogDebug("Widget control_MouseClick");
 
                 EvtMouseClicked(this, new WidgetEventArgs(this));
             }

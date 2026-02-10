@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
@@ -18,6 +19,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class ImageUtils
     {
+        private static ILogger<ImageUtils> _logger => LogManager.GetLogger<ImageUtils>();
         /// <summary>
         /// Converts the specified icon into a bitmap
         /// </summary>
@@ -84,7 +86,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception e)
             {
-                Log.Error("ImageCrop:  Could not crop image " + imageFile + ". Exception: " + e.ToString());
+                _logger?.LogError(e, "ImageCrop: Could not crop image {ImageFile}", imageFile);
             }
 
             return retVal;
@@ -167,16 +169,16 @@ namespace ACAT.Core.Utility
                 return null;
             }
 
-            Log.Debug("imagePath: " + bitmapFile);
+            _logger?.LogDebug("imagePath: {BitmapFile}", bitmapFile);
 
             if (File.Exists(bitmapFile))
             {
-                Log.Debug("File exists. Loading image");
+                _logger?.LogDebug("File exists. Loading image");
                 retVal = Image.FromFile(bitmapFile);
             }
             else
             {
-                Log.Error("Could not find bitmap file " + bitmapFile);
+                _logger?.LogError("Could not find bitmap file {BitmapFile}", bitmapFile);
             }
 
             return retVal;

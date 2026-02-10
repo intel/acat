@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
     /// </summary>
     public class CachedLogBCI
     {
+        private readonly ILogger<CachedLogBCI> _logger;
         /// <summary>
         /// Full path to the log file
         /// </summary>
@@ -35,8 +37,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// </summary>
         private readonly string LogFileName;
 
-        public CachedLogBCI(string baseFileName, string baseDirPath = null)
+        public CachedLogBCI(string baseFileName, string baseDirPath = null, ILogger<CachedLogBCI> logger = null)
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<CachedLogBCI>();
             if (!string.IsNullOrEmpty(baseFileName))
             {
                 LogFileName = baseFileName + ".csv";
@@ -98,7 +101,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.ToString());
             }
             finally
             {

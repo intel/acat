@@ -7,6 +7,7 @@
 
 using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Automation;
 
@@ -22,13 +23,17 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public abstract class GenericAppAgentBase : AgentBase
     {
+        protected GenericAppAgentBase(ILogger<AgentBase> logger = null) : base(logger ?? LoggingConfiguration.CreateLogger<AgentBase>())
+        {
+        }
+
         /// <summary>
         /// Gets or sets the text control agent object
         /// </summary>
         protected TextControlAgentBase appTextInterface { get; set; }
 
         /// <summary>
-        /// Implement this to display a contexutal menu for
+        /// Implement this to display a contextual menu for
         /// the currently active process
         /// </summary>
         /// <param name="monitorInfo">Info  about the active process/window</param>
@@ -46,7 +51,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="handled">was this handled?</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Verbose();
+            _logger.LogTrace("OnFocusChanged");
 
             disposeAndCreateTextInterface(monitorInfo);
             triggerTextChanged(appTextInterface);
@@ -77,7 +82,7 @@ namespace ACAT.Core.AgentManagement
                         AutomationElement focusedElement,
                         ref bool handled)
         {
-            Log.Verbose();
+            _logger.LogTrace("createEditControlTextInterface");
             return new EditTextControlAgent(handleMain, focusedElement, ref handled);
         }
 
@@ -114,10 +119,10 @@ namespace ACAT.Core.AgentManagement
         /// <param name="e">event arg</param>
         private void _textInterface_EvtTextChanged(object sender, TextChangedEventArgs e)
         {
-            Log.Verbose();
+            _logger.LogTrace("_textInterface_EvtTextChanged");
             if (e.TextInterface != null)
             {
-                Log.Debug("Calling triggertextchanged");
+                _logger.LogDebug("Calling triggertextchanged");
                 triggerTextChanged(e.TextInterface);
             }
         }
@@ -134,7 +139,7 @@ namespace ACAT.Core.AgentManagement
                         AutomationElement focusedElement)
         {
             bool handled = false;
-            Log.Debug("base.createEditControlTextInterface()");
+            _logger.LogDebug("base.createEditControlTextInterface()");
             var textInterface = createEditControlTextInterface(handleMain, focusedElement, ref handled);
             if (handled)
             {
@@ -154,7 +159,7 @@ namespace ACAT.Core.AgentManagement
         private void disposeAndCreateTextInterface(WindowActivityMonitorInfo monitorInfo)
         {
             disposeTextInterface();
-            Log.Debug("Calling createEditControlTextInterface");
+            _logger.LogDebug("Calling createEditControlTextInterface");
             var textInterface = createEditControlTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement) ??
                                 createKeyLoggerTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement);
 

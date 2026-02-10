@@ -21,6 +21,7 @@ using ACAT.Core.WordPredictorManagement;
 using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension.UI;
 using ACAT.Extension.UI.UserControls;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Extensions.UI.UserControls
@@ -39,7 +40,7 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected override bool HandleInitialize()
         {
-            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, _keybordUserControlCommon.TextController, _keybordUserControlCommon.ScannerPanel, new PredictionTypes[] { PredictionTypes.Sentences });
+            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, _keybordUserControlCommon.TextController, _keybordUserControlCommon.ScannerPanel, new PredictionTypes[] { PredictionTypes.Sentences }, null);
 
             bool retVal = _userControlWordPredictionCommon.Initialize(_keybordUserControlCommon.RootWidget);
             return retVal;
@@ -73,9 +74,9 @@ namespace ACAT.Extensions.UI.UserControls
         {
             if (!String.IsNullOrEmpty(text))
             {
-                Log.Debug("*** TTS *** : " + text);
+                _logger.LogDebug("*** TTS *** : {Text}", text);
                 TTSManager.Instance.ActiveEngine.Speak(text);
-                Log.Debug("*** TTS *** : sent text!");
+                _logger.LogDebug("*** TTS *** : sent text!");
 
                 AuditLog.Audit(new AuditEventTextToSpeech(TTSManager.Instance.ActiveEngine.Descriptor.Name));
             }

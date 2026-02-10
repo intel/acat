@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WordPredictorManagement;
 using ACAT.Core.WordPredictorManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,12 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// Keyboard interface to send keystrokes to the target
         /// text window
         /// </summary>
-        private static readonly Keyboard _keyboard = new();
+        private static readonly Keyboard _keyboard = new(LoggingConfiguration.CreateLogger<Keyboard>());
+
+        /// <summary>
+        /// Logger for the class
+        /// </summary>
+        private readonly ILogger<TextControlAgentBase> _logger;
 
         /// <summary>
         /// Text manipulation features supported by the base class
@@ -79,8 +85,9 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// <summary>
         /// Initializes a new instance of the class
         /// </summary>
-        public TextControlAgentBase()
+        public TextControlAgentBase(ILogger<TextControlAgentBase> logger = null)
         {
+            _logger = logger;
             _selectMode = false;
             Context.AppAgentMgr.EvtNonScannerMouseDown += AppAgentMgr_EvtNonScannerMouseDown;
         }
@@ -168,7 +175,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             {
                 AgentManager.Instance.TextChangedNotifications.Hold();
 
-                Log.Debug("offset: " + offset + ", count: " + count);
+                _logger?.LogDebug("offset: {Offset}, count: {Count}", offset, count);
                 SetCaretPos(offset + count);
 
                 int ii = offset + count;
@@ -180,7 +187,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
             }
             finally
             {
@@ -554,7 +561,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex.ToString());
                 value = '\0';
             }
 
@@ -637,7 +644,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             string text = GetText();
             int caretPos = GetCaretPos();
             ////Log.Debug("**** text: [" + text + "], caretPos: " + caretPos);
-            Log.Debug("caretPos: " + caretPos);
+            _logger?.LogDebug("caretPos: {CaretPos}", caretPos);
             TextUtils.GetPrefixAndWordAtCaret(text, caretPos, out prefix, out word);
         }
 
@@ -867,7 +874,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
             }
             finally
             {
@@ -980,7 +987,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// <param name="word">Word to insert at the 'offset'</param>
         public virtual void Replace(int offset, int count, string word)
         {
-            Log.Debug("HARRIS offset = " + offset + " count " + count + " word " + word);
+            _logger?.LogDebug("HARRIS offset = {Offset} count {Count} word {Word}", offset, count, word);
 
             try
             {
@@ -996,7 +1003,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
                     Keyboard.Send(Keys.Delete);
                 }
 
-                Log.Debug("HARRIS Sending back");
+                _logger?.LogDebug("HARRIS Sending back");
 
                 SendKeys.SendWait("{BACKSPACE " + count + "}");
 
@@ -1005,13 +1012,13 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
                     word = word.ToUpper();
                 }
 
-                Log.Debug("Sending word " + word);
+                _logger?.LogDebug("Sending word {Word}", word);
 
                 sendWait(word);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
             }
             finally
             {
@@ -1211,7 +1218,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, e.Message);
             }
 
             return caretPos;
@@ -1274,7 +1281,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, e.Message);
             }
 
             return selectedText;
@@ -1288,7 +1295,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         {
             string str = string.Empty;
 
-            Log.Verbose();
+            _logger?.LogDebug("GetText called");
 
             if (handleText == IntPtr.Zero)
             {
@@ -1301,7 +1308,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, e.Message);
             }
 
             return str;
@@ -1314,7 +1321,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// </summary>
         protected void learn()
         {
-            Log.Verbose();
+            _logger?.LogDebug("learn called");
 
             if (!WordPredictionManager.Instance.ActiveWordPredictor.SupportsLearning)
             {
@@ -1325,11 +1332,11 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             var trimmed = str.Trim();
             if (string.IsNullOrEmpty(trimmed))
             {
-                Log.Debug("Nothing to learn. sentence is empty");
+                _logger?.LogDebug("Nothing to learn. sentence is empty");
                 return;
             }
 
-            Log.Debug("Learn : [" + trimmed + "]");
+            _logger?.LogDebug("Learn : [{Trimmed}]", trimmed);
             WordPredictionManager.Instance.ActiveWordPredictor.Learn(trimmed, WordPredictorMessageTypes.None);
         }
 
@@ -1370,7 +1377,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, e.Message);
             }
 
             return true;
@@ -1384,7 +1391,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         {
             int ret = 0;
 
-            Log.Verbose();
+            _logger?.LogDebug("SetFocus called");
 
             if (handleText == IntPtr.Zero)
             {
@@ -1397,7 +1404,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, e.Message);
             }
 
             return ret != 0;
@@ -1457,7 +1464,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         {
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogDebug("dispose called");
 
                 if (disposing)
                 {

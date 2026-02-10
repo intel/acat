@@ -8,6 +8,7 @@
 using ACAT.Core.CoreInterfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,7 @@ namespace ACAT.Extensions.Onboarding.UI
     public class OnboardingWizard : IOnboardingWizard
     {
         private static volatile bool _DLLError = false;
+        private readonly ILogger<OnboardingWizard> _logger;
         private int _extensionIndex = -1;
         private readonly List<Type> _extensionsTypeCache = new();
         private readonly List<OnboardingHistoryEntry> _history = new();
@@ -32,6 +34,7 @@ namespace ACAT.Extensions.Onboarding.UI
 
         public OnboardingWizard()
         {
+            _logger = LoggingConfiguration.CreateLogger<OnboardingWizard>();
         }
         private readonly TypeLoader<IOnboardingExtension> _TypeLoader = new();
 
@@ -164,7 +167,7 @@ namespace ACAT.Extensions.Onboarding.UI
 
             if (_onboardingSequence.OnboardingSequenceItems.Count == 0)
             {
-                Log.Debug("No onboarding sequence items found!!");
+                _logger.LogDebug("No onboarding sequence items found!!");
                 return false;
             }
             foreach (var onboardingItem in _onboardingSequence.OnboardingSequenceItems)
@@ -184,7 +187,7 @@ namespace ACAT.Extensions.Onboarding.UI
 
             if (_onboardingExtensions.Count == 0)
             {
-                Log.Debug("No onboarding extensions found!!");
+                _logger.LogDebug("No onboarding extensions found!!");
                 return false;
             }
 

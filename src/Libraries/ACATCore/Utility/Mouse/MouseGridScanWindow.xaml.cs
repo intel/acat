@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility.Mouse;
+using Microsoft.Extensions.Logging;
 using System;
 
 //using System.Drawing;
@@ -36,6 +37,8 @@ namespace ACAT.Core.Utility
     /// </summary>
     public partial class MouseGridScanWindow
     {
+        private readonly ILogger<MouseGridScanWindow> _logger;
+
         /// <summary>
         /// Used for the state machine
         /// </summary>
@@ -163,8 +166,9 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
-        public MouseGridScanWindow()
+        public MouseGridScanWindow(ILogger<MouseGridScanWindow> logger = null)
         {
+            _logger = logger;
             InitializeComponent();
 
             init();
@@ -487,7 +491,7 @@ namespace ACAT.Core.Utility
             System.Windows.Point screen = MyCanvas.PointToScreen(new System.Windows.Point(x, y));
             System.Drawing.Point winFormsPoint = new((int)screen.X, (int)screen.Y);
 
-            Log.Debug($"Setting cursor position to {winFormsPoint}");
+            _logger?.LogDebug("Setting cursor position to {Position}", winFormsPoint);
 
             System.Windows.Forms.Cursor.Position = winFormsPoint;
         }

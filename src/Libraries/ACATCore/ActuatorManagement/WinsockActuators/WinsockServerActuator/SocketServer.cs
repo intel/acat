@@ -13,6 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Specialized;
 using System.Net;
@@ -28,6 +29,8 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
     /// </summary>
     public class SocketServer
     {
+        private readonly ILogger<SocketServer> _logger;
+
         /// <summary>
         /// List of clients connected to this socket server
         /// </summary>
@@ -75,8 +78,9 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public SocketServer(string listenAddress, int listenPort)
+        public SocketServer(string listenAddress, int listenPort, ILogger<SocketServer> logger = null)
         {
+            _logger = logger;
             ipToBind = listenAddress;
             portToBind = listenPort;
             parentThread = Thread.CurrentThread;
@@ -192,7 +196,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             }
             catch (Exception exc)
             {
-                Log.Error("Couldn't start the SocketServer main working thread." + exc.StackTrace);
+                _logger?.LogError(exc, "Couldn't start the SocketServer main working thread");
                 workerThread = null;
             }
 
@@ -204,18 +208,18 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         /// </summary>
         public void Stop()
         {
-            Log.Debug("SERVER: Stopping listeners until service is started again");
+            _logger?.LogDebug("SERVER: Stopping listeners until service is started again");
             try
             {
                 tcpListener.Stop();
             }
             catch (SocketException se)
             {
-                Log.Exception(se.ToString());
+                _logger?.LogError(se, "Socket exception while stopping TCP listener");
             }
             catch (Exception e)
             {
-                Log.Exception(e.ToString());
+                _logger?.LogError(e, "Exception while stopping TCP listener");
             }
             if (listenThread != null)
             {
@@ -265,18 +269,14 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         /// </summary>
         private void ListenForClients()
         {
-            Log.Debug("SocketServer: Listener Thread");
+            _logger?.LogDebug("SocketServer: Listener Thread started");
             try
             {
                 tcpListener.Start();
             }
             catch (SocketException se)
             {
-                //Log.Error(se.IncludeStackTrace);
-                Log.Error(se.StackTrace);
-                // se.ErrorCode == 10048, this condition means that more than one process is attempting to bind to same port, disallowed.
-                //                Log.Write(String.Format("SocketException: NativeError:{0} ErrorCode:{1}, Msg:{2}", se.NativeErrorCode, se.ErrorCode, se.Message));
-                //                Log.Debug("Socket Exception Listening for clients", se);
+                _logger?.LogError(se, "Socket exception while starting TCP listener (ErrorCode: {ErrorCode})", se.ErrorCode);
                 listenThread.Abort();
                 return;
             }
@@ -292,12 +292,12 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
                     IPAddress addr = IPAddress.Parse(ipe.Address.ToString());
                     string strAddr = addr.ToString();
 
-                    Log.Debug("Client " + strAddr + " has connected");
+                    _logger?.LogDebug("Client {ClientAddress} has connected", strAddr);
 
                     // Create a thread to handle communication with a connected client.
                     // The ClientConnHandler is an object that allows a way to pass data to a thread.  The TcpClient is passed to the
                     // object constructor and a thread is started with the objects worker method... allowing the thread access to the client.
-                    var connHandler = new ClientConnHandler(client);
+                    var connHandler = new ClientConnHandler(client, LoggingConfiguration.CreateLogger<ClientConnHandler>());
                     connHandler.OnPacketReceived += connHandler_OnPacketReceived;
                     if (!string.IsNullOrEmpty(connHandler.ID))
                     {
@@ -308,7 +308,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
                 }
                 catch (SocketException se)
                 {
-                    Log.Error(se.StackTrace);
+                    _logger?.LogError(se, "Socket exception while accepting client connection");
                 }
             }
         }
@@ -328,7 +328,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             }
             catch (SocketException se)
             {
-                Log.Error("SERVER: Couldn't start TCP Listener, exiting the app. " + se.StackTrace);
+                _logger?.LogError(se, "SERVER: Couldn't start TCP Listener, exiting the app");
                 return;
             }
             catch (Exception ex)
@@ -339,7 +339,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             string startMessage = string.Format("SERVER: Listener Started on {0}:{1}",
                 ((IPEndPoint)tcpListener.LocalEndpoint).Address,
                 ((IPEndPoint)tcpListener.LocalEndpoint).Port);
-            Log.Debug(startMessage);
+            _logger?.LogDebug("{StartMessage}", startMessage);
 
             parentThread.Join(); //  A way to get current thread to wait until a thread is complete before continuing.
         }

@@ -11,6 +11,7 @@ using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -25,6 +26,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
     public partial class UserControlSwitchSelect : UserControl, IOnboardingUserControl
     {
         public IActuator ActuatorSelected = null;
+        private readonly ILogger<UserControlSwitchSelect> _logger;
         private const String bodyStyle = " background-color:#232433;";
         private const String headStyle = "a:link{color: rgb(255, 170, 0);}";
         private const String textStyle = "font-family:'Montserrat Medium'; font-size:24px; color:white";
@@ -36,6 +38,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         public UserControlSwitchSelect(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
         {
+            _logger = LoggingConfiguration.CreateLogger<UserControlSwitchSelect>();
             InitializeComponent();
 
             _onboardingExtension = onboardingExtension;
@@ -156,7 +159,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             if (!String.IsNullOrEmpty(desc))
             {
                 String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, HtmlUtils.DecodeHtml(desc));
-                Log.Debug(html);
+                _logger.LogDebug(html);
 
                 html = html.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
 
@@ -189,7 +192,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             var str = e.Url.ToString();
 
-            Log.Debug("Url is [" + str + "]");
+            _logger.LogDebug("Url is [" + str + "]");
 
             if (str.ToLower().Contains("blank"))
             {

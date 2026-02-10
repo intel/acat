@@ -13,6 +13,7 @@ using ACAT.Extension.CommandHandlers;
 using ACAT.Extension.UI;
 using ACAT.Extension.UI.ScannerForms;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -28,11 +29,13 @@ namespace ACAT.Extensions.UI.Scanners
     public partial class TalkApplicationScanner : GenericScannerForm, ISupportsStatusBar
     //*/
     {
+        private readonly ILogger<TalkApplicationScanner> _logger;
         private TalkWindowTextBoxPhraseModeUserControl _textBoxPhraseModeUserControl;
         private TextBox _textBoxTalkWindow;
         private TalkWindowTextBoxUserControl _textBoxUserControl;
         public TalkApplicationScanner() : base()
         {
+            _logger = LoggingConfiguration.CreateLogger<TalkApplicationScanner>();
             _dispatcher = new TalkAppDispatcher(this);
         }
 
@@ -367,7 +370,7 @@ namespace ACAT.Extensions.UI.Scanners
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error in speak");
             }
         }
 
@@ -375,9 +378,9 @@ namespace ACAT.Extensions.UI.Scanners
         {
             if (!String.IsNullOrEmpty(text))
             {
-                Log.Debug("*** TTS *** : " + text);
+                _logger.LogDebug("*** TTS *** : {Text}", text);
                 TTSManager.Instance.ActiveEngine.Speak(text);
-                Log.Debug("*** TTS *** : sent text!");
+                _logger.LogDebug("*** TTS *** : sent text!");
 
                 AuditLog.Audit(new AuditEventTextToSpeech(TTSManager.Instance.ActiveEngine.Descriptor.Name));
             }
@@ -389,7 +392,7 @@ namespace ACAT.Extensions.UI.Scanners
             {
                 textToSpeech(text);
 
-                Log.Debug("tts " + text);
+                _logger.LogDebug("tts {Text}", text);
 
                 if (WordPredictionManager.Instance.ActiveWordPredictor.SupportsLearning)
                 {
@@ -407,7 +410,7 @@ namespace ACAT.Extensions.UI.Scanners
                             WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnCanned);
                             break;
                     }
-                    Log.Debug("Learn " + text);
+                    _logger.LogDebug("Learn {Text}", text);
                     WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnSentence);
                 }
             }
@@ -442,11 +445,10 @@ namespace ACAT.Extensions.UI.Scanners
 
             public override bool Execute(ref bool handled)
             {
-                Log.Info("Inside Talk Application Scanner TalkApplicationCommandHandler for command: " + Command);
+                var form = Dispatcher.Scanner.Form as TalkApplicationScanner;
+                form._logger.LogInformation("Inside Talk Application Scanner TalkApplicationCommandHandler for command: {Command}", Command);
 
                 handled = true;
-
-                var form = Dispatcher.Scanner.Form as TalkApplicationScanner;
 
                 switch (Command)
                 {

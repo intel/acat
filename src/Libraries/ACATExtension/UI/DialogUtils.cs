@@ -10,6 +10,7 @@ using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -23,6 +24,13 @@ namespace ACAT.Extension.UI
     /// </summary>
     public class DialogUtils
     {
+        private static ILogger<DialogUtils> _logger;
+
+        static DialogUtils()
+        {
+            _logger = LoggingConfiguration.CreateLogger<DialogUtils>();
+        }
+
         /// <summary>
         /// Displays a yes no confirmation dialog box.
         /// </summary>
@@ -189,7 +197,7 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error launching app");
             }
         }
 
@@ -218,7 +226,7 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -247,11 +255,11 @@ namespace ACAT.Extension.UI
                 IExtension extension = switchWindowsAgent;
                 extension.GetInvoker().SetValue("FilterByProcessName", taskName);
                 await Context.AppAgentMgr.ActivateAgent(switchWindowsAgent as IFunctionalAgent);
-                Log.Debug("Returned from activate agent");
+                _logger.LogDebug("Returned from activate agent");
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -280,7 +288,7 @@ namespace ACAT.Extension.UI
             }
             catch (Exception e)
             {
-                Log.Exception("Error creating task switcher dialog. Exception: " + e);
+                _logger.LogError(e, "Error creating task switcher dialog. Exception: " + e);
             }
         }
 
@@ -309,7 +317,7 @@ namespace ACAT.Extension.UI
         {
             const string panelClass = "YesNoDialog";
 
-            Log.Debug("Creating panel " + panelClass);
+            _logger.LogDebug("Creating panel " + panelClass);
             Form form = Context.AppPanelManager.CreatePanel(panelClass);
             if (form == null)
             {
@@ -334,11 +342,11 @@ namespace ACAT.Extension.UI
         /// <returns>The dialog form object</returns>
         private static Form initYesNoScanner(string panelClass, string title, string caption)
         {
-            Log.Debug("Creating panel " + panelClass);
+            _logger.LogDebug("Creating panel " + panelClass);
             Form form = Context.AppPanelManager.CreatePanel(panelClass, title);
             if (form == null)
             {
-                Log.Debug("Unable to create panel " + panelClass);
+                _logger.LogDebug("Unable to create panel " + panelClass);
                 return null;
             }
 

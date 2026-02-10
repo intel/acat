@@ -7,6 +7,7 @@
 
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -56,6 +57,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class CheckBoxWidget : LabelWidget
     {
+        private readonly ILogger<CheckBoxWidget> _logger;
+
         /// <summary>
         /// Assuming we are using the "ACAT Icon" font, the
         /// text for the OFF state
@@ -77,9 +80,10 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public CheckBoxWidget(Control uiControl)
-            : base(uiControl)
+        public CheckBoxWidget(Control uiControl, ILogger<CheckBoxWidget> logger = null)
+            : base(uiControl, logger ?? LoggingConfiguration.CreateLogger<LabelWidget>())
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<CheckBoxWidget>();
             EvtActuated += CheckBoxWidget_EvtActuated;
             SetToggleState(_toggleState);
         }
@@ -99,7 +103,7 @@ namespace ACAT.Core.Widgets
         /// <param name="node">xml node to parse</param>
         public override void Load(System.Xml.XmlNode node)
         {
-            Log.Debug("node=" + node);
+            _logger.LogDebug("node=" + node);
 
             String onOffState = XmlUtils.GetXMLAttrString(node, "onOffState");
             bool toggle;

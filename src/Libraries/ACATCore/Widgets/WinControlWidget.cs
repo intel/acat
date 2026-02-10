@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms;
@@ -18,7 +19,7 @@ namespace ACAT.Core.Widgets
     public class WinControlWidget : Widget
     {
         public WinControlWidget(Control uiControl)
-            : base(uiControl)
+            : base(uiControl, LoggingConfiguration.CreateLogger<Widget>())
         {
         }
 

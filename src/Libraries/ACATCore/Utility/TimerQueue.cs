@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Runtime.InteropServices;
 
@@ -18,6 +19,8 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class TimerQueue : IDisposable
     {
+        private static ILogger<TimerQueue> _logger => LogManager.GetLogger<TimerQueue>();
+
         /// <summary>
         /// Windows constant
         /// </summary>
@@ -133,7 +136,7 @@ namespace ACAT.Core.Utility
             if (_isRunning == true)
             {
                 // already running
-                Log.Debug("Timer is already running. returning");
+                _logger?.LogDebug("Timer is already running. returning");
                 return true;
             }
 
@@ -153,7 +156,7 @@ namespace ACAT.Core.Utility
             else
             {
                 getLastError = Marshal.GetLastWin32Error();
-                Log.Debug("Error while starting timer.  getLastError=" + getLastError);
+                _logger?.LogDebug("Error while starting timer. getLastError={GetLastError}", getLastError);
             }
 
             return retVal;
@@ -166,7 +169,7 @@ namespace ACAT.Core.Utility
         {
             if (_isRunning == false)
             {
-                Log.Debug("Not running. returning");
+                _logger?.LogDebug("Not running. returning");
                 return true;
             }
 

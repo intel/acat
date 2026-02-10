@@ -9,6 +9,7 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -21,13 +22,17 @@ namespace ACAT.Extension.CommandHandlers
     /// </summary>
     public class DocumentEditingHandler : RunCommandHandler
     {
+        private readonly ILogger<DocumentEditingHandler> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
-        public DocumentEditingHandler(String cmd)
+        /// <param name="logger">Logger instance</param>
+        public DocumentEditingHandler(String cmd, ILogger<DocumentEditingHandler> logger = null)
             : base(cmd)
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<DocumentEditingHandler>();
         }
 
         /// <summary>
@@ -128,7 +133,7 @@ namespace ACAT.Extension.CommandHandlers
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
                 retVal = false;
             }
 
@@ -149,7 +154,7 @@ namespace ACAT.Extension.CommandHandlers
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
     }

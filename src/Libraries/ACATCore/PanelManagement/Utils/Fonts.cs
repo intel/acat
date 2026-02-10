@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
@@ -28,6 +29,8 @@ namespace ACAT.Core.PanelManagement.Utils
         /// Singleton instance of this class
         /// </summary>
         private static readonly Fonts _instance = new();
+
+        private static readonly ILogger<Fonts> _logger = LoggingConfiguration.CreateLogger<Fonts>();
 
         /// <summary>
         /// Collection of installed fonts
@@ -65,7 +68,7 @@ namespace ACAT.Core.PanelManagement.Utils
         {
             if (!Directory.Exists(directory))
             {
-                Log.Info("No user fonts installed.");
+                _logger.LogInformation("No user fonts installed");
                 return;
             }
             loadFontsFromDir(directory, "*.ttf");
@@ -87,7 +90,7 @@ namespace ACAT.Core.PanelManagement.Utils
             }
             catch (Exception ex)
             {
-                Log.Exception("Could not add font file " + fontFileName + ", exception: " + ex);
+                _logger.LogError(ex, "Could not add font file {FontFileName}", fontFileName);
                 retVal = false;
             }
             return retVal;
@@ -133,7 +136,7 @@ namespace ACAT.Core.PanelManagement.Utils
         private static void loadFontsFromDir(string directory, string wildCard)
         {
             var walker = new DirectoryWalker(directory, wildCard);
-            Log.Verbose("Walking dir " + directory);
+            _logger.LogTrace("Walking dir {Directory}", directory);
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
@@ -143,7 +146,7 @@ namespace ACAT.Core.PanelManagement.Utils
         /// <param name="file"></param>
         private static void onFileFound(string file)
         {
-            Log.Verbose("Found font file " + file);
+            _logger.LogTrace("Found font file {File}", file);
             Instance.AddFontFile(file);
         }
 

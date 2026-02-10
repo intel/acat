@@ -12,11 +12,13 @@ using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.AnimationManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.AnimationManagement
 {
     public class UserControlAnimationManager : AnimationManager, IUserControlAnimationManager
     {
+        private readonly ILogger<UserControlAnimationManager> _logger;
         private UserControlConfigMapEntry mapEntry { get; set; } = null;
         private String name { get; set; } = null;
 
@@ -24,7 +26,10 @@ namespace ACAT.Core.AnimationManagement
 
         public event PlayerAnimationTransition EvtPlayerAnimationTransition;
 
-        public UserControlAnimationManager() : base() { }
+        public UserControlAnimationManager() : base()
+        {
+            _logger = LoggingConfiguration.CreateLogger<UserControlAnimationManager>();
+        }
 
         public bool Init(UserControlConfigMapEntry mapentry)
         {
@@ -44,7 +49,7 @@ namespace ACAT.Core.AnimationManagement
                 subscribeToActuatorEvents();
             }
 
-            Log.Debug("returning from Anim manager init()");
+            _logger.LogDebug("Returning from Anim manager init()");
 
             return retVal;
         }
@@ -56,7 +61,7 @@ namespace ACAT.Core.AnimationManagement
 
         public void OnLoad(Widget panelWidget, String animationName = null)
         {
-            Log.Debug("Start animation for panel " + panelWidget.Name);
+            _logger.LogDebug("Start animation for panel {PanelName}", panelWidget.Name);
 
             if (_player != null)
             {
@@ -84,7 +89,7 @@ namespace ACAT.Core.AnimationManagement
             {
                 if (animations == null)
                 {
-                    Log.Error("Could not find animations entry for panel " + panelWidget.Name);
+                    _logger.LogError("Could not find animations entry for panel {PanelName}", panelWidget.Name);
                     return;
                 }
 
@@ -115,12 +120,12 @@ namespace ACAT.Core.AnimationManagement
         {
             if (!CoreGlobals.AppPreferences.EnableAutoStartScan)
             {
-                Log.Verbose("CALIBTEST: UserControlAnimationManager.Start.  Do AutoTransition");
+                _logger.LogTrace("CALIBTEST: UserControlAnimationManager.Start.  Do AutoTransition");
                 Transition();
             }
             else
             {
-                Log.Verbose("CALIBTEST: UserControlAnimationManager.Start.");
+                _logger.LogTrace("CALIBTEST: UserControlAnimationManager.Start.");
                 Transition(_firstAnimation);
             }
         }
@@ -129,15 +134,15 @@ namespace ACAT.Core.AnimationManagement
         {
             try
             {
-                Log.Verbose();
+                _logger.LogTrace("TransitionFromName called");
 
-                Log.Debug("_currentPanel: " + _currentPanel);
+                _logger.LogDebug("_currentPanel: {CurrentPanel}", _currentPanel);
 
                 resetSwitchEventStates();
 
                 if (_player == null)
                 {
-                    Log.Debug("_player is null");
+                    _logger.LogDebug("_player is null");
                     return;
                 }
 
@@ -150,17 +155,17 @@ namespace ACAT.Core.AnimationManagement
                 var animation = animations[animationName];
                 if (animation == null)
                 {
-                    Log.Debug("Transition: animation is NULL!");
+                    _logger.LogDebug("Transition: animation is NULL!");
                     return;
                 }
 
-                Log.Debug("Calling player transition");
+                _logger.LogDebug("Calling player transition");
                 EvtPlayerAnimationTransition?.Invoke(this, animation.Name, animation.IsFirst);
                 _player.Transition(animation);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Exception in TransitionFromName");
             }
         }
 
@@ -188,13 +193,13 @@ namespace ACAT.Core.AnimationManagement
                     return;
                 }
 
-                Log.Debug("switch: " + switchObj.Name);
-                Log.Debug("   Panel: " + _currentPanel.Name);
+                _logger.LogDebug("switch: {SwitchName}", switchObj.Name);
+                _logger.LogDebug("   Panel: {PanelName}", _currentPanel.Name);
 
                 if (_currentPanel.UIControl is System.Windows.Forms.Form)
                 {
                     bool visible = Windows.GetVisible(_currentPanel.UIControl);
-                    Log.Debug("Form: " + _currentPanel.UIControl.Name + ", playerState: " + _player.State + ", visible: " + visible);
+                    _logger.LogDebug("Form: {FormName}, playerState: {PlayerState}, visible: {Visible}", _currentPanel.UIControl.Name, _player.State, visible);
                     if (!visible)
                     {
                         return;
@@ -205,7 +210,7 @@ namespace ACAT.Core.AnimationManagement
                 String onTrigger = switchObj.Command;
                 if (String.IsNullOrEmpty(onTrigger))
                 {
-                    Log.Debug("OnTrigger is null. returning");
+                    _logger.LogDebug("OnTrigger is null. returning");
                     return;
                 }
 
@@ -226,11 +231,11 @@ namespace ACAT.Core.AnimationManagement
 
                 if (CoreGlobals.AppPreferences.EnableManualScan)
                 {
-                    Log.Debug("HOOO form: " + _currentPanel.UIControl.Name + " Player state: " + _player.State);
+                    _logger.LogDebug("HOOO form: {FormName} Player state: {PlayerState}", _currentPanel.UIControl.Name, _player.State);
 
                     if (_player.State == PlayerState.Paused)
                     {
-                        Log.Debug(_currentPanel.Name + ": Player is paused. Returning");
+                        _logger.LogDebug("{PanelName}: Player is paused. Returning", _currentPanel.Name);
                         return;
                     }
 
@@ -239,7 +244,7 @@ namespace ACAT.Core.AnimationManagement
                         var widget = _player.HighlightedWidget;
                         if (widget != null)
                         {
-                            Log.Debug("Actuate. widgetname: " + widget.Name + " Text: " + widget.GetText());
+                            _logger.LogDebug("Actuate. widgetname: {WidgetName} Text: {WidgetText}", widget.Name, widget.GetText());
                             _player.Interrupt();
                             _player.ManualScanActuateWidget(widget);
                         }
@@ -252,10 +257,10 @@ namespace ACAT.Core.AnimationManagement
                     return;
                 }
 
-                Log.Debug("Player state is " + _player.State);
+                _logger.LogDebug("Player state is {PlayerState}", _player.State);
                 if (_player.State != PlayerState.Running)
                 {
-                    Log.Debug(_currentPanel.Name + ": Player is not Running. Returning");
+                    _logger.LogDebug("{PanelName}: Player is not Running. Returning", _currentPanel.Name);
                     return;
                 }
 
@@ -294,9 +299,7 @@ namespace ACAT.Core.AnimationManagement
                                                             highlightedWidget.UIWidget.GetType().Name,
                                                             widgetName));
 
-                    Log.Debug(_currentPanel.Name + ": Switch on " +
-                                highlightedWidget.UIWidget.Name + " type: " +
-                                highlightedWidget.UIWidget.GetType().Name);
+                    _logger.LogDebug("{PanelName}: Switch on {WidgetName} type: {WidgetType}", _currentPanel.Name, highlightedWidget.UIWidget.Name, highlightedWidget.UIWidget.GetType().Name);
 
                     // check if the widget has a onSelect code fragment. If so execute it.  Otherwise
                     // then check if the animation seq that this widget is a part of, has a onSelect.
@@ -319,12 +322,12 @@ namespace ACAT.Core.AnimationManagement
                 }
                 else
                 {
-                    Log.Debug(_currentPanel.Name + ": No current animation or highlighed widget!!");
+                    _logger.LogDebug("{PanelName}: No current animation or highlighed widget!!", _currentPanel.Name);
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Exception in actuatorManager_EvtSwitchActivated");
             }
             finally
             {
@@ -353,35 +356,35 @@ namespace ACAT.Core.AnimationManagement
                 {
                     if (!arg.Enabled)
                     {
-                        Log.Debug("Command " + onTrigger + " is not currently enabled");
+                        _logger.LogDebug("Command {Command} is not currently enabled", onTrigger);
                         return;
                     }
                     else
                     {
-                        Log.Debug("Command " + onTrigger + " IS ENABLED");
+                        _logger.LogDebug("Command {Command} IS ENABLED", onTrigger);
                     }
                 }
                 else
                 {
-                    Log.Debug("arg.handled is false for " + onTrigger);
+                    _logger.LogDebug("arg.handled is false for {Command}", onTrigger);
 
                     var cmdDescriptor = CommandManager.Instance.AppCommandTable.Get(onTrigger);
                     if (cmdDescriptor != null && !cmdDescriptor.EnableSwitchMap)
                     {
-                        Log.Debug("EnableswitchMap is not enabled for " + onTrigger);
+                        _logger.LogDebug("EnableswitchMap is not enabled for {Command}", onTrigger);
                         runCommand = false;
                     }
                 }
             }
             else
             {
-                Log.Debug("Dialog is active. Will not handle");
+                _logger.LogDebug("Dialog is active. Will not handle");
                 runCommand = false;
             }
 
             if (runCommand)
             {
-                Log.Debug("Executing OnTrigger command " + onTrigger + " for panel..." + _currentPanel.Name);
+                _logger.LogDebug("Executing OnTrigger command {Command} for panel...{PanelName}", onTrigger, _currentPanel.Name);
                 PCode pcode = new() { Script = "run(" + onTrigger + ")" };
                 var parser = new Parser();
                 if (parser.Parse(pcode.Script, ref pcode))

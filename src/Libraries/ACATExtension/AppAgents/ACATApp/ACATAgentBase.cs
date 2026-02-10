@@ -7,6 +7,7 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +27,7 @@ namespace ACAT.Extension.AppAgents.ACATApp
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ACATAgentBase()
+        public ACATAgentBase(ILogger<ACATAgentBase> logger) : base(logger)
         {
             _currentProcessName = Process.GetCurrentProcess().ProcessName.ToLower();
         }
@@ -54,8 +55,6 @@ namespace ACAT.Extension.AppAgents.ACATApp
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Verbose();
-
             handled = true;
         }
     }

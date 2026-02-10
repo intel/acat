@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -23,13 +24,17 @@ namespace ACAT.Extension.CommandHandlers
     /// </summary>
     public class GoBackHandler : RunCommandHandler
     {
+        private readonly ILogger<GoBackHandler> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
-        public GoBackHandler(String cmd)
+        /// <param name="logger">Logger instance</param>
+        public GoBackHandler(String cmd, ILogger<GoBackHandler> logger = null)
             : base(cmd)
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<GoBackHandler>();
         }
 
         /// <summary>
@@ -48,7 +53,7 @@ namespace ACAT.Extension.CommandHandlers
 
             bool hasParent = form.Owner != null;
 
-            Log.Debug("form: " + form.Name + ", hasParent: " + hasParent);
+            _logger.LogDebug("form: " + form.Name + ", hasParent: " + hasParent);
 
             Windows.CloseForm(form);
             if (!hasParent)

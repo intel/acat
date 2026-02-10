@@ -14,6 +14,7 @@ using ACAT.Core.CommandManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -21,6 +22,11 @@ namespace ACAT.Core.ActuatorManagement
 {
     public partial class SwitchCommandMapForm : Form
     {
+        /// <summary>
+        /// Logger instance for this class
+        /// </summary>
+        private readonly ILogger<SwitchCommandMapForm> _logger;
+
         /// <summary>
         /// Aspect ratio of form at design time
         /// </summary>
@@ -36,8 +42,9 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         private bool _wrapText = true;
 
-        public SwitchCommandMapForm()
+        public SwitchCommandMapForm(ILogger<SwitchCommandMapForm> logger)
         {
+            _logger = logger;
             InitializeComponent();
 
             SelectedCommand = String.Empty;
@@ -123,7 +130,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             if (CommandManager.Instance?.AppCommandTable?.CmdDescriptors == null)
             {
-                Log.Debug("CommandManager or AppCommandTable not initialized");
+                _logger.LogDebug("CommandManager or AppCommandTable not initialized");
                 return;
             }
 

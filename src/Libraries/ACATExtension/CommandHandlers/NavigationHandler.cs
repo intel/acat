@@ -10,6 +10,7 @@ using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Extension.CommandHandlers
@@ -20,13 +21,17 @@ namespace ACAT.Extension.CommandHandlers
     /// </summary>
     public class NavigationHandler : RunCommandHandler
     {
+        private readonly ILogger<NavigationHandler> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
-        public NavigationHandler(String cmd)
+        /// <param name="logger">Logger instance</param>
+        public NavigationHandler(String cmd, ILogger<NavigationHandler> logger = null)
             : base(cmd)
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<NavigationHandler>();
         }
 
         /// <summary>
@@ -132,7 +137,7 @@ namespace ACAT.Extension.CommandHandlers
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
                 retVal = false;
             }
 
@@ -156,7 +161,7 @@ namespace ACAT.Extension.CommandHandlers
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
     }

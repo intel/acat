@@ -22,6 +22,8 @@ using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
 using ACATResources;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -33,6 +35,9 @@ namespace ACATTalk
     internal static class Program
     {
         private static Splash splash = null;
+        private static ILoggerFactory modernLoggingFactory = null;
+        private static ILogger _logger;
+        private static IServiceProvider _serviceProvider;
 
         /// <summary>
         /// The main entry point for the application.
@@ -48,11 +53,6 @@ namespace ACATTalk
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //if (!AppCommon.CheckFontsInstalled())
-            //{
-            //    return;
-            //}
-
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
             FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
@@ -63,8 +63,6 @@ namespace ACATTalk
 
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
-
-            bool freshInstallForUser = !UserManager.UserExists(UserManager.CurrentUser);
 
             if (!AppCommon.CreateUserAndProfile())
             {
@@ -89,10 +87,16 @@ namespace ACATTalk
             // Initialize legacy logging system
             Log.SetupListeners();
 
-            // Initialize modern logging infrastructure (ticket #3)
-            var modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
+            // Initialize modern logging infrastructure FIRST - before anything else needs it
+            modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
+            LogManager.Initialize(modernLoggingFactory);  // Initialize global logger manager
 
-            Log.Debug("ACAT Talk Application Launch");
+            _logger = modernLoggingFactory.CreateLogger(typeof(Program));
+
+            _logger.LogDebug("ACAT Talk Application Launch");
+
+            // Set up dependency injection for extension instantiation
+            InitializeDependencyInjection();
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
@@ -190,11 +194,10 @@ namespace ACATTalk
 
                 Common.Uninit();
 
-
                 splash?.Close();
                 splash = null;
 
-                Log.Debug("ACATTalk Application shutdown");
+                _logger.LogDebug("ACATTalk Application shutdown");
 
                 Log.Close();
                 modernLoggingFactory?.Dispose();
@@ -208,6 +211,23 @@ namespace ACATTalk
             AppCommon.OnExit();
         }
 
+        private static void InitializeDependencyInjection()
+        {
+            // Set up dependency injection for extension instantiation
+            var services = new ServiceCollection();
+
+            // Add logging (reuse existing factory)
+            services.AddSingleton<ILoggerFactory>(modernLoggingFactory);
+            services.AddLogging();
+
+            _serviceProvider = services.BuildServiceProvider();
+
+            // Make service provider available to Context for extension loading
+            Context.ServiceProvider = _serviceProvider;
+
+            _logger.LogDebug("Dependency injection initialized");
+        }
+
         /// <summary>
         /// A fatal error has occurred.  Try and gracefully exit ACAT
         /// </summary>
@@ -215,7 +235,6 @@ namespace ACATTalk
         private static void CoreGlobals_EvtFatalError(string reason)
         {
             splash?.Close();
-
 
             if (Context.AppPanelManager != null && Context.AppPanelManager.GetCurrentForm() != null &&
                 Context.AppPanelManager.GetCurrentForm().PanelCommon != null && Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget != null)

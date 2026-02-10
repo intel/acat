@@ -7,6 +7,7 @@
 
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,6 +21,8 @@ namespace ACAT.Core.Utility
     /// </summary>
     public static class EnumWindows
     {
+        private static ILogger _logger;
+
         /// <summary>
         /// Ignore windows with these class names during enumeration
         /// </summary>
@@ -52,6 +55,11 @@ namespace ACAT.Core.Utility
         /// </summary>
         private static List<WindowInfo> windowList;
 
+        static EnumWindows()
+        {
+            _logger = LoggingConfiguration.CreateLogger(typeof(EnumWindows).Name);
+        }
+
         /// <summary>
         /// Synchronously enumerates windows and returns a window list
         /// </summary>
@@ -76,7 +84,7 @@ namespace ACAT.Core.Utility
         public static void RestoreFocusToTopWindow(int ignoreHandle = 0)
         {
             var winList = Enumerate(false);
-            Log.Debug("winList Count: " + winList.Count);
+            _logger.LogDebug("winList Count: " + winList.Count);
             bool found = false;
             var handle = IntPtr.Zero;
             IntPtr ignoreWindowHandle = new(ignoreHandle);
@@ -94,7 +102,7 @@ namespace ACAT.Core.Utility
                 var control = Form.FromHandle(handle);
                 if (control is IDialogPanel)
                 {
-                    Log.Debug("Setting focus to ACAT dialog." + windowInfo.Title);
+                    _logger.LogDebug("Setting focus to ACAT dialog." + windowInfo.Title);
                     found = true;
                     break;
                 }
@@ -107,7 +115,7 @@ namespace ACAT.Core.Utility
                     control is not MenuPanelBase &&
                     control is not IScannerPanel)
                 {
-                    Log.Debug("Found top window " + windowInfo.Title);
+                    _logger.LogDebug("Found top window " + windowInfo.Title);
                     found = true;
                     break;
                 }
@@ -131,7 +139,7 @@ namespace ACAT.Core.Utility
         public static void RestoreFocusToTopWindowOnDesktop()
         {
             var winList = Enumerate();
-            Log.Debug("winList Count: " + winList.Count);
+            _logger.LogDebug("winList Count: " + winList.Count);
             bool found = false;
             var handle = IntPtr.Zero;
 
@@ -146,7 +154,7 @@ namespace ACAT.Core.Utility
                 if (!windowInfo.Title.Contains("DebugView") &&
                     !Windows.IsMinimized(handle))
                 {
-                    Log.Debug("Found top window " + windowInfo.Title);
+                    _logger.LogDebug("Found top window " + windowInfo.Title);
                     found = true;
                     break;
                 }
@@ -249,7 +257,7 @@ namespace ACAT.Core.Utility
 
             if (!string.IsNullOrEmpty(windowTitle))
             {
-                Log.Debug("hWnd=" + winHandle + "  windowTitle=" + windowTitle);
+                _logger.LogDebug("hWnd=" + winHandle + "  windowTitle=" + windowTitle);
 
                 var info = new WindowInfo(winHandle, windowTitle);
                 windowList.Add(info);

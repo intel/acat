@@ -15,6 +15,7 @@
 
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -28,6 +29,13 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators
     /// </summary>
     internal class WinsockCommon
     {
+        private static ILogger<WinsockCommon> _logger;
+
+        public static void SetLogger(ILogger<WinsockCommon> logger)
+        {
+            _logger = logger;
+        }
+
         public delegate IActuatorSwitch CreateSwitchDelegate(IActuatorSwitch s);
 
         /// <summary>
@@ -45,8 +53,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators
             }
             catch (Exception e)
             {
-                Log.Warn("Image switch, invalid action specified " + action);
-                Log.Exception(e);
+                _logger?.LogWarning(e, "Image switch, invalid action specified {Action}", action);
             }
 
             return retVal;
@@ -154,7 +161,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, "Error parsing long value {Value}", val);
             }
 
             return retVal;
@@ -178,7 +185,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators
                 var imageSwitch = switchObj;
                 if (string.Compare(imageSwitch.Source, gesture, true) == 0)
                 {
-                    Log.Debug("Found switch object " + switchObj.Name + " for gesture" + gesture);
+                    _logger?.LogDebug("Found switch object {SwitchName} for gesture {Gesture}", switchObj.Name, gesture);
                     return createSwitchDel(switchObj);
                 }
             }

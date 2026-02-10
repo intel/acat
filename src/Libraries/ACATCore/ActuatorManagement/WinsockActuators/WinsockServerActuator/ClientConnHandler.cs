@@ -13,6 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Net;
@@ -28,6 +29,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
     /// </summary>
     internal class ClientConnHandler : IDisposable
     {
+        private readonly ILogger<ClientConnHandler> _logger;
         public ConnectionStatus ClientConnectionStatus = ConnectionStatus.Disconnected;
         public string ID = string.Empty;
         public Thread WorkerThread;
@@ -45,8 +47,9 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         /// Initializes a instance of the class
         /// </summary>
         /// <param name="client">The TcpClient connection that is connected to a client.</param>
-        public ClientConnHandler(TcpClient client)
+        public ClientConnHandler(TcpClient client, ILogger<ClientConnHandler> logger)
         {
+            _logger = logger;
             tcpClient = client;
             clientStream = tcpClient.GetStream();
             ID = Guid.NewGuid().ToString();
@@ -58,7 +61,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error getting remote endpoint");
             }
 
             OnClientMsgReceived += ClientConnHandler_OnClientMsgReceived;
@@ -166,7 +169,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger.LogError(e, "Error sending to client");
                 return false;
             }
         }
@@ -190,12 +193,12 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
                 {
                     // blocks until a client sends a message
                     bytesRead = clientStream.Read(message, 0, ReadBufferSize);
-                    Log.Debug("Returned from read. Bytes read: " + bytesRead);
+                    _logger.LogDebug("Returned from read. Bytes read: {BytesRead}", bytesRead);
                 }
                 catch (Exception e)
                 {
                     // Probably a socket exception.
-                    Log.Error("SERVER: ClientConnHandler, exception reading stream " + e.StackTrace);
+                    _logger.LogError(e, "SERVER: ClientConnHandler, exception reading stream");
                     break;
                 }
 
@@ -206,10 +209,10 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
                 }
 
                 // Data has been received, let's process it.
-                Log.Debug("Calling OnClientMsgReceived");
+                _logger.LogDebug("Calling OnClientMsgReceived");
                 OnClientMsgReceived?.Invoke(message, bytesRead);
 
-                Log.Debug("Returned from OnClientMsgReceived");
+                _logger.LogDebug("Returned from OnClientMsgReceived");
             }
 
             // Out of the WorkerThreadMethod loop... time to close stuff down.
@@ -271,7 +274,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         /// <param name="count"> Length of the data</param>
         private void HandleClientMessage(byte[] messageFromClient, int count)
         {
-            Log.Debug("Received " + count + " bytes");
+            _logger.LogDebug("Received {Count} bytes", count);
             lock (_lockObj)
             {
                 int offset = 0;
@@ -291,9 +294,9 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
                             Data = _memoryStream.ToArray()
                         };
 
-                        Log.Debug(string.Format("Entire packet received.  Calling threadpool for data received"));
+                        _logger.LogDebug("Entire packet received.  Calling threadpool for data received");
                         ThreadPool.QueueUserWorkItem(Worker, item);
-                        Log.Debug(string.Format("Returned from QueueUserWorkItem"));
+                        _logger.LogDebug("Returned from QueueUserWorkItem");
                         _memoryStream = new MemoryStream();
                     }
 
@@ -324,7 +327,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error aborting worker thread");
             }
         }
 

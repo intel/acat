@@ -18,6 +18,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,6 +34,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
     {
+        private readonly ILogger<UserControlBCISignalCheck> _logger;
+
         private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
                             "</style>\r\n  </head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                             "<p style=\"font-family:'Montserrat Medium'; font-size:20px; color:white; text-align: center;\">\r\n" +
@@ -142,8 +145,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <param name="stepId"></param>
         ///
-        public UserControlBCISignalCheck()
+        public UserControlBCISignalCheck(ILogger<UserControlBCISignalCheck> logger)
         {
+            _logger = logger;
             InitializeComponent();
 
             buttonNext_userControlBCISignalCheck.Enabled = true;
@@ -314,9 +318,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public void initializeBCISignalCheck(DAQ_gTecBCI gtecbci, bool maxTimeHasElapsed, double maxTimeMins, double minElapsedPrevSignalQualityCheck, bool userPassedLastSignalQualityCheck)
         {
             gTecBCI = gtecbci;
-            Log.Debug(String.Format("initializeBCISignalCheck | maxTimeHasElapsed: {0}, " +
-                "minElapsedPrevSignalQualityCheck: {1}, userPassedLastSignalQualityCheck: {2}",
-                maxTimeHasElapsed.ToString(), minElapsedPrevSignalQualityCheck.ToString(), userPassedLastSignalQualityCheck.ToString()));
+            _logger?.LogDebug("initializeBCISignalCheck | maxTimeHasElapsed: {MaxTimeHasElapsed}, " +
+                "minElapsedPrevSignalQualityCheck: {MinElapsedPrevSignalQualityCheck}, userPassedLastSignalQualityCheck: {UserPassedLastSignalQualityCheck}",
+                maxTimeHasElapsed, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
 
             // Get / inititalize variables related to board config used in data processing
             _indEegChannels = gTecBCI.indEegChannels;
@@ -334,10 +338,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             for (int i = 0; i < _indEegChannels.Length; i++)
                 _indEegChannels_str += (_indEegChannels[i].ToString() + ", ");
 
-            Log.Debug(String.Format("initializeBCISignalCheck | _numChannels: {0}, " + "_samplingRate: {1}, " +
-                "_scaleIdx: {2}, _bufSize: {3}\n" +
-                "_indEegChannels_str: {4}",
-                _numChannels.ToString(), _samplingRate.ToString(), _scaleIdx.ToString(), _bufSize.ToString(), _indEegChannels_str));
+            _logger?.LogDebug("initializeBCISignalCheck | _numChannels: {NumChannels}, " + "_samplingRate: {SamplingRate}, " +
+                "_scaleIdx: {ScaleIdx}, _bufSize: {BufSize}\n" +
+                "_indEegChannels_str: {IndEegChannelsStr}",
+                _numChannels, _samplingRate, _scaleIdx, _bufSize, _indEegChannels_str);
 
             // Set some text fields to smaller font size for 125 scaling (100 scaling is default)
             var tuple = DualMonitor.GetDisplayWidthAndScaling();
@@ -434,7 +438,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in ProcessDataSignalCheck");
             }
         }
 
@@ -493,7 +497,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in setElectrodeCapMapColors");
             }
         }
 
@@ -512,7 +516,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in tabControlElectrodeQuality_SelectedIndexChanged");
             }
         }
 
@@ -563,7 +567,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in addChartToScreen");
             }
         }
 
@@ -619,9 +623,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 result = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.Exception(e.Message);
+                // Exception will propagate to calling method for proper logging
             }
             return result;
         }
@@ -639,7 +643,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 highlightSelectedTab(0);
             }
 
-            Log.Debug("tabControlElectrodeQuality_SelectedIndexChanged" + " | _currentBCISignalCheckMode: " + _currentBCISignalCheckMode.ToString());
+            _logger?.LogDebug("tabControlElectrodeQuality_SelectedIndexChanged | _currentBCISignalCheckMode: {CurrentBCISignalCheckMode}", _currentBCISignalCheckMode);
         }
 
         /// <summary>
@@ -692,7 +696,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger?.LogError(e, "Exception in GetGraphYLims");
             }
 
             yLimMax = scale;
@@ -770,7 +774,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.Message);
+                _logger.LogError(ex, "Exception in ProcessDataSignalCheck: {Message}", ex.Message);
             }
         }
     }

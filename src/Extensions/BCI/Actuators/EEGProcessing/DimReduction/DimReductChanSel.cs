@@ -12,6 +12,7 @@
 
 using ACAT.Core.Utility;
 using Accord.Math;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
     [Serializable]
     public class DimReductChanSel
     {
+        [NonSerialized]
+        private readonly ILogger<DimReductChanSel> _logger;
         // Subset of channels
         public int[] channelSubset;
 
         public DimReductChanSel(int[] pChannelSubset)
         {
+            _logger = LoggingConfiguration.CreateLogger<DimReductChanSel>();
             channelSubset = pChannelSubset;
         }
 
@@ -85,7 +89,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger?.LogError(e, "Error during dimension reduction processing");
             }
             return true;
         }

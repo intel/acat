@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.UserManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,6 +19,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class ResourceUtils
     {
+        private static ILogger<ResourceUtils> _logger => LogManager.GetLogger<ResourceUtils>();
         /// <summary>
         /// Name of the language resources dll
         /// </summary>
@@ -78,7 +80,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex);
+                    _logger?.LogError(ex, "Exception in EnumerateInstalledLanguages");
                 }
             }
 
@@ -114,7 +116,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Verbose("Language detect: Skipping folder " + dir + ". " + ex.Message);
+                    _logger?.LogDebug("Language detect: Skipping folder {Dir}. {Message}", dir, ex.Message);
                 }
             }
 
@@ -151,7 +153,7 @@ namespace ACAT.Core.Utility
 
             var targetDir = Path.Combine(UserManager.CurrentUserDir, language);
 
-            Log.Debug("Copy directory " + srcDir + "=> " + targetDir);
+            _logger?.LogDebug("Copy directory {SrcDir} => {TargetDir}", srcDir, targetDir);
 
             FileUtils.CopyDir(srcDir, targetDir);
         }
@@ -228,7 +230,7 @@ namespace ACAT.Core.Utility
                 //TODO: Code Smell
                 if (!Directory.Exists(resourcesDir) || !File.Exists(resourceDll))
                 {
-                    Log.Warn(language + " resources not found.  Will use English as the default");
+                    _logger?.LogWarning("{Language} resources not found. Will use English as the default", language);
                     culture = CultureInfo.CreateSpecificCulture("en");
                 }
 
@@ -237,7 +239,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Error("Error setting culture to " + language + ", " + ex + ", will use English as the default");
+                _logger?.LogError(ex, "Error setting culture to {Language}, will use English as the default", language);
                 CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en");
                 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CreateSpecificCulture("en");
             }

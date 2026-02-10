@@ -22,6 +22,7 @@ using ACATResources;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -57,7 +58,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public SwitchWindowsAgent()
+        public SwitchWindowsAgent(ILogger<SwitchWindowsAgent> logger = null) : base(logger)
         {
             Name = ClassDescriptorAttribute.GetDescriptor(GetType()).Name;
         }
@@ -131,11 +132,11 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         {
             if (IsClosing)
             {
-                Log.Debug("IsClosing is true.  Will not handle the focus change");
+                _logger.LogDebug("IsClosing is true.  Will not handle the focus change");
                 return;
             }
 
-            Log.Debug("OnFocus: " + monitorInfo);
+            _logger.LogDebug("OnFocus: {MonitorInfo}", monitorInfo);
 
             base.OnFocusChanged(monitorInfo, ref handled);
 

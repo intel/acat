@@ -17,6 +17,7 @@ using ACAT.Core.TTSManagement;
 using ACAT.Core.TTSManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -74,6 +75,8 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// </summary>
         private bool _disposed;
 
+        private readonly ILogger<TTSClient> _logger;
+
         /// <summary>
         /// Is speech muted?
         /// </summary>
@@ -114,8 +117,9 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public TTSClient()
+        public TTSClient(ILogger<TTSClient> logger)
         {
+            _logger = logger;
             TTSClientSettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
             Settings = TTSClientSettings.Load();
             UseAlternatePronunciations = Settings.UseAlternatePronunciations;
@@ -412,7 +416,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <returns>true on success</returns>
         public bool Speak(String text)
         {
-            Log.Debug("Entering...text=" + text);
+            _logger.LogDebug("Entering...text={Text}", text);
 
             try
             {
@@ -423,7 +427,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Exception("Exception caught! ex=" + ex.Message);
+                _logger.LogError(ex, "Exception caught! ex={Message}", ex.Message);
             }
 
             return true;
@@ -451,7 +455,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "{Exception}", ex.ToString());
                 retVal = false;
             }
 
@@ -467,7 +471,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <returns>true on success</returns>
         public bool SpeakSsml(String ssml, String text, String placeHolder)
         {
-            Log.Debug("Entering...text=" + ssml);
+            _logger.LogDebug("Entering...text={Ssml}", ssml);
 
             try
             {
@@ -476,15 +480,15 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
                     text = autoAppendPunctuation(replaceWithAltPronunciations(text));
                     ssml = ssml.Replace(placeHolder, text);
 
-                    Log.Debug("Speaking text:" + text);
-                    Log.Debug("ssml:" + ssml);
+                    _logger.LogDebug("Speaking text:{Text}", text);
+                    _logger.LogDebug("ssml:{Ssml}", ssml);
 
                     sendSsml(ssml);
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception("Exception caught! ex=" + ex.Message);
+                _logger.LogError(ex, "Exception caught! ex={Message}", ex.Message);
             }
 
             return true;
@@ -510,15 +514,15 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
                     text = autoAppendPunctuation(replaceWithAltPronunciations(text));
                     ssml = ssml.Replace(placeHolder, text);
 
-                    Log.Debug("Speaking text:" + text);
-                    Log.Debug("ssml:" + ssml);
+                    _logger.LogDebug("Speaking text:{Text}", text);
+                    _logger.LogDebug("ssml:{Ssml}", ssml);
 
                     sendSsml(ssml);
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "{Exception}", ex.ToString());
                 retVal = false;
             }
 
@@ -570,7 +574,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing TTSClient");
 
                 if (disposing)
                 {
@@ -624,7 +628,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Exception("Could not create temp directory for TTSClient. " + ex);
+                _logger.LogError(ex, "Could not create temp directory for TTSClient. {Exception}", ex);
                 path = ".\\";
             }
 
@@ -647,7 +651,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
 
             _pronunciations = new Pronunciations();
 
-            Log.Debug("Loading pronunciations. Filename is " + Settings.PronunciationsFile);
+            _logger.LogDebug("Loading pronunciations. Filename is {PronunciationsFile}", Settings.PronunciationsFile);
             return _pronunciations.Load(ci, Settings.PronunciationsFile);
         }
 
@@ -809,7 +813,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Exception("Error writing to temp file " + fileName + ". Exception: " + ex);
+                _logger.LogError(ex, "Error writing to temp file {FileName}. Exception: {Exception}", fileName, ex);
                 return false;
             }
 

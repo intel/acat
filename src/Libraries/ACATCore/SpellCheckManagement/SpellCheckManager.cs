@@ -9,6 +9,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.SpellCheckManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,9 +34,20 @@ namespace ACAT.Core.SpellCheckManagement
         public static String SpellCheckersRootName = "";
 
         /// <summary>
-        /// Word prediction manager instance
+        /// Word prediction manager instance - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly SpellCheckManager _instance = new();
+        private static readonly Lazy<SpellCheckManager> _instance = new Lazy<SpellCheckManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<SpellCheckManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<SpellCheckManager>)) as ILogger<SpellCheckManager>
+                ?? LogManager.GetLogger<SpellCheckManager>();
+            return new SpellCheckManager(logger);
+        });
+
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<SpellCheckManager> _logger;
 
         /// <summary>
         /// The active word predictor
@@ -55,8 +67,9 @@ namespace ACAT.Core.SpellCheckManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private SpellCheckManager()
+        private SpellCheckManager(ILogger<SpellCheckManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;
 
@@ -70,7 +83,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// </summary>
         public static SpellCheckManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -312,7 +325,7 @@ namespace ACAT.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing SpellCheckManager");
 
                 if (disposing)
                 {
@@ -363,7 +376,7 @@ namespace ACAT.Core.SpellCheckManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Unable to load spellchecker " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                _logger.LogError(ex, "Unable to load spellchecker {Type}, assembly: {AssemblyName}", type, type.Assembly.FullName);
                 retVal = false;
             }
 

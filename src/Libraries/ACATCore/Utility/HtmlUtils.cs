@@ -12,11 +12,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Web;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
     public class HtmlUtils
     {
+        private static ILogger<HtmlUtils> _logger => LogManager.GetLogger<HtmlUtils>();
         /// <summary>
         /// Paths of the browsers exe
         /// </summary>
@@ -166,7 +168,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error loading HTML script: " + ex.Message);
+                _logger?.LogError(ex, "Error loading HTML script: {Message}", ex.Message);
             }
         }
 

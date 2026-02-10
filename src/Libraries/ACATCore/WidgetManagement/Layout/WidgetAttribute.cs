@@ -8,6 +8,7 @@
 using ACAT.Core.Interpreter;
 using ACAT.Core.Utility;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Drawing;
@@ -22,6 +23,8 @@ namespace ACAT.Core.WidgetManagement.Layout
     /// </summary>
     public class WidgetAttribute : IDisposable
     {
+        private static ILogger<WidgetAttribute> _logger;
+
         /// <summary>
         /// The code to execute when the user clicks on the button
         /// </summary>
@@ -127,9 +130,11 @@ namespace ACAT.Core.WidgetManagement.Layout
         ///   <WidgetAttribute name="B44" label="&lt;w" value="@CmdMainMenu" fontname="Arial Narrow" fontsize="24"/>
         /// </summary>
         /// <param name="node">the xml node</param>
+        /// <param name="logger">Logger instance</param>
         /// <returns>button attribute object</returns>
-        public static WidgetAttribute CreateWidgetAttribute(XmlNode node)
+        public static WidgetAttribute CreateWidgetAttribute(XmlNode node, ILogger<WidgetAttribute> logger = null)
         {
+            _logger = logger;
             var widgetAttribute = new WidgetAttribute();
             widgetAttribute.load(node);
             return widgetAttribute;
@@ -156,7 +161,7 @@ namespace ACAT.Core.WidgetManagement.Layout
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {
@@ -263,7 +268,7 @@ namespace ACAT.Core.WidgetManagement.Layout
                     }
                     else
                     {
-                        Log.Error("Invalid modifier " + modifier + " for widgetAttribute entry " + Name);
+                        _logger?.LogError("Invalid modifier {Modifier} for widgetAttribute entry {Name}", modifier, Name);
                         Modifiers = null;
                         break;
                     }

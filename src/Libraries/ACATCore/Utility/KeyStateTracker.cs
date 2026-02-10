@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
@@ -25,6 +26,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class KeyStateTracker
     {
+        private static ILogger<KeyStateTracker> _logger => LogManager.GetLogger<KeyStateTracker>();
         private const byte VK_CAPITAL = 0x14;
         private const byte VK_NUMLOCK = 0x90;
 
@@ -108,19 +110,19 @@ namespace ACAT.Core.Utility
 
             if (IsCtrlOn())
             {
-                Log.Debug("Ctrl is on");
+                _logger?.LogDebug("Ctrl is on");
                 retVal.Add(Keys.LControlKey);
             }
 
             if (IsAltOn())
             {
-                Log.Debug("Alt is on");
+                _logger?.LogDebug("Alt is on");
                 retVal.Add(Keys.LMenu);
             }
 
             if (IsShiftOn() && !IsCapsLockOn())
             {
-                Log.Debug("Shift is on");
+                _logger?.LogDebug("Shift is on");
                 retVal.Add(Keys.LShiftKey);
             }
 
@@ -244,7 +246,7 @@ namespace ACAT.Core.Utility
         {
             bool retVal = true;
 
-            Log.Debug(key.ToString());
+            _logger?.LogDebug("Key down: {Key}", key);
 
             switch (key)
             {
@@ -352,7 +354,7 @@ namespace ACAT.Core.Utility
         /// <param name="key"></param>
         public static void KeyUp(Keys key)
         {
-            Log.Debug(key.ToString());
+            _logger?.LogDebug("Key up: {Key}", key);
 
             switch (key)
             {

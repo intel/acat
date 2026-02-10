@@ -33,7 +33,7 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
         public ScannerButtonToggle(Control uiControl)
-            : base(uiControl)
+            : base(uiControl, LoggingConfiguration.CreateLogger<ScannerButtonBase>())
         {
             if (ThemeManager.Instance.ActiveTheme.Colors.Exists("ScannerButton"))
             {

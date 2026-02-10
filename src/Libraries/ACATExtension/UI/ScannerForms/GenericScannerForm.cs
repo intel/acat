@@ -19,6 +19,7 @@ using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace ACAT.Extension.UI.ScannerForms
 {
     public partial class GenericScannerForm : Form, IScannerPanel
     {
+        private readonly ILogger<GenericScannerForm> _logger;
         private readonly object _lock = new object();
         private ScannerCommon _scannerCommon;
 
@@ -54,8 +56,9 @@ namespace ACAT.Extension.UI.ScannerForms
         protected string _panelClass;
         protected ScannerHelper _scannerHelper;
         private Label label1;
-        public GenericScannerForm()
+        public GenericScannerForm(ILogger<GenericScannerForm> logger = null)
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<GenericScannerForm>();
             InitializeComponent();
 
             SubscribeToEvents();
@@ -134,10 +137,10 @@ namespace ACAT.Extension.UI.ScannerForms
         public virtual void OnPause()
         {
 
-            Log.Debug("CALIBTEST calling usercontrolmanager.pause");
+            _logger.LogDebug("CALIBTEST calling usercontrolmanager.pause");
             ScannerCommon.UserControlManager.OnPause();
 
-            Log.Debug("CALIBTEST calling scannercommon2.pause");
+            _logger.LogDebug("CALIBTEST calling scannercommon2.pause");
             ScannerCommon.OnPause(_dimScanner ?
                                 ScannerCommon.PauseDisplayMode.FadeScanner :
                                 ScannerCommon.PauseDisplayMode.None);
@@ -154,14 +157,14 @@ namespace ACAT.Extension.UI.ScannerForms
         {
             HandleResume();
 
-            Log.Debug("CALIBTEST TalkScanner OnResume. Resuming watchdog");
+            _logger.LogDebug("CALIBTEST TalkScanner OnResume. Resuming watchdog");
 
             _dimScanner = true;
 
-            Log.Debug("CALIBTEST TalkScanner OnResume. calling user control manager.OnREsume");
+            _logger.LogDebug("CALIBTEST TalkScanner OnResume. calling user control manager.OnREsume");
             ScannerCommon.UserControlManager.OnResume();
 
-            Log.Debug("CALIBTEST TalkScanner OnResume. calling scannercommon2 resume");
+            _logger.LogDebug("CALIBTEST TalkScanner OnResume. calling scannercommon2 resume");
             ScannerCommon.OnResume();
 
             ScannerCommon.ResizeToFitDesktop(this);
@@ -177,11 +180,11 @@ namespace ACAT.Extension.UI.ScannerForms
 
         protected virtual void HandlePause()
         {
-            Log.Warn($"No pause handler defined for {GetType().Name}. Defaulting to do nothing.");
+            _logger.LogWarning($"No pause handler defined for {GetType().Name}. Defaulting to do nothing.");
         }
         protected virtual void HandleResume()
         {
-            Log.Warn($"No resume handler defined for {GetType().Name}. Defaulting to do nothing.");
+            _logger.LogWarning($"No resume handler defined for {GetType().Name}. Defaulting to do nothing.");
         }
         protected virtual void InitializeComponent()
         {
@@ -245,12 +248,12 @@ namespace ACAT.Extension.UI.ScannerForms
         protected virtual void SubscribeToEvents()
         {
             //Default to subscribe to nothing.
-            Log.Warn($"No event handlers defined for {GetType().Name}");
+            _logger.LogWarning($"No event handlers defined for {GetType().Name}");
         }
 
         protected virtual void updateControlsFromTheme(ColorScheme colorScheme)
         {
-            Log.Warn($"Not updating theme for {GetType().Name}");
+            _logger.LogWarning($"Not updating theme for {GetType().Name}");
         }
 
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]

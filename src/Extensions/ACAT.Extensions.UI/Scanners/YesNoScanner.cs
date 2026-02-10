@@ -24,6 +24,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
 using ACAT.Extension.UI;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -41,6 +42,8 @@ namespace ACAT.Extensions.UI.Menus
                         "Yes No Scanner")]
     public partial class YesNoScanner : Form, IScannerPanel, IExtension
     {
+        private readonly ILogger<YesNoScanner> _logger;
+
         /// <summary>
         /// Represents the widget of this form
         /// </summary>
@@ -98,6 +101,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <param name="panelTitle">Title of the scanner</param>
         public YesNoScanner(String panelClass, String panelTitle)
         {
+            _logger = LoggingConfiguration.CreateLogger<YesNoScanner>();
             scannerCommon = new ScannerCommon(this);
 
             InitializeComponent();
@@ -195,7 +199,7 @@ namespace ACAT.Extensions.UI.Menus
         {
             get
             {
-                Log.Verbose();
+                _logger?.LogTrace("CreateParams");
                 return Windows.SetFormStyles(base.CreateParams);
             }
         }
@@ -234,7 +238,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <returns>true on success</returns>
         public bool Initialize(StartupArg startupArg)
         {
-            Log.Verbose();
+            _logger?.LogTrace("Initialize");
             PanelClass = startupArg.PanelClass;
             startupCommandArg = startupArg.Arg;
             this.startupArg = startupArg;
@@ -243,7 +247,7 @@ namespace ACAT.Extensions.UI.Menus
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Warn("Could not initialize form " + Name);
+                _logger.LogWarning("Could not initialize form {Name}", Name);
                 return false;
             }
 
@@ -266,7 +270,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnPause()
         {
-            Log.Verbose();
+            _logger?.LogTrace("OnPause");
 
             scannerCommon.OnPause();
         }
@@ -286,7 +290,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnResume()
         {
-            Log.Verbose();
+            _logger?.LogTrace("OnResume");
 
             scannerCommon.OnResume();
         }
@@ -428,8 +432,6 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         private void YesNoScanner_Load(object sender, EventArgs e)
         {
-            Log.Verbose();
-
             scannerCommon.OnLoad();
 
             var widget = PanelCommon.RootWidget.Finder.FindChild("Prompt");

@@ -11,6 +11,7 @@ using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,11 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public abstract class AgentBase : IApplicationAgent
     {
+        /// <summary>
+        /// Logger instance for this class
+        /// </summary>
+        protected readonly ILogger<AgentBase> _logger;
+
         /// <summary>
         /// Used to invoke methods/properties in the agent
         /// </summary>
@@ -58,8 +64,9 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        protected AgentBase()
+        protected AgentBase(ILogger<AgentBase> logger)
         {
+            _logger = logger;
             _name = Descriptor.Name;
             _invoker = new ExtensionInvoker(this);
         }
@@ -399,11 +406,11 @@ namespace ACAT.Core.AgentManagement
         {
             if (_textInterface != null)
             {
-                Log.Debug("Disposing " + _textInterface.GetType().Name);
+                _logger.LogDebug("Disposing {TextInterfaceType}", _textInterface.GetType().Name);
                 _textInterface.Dispose();
             }
 
-            Log.Debug("Setting textinterface to " + ((textInterface != null) ? textInterface.GetType().Name : "null"));
+            _logger.LogDebug("Setting textinterface to {TextInterfaceType}", ((textInterface != null) ? textInterface.GetType().Name : "null"));
 
             _textInterface = textInterface ?? _nullTextInterface;
             AgentManager.Instance.TextControlAgent = _textInterface;
@@ -450,8 +457,6 @@ namespace ACAT.Core.AgentManagement
         {
             if (!_disposed)
             {
-                Log.Verbose();
-
                 if (disposing)
                 {
                     _nullTextInterface?.Dispose();

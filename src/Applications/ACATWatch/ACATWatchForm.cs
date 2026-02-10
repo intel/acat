@@ -16,6 +16,7 @@
 
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.NamedPipe;
+using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -31,12 +32,14 @@ namespace ACAT.Applications.ACATWatch
     {
         private static readonly int ASFW_ANY = -1;
         private static readonly uint LSFW_UNLOCK = 2;
+        private readonly ILogger<ACATWatchForm> _logger;
         private PipeServer _pipeServer;
         private NotifyIcon trayIcon;
         private readonly ContextMenu trayMenu;
 
-        public ACATWatchForm()
+        public ACATWatchForm(ILogger<ACATWatchForm> logger)
         {
+            _logger = logger;
             InitializeComponent();
 
             Application.ApplicationExit += Application_ApplicationExit;
@@ -1294,9 +1297,9 @@ namespace ACAT.Applications.ACATWatch
             AllowSetForegroundWindow(ASFW_ANY);
 
             User32Interop.SetForegroundWindow(window);
-            Log.Debug("Calling BringWindowToTop");
+            _logger.LogDebug("Calling BringWindowToTop");
             User32Interop.BringWindowToTop(window);
-            Log.Debug("Calling ShowWindow");
+            _logger.LogDebug("Calling ShowWindow");
             User32Interop.ShowWindow(window.ToInt32(), User32Interop.SW_SHOW);
 
             SystemParametersInfo(SPI.SPI_SETFOREGROUNDLOCKTIMEOUT, 0, ref oldTimeout, 0);
@@ -1311,36 +1314,36 @@ namespace ACAT.Applications.ACATWatch
         {
             User32Interop.GetWindowLong(focusOnWindowHandle, User32Interop.GWL_STYLE);
             IntPtr fg = User32Interop.GetForegroundWindow();
-            Log.Debug("Fg window handle: " + fg.ToInt32());
+            _logger.LogDebug("Fg window handle: " + fg.ToInt32());
 
             User32Interop.GetWindowThreadProcessId(User32Interop.GetForegroundWindow(), out uint h);
 
-            Log.Debug("Process id of fgwindow: " + h);
+            _logger.LogDebug("Process id of fgwindow: " + h);
             uint currentlyFocusedWindowProcessIdThread = User32Interop.GetWindowThreadProcessId(focusOnWindowHandle, out h);
 
-            Log.Debug("Process id of focusOnWindowHandle: " + h);
+            _logger.LogDebug("Process id of focusOnWindowHandle: " + h);
 
             uint appThread = Kernel32Interop.GetCurrentThreadId();
 
-            Log.Debug("appthread: " + appThread);
+            _logger.LogDebug("appthread: " + appThread);
 
             if (currentlyFocusedWindowProcessIdThread != appThread)
             {
-                Log.Debug("currentlyFocusedWindowProcessId != appThread");
+                _logger.LogDebug("currentlyFocusedWindowProcessId != appThread");
                 bool ret = User32Interop.AttachThreadInput(currentlyFocusedWindowProcessIdThread, appThread, true);
-                Log.Debug("AttachThreaInput returned " + ret);
-                Log.Debug("Calling BringWindowToTop");
+                _logger.LogDebug("AttachThreaInput returned " + ret);
+                _logger.LogDebug("Calling BringWindowToTop");
                 User32Interop.BringWindowToTop(focusOnWindowHandle);
-                Log.Debug("Calling ShowWindow");
+                _logger.LogDebug("Calling ShowWindow");
                 User32Interop.ShowWindow(focusOnWindowHandle.ToInt32(), User32Interop.SW_SHOW);
                 User32Interop.AttachThreadInput(currentlyFocusedWindowProcessIdThread, appThread, false);
             }
             else
             {
-                Log.Debug("Calling BringWindowToTop");
+                _logger.LogDebug("Calling BringWindowToTop");
 
                 User32Interop.BringWindowToTop(focusOnWindowHandle);
-                Log.Debug("Calling ShowWindow");
+                _logger.LogDebug("Calling ShowWindow");
 
                 User32Interop.ShowWindow(focusOnWindowHandle.ToInt32(), User32Interop.SW_SHOW);
             }
@@ -1369,9 +1372,9 @@ namespace ACAT.Applications.ACATWatch
                 return;
             }
 
-            Log.Debug("Set focus to " + e.Message);
+            _logger.LogDebug("Set focus to " + e.Message);
             int h = Int32.Parse(e.Message);
-            Log.Debug("h: " + h);
+            _logger.LogDebug("h: " + h);
             if (h != 0)
             {
                 IntPtr handle = new(h);
@@ -1428,7 +1431,7 @@ namespace ACAT.Applications.ACATWatch
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Debug("Closing ACATWatchForm");
+            _logger.LogDebug("Closing ACATWatchForm");
             dispose();
         }
 
@@ -1440,7 +1443,7 @@ namespace ACAT.Applications.ACATWatch
 
             _pipeServer = new PipeServer("ACATWatch", PipeDirection.InOut);
             _pipeServer.MessageReceived += _pipeServer_MessageReceived;
-            Log.Debug("Starting pipe server");
+            _logger.LogDebug("Starting pipe server");
 
             try
             {
@@ -1448,7 +1451,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Exception("Failed to start pipe server", ex);
+                _logger.LogError(ex, "Failed to start pipe server");
             }
         }
 
@@ -1490,7 +1493,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error in PipesMessageHandler");
             }
         }
     }

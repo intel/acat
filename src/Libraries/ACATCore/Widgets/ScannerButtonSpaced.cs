@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using System.Windows.Forms;
 
 namespace ACAT.Core.Widgets
@@ -19,7 +20,7 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
         public ScannerButtonSpaced(Control uiControl)
-            : base(uiControl)
+            : base(uiControl, LoggingConfiguration.CreateLogger<ScannerButtonBase>())
         {
         }
     }

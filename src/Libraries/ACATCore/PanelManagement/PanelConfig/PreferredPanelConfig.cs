@@ -24,6 +24,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 
 #region SupressStyleCopWarnings
 
@@ -69,6 +70,8 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     internal class PreferredPanelConfig
     {
+        private static readonly ILogger<PreferredPanelConfig> _logger = LoggingConfiguration.CreateLogger<PreferredPanelConfig>();
+
         /// <summary>
         /// Name of the preferred config file
         /// </summary>
@@ -226,8 +229,7 @@ namespace ACAT.Core.PanelManagement
                     String name = XmlUtils.GetXMLAttrString(node, "name").ToLower().Trim();
                     if (String.IsNullOrEmpty(name) || _mapping.ContainsKey(name))
                     {
-                        Log.Debug("PreferredPanelconfig will not be added. Name either already exists or is empty " +
-                                  name);
+                        _logger.LogDebug("PreferredPanelconfig will not be added. Name either already exists or is empty {Name}", name);
                         continue;
                     }
 
@@ -240,7 +242,7 @@ namespace ACAT.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error loading preferred panel config");
                 retVal = false;
             }
 

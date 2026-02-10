@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -31,6 +32,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         #region Properties
 
         public ResultParams ResultParameters = new();
+
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<CalibrationEyesSettingsForm> _logger;
 
         /// <summary>
         /// Main object of the actuator
@@ -59,8 +65,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         #endregion Properties
 
-        public CalibrationEyesSettingsForm()
+        public CalibrationEyesSettingsForm(ILogger<CalibrationEyesSettingsForm> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             Screen primaryScreen = Screen.PrimaryScreen;
@@ -72,7 +79,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         public static ResultParams ShowDialog(string label, Form parent = null, bool setTopMost = false)
         {
-            var confirmBox = new CalibrationEyesSettingsForm();
+            var confirmBox = new CalibrationEyesSettingsForm(null);
             confirmBox.ShowDialog(parent);
             ResultParams retVal = confirmBox.ResultParameters;
             confirmBox.Dispose();
@@ -181,7 +188,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error parsing interval value");
                 _TempInterval = 5000;
                 textBoxInterval.Text = _TempInterval.ToString();
             }
@@ -204,7 +211,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error parsing repetitions value");
                 _TempMaxRepetitions = 10;
                 textBoxReps.Text = _TempMaxRepetitions.ToString();
             }
@@ -250,7 +257,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in EyesSettingsForm: " + ex.Message);
+                _logger.LogError(ex, "Error in EyesSettingsForm");
             }
             if (_bciActuator != null)
             {
@@ -295,7 +302,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Error in TextChangedInput");
             }
             return inputReplace;
         }

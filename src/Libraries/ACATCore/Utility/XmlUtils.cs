@@ -10,6 +10,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
@@ -19,6 +20,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class XmlUtils
     {
+        private static ILogger<XmlUtils> _logger => LogManager.GetLogger<XmlUtils>();
         private static readonly object _lock = new();
 
         /// <summary>
@@ -151,7 +153,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, "XmlDeserializeFromString exception");
                 retVal = false;
                 obj = default;
             }
@@ -188,7 +190,7 @@ namespace ACAT.Core.Utility
             catch (Exception e)
             {
                 retVal = default;
-                Log.Info("Error.  FileName: " + filename + ". Error: " + e.ToString());
+                _logger?.LogInformation(e, "Error loading file {FileName}", filename);
             }
 
             return retVal;
@@ -232,7 +234,7 @@ namespace ACAT.Core.Utility
                 catch (Exception e)
                 {
                     retVal = false;
-                    Log.Error("XmlFileSave error.  FileName: " + filename + ". Error: " + e.ToString());
+                    _logger?.LogError(e, "XmlFileSave error. FileName: {FileName}", filename);
                 }
             }
 

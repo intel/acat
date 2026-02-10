@@ -20,6 +20,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Core.Widgets;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -61,6 +62,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// used for synchronization
         /// </summary>
         private readonly SyncLock _syncLock;
+
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<ScannerCommon> _logger;
 
         /// <summary>
         /// The animation manager object.  Manages all animations
@@ -137,8 +143,9 @@ namespace ACAT.Core.PanelManagement.Common
         /// Initializes a new instance of the class
         /// </summary>
         /// <param name="iScannerPanel">The scanner Form object</param>
-        public ScannerCommon(IScannerPanel iScannerPanel)
+        public ScannerCommon(IScannerPanel iScannerPanel, ILogger<ScannerCommon> logger = null)
         {
+            _logger = logger;
             ScannerForm = iScannerPanel.Form;
 
             StartupArg = null;
@@ -149,7 +156,7 @@ namespace ACAT.Core.PanelManagement.Common
             HideScannerOnIdle = CoreGlobals.AppPreferences.HideScannerOnIdle;
             _syncLock = new SyncLock();
 
-            _userControlManager = new UserControlManager(iScannerPanel, TextController);
+            _userControlManager = new UserControlManager(iScannerPanel, TextController, LoggingConfiguration.CreateLogger<UserControlManager>());
         }
 
         /// <summary>
@@ -432,7 +439,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <returns></returns>
         public bool Initialize(StartupArg startupArg)
         {
-            Log.Debug("Entered from Initialize");
+            _logger?.LogDebug("Entered from Initialize");
 
             Context.AppPanelManager.EvtPanelPreShow += AppPanelManager_EvtPanelPreShow;
 
@@ -501,7 +508,7 @@ namespace ACAT.Core.PanelManagement.Common
             Context.AppPanelManager.EvtCalibrationStartNotify += AppPanelManager_EvtCalibrationStartNotify;
             Context.AppPanelManager.EvtCalibrationEndNotify += AppPanelManager_EvtCalibrationEndNotify;
 
-            Log.Debug("Returning from Initialize " + retVal);
+            _logger?.LogDebug("Returning from Initialize {RetVal}", retVal);
 
             return retVal;
         }
@@ -543,7 +550,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Exception in OnClosing");
             }
         }
 
@@ -586,29 +593,29 @@ namespace ACAT.Core.PanelManagement.Common
 
             CoreGlobals.AppPreferences.EvtPreferencesChanged -= AppPreferences_EvtPreferencesChanged;
 
-            Log.Debug(ScannerForm.Name + ", _syncObj.Status: " + _syncLock.Status + ", hashcode: " + _syncLock.GetHashCode());
+            _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, hashcode: {HashCode}", ScannerForm.Name, _syncLock.Status, _syncLock.GetHashCode());
 
             if (_syncLock.Status != SyncLock.StatusValues.None)
             {
-                Log.Debug(ScannerForm.Name + ", _syncObj.Status: " + _syncLock.Status + ", form already closed.  returning");
+                _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, form already closed.  returning", ScannerForm.Name, _syncLock.Status);
                 return;
             }
 
-            Log.Debug(ScannerForm.Name + ", _syncObj.Status: " + _syncLock.Status + ", Will continue closing");
+            _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, Will continue closing", ScannerForm.Name, _syncLock.Status);
 
-            Log.Debug("Setting _syncLock.Status to CLOSING " + ScannerForm.Name);
+            _logger?.LogDebug("Setting _syncLock.Status to CLOSING {FormName}", ScannerForm.Name);
             _syncLock.Status = SyncLock.StatusValues.Closing;
 
             if (_animationManager != null)
             {
-                Log.Verbose("Before animationmangoer.stop");
+                _logger?.LogTrace("Before animationmangoer.stop");
                 _animationManager.Stop();
-                Log.Verbose("After animationmangoer.stop");
+                _logger?.LogTrace("After animationmangoer.stop");
             }
 
-            Log.Verbose("Unsubscribe to EvtHeartbeat for " + ScannerForm.Name);
+            _logger?.LogTrace("Unsubscribe to EvtHeartbeat for {FormName}", ScannerForm.Name);
             WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitor_EvtWindowMonitorHeartbeat;
-            Log.Verbose("Unsubscribe to EvtHeartbeat DONE for " + ScannerForm.Name);
+            _logger?.LogTrace("Unsubscribe to EvtHeartbeat DONE for {FormName}", ScannerForm.Name);
 
             PositionSizeController.OnClosing();
 
@@ -619,7 +626,7 @@ namespace ACAT.Core.PanelManagement.Common
             Context.AppPanelManager.EvtCalibrationStartNotify -= AppPanelManager_EvtCalibrationStartNotify;
             Context.AppPanelManager.EvtCalibrationEndNotify -= AppPanelManager_EvtCalibrationEndNotify;
 
-            Log.Debug("Exiting FormClosing for " + ScannerForm.Name);
+            _logger?.LogDebug("Exiting FormClosing for {FormName}", ScannerForm.Name);
         }
 
         /// <summary>
@@ -656,7 +663,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void OnPause(PauseDisplayMode mode = PauseDisplayMode.Default)
         {
-            Log.Debug("CALIBTEST_isPaused: " + _isPaused);
+            _logger?.LogDebug("CALIBTEST_isPaused: " + _isPaused);
             if (_isPaused)
             {
                 return;
@@ -668,18 +675,18 @@ namespace ACAT.Core.PanelManagement.Common
             {
                 if (DialogMode)
                 {
-                    Log.Debug("CALIBTEST Dialog mode is true. Returning");
+                    _logger?.LogDebug("CALIBTEST Dialog mode is true. Returning");
                     return;
                 }
 
-                Log.Verbose("CALIBTEST Pausing animation manager");
+                _logger?.LogTrace("CALIBTEST Pausing animation manager");
                 AnimationManager.Pause();
-                Log.Verbose("CALIBTEST calling setDisplayStateOnpause");
+                _logger?.LogTrace("CALIBTEST calling setDisplayStateOnpause");
                 setDisplayStateOnPause(mode);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex.ToString());
             }
         }
 
@@ -688,7 +695,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void OnResume()
         {
-            Log.Debug("CALIBTEST Scannercommon2 OnResume. is_paused: " + _isPaused);
+            _logger?.LogDebug("CALIBTEST Scannercommon2 OnResume. is_paused: " + _isPaused);
             if (!_isPaused)
             {
                 return;
@@ -700,10 +707,10 @@ namespace ACAT.Core.PanelManagement.Common
             {
                 PositionSizeController.ScaleForm();
 
-                Log.Verbose("CALIBTEST Scannercommon2 Showing scanner");
+                _logger?.LogTrace("CALIBTEST Scannercommon2 Showing scanner");
                 ShowScanner();
 
-                Log.Verbose("CALIBTEST Calling Animationmanager resume");
+                _logger?.LogTrace("CALIBTEST Calling Animationmanager resume");
                 AnimationManager.Resume();
 
                 updateStatusBar();
@@ -715,7 +722,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex.ToString());
             }
         }
 
@@ -802,7 +809,7 @@ namespace ACAT.Core.PanelManagement.Common
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Dispose called");
 
                 if (disposing)
                 {
@@ -868,7 +875,7 @@ namespace ACAT.Core.PanelManagement.Common
                     SendKeys.SendWait(widget.Value + " ");
                     Context.AppAgentMgr.TextChangedNotifications.Release();
                     CoreGlobals.Stopwatch1.Stop();
-                    Log.Verbose("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    _logger?.LogTrace("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
                 }
                 else
                 {
@@ -878,7 +885,7 @@ namespace ACAT.Core.PanelManagement.Common
                     actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
 
                     CoreGlobals.Stopwatch1.Stop();
-                    Log.Verbose("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    _logger?.LogTrace("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
                 }
             }
 
@@ -893,7 +900,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="value">String to send</param>
         private void actuateKey(WidgetAttribute widgetAttribute, char value)
         {
-            Log.Verbose(value.ToString());
+            _logger?.LogTrace(value.ToString());
             if (!TextController.HandlePunctuation(widgetAttribute.Modifiers, value))
             {
                 if ((KeyStateTracker.IsShiftOn() || KeyStateTracker.IsCapsLockOn()) &&
@@ -917,7 +924,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="value">value of the key</param>
         private void actuateVirtualKey(WidgetAttribute widgetAttribute, string value)
         {
-            Log.Verbose("VirtualKey: " + value);
+            _logger?.LogTrace("VirtualKey: " + value);
 
             Keys key = TextController.MapVirtualKey(value);
             if (key == Keys.Escape && _dialogMode)
@@ -946,7 +953,7 @@ namespace ACAT.Core.PanelManagement.Common
             try
             {
                 var newState = _animationManager.GetPlayerState();
-                Log.Debug(ScannerForm.Name + ": PlayerState changed from " + e.OldState + " to " + newState);
+                _logger?.LogDebug(ScannerForm.Name + ": PlayerState changed from " + e.OldState + " to " + newState);
                 switch (newState)
                 {
                     case PlayerState.Timeout:
@@ -962,7 +969,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex.ToString());
             }
         }
 
@@ -996,7 +1003,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="e"></param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            Log.Debug("Enter " + Kernel32Interop.GetCurrentThreadId());
+            _logger?.LogDebug("Enter " + Kernel32Interop.GetCurrentThreadId());
             try
             {
                 if (Windows.GetVisible(ScannerForm) &&
@@ -1016,18 +1023,18 @@ namespace ACAT.Core.PanelManagement.Common
 
                     if (!abbreviationDetected && !context.TextAgent().SupportsSpellCheck())
                     {
-                        Log.Verbose("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
+                        _logger?.LogTrace("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
                         TextController.SpellCheck();
-                        Log.Verbose("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
+                        _logger?.LogTrace("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex.ToString());
             }
 
-            Log.Verbose("Leave " + Kernel32Interop.GetCurrentThreadId());
+            _logger?.LogTrace("Leave " + Kernel32Interop.GetCurrentThreadId());
         }
 
         /// <summary>
@@ -1037,11 +1044,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="e">event args</param>
         private void AppPanelManager_EvtCalibrationEndNotify(object sender, EventArgs e)
         {
-            Log.Debug("CALIBTEST Calibration end notify for " + ScannerForm.Name);
+            _logger?.LogDebug("CALIBTEST Calibration end notify for " + ScannerForm.Name);
 
             if (Context.AppPanelManager.GetCurrentForm() as Form != ScannerForm)
             {
-                Log.Verbose("CALIBTESTForm is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
+                _logger?.LogTrace("CALIBTESTForm is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
             }
 
@@ -1052,7 +1059,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             else
             {
-                Log.Verbose("CALIBTESTCalling OnResume for scanner");
+                _logger?.LogTrace("CALIBTESTCalling OnResume for scanner");
                 (ScannerForm as IScannerPanel).OnResume();
             }
         }
@@ -1063,11 +1070,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="args">event args</param>
         private void AppPanelManager_EvtCalibrationStartNotify(ActuatorManagement.CalibrationNotifyEventArgs args)
         {
-            Log.Debug("CALIBTEST ScannerCommon2: Calibration start notify for " + ScannerForm.Name);
+            _logger?.LogDebug("CALIBTEST ScannerCommon2: Calibration start notify for " + ScannerForm.Name);
 
             if (Context.AppPanelManager.GetCurrentForm() as Form != ScannerForm)
             {
-                Log.Verbose("CALIBTEST Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
+                _logger?.LogTrace("CALIBTEST Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
             }
 
@@ -1080,7 +1087,7 @@ namespace ACAT.Core.PanelManagement.Common
                 }
                 else
                 {
-                    Log.Verbose("CALIBTEST Calling onPause for " + ScannerForm.Name);
+                    _logger?.LogTrace("CALIBTEST Calling onPause for " + ScannerForm.Name);
 
                     (ScannerForm as IScannerPanel).OnPause();
                 }
@@ -1158,7 +1165,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="e"></param>
         private void form_Shown(object sender, EventArgs e)
         {
-            Log.Debug("Shown " + ScannerForm.Name);
+            _logger?.LogDebug("Shown " + ScannerForm.Name);
         }
 
         /// <summary>
@@ -1168,7 +1175,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="e">event args</param>
         private void form_VisibleChanged(object sender, EventArgs e)
         {
-            Log.Debug("Form Visibility for " + ScannerForm.Name + ":  " + ScannerForm.Visible);
+            _logger?.LogDebug("Form Visibility for " + ScannerForm.Name + ":  " + ScannerForm.Visible);
 
             if (ScannerForm.Visible)
             {
@@ -1189,7 +1196,7 @@ namespace ACAT.Core.PanelManagement.Common
 
                 if (_scannerPanel.PanelClass == "Alphabet")
                 {
-                    Log.Verbose("form_visibleChanged " + ScannerForm.Width);
+                    _logger?.LogTrace("form_visibleChanged " + ScannerForm.Width);
                 }
                 notifyScannerShow();
             }
@@ -1225,14 +1232,14 @@ namespace ACAT.Core.PanelManagement.Common
         {
             bool retVal = true;
 
-            _animationManager = new PanelAnimationManager();
+            _animationManager = new PanelAnimationManager(LoggingConfiguration.CreateLogger<PanelAnimationManager>());
             if (_animationManager.Init(panelConfigMapEntry, _rootWidget))
             {
                 _animationManager.EvtPlayerStateChanged += animationManager_EvtPlayerStateChanged;
             }
             else
             {
-                Log.Error("Error initializing animation manager");
+                _logger?.LogError("Error initializing animation manager");
                 _animationManager = null;
                 retVal = false;
             }
@@ -1248,14 +1255,14 @@ namespace ACAT.Core.PanelManagement.Common
         /// <returns>true on success</returns>
         private bool initWidgetManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _widgetManager = new WidgetManager(ScannerForm);
+            _widgetManager = new WidgetManager(ScannerForm, LoggingConfiguration.CreateLogger<WidgetManager>());
             _widgetManager.Layout.SetColorScheme(ColorSchemes.ScannerSchemeName);
             _widgetManager.Layout.SetDisabledButtonColorScheme(ColorSchemes.DisabledScannerButtonSchemeName);
 
             bool retVal = _widgetManager.Initialize(panelConfigMapEntry.ConfigFileName);
             if (!retVal)
             {
-                Log.Error("Unable to initialize widget manager");
+                _logger?.LogError("Unable to initialize widget manager");
             }
             else
             {
@@ -1295,7 +1302,7 @@ namespace ACAT.Core.PanelManagement.Common
                 return;
             }
 
-            Log.Verbose(e.Script);
+            _logger?.LogTrace(e.Script);
 
             runCommand(e.Script);
         }
@@ -1377,7 +1384,7 @@ namespace ACAT.Core.PanelManagement.Common
                 command = command.Substring(1);
             }
 
-            Log.Debug("Calling scanner common runcomand with " + command);
+            _logger?.LogDebug("Calling scanner common runcomand with " + command);
             ScannerForm.Invoke(new MethodInvoker(delegate
             {
                 string[] parts = command.Split('.');
@@ -1434,7 +1441,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             if (_scannerPanel.PanelClass == "Alphabet")
             {
-                Log.Debug("ScannerForm_SizeChanged " + ScannerForm.Width);
+                _logger?.LogDebug("ScannerForm_SizeChanged " + ScannerForm.Width);
             }
             notifyScannerShow();
         }
@@ -1445,7 +1452,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="mode">what to do?</param>
         private void setDisplayStateOnPause(PauseDisplayMode mode)
         {
-            Log.Debug("setDisplayStateOnPause. mode: " + mode);
+            _logger?.LogDebug("setDisplayStateOnPause. mode: " + mode);
             if (mode == PauseDisplayMode.None)
             {
                 return;
@@ -1477,7 +1484,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             if (_syncLock.IsClosing())
             {
-                Log.Debug("Form is closing " + ScannerForm.Name);
+                _logger?.LogDebug("Form is closing " + ScannerForm.Name);
                 WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitor_EvtWindowMonitorHeartbeat;
                 return;
             }
@@ -1506,7 +1513,7 @@ namespace ACAT.Core.PanelManagement.Common
                             break;
                         }
 
-                        Log.Verbose("widget.Enabled set to : " + widget.Enabled + " for feature " + widget.SubClass);
+                        _logger?.LogTrace("widget.Enabled set to : " + widget.Enabled + " for feature " + widget.SubClass);
                     }
                 }
             }
@@ -1544,7 +1551,7 @@ namespace ACAT.Core.PanelManagement.Common
             AnimationManager.Interpreter.EvtRun -= Interpreter_EvtRun;
             AnimationManager.Interpreter.EvtRun += Interpreter_EvtRun;
 
-            Log.Debug("Subscribing on instance " + AnimationManager.Interpreter.GetHashCode());
+            _logger?.LogDebug("Subscribing on instance " + AnimationManager.Interpreter.GetHashCode());
             AnimationManager.Interpreter.EvtShowPopup -= Interpreter_EvtShowPopup;
             AnimationManager.Interpreter.EvtShowPopup += Interpreter_EvtShowPopup;
             subscribeToButtonEvents();
@@ -1557,7 +1564,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="text">text to convert</param>
         private void textToSpeech(string text)
         {
-            Log.Debug("Convert to speech. text=" + text);
+            _logger?.LogDebug("Convert to speech. text=" + text);
             Context.AppTTSManager.ActiveEngine.Speak(text);
             AuditLog.Audit(new AuditEventTextToSpeech(Context.AppTTSManager.ActiveEngine.Descriptor.Name));
         }
@@ -1619,7 +1626,7 @@ namespace ACAT.Core.PanelManagement.Common
                 var value = widget.Value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    Log.Debug("**Actuate** " + widget.Name + " Value: " + value);
+                    _logger?.LogDebug("**Actuate** " + widget.Name + " Value: " + value);
 
                     actuateButton(widget);
                 }
@@ -1659,7 +1666,7 @@ namespace ACAT.Core.PanelManagement.Common
 
                 if (_scannerPanel.PanelClass == "Alphabet")
                 {
-                    Log.Debug("WindowPosChanged" + ScannerForm.Width);
+                    _logger?.LogDebug("WindowPosChanged" + ScannerForm.Width);
                 }
                 notifyScannerShow();
             }

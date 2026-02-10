@@ -14,6 +14,7 @@
 
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,8 @@ namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviations : IDisposable
     {
+        private readonly ILogger<Abbreviations> _logger;
+
         /// <summary>
         /// Name of the abbreviations file
         /// </summary>
@@ -53,6 +56,14 @@ namespace ACAT.Core.AbbreviationsManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Abbreviations(ILogger<Abbreviations> logger = null)
+        {
+            _logger = logger;
+        }
 
         /// <summary>
         /// Gets the sorted list of abbreviations
@@ -163,12 +174,12 @@ namespace ACAT.Core.AbbreviationsManagement
                 }
                 else
                 {
-                    Log.Debug("Abbreviation file " + abbreviationsFile + " does not exist");
+                    _logger?.LogDebug("Abbreviation file {AbbreviationsFile} does not exist", abbreviationsFile);
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception("Error processing abbreviations file " + abbreviationsFile + ". Exception: " + ex);
+                _logger?.LogError(ex, "Error processing abbreviations file {AbbreviationsFile}", abbreviationsFile);
                 retVal = false;
             }
 
@@ -188,7 +199,7 @@ namespace ACAT.Core.AbbreviationsManagement
             // do we detect something?
             if (_abbreviationList.ContainsKey(lookupString))
             {
-                Log.Debug("Yes. Abbreviation list contains : " + lookupString);
+                _logger?.LogDebug("Yes. Abbreviation list contains : {LookupString}", lookupString);
                 return _abbreviationList[lookupString];
             }
 
@@ -247,7 +258,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (IOException ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
                 retVal = false;
             }
 
@@ -289,7 +300,7 @@ namespace ACAT.Core.AbbreviationsManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {
@@ -321,7 +332,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, ex.Message);
             }
         }
 
@@ -344,7 +355,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, ex.Message);
                 xmlTextWriter = null;
             }
 

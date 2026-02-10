@@ -15,6 +15,7 @@
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Extensions.Actuators.SampleActuator
@@ -24,6 +25,8 @@ namespace ACAT.Extensions.Actuators.SampleActuator
                             "Skeleton sample code for a sample actuator")]
     internal class SampleActuator : ActuatorBase
     {
+        private readonly ILogger<SampleActuator> _logger;
+
         /// <summary>
         /// The settings object for this actuator
         /// </summary>
@@ -51,6 +54,7 @@ namespace ACAT.Extensions.Actuators.SampleActuator
         /// </summary>
         public SampleActuator()
         {
+            _logger = LoggingConfiguration.CreateLogger<SampleActuator>();
         }
 
         /// <summary>
@@ -112,7 +116,7 @@ namespace ACAT.Extensions.Actuators.SampleActuator
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("Disposing SampleActuator");
 
                     if (disposing)
                     {

@@ -8,6 +8,7 @@
 
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -36,6 +37,8 @@ namespace ACAT.Core.AgentManagement.Agents
     /// </summary>
     internal class PreferredAgents : IDisposable
     {
+        private readonly ILogger<PreferredAgents> _logger;
+
         /// <summary>
         /// Name of the preferences file
         /// </summary>
@@ -51,7 +54,7 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         public PreferredAgents()
         {
-            Log.Verbose();
+            _logger = LoggingConfiguration.CreateLogger<PreferredAgents>();
             _preferredAgents = new Hashtable();
         }
 
@@ -193,7 +196,7 @@ namespace ACAT.Core.AgentManagement.Agents
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Exception loading preferred agents");
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -19,6 +19,7 @@ using ACAT.Extensions.BCI.Common.AnimationSharp.Utility;
 
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DirectWrite;
@@ -40,6 +41,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
     /// </summary>
     public class AnimationSharpManagerV2
     {
+        private readonly ILogger<AnimationSharpManagerV2> _logger = LogManager.GetLogger<AnimationSharpManagerV2>();
         /// <summary>
         /// Current active Keyboard Layout
         /// </summary>
@@ -575,7 +577,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 try
                 { AbortTimers(); }
                 catch (Exception ex)
-                { Log.Debug("BCI LOG | Error in BCI CancelCalibration(): " + ex.Message); }
+                { _logger.LogDebug("BCI LOG | Error in BCI CancelCalibration(): " + ex.Message); }
                 CloseSequencesLog();
                 _sessionMode = BCIModes.TYPING;
                 ChangeColorButtons(_flashingSequenceBoxList[0].ToList(), false, true, 0);
@@ -656,7 +658,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Exception in CreateSequencesLog() " + ex.Message);
+                _logger.LogDebug("BCI LOG | Exception in CreateSequencesLog() " + ex.Message);
             }
         }
 
@@ -683,7 +685,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | Exception sharpDX in DrawMainLayout() " + es.Message);
+                _logger.LogError("BCI LOG | Exception sharpDX in DrawMainLayout() " + es.Message);
             }
         }
 
@@ -720,7 +722,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception occurred during initialization: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception occurred during initialization: " + ex.Message);
                 return;
             }
 
@@ -784,7 +786,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             catch (Exception es)
             {
                 AbortTimers();
-                Log.Debug("BCI LOG | Exception occurred during closing SharpDX: " + es.Message);
+                _logger.LogDebug("BCI LOG | Exception occurred during closing SharpDX: " + es.Message);
             }
             DisposeObjects();
         }
@@ -847,7 +849,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             if (SuspendAnimations)
             {
                 _requestProbabilities = true;
-                try { AbortTimers(); } catch (Exception ex) { Log.Debug("BCI LOG | Exception ResumeAfterPause: " + ex.Message); }
+                try { AbortTimers(); } catch (Exception ex) { _logger.LogDebug("BCI LOG | Exception ResumeAfterPause: " + ex.Message); }
                 Reset();
             }
         }
@@ -906,7 +908,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     catch (Exception)
                     {
-                        //Log.Exception("BCI LOG | Exception _rectProbBarsBox: " + es.Message);
+                        //_logger.LogError("BCI LOG | Exception _rectProbBarsBox: " + es.Message);
                     }
                     indexBox += 1;
                 }
@@ -1002,14 +1004,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error actuating Button: " + ex.Message);
+                _logger.LogError("BCI LOG | Error actuating Button: " + ex.Message);
             }
             await Task.Delay(1);
         }
 
         private void ActuatorRequestEndCalibration()
         {
-            Log.Debug("BCI LOG | EndCalibration | Section " + _ScanningSection);
+            _logger.LogDebug("BCI LOG | EndCalibration | Section " + _ScanningSection);
             CloseSequencesLog();
             RequestToUpdateTextBox(AnimationManagerUtils.StatusMessageAnalyzingCalibrationData + " . .");
             var bciCalibrationEnd = new BCICalibrationEnd();
@@ -1034,7 +1036,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | Exception occurred during request to Actuator in ENDCAL: " + es.Message);
+                _logger.LogError("BCI LOG | Exception occurred during request to Actuator in ENDCAL: " + es.Message);
             }
             var strCalEnd = bciCalibrationEnd;
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEnd, strCalEnd);
@@ -1087,7 +1089,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | Exception occurred during request to Actuator in CAl: " + es.Message);
+                _logger.LogError("BCI LOG | Exception occurred during request to Actuator in CAl: " + es.Message);
             }
             var strCalRepEnd = bciCalibrationInput;
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEndRepetition, strCalRepEnd);
@@ -1117,7 +1119,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     catch (Exception es)
                     {
-                        Log.Exception("BCI LOG | Exception occurred during request to Actuator in TYPE 3: " + es.Message);
+                        _logger.LogError("BCI LOG | Exception occurred during request to Actuator in TYPE 3: " + es.Message);
                     }
                 }
                 else
@@ -1140,14 +1142,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     catch (Exception es)
                     {
-                        Log.Exception("BCI LOG | Exception occurred during request to Actuator in TYPE 1: " + es.Message);
+                        _logger.LogError("BCI LOG | Exception occurred during request to Actuator in TYPE 1: " + es.Message);
                     }
                 }
                 bciTypingRepetitionEnd.ScanningSection = _ScanningSection;
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | Exception occurred during request to Actuator in TYPE: " + es.Message);
+                _logger.LogError("BCI LOG | Exception occurred during request to Actuator in TYPE: " + es.Message);
             }
             var strTypRepEnd = bciTypingRepetitionEnd;
             _actuator?.IoctlRequest((int)OpCodes.TypingEndRepetition, strTypRepEnd);
@@ -1160,7 +1162,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         private void ActuatorRequestTriggerTestFinish()
         {
-            Log.Debug("BCI LOG | TriggerTestFinish ");
+            _logger.LogDebug("BCI LOG | TriggerTestFinish ");
             _triggerTestActive = false;
             Thread.Sleep(200);
             _actuator?.IoctlRequest((int)OpCodes.TriggerTestStop, string.Empty);
@@ -1216,7 +1218,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception in ActuatorRequestValueProbs: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception in ActuatorRequestValueProbs: " + ex.Message);
             }
         }
 
@@ -1230,7 +1232,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception in ActuatorResponseCalibrationEndRepetitionResult: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception in ActuatorResponseCalibrationEndRepetitionResult: " + ex.Message);
                 SensorErrorState = new BCIError() { ErrorCode = BCIErrorCodes.OpticalSensorError_UnknownException, ErrorMessage = StringResources.SensorError };
                 AnimationManagerUtils.StatusSignal = SignalStatus.SIGNAL_KO;
             }
@@ -1238,7 +1240,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         private void ActuatorResponseCalibrationResult(object response)
         {
-            Log.Debug("BCI LOG | CalibrationResult | AUC " + _AUC + " | Section " + _ScanningSection);
+            _logger.LogDebug("BCI LOG | CalibrationResult | AUC " + _AUC + " | Section " + _ScanningSection);
             var bciCalibrationResult = response as BCICalibrationResult;
             _AUC = bciCalibrationResult.AUC;
             if (bciCalibrationResult.CalibrationSuccessful)//Flags to let know the timer thread once is at the final process to do either one or the other event trigger
@@ -1252,7 +1254,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             try
             {
-                Log.Debug("BCI LOG | SendParameters | Section " + _ScanningSection);
+                _logger.LogDebug("BCI LOG | SendParameters | Section " + _ScanningSection);
                 var bciParameters = response as BCIParameters;
                 _DelayToGetReady = bciParameters.Scanning_DelayToGetReady;
                 _MinimumProgressBarsValue = (bciParameters.MinProbablityToDisplayBarOnTyping);
@@ -1290,7 +1292,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | ActuatorResponseSendParameters | Exception | " + ex.Message);
+                _logger.LogError("BCI LOG | ActuatorResponseSendParameters | Exception | " + ex.Message);
                 _CalibrationTargetCount = 60;
                 _CalibrationIterationsPerTarget = 2;
             }
@@ -1298,12 +1300,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         private void ActuatorResponseStartSessionResult(object response)
         {
-            Log.Debug("BCI LOG | StartSessionResult | Section " + _ScanningSection);
+            _logger.LogDebug("BCI LOG | StartSessionResult | Section " + _ScanningSection);
             var bciSessionResult = response as BCIStartSessionResult;
             SensorErrorState = bciSessionResult.Error;
             CreateSequencesLog(bciSessionResult.SessionDirectory);
-            Log.Debug("BCI LOG | Scanning Log created in: | Path " + bciSessionResult.SessionDirectory);
-            Log.Debug("BCI LOG | bciSessionResult.Error | Status " + bciSessionResult.Error);
+            _logger.LogDebug("BCI LOG | Scanning Log created in: | Path " + bciSessionResult.SessionDirectory);
+            _logger.LogDebug("BCI LOG | bciSessionResult.Error | Status " + bciSessionResult.Error);
             //_readStartSessionResult flag is for Eyes/Clsoed Calibration form that also has the start session request with this we avoid the event handler to run scanning when Eyes Form is active and here has the event subscribed active
             if (_readStartSessionResult && !_triggerTestActive)
             {
@@ -1323,7 +1325,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             var bciTriggerTestResult = response as BCITriggerTestResult;
             CloseSequencesLog();
-            Log.Debug("BCI LOG | TriggerTestResult | DutyCycleAvg " + bciTriggerTestResult.DutyCycleAvg.ToString());
+            _logger.LogDebug("BCI LOG | TriggerTestResult | DutyCycleAvg " + bciTriggerTestResult.DutyCycleAvg.ToString());
             //Trigger event to call a UI message box from a higher level
             _mainForm.Invoke(new MethodInvoker(delegate
             {
@@ -1495,7 +1497,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | Exception sharpDX ChangeColorButtons: " + es.Message);
+                _logger.LogError("BCI LOG | Exception sharpDX ChangeColorButtons: " + es.Message);
             }
         }
 
@@ -1535,7 +1537,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception sharpDX ChangeColorButtonsSequence: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception sharpDX ChangeColorButtonsSequence: " + ex.Message);
             }
         }
 
@@ -1637,7 +1639,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception sharpDX DrawFocalPointsFor: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception sharpDX DrawFocalPointsFor: " + ex.Message);
             }
         }
 
@@ -1698,7 +1700,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception sharpDX in DrawMatrix: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception sharpDX in DrawMatrix: " + ex.Message);
             }
         }
 
@@ -1737,7 +1739,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception  in EnsureTimersAreStoped: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception  in EnsureTimersAreStoped: " + ex.Message);
             }
         }
 
@@ -1803,7 +1805,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | Exception occurred findButtomFromId: " + es.Message);
+                _logger.LogError("BCI LOG | Exception occurred findButtomFromId: " + es.Message);
                 return new ButtonsData();
             }
         }
@@ -1832,7 +1834,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 }
                 catch (Exception es)
                 {
-                    Log.Exception("BCI LOG | Exception findIndexFromID: " + es.Message);
+                    _logger.LogError("BCI LOG | Exception findIndexFromID: " + es.Message);
                 }
             }
             return 0;
@@ -1948,7 +1950,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error in isBoxEmpty: " + ex.Message);
+                _logger.LogError("BCI LOG | Error in isBoxEmpty: " + ex.Message);
                 return true;
             }
         }
@@ -2134,7 +2136,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception er)
             {
-                Log.Exception("BCI LOG | Exception setDataObjectsSharpDX: " + er.Message);
+                _logger.LogError("BCI LOG | Exception setDataObjectsSharpDX: " + er.Message);
             }
             _UpdateButtonsStrings = true;
             Thread.Sleep(250);
@@ -2174,7 +2176,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception  in ResetWaitingDelay: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception  in ResetWaitingDelay: " + ex.Message);
             }
             await Task.Delay(200);
             DrawMainLayout();
@@ -2281,7 +2283,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         }
                         catch (Exception es)
                         {
-                            Log.Exception("BCI LOG | Exception occurred during Drawing progress bars probs: " + es.Message);
+                            _logger.LogError("BCI LOG | Exception occurred during Drawing progress bars probs: " + es.Message);
                         }
                     }
                     if (_showProbabilityIndicator)
@@ -2296,7 +2298,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | Exception occurred during Drawing progress bars: " + es.Message);
+                _logger.LogError("BCI LOG | Exception occurred during Drawing progress bars: " + es.Message);
             }
         }
 
@@ -2670,9 +2672,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         _trialTimer.Stop();
                         if (SensorErrorState.ErrorCode != BCIErrorCodes.Status_Ok)//if and error was returned then it wont continue with animations
                         {
-                            Log.Debug("BCI LOG | Error entered in loop | ErrorCode: " + SensorErrorState.ErrorCode);
+                            _logger.LogDebug("BCI LOG | Error entered in loop | ErrorCode: " + SensorErrorState.ErrorCode);
                             SoundManager.playSound(SoundManager.SoundType.CaregiverAttention);
-                            Log.Debug("BCI LOG | SoundManager.playSound ");
+                            _logger.LogDebug("BCI LOG | SoundManager.playSound ");
                             /*while (true)
                             {
                                 Thread.Sleep(500);
@@ -2699,7 +2701,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                         }
                                         catch (Exception ex)
                                         {
-                                            Log.Exception("BCI LOG | Error in _endCalibration: " + ex.Message);
+                                            _logger.LogError("BCI LOG | Error in _endCalibration: " + ex.Message);
                                         }
                                     }
                                     if (_repeatCalibration)
@@ -2717,7 +2719,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception TrialTimer_Tick: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception TrialTimer_Tick: " + ex.Message);
             }
         }
 
@@ -2769,7 +2771,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception TriggerTestTimer_Tick: " + ex.Message);
+                _logger.LogError("BCI LOG | Exception TriggerTestTimer_Tick: " + ex.Message);
             }
         }
 
@@ -2843,7 +2845,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 }
                 catch (Exception es)
                 {
-                    Log.Exception("BCI LOG | Exception occurred during updating strings from buttons: " + es.Message);
+                    _logger.LogError("BCI LOG | Exception occurred during updating strings from buttons: " + es.Message);
                     await Task.Delay(2000);
                 }
             }
@@ -2857,8 +2859,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             if (bCIError.ErrorCode != BCIErrorCodes.Status_Ok)
             {
                 RequestToUpdateTextBox(bCIError.ErrorMessage + " ( Error Code: " + (int)bCIError.ErrorCode + " )");
-                Log.Debug("BCI LOG | ErrorCode received " + (int)bCIError.ErrorCode);
-                Log.Debug("BCI LOG | ErrorMessage received " + bCIError.ErrorMessage);
+                _logger.LogDebug("BCI LOG | ErrorCode received " + (int)bCIError.ErrorCode);
+                _logger.LogDebug("BCI LOG | ErrorMessage received " + bCIError.ErrorMessage);
             }
         }
 

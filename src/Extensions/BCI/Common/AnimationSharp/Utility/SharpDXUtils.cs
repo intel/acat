@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Extensions.BCI.Common.BCIControl;
+using Microsoft.Extensions.Logging;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
@@ -23,6 +24,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     public class SharpDXUtils
     {
+        private static readonly ILogger<SharpDXUtils> _logger = LoggingConfiguration.CreateLogger<SharpDXUtils>();
         /// <summary>
         /// Get the border color from the Theme xml file
         /// </summary>
@@ -100,7 +102,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetListButtonTextFormat: " + ex.Message);
+                _logger.LogError("Error in GetListButtonTextFormat: " + ex.Message);
                 return new List<TextFormat>[totalAmountOfBoxes];
             }
             return buttonTextFormatList;
@@ -144,7 +146,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return rectBtns;
@@ -188,7 +190,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return probBars;
@@ -229,7 +231,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
 
             return probBars;
@@ -275,7 +277,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return rectBtns;
@@ -312,7 +314,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetRectanglesButtonsList: " + ex.Message);
+                _logger.LogError("Error in GetRectanglesButtonsList: " + ex.Message);
                 return new List<RawRectangleF>[totalAmountOfBoxes];
             }
             return rectanglesButtonsList;
@@ -340,7 +342,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetRectanglesButtonsRoundList: " + ex.Message);
+                _logger.LogError("Error in GetRectanglesButtonsRoundList: " + ex.Message);
                 return new List<RoundedRectangle>[totalAmountOfBoxes];
             }
             return rectanglesButtonsRoundList;
@@ -386,7 +388,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetRectanglesCRG: " + ex.Message);
+                _logger.LogError("Error in GetRectanglesCRG: " + ex.Message);
                 return rectangleExtraButtonCRG;
             }
             return rectangleExtraButtonCRG;
@@ -418,7 +420,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetRectanglesTriggerBox: " + ex.Message);
+                _logger.LogError("Error in GetRectanglesTriggerBox: " + ex.Message);
                 return rectangleExtraButton;
             }
             return rectangleExtraButton;
@@ -488,7 +490,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return textFormats;
@@ -511,7 +513,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
                 textFormatCRG = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
             }
             return textFormatCRG;

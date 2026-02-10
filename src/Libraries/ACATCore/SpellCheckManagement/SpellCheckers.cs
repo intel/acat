@@ -9,6 +9,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.SpellCheckManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,6 +35,11 @@ namespace ACAT.Core.SpellCheckManagement
         /// Null spellchecker. Doesn't do anything :-)
         /// </summary>
         private static ISpellChecker _nullSpellChecker = null;
+
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<SpellCheckers> _logger;
 
         /// <summary>
         /// The object that holds the preferred spellcheckers
@@ -63,8 +69,9 @@ namespace ACAT.Core.SpellCheckManagement
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
-        public SpellCheckers()
+        public SpellCheckers(ILogger<SpellCheckers> logger = null)
         {
+            _logger = logger;
             _spellCheckersTypeCache = new Dictionary<Guid, Tuple<String, Type>>();
 
             PreferredSpellCheckers.FilePath = UserManager.GetFullPath(PreferredConfigFile);
@@ -160,7 +167,8 @@ namespace ACAT.Core.SpellCheckManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
-                    Log.Debug("Found spellchecker for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
+                    _logger?.LogDebug("Found spellchecker for culture {Culture} [{Name}]",
+                        (ci != null ? ci.TwoLetterISOLanguageName : "Neutral"), descriptor.Name);
                     return descriptor.Id;
                 }
             }
@@ -253,12 +261,12 @@ namespace ACAT.Core.SpellCheckManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug($"Found spellchecker of type {type}");
+                    _logger?.LogDebug("Found spellchecker of type {Type}", type);
                     return type;
                 }
             }
 
-            Log.Error($"Could not find spellchecker for id {guid}");
+            _logger?.LogError("Could not find spellchecker for id {Guid}", guid);
             return null;
         }
 
@@ -298,11 +306,11 @@ namespace ACAT.Core.SpellCheckManagement
         {
             if (_spellCheckersTypeCache.ContainsKey(guid))
             {
-                Log.Debug("SpellChecker " + type.FullName + ", guid " + guid + " is already added");
+                _logger?.LogDebug("SpellChecker {TypeName}, guid {Guid} is already added", type.FullName, guid);
                 return;
             }
 
-            Log.Debug("Adding SpellChecker " + type.FullName + ", guid " + guid + " to cache");
+            _logger?.LogDebug("Adding SpellChecker {TypeName}, guid {Guid} to cache", type.FullName, guid);
             _spellCheckersTypeCache.Add(guid, new Tuple<String, Type>(language, type));
         }
 
@@ -315,7 +323,7 @@ namespace ACAT.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing SpellCheckers");
 
                 if (disposing)
                 {
@@ -392,7 +400,7 @@ namespace ACAT.Core.SpellCheckManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
+                _logger?.LogError(ex, "Could not get types from assembly {DllName}", dllName);
             }
         }
     }

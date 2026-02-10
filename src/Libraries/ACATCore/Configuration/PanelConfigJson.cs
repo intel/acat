@@ -117,9 +117,11 @@ namespace ACAT.Core.Configuration
 
         /// <summary>
         /// Font size in points
+        /// Note: Uses 'object' type to support both numeric values (12) and string values ("12pt", "@FontSize")
+        /// for flexibility with different units and entity references from XML configurations.
         /// </summary>
         [JsonPropertyName("fontSize")]
-        public string FontSize { get; set; } = string.Empty;
+        public object FontSize { get; set; } = string.Empty;
 
         /// <summary>
         /// Whether text is bold

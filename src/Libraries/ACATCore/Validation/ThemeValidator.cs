@@ -22,6 +22,8 @@ namespace ACAT.Core.Validation
     /// </summary>
     public class ThemeValidator : AbstractValidator<ThemeJson>
     {
+        private static readonly ColorSchemeValidator _colorSchemeValidator = new ColorSchemeValidator();
+
         public ThemeValidator()
         {
             RuleFor(x => x.Description)
@@ -37,7 +39,7 @@ namespace ACAT.Core.Validation
                 .WithMessage("At least one color scheme must be defined");
 
             RuleForEach(x => x.ColorSchemes)
-                .SetValidator(new ColorSchemeValidator());
+                .SetValidator(_colorSchemeValidator);
 
             // Business rule: No duplicate color scheme names
             RuleFor(x => x.ColorSchemes)

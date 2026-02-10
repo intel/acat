@@ -12,8 +12,9 @@
 
 using ACAT.Core.Configuration;
 using ACAT.Core.Validation;
+using ACAT.Core.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Text.Json;
+//using System.Text.Json;
 
 namespace ACATCore.Tests.Configuration
 {
@@ -115,6 +116,64 @@ namespace ACATCore.Tests.Configuration
             Assert.AreEqual(1, panel.Layout.Widgets.Count);
             Assert.AreEqual("RowWidget", panel.Layout.Widgets[0].Class);
             Assert.AreEqual(1, panel.Layout.Widgets[0].Children.Count);
+        }
+
+        [TestMethod]
+        public void CanDeserializeFontSizeAsString()
+        {
+            // Arrange
+            var json = @"{
+                ""widgetAttributes"": [
+                    {
+                        ""name"": ""Button1"",
+                        ""fontSize"": ""16pt""
+                    }
+                ],
+                ""layout"": {
+                    ""colorScheme"": ""Dialog"",
+                    ""widgets"": []
+                },
+                ""animations"": []
+            }";
+
+            // Act
+            var panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
+
+            // Assert
+            Assert.IsNotNull(panel);
+            Assert.IsNotNull(panel.WidgetAttributes[0].FontSize);
+            // When deserialized as object, strings become JsonElement
+            var fontSize = panel.WidgetAttributes[0].FontSize.ToString();
+            Assert.AreEqual("16pt", fontSize);
+        }
+
+        [TestMethod]
+        public void CanDeserializeFontSizeAsNumber()
+        {
+            // Arrange
+            var json = @"{
+                ""widgetAttributes"": [
+                    {
+                        ""name"": ""Button1"",
+                        ""fontSize"": 16
+                    }
+                ],
+                ""layout"": {
+                    ""colorScheme"": ""Dialog"",
+                    ""widgets"": []
+                },
+                ""animations"": []
+            }";
+
+            // Act
+            var panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
+
+            // Assert
+            Assert.IsNotNull(panel);
+            Assert.IsNotNull(panel.WidgetAttributes[0].FontSize);
+            // When deserialized as object, numbers become JsonElement
+            var fontSizeElement = (System.Text.Json.JsonElement)panel.WidgetAttributes[0].FontSize;
+            Assert.AreEqual(16, fontSizeElement.GetInt32());
         }
     }
 

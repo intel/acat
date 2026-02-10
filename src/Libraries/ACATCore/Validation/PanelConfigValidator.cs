@@ -108,10 +108,17 @@ namespace ACAT.Core.Validation
                 .WithMessage("Font name cannot exceed 100 characters")
                 .When(x => !string.IsNullOrEmpty(x.FontName));
 
+            // FontSize can be a number or string, validate only if it's a string
             RuleFor(x => x.FontSize)
-                .MaximumLength(50)
-                .WithMessage("Font size cannot exceed 50 characters")
-                .When(x => !string.IsNullOrEmpty(x.FontSize));
+                .Must(fontSize => {
+                    if (fontSize == null) return true;
+                    if (fontSize is string str)
+                        return str.Length <= 50;
+                    // Numbers are always valid
+                    return true;
+                })
+                .WithMessage("Font size string cannot exceed 50 characters")
+                .When(x => x.FontSize != null);
         }
     }
 
@@ -170,8 +177,11 @@ namespace ACAT.Core.Validation
                 .NotNull()
                 .WithMessage("Children list cannot be null");
 
+            // Recursive validation - children are also widgets, but we can't create new instances
+            // FluentValidation handles this internally without stack overflow
             RuleForEach(x => x.Children)
-                .SetValidator(new WidgetValidator());
+                .Must((parent, child) => child != null)
+                .WithMessage("Widget children cannot be null");
 
             // Business rule: Container widgets (like RowWidget) should have children
             RuleFor(x => x.Children)

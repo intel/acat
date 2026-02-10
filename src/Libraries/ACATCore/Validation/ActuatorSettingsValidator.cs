@@ -65,6 +65,8 @@ namespace ACAT.Core.Validation
     /// </summary>
     public class ActuatorSettingValidator : AbstractValidator<ActuatorSettingJson>
     {
+        private static readonly SwitchSettingValidator _switchSettingValidator = new SwitchSettingValidator();
+
         public ActuatorSettingValidator()
         {
             RuleFor(x => x.Name)
@@ -94,7 +96,7 @@ namespace ACAT.Core.Validation
                 .WithMessage("SwitchSettings cannot be null");
 
             RuleForEach(x => x.SwitchSettings)
-                .SetValidator(new SwitchSettingValidator());
+                .SetValidator(_switchSettingValidator);
 
             // Business rule: Enabled actuators should have at least one enabled switch
             RuleFor(x => x.SwitchSettings)

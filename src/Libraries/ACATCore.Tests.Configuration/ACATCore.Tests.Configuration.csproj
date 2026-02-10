@@ -4,15 +4,31 @@
     <LangVersion>9.0</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Override centralized build output for test project -->
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <BaseIntermediateOutputPath>obj\$(Configuration)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <!-- Ensure only one AssemblyInfo.cs is generated per configuration -->
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest" Version="3.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ACATCore\ACAT.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Exclude auto-generated AssemblyInfo files from other configurations -->
+  <ItemGroup>
+    <Compile Remove="obj\**\*.cs" />
+    <Compile Include="$(IntermediateOutputPath)**\*.cs" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -110,6 +111,33 @@ namespace ACAT.Core.ThemeManagement
         {
             var colorSchemes = new ColorSchemes();
             colorSchemes.loadAndAddColorScheme(node, themeDir);
+
+            return colorSchemes;
+        }
+
+        /// <summary>
+        /// Creates a color schemes collection from JSON color scheme list
+        /// </summary>
+        /// <param name="colorSchemeJsonList">List of color scheme JSON objects</param>
+        /// <param name="themeDir">path to the assets</param>
+        /// <returns>Color scheme collection</returns>
+        public static ColorSchemes CreateFromJson(List<ColorSchemeJson> colorSchemeJsonList, String themeDir)
+        {
+            var colorSchemes = new ColorSchemes();
+            
+            if (colorSchemeJsonList == null)
+            {
+                return colorSchemes;
+            }
+
+            foreach (var colorSchemeJson in colorSchemeJsonList)
+            {
+                var colorScheme = ColorScheme.CreateFromJson(colorSchemeJson, themeDir);
+                if (colorScheme != null)
+                {
+                    colorSchemes._colorsTable[colorScheme.Name.ToLower()] = colorScheme;
+                }
+            }
 
             return colorSchemes;
         }

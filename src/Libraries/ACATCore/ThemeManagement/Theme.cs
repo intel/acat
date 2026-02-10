@@ -5,7 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using ACAT.Core.Utility;
+using ACAT.Core.Validation;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
@@ -17,7 +19,7 @@ namespace ACAT.Core.ThemeManagement
     /// Contains all the attribtues for a Theme. This includes
     /// the color schemes for all the various UI elements such
     /// as Scanners, Dialogs, Menus, buttons in scanners etc.
-    /// The theme is loaded from an XML file
+    /// The theme is loaded from a JSON file
     /// </summary>
     public class Theme : IDisposable
     {
@@ -66,7 +68,7 @@ namespace ACAT.Core.ThemeManagement
 
         /// <summary>
         /// Class factory to create a Theme object with the specified name. themeDir
-        /// directory contains all the assets for the Theme. themeFile is the xml
+        /// directory contains all the assets for the Theme. themeFile is the json
         /// file that contains references to all the theme assets.
         /// </summary>
         /// <param name="themeName">Name of the theme</param>
@@ -79,13 +81,51 @@ namespace ACAT.Core.ThemeManagement
 
             if (!File.Exists(themeFile))
             {
+                logger?.LogWarning("Theme file not found: {ThemeFile}", themeFile);
                 return null;
             }
 
             try
             {
-                var doc = new XmlDocument();
+                // Try loading as JSON first
+                var validator = new ThemeValidator();
+                var loader = new JsonConfigurationLoader<ThemeJson>(validator, logger);
+                
+                var themeJson = loader.Load(themeFile, createDefaultOnError: false);
+                
+                if (themeJson != null)
+                {
+                    theme = new Theme(themeName, logger) 
+                    { 
+                        Colors = ColorSchemes.CreateFromJson(themeJson.ColorSchemes, themeDir) 
+                    };
+                    
+                    logger?.LogInformation("Successfully loaded theme from JSON: {ThemeFile}", themeFile);
+                    return theme;
+                }
 
+                // Fallback to XML if JSON fails (for backward compatibility during transition)
+                logger?.LogWarning("JSON load failed, attempting XML fallback for: {ThemeFile}", themeFile);
+                theme = LoadFromXml(themeName, themeDir, themeFile, logger);
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex, "Failed to create theme from file: {ThemeFile}", themeFile);
+            }
+
+            return theme;
+        }
+
+        /// <summary>
+        /// Legacy XML loader for backward compatibility
+        /// </summary>
+        private static Theme LoadFromXml(String themeName, String themeDir, String themeFile, ILogger<Theme> logger)
+        {
+            Theme theme = null;
+
+            try
+            {
+                var doc = new XmlDocument();
                 doc.Load(themeFile);
 
                 // create the colorschemes object by parsing the colorschemes nodes
@@ -93,11 +133,12 @@ namespace ACAT.Core.ThemeManagement
                 if (colorSchemesNode != null)
                 {
                     theme = new Theme(themeName, logger) { Colors = ColorSchemes.Create(colorSchemesNode, themeDir) };
+                    logger?.LogInformation("Loaded theme from XML (legacy): {ThemeFile}", themeFile);
                 }
             }
             catch (Exception ex)
             {
-                logger?.LogError(ex, "Failed to create theme from file: {ThemeFile}", themeFile);
+                logger?.LogError(ex, "Failed to load theme from XML: {ThemeFile}", themeFile);
             }
 
             return theme;

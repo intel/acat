@@ -10,8 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.Configuration;
 using FluentValidation;
+using System;
+using System.Linq;
 
 namespace ACAT.Core.Validation
 {
@@ -36,6 +39,8 @@ namespace ACAT.Core.Validation
     /// </summary>
     public class AbbreviationValidator : AbstractValidator<AbbreviationJson>
     {
+        private static readonly string[] ValidModes = Enum.GetNames(typeof(Abbreviation.AbbreviationMode));
+
         public AbbreviationValidator()
         {
             RuleFor(x => x.Word)
@@ -49,8 +54,8 @@ namespace ACAT.Core.Validation
             RuleFor(x => x.Mode)
                 .NotEmpty()
                 .WithMessage("Abbreviation mode cannot be empty")
-                .Must(mode => mode == "Write" || mode == "Speak" || mode == "None")
-                .WithMessage("Abbreviation mode must be 'Write', 'Speak', or 'None'");
+                .Must(mode => ValidModes.Contains(mode, StringComparer.OrdinalIgnoreCase))
+                .WithMessage($"Abbreviation mode must be one of: {string.Join(", ", ValidModes)}");
         }
     }
 }

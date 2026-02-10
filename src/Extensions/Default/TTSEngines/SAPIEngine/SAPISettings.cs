@@ -37,7 +37,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Name of the alternate pronunciations file
         /// </summary>
-        public String PronunciationsFile = "SAPIPronunciations.xml";
+        public String PronunciationsFile = "SAPIPronunciations.json";
 
         /// <summary>
         /// Initializes a new instance of the class.

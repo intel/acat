@@ -258,23 +258,36 @@ namespace ACAT.Core.TTSManagement
 
             String filePath = getPronunciationsFilePath(ci, pronunciationsFileName);
             
-            // If specified file doesn't exist, try alternate format
+            // If specified file doesn't exist, try alternate formats
             if (string.IsNullOrEmpty(filePath))
             {
-                var extension = Path.GetExtension(pronunciationsFileName)?.ToLowerInvariant();
                 var baseName = Path.GetFileNameWithoutExtension(pronunciationsFileName);
                 
-                // Try alternate format
-                var alternateFileName = extension == ".json" 
-                    ? baseName + ".xml" 
-                    : baseName + ".json";
+                // Try JSON format first
+                var jsonFileName = baseName + ".json";
+                filePath = getPronunciationsFilePath(ci, jsonFileName);
                 
-                filePath = getPronunciationsFilePath(ci, alternateFileName);
+                // If JSON not found, try XML format
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    var xmlFileName = baseName + ".xml";
+                    filePath = getPronunciationsFilePath(ci, xmlFileName);
+                    
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        _logger?.LogDebug("Found XML pronunciation file: {FilePath}", filePath);
+                    }
+                }
+                else
+                {
+                    _logger?.LogDebug("Found JSON pronunciation file: {FilePath}", filePath);
+                }
             }
 
             if (string.IsNullOrEmpty(filePath))
             {
-                _logger?.LogWarning("Pronunciation file not found for culture {Culture}", ci.Name);
+                _logger?.LogWarning("Pronunciation file not found for culture {Culture}. Tried: {BaseName}.json and {BaseName}.xml", 
+                    ci.Name, Path.GetFileNameWithoutExtension(pronunciationsFileName));
                 return false;
             }
 

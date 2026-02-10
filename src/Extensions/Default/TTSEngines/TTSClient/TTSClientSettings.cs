@@ -41,7 +41,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <summary>
         /// Name of the alternate pronunciations file
         /// </summary>
-        public String PronunciationsFile = "TTSPronunciations.xml";
+        public String PronunciationsFile = "TTSPronunciations.json";
 
         /// <summary>
         /// Initializes a new instance of the class.

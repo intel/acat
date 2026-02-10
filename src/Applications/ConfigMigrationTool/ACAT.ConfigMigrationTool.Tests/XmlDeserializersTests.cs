@@ -73,11 +73,11 @@ namespace ACAT.ConfigMigrationTool.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.ActuatorSettings.Count);
+            Assert.HasCount(1, result.ActuatorSettings);
             Assert.AreEqual("Keyboard", result.ActuatorSettings[0].Name);
             Assert.AreEqual("d91a1877-c92b-4d7e-9ab6-f01f30b12df9", result.ActuatorSettings[0].Id);
             Assert.IsTrue(result.ActuatorSettings[0].Enabled);
-            Assert.AreEqual(1, result.ActuatorSettings[0].SwitchSettings.Count);
+            Assert.HasCount(1, result.ActuatorSettings[0].SwitchSettings);
             Assert.AreEqual("Trigger", result.ActuatorSettings[0].SwitchSettings[0].Name);
         }
 
@@ -107,7 +107,7 @@ namespace ACAT.ConfigMigrationTool.Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual("Test Theme", result.Description);
-            Assert.AreEqual(1, result.ColorSchemes.Count);
+            Assert.HasCount(1, result.ColorSchemes);
             Assert.AreEqual("Scanner", result.ColorSchemes[0].Name);
             Assert.AreEqual("#232433", result.ColorSchemes[0].Background);
             Assert.AreEqual("White", result.ColorSchemes[0].Foreground);
@@ -137,12 +137,12 @@ namespace ACAT.ConfigMigrationTool.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.WidgetAttributes.Count);
+            Assert.HasCount(1, result.WidgetAttributes);
             Assert.AreEqual("Button1", result.WidgetAttributes[0].Name);
             Assert.AreEqual("OK", result.WidgetAttributes[0].Label);
             Assert.IsNotNull(result.Layout);
             Assert.AreEqual("Dialog", result.Layout.ColorScheme);
-            Assert.AreEqual(1, result.Layout.Widgets.Count);
+            Assert.HasCount(1, result.Layout.Widgets);
         }
 
         [TestMethod]

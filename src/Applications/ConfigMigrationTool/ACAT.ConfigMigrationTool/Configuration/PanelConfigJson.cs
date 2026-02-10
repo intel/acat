@@ -52,8 +52,7 @@ namespace ACAT.ConfigMigrationTool.Configuration
             {
                 WidgetAttributes = new List<WidgetAttributeJson>
                 {
-                    new WidgetAttributeJson
-                    {
+                    new() {
                         Name = "MenuTitle",
                         Label = "Main Menu",
                         FontName = "Montserrat SemiBold",
@@ -65,14 +64,12 @@ namespace ACAT.ConfigMigrationTool.Configuration
                     ColorScheme = "Dialog",
                     Widgets = new List<WidgetJson>
                     {
-                        new WidgetJson
-                        {
+                        new() {
                             Class = "RowWidget",
                             Name = "TitleRow",
                             Children = new List<WidgetJson>
                             {
-                                new WidgetJson
-                                {
+                                new() {
                                     Class = "ScannerButton",
                                     Name = "MenuTitle",
                                     ColorScheme = "MenuTitle"
@@ -194,7 +191,7 @@ namespace ACAT.ConfigMigrationTool.Configuration
         /// Note: Uses 'object' type to support boolean, null (unspecified), and string values
         /// </summary>
         [JsonPropertyName("defaultEnabled")]
-        public object DefaultEnabled { get; set; } = null;
+        public object? DefaultEnabled { get; set; } = null;
 
         /// <summary>
         /// Child widgets for container widgets

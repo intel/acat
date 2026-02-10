@@ -10,6 +10,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using System.Text;
+
 namespace ACAT.ConfigMigrationTool
 {
     /// <summary>
@@ -35,7 +37,7 @@ namespace ACAT.ConfigMigrationTool
         public string GenerateReport()
         {
             var duration = EndTime - StartTime;
-            var sb = new System.Text.StringBuilder();
+            StringBuilder sb = new System.Text.StringBuilder();
             
             sb.AppendLine();
             sb.AppendLine("========================================");

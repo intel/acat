@@ -67,8 +67,7 @@ namespace ACAT.ConfigMigrationTool.Configuration
                 Description = "Light theme with softer colors",
                 ColorSchemes = new List<ColorSchemeJson>
                 {
-                    new ColorSchemeJson
-                    {
+                    new() {
                         Name = "Scanner",
                         Background = "#F0F0F0",
                         Foreground = "#333333",

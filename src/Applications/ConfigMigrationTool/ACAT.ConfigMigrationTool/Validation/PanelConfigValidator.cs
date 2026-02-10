@@ -45,7 +45,7 @@ namespace ACAT.ConfigMigrationTool.Validation
             // Business rule: No duplicate widget attribute names
             RuleFor(x => x.WidgetAttributes)
                 .Must(attributes => {
-                    var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    HashSet<string> names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     foreach (var attr in attributes)
                     {
                         if (!string.IsNullOrEmpty(attr.Name))
@@ -63,7 +63,7 @@ namespace ACAT.ConfigMigrationTool.Validation
             // Business rule: No duplicate animation names
             RuleFor(x => x.Animations)
                 .Must(animations => {
-                    var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    HashSet<string> names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     foreach (var anim in animations)
                     {
                         if (!string.IsNullOrEmpty(anim.Name))

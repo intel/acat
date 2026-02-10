@@ -89,7 +89,7 @@ namespace ACAT.ConfigMigrationTool.Tests
             Assert.IsTrue(File.Exists(jsonPath));
 
             var jsonContent = File.ReadAllText(jsonPath);
-            Assert.IsTrue(jsonContent.Contains("\"name\": \"Keyboard\""));
+            Assert.Contains("\"name\": \"Keyboard\"", jsonContent);
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace ACAT.ConfigMigrationTool.Tests
             var result = await _migrator.MigrateAsync(_testInputDir, _testOutputDir, false, true);
 
             // Assert
-            Assert.AreEqual(1, result.BackedUpFiles.Count);
+            Assert.HasCount(1, result.BackedUpFiles);
             var backupPath = xmlPath + ".backup";
             Assert.IsTrue(File.Exists(backupPath), "Backup file should be created");
         }

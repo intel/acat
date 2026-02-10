@@ -22,7 +22,7 @@ namespace ACAT.ConfigMigrationTool.Validation
     /// </summary>
     public class ThemeValidator : AbstractValidator<ThemeJson>
     {
-        private static readonly ColorSchemeValidator _colorSchemeValidator = new ColorSchemeValidator();
+        private static readonly ColorSchemeValidator _colorSchemeValidator = new();
 
         public ThemeValidator()
         {
@@ -44,7 +44,7 @@ namespace ACAT.ConfigMigrationTool.Validation
             // Business rule: No duplicate color scheme names
             RuleFor(x => x.ColorSchemes)
                 .Must(schemes => {
-                    var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    HashSet<string> names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     foreach (var scheme in schemes)
                     {
                         if (!string.IsNullOrEmpty(scheme.Name))
@@ -72,7 +72,7 @@ namespace ACAT.ConfigMigrationTool.Validation
     /// </summary>
     public class ColorSchemeValidator : AbstractValidator<ColorSchemeJson>
     {
-        private static readonly Regex ColorRegex = new Regex(@"^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$", RegexOptions.Compiled);
+        private static readonly Regex ColorRegex = new(@"^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$", RegexOptions.Compiled);
 
         public ColorSchemeValidator()
         {

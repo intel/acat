@@ -122,8 +122,7 @@ namespace ACAT.ConfigMigrationTool.Configuration
                 ImageFileName = "WebcamSwitch.jpg",
                 SwitchSettings = new List<SwitchSettingJson>
                 {
-                    new SwitchSettingJson
-                    {
+                    new() {
                         Name = "Cheek Twitch",
                         Source = "CT",
                         Description = "Cheek twitch gesture",
@@ -150,8 +149,7 @@ namespace ACAT.ConfigMigrationTool.Configuration
                 ImageFileName = "BCISwitch.png",
                 SwitchSettings = new List<SwitchSettingJson>
                 {
-                    new SwitchSettingJson
-                    {
+                    new() {
                         Name = "R1",
                         Source = "R1",
                         Enabled = true,

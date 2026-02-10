@@ -27,7 +27,7 @@ namespace ACAT.ConfigMigrationTool
         /// </summary>
         public static ActuatorSettingsJson DeserializeActuatorSettings(string xmlPath)
         {
-            var doc = XDocument.Load(xmlPath);
+            XDocument doc = XDocument.Load(xmlPath);
             var root = doc.Root;
             
             if (root == null || root.Name.LocalName != "ActuatorConfig")
@@ -35,14 +35,14 @@ namespace ACAT.ConfigMigrationTool
                 throw new InvalidOperationException("Invalid ActuatorSettings XML format");
             }
 
-            var result = new ActuatorSettingsJson();
+            ActuatorSettingsJson result = new ActuatorSettingsJson();
             var settingsElement = root.Element("ActuatorSettings");
             
             if (settingsElement != null)
             {
                 foreach (var actuatorElement in settingsElement.Elements("ActuatorSetting"))
                 {
-                    var actuator = new ActuatorSettingJson
+                    ActuatorSettingJson actuator = new ActuatorSettingJson
                     {
                         Name = GetElementValue(actuatorElement, "Name"),
                         Id = GetElementValue(actuatorElement, "Id"),
@@ -56,7 +56,7 @@ namespace ACAT.ConfigMigrationTool
                     {
                         foreach (var switchElement in switchSettingsElement.Elements("SwitchSetting"))
                         {
-                            var switchSetting = new SwitchSettingJson
+                            SwitchSettingJson switchSetting = new SwitchSettingJson
                             {
                                 Name = GetElementValue(switchElement, "Name"),
                                 Source = GetElementValue(switchElement, "Source"),
@@ -83,7 +83,7 @@ namespace ACAT.ConfigMigrationTool
         /// </summary>
         public static ThemeJson DeserializeTheme(string xmlPath)
         {
-            var doc = XDocument.Load(xmlPath);
+            XDocument doc = XDocument.Load(xmlPath);
             var root = doc.Root;
             
             if (root == null || root.Name.LocalName != "ACAT")
@@ -91,7 +91,7 @@ namespace ACAT.ConfigMigrationTool
                 throw new InvalidOperationException("Invalid Theme XML format");
             }
 
-            var result = new ThemeJson();
+            ThemeJson result = new ThemeJson();
             var themeElement = root.Element("Theme");
             
             if (themeElement != null)
@@ -103,7 +103,7 @@ namespace ACAT.ConfigMigrationTool
                 {
                     foreach (var schemeElement in colorSchemesElement.Elements("ColorScheme"))
                     {
-                        var scheme = new ColorSchemeJson
+                        ColorSchemeJson scheme = new ColorSchemeJson
                         {
                             Name = schemeElement.Attribute("name")?.Value ?? "",
                             Background = schemeElement.Attribute("background")?.Value ?? "",
@@ -128,7 +128,7 @@ namespace ACAT.ConfigMigrationTool
         /// </summary>
         public static PanelConfigJson DeserializePanelConfig(string xmlPath)
         {
-            var doc = XDocument.Load(xmlPath);
+            XDocument doc = XDocument.Load(xmlPath);
             var root = doc.Root;
             
             if (root == null || root.Name.LocalName != "ACAT")
@@ -136,7 +136,7 @@ namespace ACAT.ConfigMigrationTool
                 throw new InvalidOperationException("Invalid PanelConfig XML format");
             }
 
-            var result = new PanelConfigJson();
+            PanelConfigJson result = new PanelConfigJson();
 
             // Parse WidgetAttributes
             var widgetAttributesElement = root.Element("WidgetAttributes");
@@ -144,7 +144,7 @@ namespace ACAT.ConfigMigrationTool
             {
                 foreach (var attrElement in widgetAttributesElement.Elements("WidgetAttribute"))
                 {
-                    var attr = new WidgetAttributeJson
+                    WidgetAttributeJson attr = new WidgetAttributeJson
                     {
                         Name = attrElement.Attribute("name")?.Value ?? "",
                         Label = attrElement.Attribute("label")?.Value ?? "",
@@ -175,7 +175,7 @@ namespace ACAT.ConfigMigrationTool
             {
                 foreach (var animElement in animationsElement.Elements("Animation"))
                 {
-                    var animation = new AnimationJson
+                    AnimationJson animation = new AnimationJson
                     {
                         Name = animElement.Attribute("name")?.Value ?? "",
                         Start = ParseBoolOrString(animElement.Attribute("start")?.Value ?? "false"),
@@ -191,7 +191,7 @@ namespace ACAT.ConfigMigrationTool
                     {
                         foreach (var stepElement in stepsElement.Elements("AnimationStep"))
                         {
-                            var step = new AnimationStepJson
+                            AnimationStepJson step = new AnimationStepJson
                             {
                                 WidgetName = stepElement.Attribute("widgetName")?.Value ?? "",
                                 OnSelect = stepElement.Attribute("onSelect")?.Value ?? ""
@@ -209,11 +209,11 @@ namespace ACAT.ConfigMigrationTool
 
         private static List<WidgetJson> ParseWidgets(XElement parentElement)
         {
-            var widgets = new List<WidgetJson>();
+            List<WidgetJson> widgets = new List<WidgetJson>();
             
             foreach (var widgetElement in parentElement.Elements("Widget"))
             {
-                var widget = new WidgetJson
+                WidgetJson widget = new WidgetJson
                 {
                     Class = widgetElement.Attribute("class")?.Value ?? "",
                     Name = widgetElement.Attribute("name")?.Value ?? "",

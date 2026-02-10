@@ -43,7 +43,7 @@ namespace ACAT.ConfigMigrationTool.Validation
             // Business rule: No duplicate actuator IDs
             RuleFor(x => x.ActuatorSettings)
                 .Must(actuators => {
-                    var ids = new System.Collections.Generic.HashSet<string>();
+                    HashSet<string> ids = new System.Collections.Generic.HashSet<string>();
                     foreach (var actuator in actuators)
                     {
                         if (!string.IsNullOrEmpty(actuator.Id))
@@ -65,7 +65,7 @@ namespace ACAT.ConfigMigrationTool.Validation
     /// </summary>
     public class ActuatorSettingValidator : AbstractValidator<ActuatorSettingJson>
     {
-        private static readonly SwitchSettingValidator _switchSettingValidator = new SwitchSettingValidator();
+        private static readonly SwitchSettingValidator _switchSettingValidator = new();
 
         public ActuatorSettingValidator()
         {
@@ -107,7 +107,7 @@ namespace ACAT.ConfigMigrationTool.Validation
             // Business rule: No duplicate switch names within an actuator
             RuleFor(x => x.SwitchSettings)
                 .Must(switches => {
-                    var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    HashSet<string> names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     foreach (var sw in switches)
                     {
                         if (!string.IsNullOrEmpty(sw.Name))

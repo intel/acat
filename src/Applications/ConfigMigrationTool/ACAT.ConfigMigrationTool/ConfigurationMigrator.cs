@@ -16,6 +16,7 @@ using FluentValidation;
 using NJsonSchema;
 using Spectre.Console;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace ACAT.ConfigMigrationTool
 {
@@ -45,7 +46,7 @@ namespace ACAT.ConfigMigrationTool
             bool dryRun,
             bool backup)
         {
-            var result = new MigrationResult
+            MigrationResult result = new MigrationResult
             {
                 StartTime = DateTime.Now,
                 DryRun = dryRun
@@ -215,7 +216,7 @@ namespace ACAT.ConfigMigrationTool
         {
             try
             {
-                var doc = System.Xml.Linq.XDocument.Load(xmlFile);
+                XDocument doc = System.Xml.Linq.XDocument.Load(xmlFile);
                 var root = doc.Root;
 
                 if (root == null)
@@ -263,7 +264,7 @@ namespace ACAT.ConfigMigrationTool
 
             if (validator != null)
             {
-                var context = new ValidationContext<object>(poco);
+                ValidationContext<object> context = new ValidationContext<object>(poco);
                 var validationResult = validator.Validate(context);
                 
                 if (!validationResult.IsValid)
@@ -276,7 +277,7 @@ namespace ACAT.ConfigMigrationTool
 
         private List<string> ValidatePocoWithWarnings(object poco, SchemaType schemaType)
         {
-            var warnings = new List<string>();
+            List<string> warnings = new List<string>();
             IValidator? validator = null;
 
             switch (schemaType)
@@ -294,7 +295,7 @@ namespace ACAT.ConfigMigrationTool
 
             if (validator != null)
             {
-                var context = new ValidationContext<object>(poco);
+                ValidationContext<object> context = new ValidationContext<object>(poco);
                 var validationResult = validator.Validate(context);
                 
                 if (!validationResult.IsValid)
@@ -311,7 +312,7 @@ namespace ACAT.ConfigMigrationTool
         /// </summary>
         public async Task<MigrationResult> ValidateAsync(string inputDir)
         {
-            var result = new MigrationResult
+            MigrationResult result = new MigrationResult
             {
                 StartTime = DateTime.Now,
                 DryRun = false
@@ -388,7 +389,7 @@ namespace ACAT.ConfigMigrationTool
         /// </summary>
         public async Task<MigrationResult> RollbackAsync(string backupDir)
         {
-            var result = new MigrationResult
+            MigrationResult result = new MigrationResult
             {
                 StartTime = DateTime.Now,
                 DryRun = false

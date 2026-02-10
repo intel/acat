@@ -61,9 +61,15 @@ namespace ACAT.Core.PanelManagement
         public static String UiRootDir = "";
 
         /// <summary>
-        /// Singleton instance of PanelManager
+        /// Singleton instance of PanelManager - lazy initialized to get logger from DI container
         /// </summary>
-        private static PanelManager _instance;
+        private static readonly Lazy<PanelManager> _instance = new Lazy<PanelManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<PanelManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<PanelManager>)) as ILogger<PanelManager>
+                ?? LogManager.GetLogger<PanelManager>();
+            return new PanelManager(logger);
+        });
 
         /// <summary>
         /// Logger instance
@@ -88,9 +94,9 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Initializes an instance of the PanelManager
         /// </summary>
-        public PanelManager(ILogger<PanelManager> logger = null)
+        public PanelManager(ILogger<PanelManager> logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Context.AppAgentMgr.EvtPanelRequest += AppAgent_EvtPanelRequest;
             Context.AppAgentMgr.EvtFocusChanged += AppAgent_EvtFocusChanged;
             Context.EvtCultureChanged += Context_EvtCultureChanged;
@@ -160,7 +166,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static PanelManager Instance
         {
-            get { return _instance ??= new PanelManager(); }
+            get { return _instance.Value; }
         }
 
         /// <summary>

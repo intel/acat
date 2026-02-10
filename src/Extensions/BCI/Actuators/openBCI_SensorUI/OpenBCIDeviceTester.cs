@@ -33,7 +33,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public class OpenBCIDeviceTester
     {
-        private readonly ILogger<OpenBCIDeviceTester> _logger;
+        private readonly ILogger<OpenBCIDeviceTester> _logger = LogManager.GetLogger<OpenBCIDeviceTester>();
 
         /// <summary>
         /// Variables representing all the different states in testing process (state machine)

@@ -20,7 +20,7 @@ namespace ACAT.Core.PanelManagement.Utils
     /// </summary>
     internal class OutlineWindow : IDisposable
     {
-        private static ILogger<OutlineWindow> _logger;
+        private static ILogger<OutlineWindow> _logger => LogManager.GetLogger<OutlineWindow>();
 
         /// <summary>
         /// Width of the pen to draw the border

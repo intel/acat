@@ -27,7 +27,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class Windows
     {
-        private static ILogger<Windows> _logger;
+        private static ILogger<Windows> _logger => LogManager.GetLogger<Windows>();
 
         private const int GCL_HICON = -14;
         private const int GCL_HICONSM = -34;

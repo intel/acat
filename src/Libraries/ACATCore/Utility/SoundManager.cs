@@ -19,7 +19,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class SoundManager
     {
-        private static ILogger<SoundManager> _logger;
+        private static ILogger<SoundManager> _logger => LogManager.GetLogger<SoundManager>();
         /// <summary>
         /// Are the sounds initialized
         /// </summary>

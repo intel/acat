@@ -6,6 +6,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace ACAT.Core.ThemeManagement
     ///
     public class ThemeManager : IDisposable
     {
-        private static ILogger<ThemeManager> _logger;
+        private readonly ILogger<ThemeManager> _logger;
 
         /// <summary>
         /// Name of the default theme
@@ -44,9 +45,15 @@ namespace ACAT.Core.ThemeManagement
         private const String ThemeConfigFileName = "Theme.xml";
 
         /// <summary>
-        /// Returns the singleton instance
+        /// Returns the singleton instance - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly ThemeManager _instance = new();
+        private static readonly Lazy<ThemeManager> _instance = new Lazy<ThemeManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<ThemeManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<ThemeManager>)) as ILogger<ThemeManager>
+                ?? LogManager.GetLogger<ThemeManager>();
+            return new ThemeManager(logger);
+        });
 
         /// <summary>
         /// The current active ksin
@@ -61,8 +68,9 @@ namespace ACAT.Core.ThemeManagement
         /// <summary>
         /// Initializes the singleton instance of the manager
         /// </summary>
-        private ThemeManager()
+        private ThemeManager(ILogger<ThemeManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             ActiveThemeName = DefaultThemeName;
             DefaultTheme = Theme.Create(ActiveThemeName);
             _activeTheme = Theme.Create(ActiveThemeName);
@@ -78,7 +86,7 @@ namespace ACAT.Core.ThemeManagement
         /// </summary>
         public static ThemeManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -199,11 +207,11 @@ namespace ACAT.Core.ThemeManagement
 
                 _activeTheme = theme;
                 ActiveThemeName = name;
-                _logger?.LogDebug("Created Theme successfully. active Theme is {ThemeName}", _activeTheme.Name);
+                _logger.LogDebug("Created Theme successfully. active Theme is {ThemeName}", _activeTheme.Name);
             }
             else
             {
-                _logger?.LogError("Error creating theme with name {ThemeName}", name);
+                _logger.LogError("Error creating theme with name {ThemeName}", name);
                 retVal = false;
             }
 
@@ -219,7 +227,7 @@ namespace ACAT.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger?.LogTrace("Disposing ThemeManager");
+                _logger.LogTrace("Disposing ThemeManager");
 
                 if (disposing)
                 {

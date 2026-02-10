@@ -199,7 +199,7 @@ namespace ACAT.Extensions.UI.Menus
         {
             get
             {
-                _logger.LogTrace("CreateParams");
+                _logger?.LogTrace("CreateParams");
                 return Windows.SetFormStyles(base.CreateParams);
             }
         }
@@ -238,7 +238,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <returns>true on success</returns>
         public bool Initialize(StartupArg startupArg)
         {
-            _logger.LogTrace("Initialize");
+            _logger?.LogTrace("Initialize");
             PanelClass = startupArg.PanelClass;
             startupCommandArg = startupArg.Arg;
             this.startupArg = startupArg;
@@ -270,7 +270,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnPause()
         {
-            _logger.LogTrace("OnPause");
+            _logger?.LogTrace("OnPause");
 
             scannerCommon.OnPause();
         }
@@ -290,7 +290,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnResume()
         {
-            _logger.LogTrace("OnResume");
+            _logger?.LogTrace("OnResume");
 
             scannerCommon.OnResume();
         }

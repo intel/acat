@@ -64,8 +64,6 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// </summary>
         private const string SettingsFileName = "LaunchAppSettings.xml";
 
-        private readonly ILogger<LaunchAppAgent> _logger;
-
         /// <summary>
         /// The usercontrol that displays the list of applications
         /// </summary>
@@ -89,9 +87,8 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public LaunchAppAgent(ILogger<LaunchAppAgent> logger)
+        public LaunchAppAgent(ILogger<LaunchAppAgent> logger = null) : base(logger)
         {
-            _logger = logger;
             LaunchAppSettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
             Settings = LaunchAppSettings.Load();
         }

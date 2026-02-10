@@ -27,7 +27,7 @@ namespace ACAT.Core.AnimationManagement
     /// </summary>
     public class Animation : IDisposable
     {
-        private static ILogger<Animation> _logger;
+        private static ILogger<Animation> _logger => LogManager.GetLogger<Animation>();
 
         /// <summary>
         /// Code to execute when the animation sequence ends without the

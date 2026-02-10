@@ -40,7 +40,7 @@ namespace ACAT.Core.PanelManagement.Common
     /// </summary>
     public class DialogCommon : IDisposable, IPanelCommon
     {
-        private static ILogger<DialogCommon> _logger;
+        private static ILogger<DialogCommon> _logger => LogManager.GetLogger<DialogCommon>();
 
         /// <summary>
         /// All dialog forms should derive from IDialogPanel

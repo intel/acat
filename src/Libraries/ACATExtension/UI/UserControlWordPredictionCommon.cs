@@ -78,7 +78,14 @@ namespace ACAT.Extension.UI
         /// </summary>
         public UserControlWordPredictionCommon(IUserControl userControl, TextController textController, IScannerPanel scannerPanel, PredictionTypes[] predictionTypes, ILogger<UserControlWordPredictionCommon> logger)
         {
-            _logger = logger;
+            if (logger == null)
+            {
+                _logger = LoggingConfiguration.CreateLogger<UserControlWordPredictionCommon>();
+            }
+            else
+            {
+                _logger = logger;
+            }
             _form = scannerPanel.Form;
             _textController = textController;
             _predictionTypes = predictionTypes;

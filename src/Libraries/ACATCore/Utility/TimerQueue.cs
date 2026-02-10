@@ -19,7 +19,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class TimerQueue : IDisposable
     {
-        private static ILogger<TimerQueue> _logger;
+        private static ILogger<TimerQueue> _logger => LogManager.GetLogger<TimerQueue>();
 
         /// <summary>
         /// Windows constant

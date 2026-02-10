@@ -7,8 +7,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
@@ -27,7 +29,7 @@ namespace ACAT.Core.AgentManagement.Agents
     /// </summary>
     internal class AgentsCache : IDisposable
     {
-        private static ILogger<AgentsCache> _logger;
+        private readonly ILogger<AgentsCache> _logger;
 
         /// <summary>
         /// Adhoc agents are those that can be added at runtime. Adhoc
@@ -62,8 +64,9 @@ namespace ACAT.Core.AgentManagement.Agents
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public AgentsCache()
+        public AgentsCache(ILogger<AgentsCache> logger = null)
         {
+            _logger = logger ?? LoggingConfiguration.CreateLogger<AgentsCache>();
             _logger?.LogTrace("AgentsCache created");
 
             _agentCache = new List<IApplicationAgent>();
@@ -223,9 +226,12 @@ namespace ACAT.Core.AgentManagement.Agents
         /// <returns>Application agent object</returns>
         public IApplicationAgent GetAgentByCategory(string category)
         {
+            _logger?.LogDebug("GetAgentByCategory called for: {Category}. AgentCache count: {Count}", category, _agentCache.Count);
+
             var retVal = _preferredAgents.GetPreferredAgentByCategory(category);
             if (retVal == null)
             {
+                _logger?.LogDebug("No preferred agent found for category {Category}, searching in cache", category);
                 foreach (var agent in _agentCache)
                 {
                     if (string.Compare(category, agent.Descriptor.Category, true) == 0)
@@ -234,6 +240,11 @@ namespace ACAT.Core.AgentManagement.Agents
                         break;
                     }
                 }
+            }
+
+            if (retVal == null)
+            {
+                _logger?.LogWarning("No agent found for category: {Category}", category);
             }
 
             return retVal;
@@ -246,9 +257,12 @@ namespace ACAT.Core.AgentManagement.Agents
         /// <returns>Application agent object</returns>
         public IApplicationAgent GetAgentByName(string name)
         {
+            _logger?.LogDebug("GetAgentByName called for: {Name}. AgentCache count: {Count}", name, _agentCache.Count);
+
             var retVal = _preferredAgents.GetPreferredAgentByName(name);
             if (retVal == null)
             {
+                _logger?.LogDebug("No preferred agent found for {Name}, searching in cache", name);
                 foreach (var agent in _agentCache)
                 {
                     if (string.Compare(name, agent.Name, true) == 0)
@@ -257,6 +271,15 @@ namespace ACAT.Core.AgentManagement.Agents
                         break;
                     }
                 }
+            }
+            else
+            {
+                _logger?.LogDebug("Found preferred agent for {Name}: {AgentName}", name, retVal.Name);
+            }
+
+            if (retVal == null)
+            {
+                _logger?.LogWarning("No agent found for name: {Name}", name);
             }
 
             return retVal;
@@ -283,9 +306,12 @@ namespace ACAT.Core.AgentManagement.Agents
 
             loadCache(extensionDirs);
 
+            _logger?.LogDebug("Loaded {Count} agents into cache before loading preferred agents", _agentCache.Count);
+            _logger?.LogDebug("AgentLookupTableById has {Count} entries", _agentLookupTableById.Count);
+
             _preferredAgents.Load(_agentLookupTableById);
 
-            _logger?.LogDebug("Done loading cache");
+            _logger?.LogDebug("Done loading cache with {Count} total agents", _agentCache.Count);
 
             populateLookupTableByProcess();
 
@@ -321,8 +347,29 @@ namespace ACAT.Core.AgentManagement.Agents
         {
             try
             {
-                var agent = (IApplicationAgent)Activator.CreateInstance(agentType);
-                _logger?.LogDebug("Adding agent {AgentType}", agentType.FullName);
+                IApplicationAgent agent = null;
+
+                // Try to create instance using DI container first (if available)
+                if (Context.ServiceProvider != null)
+                {
+                    try
+                    {
+                        agent = ActivatorUtilities.CreateInstance(Context.ServiceProvider, agentType) as IApplicationAgent;
+                        _logger?.LogDebug("Adding agent {AgentType} with dependency injection", agentType.FullName);
+                    }
+                    catch
+                    {
+                        // DI creation failed, will try parameterless constructor
+                    }
+                }
+
+                // Fall back to parameterless constructor
+                if (agent == null)
+                {
+                    agent = (IApplicationAgent)Activator.CreateInstance(agentType);
+                    _logger?.LogDebug("Adding agent {AgentType} (parameterless constructor)", agentType.FullName);
+                }
+
                 _agentCache.Add(agent);
                 _agentLookupTableById.Add(agent.Descriptor.Id, agent);
 
@@ -346,9 +393,11 @@ namespace ACAT.Core.AgentManagement.Agents
             //TODO: Fix this hack
             foreach (string dir in extensionDirs)
             {
+                _logger?.LogDebug("Loading agents from directory: {Directory}", dir);
                 loadAgentsFromDir(dir, "ACAT.Extensions.AppAgents.*.dll");
                 loadAgentsFromDir(dir, "ACAT.Extensions.FunctionalAgents.*.dll");
             }
+            _logger?.LogDebug("TypeLoader has {Count} loaded types", _agentTypeLoader.LoadedTypes.Count);
             foreach (var agent in _agentTypeLoader.LoadedTypes)
             {
                 addAgent(agent.Value);

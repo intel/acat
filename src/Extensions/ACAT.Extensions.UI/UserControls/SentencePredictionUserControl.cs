@@ -31,12 +31,10 @@ namespace ACAT.Extensions.UI.UserControls
                     "User Control for Sentence Prediction")]
     public partial class SentencePredictionUserControl : KeyboardUserControl
     {
-        private readonly ILogger<SentencePredictionUserControl> _logger;
         private UserControlWordPredictionCommon _userControlWordPredictionCommon;
 
         public SentencePredictionUserControl()
         {
-            _logger = LoggingConfiguration.CreateLogger<SentencePredictionUserControl>();
             InitializeComponent();
         }
 

@@ -46,6 +46,8 @@ namespace ACAT.Core.Utility
                 _form = new Form { Visible = false };
                 _form.Show();
                 _form.Visible = false;
+                // Force handle creation to ensure Invoke/BeginInvoke can be called
+                var handle = _form.Handle;
             }
 
             if (_forgroundHook == IntPtr.Zero)
@@ -76,12 +78,21 @@ namespace ACAT.Core.Utility
 
             if (_heartbeatTimer == null)
             {
-                _form.Invoke(new MethodInvoker(() =>
+                if (_form.InvokeRequired && _form.IsHandleCreated)
+                {
+                    _form.Invoke(new MethodInvoker(() =>
+                    {
+                        _heartbeatTimer = new Timer { Interval = HeartbeatInterval };
+                        _heartbeatTimer.Tick += HeartbeatTick;
+                        _heartbeatTimer.Start();
+                    }));
+                }
+                else
                 {
                     _heartbeatTimer = new Timer { Interval = HeartbeatInterval };
                     _heartbeatTimer.Tick += HeartbeatTick;
                     _heartbeatTimer.Start();
-                }));
+                }
             }
 
             Automation.AddAutomationFocusChangedEventHandler(OnAutomationFocusChanged);
@@ -224,11 +235,14 @@ namespace ACAT.Core.Utility
                 info.IsNewWindow = isNewWindow;
                 info.IsNewFocusedElement = isNewElement;
 
-                // Marshal to UI thread
-                _form.BeginInvoke((MethodInvoker)(() =>
+                // Marshal to UI thread - ensure form handle is created
+                if (_form != null && _form.IsHandleCreated)
                 {
-                    EvtFocusChanged?.Invoke(info);
-                }));
+                    _form.BeginInvoke((MethodInvoker)(() =>
+                    {
+                        EvtFocusChanged?.Invoke(info);
+                    }));
+                }
 
                 _currentHwnd = info.FgHwnd;
                 _currentFocusedElement = info.FocusedElement;

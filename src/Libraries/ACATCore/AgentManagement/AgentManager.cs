@@ -138,14 +138,20 @@ namespace ACAT.Core.AgentManagement
         private const string NullAgentName = "**nullagent**";
 
         /// <summary>
-        /// Singleton instance of the Agent manager
+        /// Singleton instance of the Agent manager - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly AgentManager _instance = new();
+        private static readonly Lazy<AgentManager> _instance = new Lazy<AgentManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<AgentManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<AgentManager>)) as ILogger<AgentManager>
+                ?? LogManager.GetLogger<AgentManager>();
+            return new AgentManager(logger);
+        });
 
         /// <summary>
         /// Logger instance
         /// </summary>
-        private static ILogger<AgentManager> _logger;
+        private readonly ILogger<AgentManager> _logger;
 
         /// <summary>
         /// Name of the executing assembly
@@ -241,8 +247,10 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private AgentManager()
+        private AgentManager(ILogger<AgentManager> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             _currentProcessName = Process.GetCurrentProcess().ProcessName.ToLower();
 
             _textChangedNotifications = new TriggerLock();
@@ -292,16 +300,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         public static AgentManager Instance
         {
-            get { return _instance; }
-        }
-
-        /// <summary>
-        /// Sets the logger for the AgentManager
-        /// </summary>
-        /// <param name="logger">Logger instance</param>
-        public static void SetLogger(ILogger<AgentManager> logger)
-        {
-            _logger = logger;
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -671,7 +670,9 @@ namespace ACAT.Core.AgentManagement
         {
             if (_agentsCache == null)
             {
-                _agentsCache = new AgentsCache();
+                var agentsCacheLogger = Context.ServiceProvider?.GetService(typeof(ILogger<AgentsCache>)) as ILogger<AgentsCache>
+                    ?? LoggingConfiguration.CreateLogger<AgentsCache>();
+                _agentsCache = new AgentsCache(agentsCacheLogger);
                 _agentsCache.EvtAgentAdded += _agentsCache_EvtAgentAdded;
                 return _agentsCache.Init(extensionDirs);
             }
@@ -687,9 +688,9 @@ namespace ACAT.Core.AgentManagement
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnPanelClosed(String panelClass)
         {
-            _logger?.LogTrace("OnPanelClosed");
-            _logger?.LogDebug("panelClass : " + panelClass);
-            _logger?.LogDebug(" currentAgent: " + _currentAgent);
+            _logger.LogTrace("OnPanelClosed");
+            _logger.LogDebug("panelClass : " + panelClass);
+            _logger.LogDebug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
             {
                 var currentWindow = WindowActivityMonitor.CurrentWindowInfo();
@@ -1256,7 +1257,7 @@ namespace ACAT.Core.AgentManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger?.LogTrace("Dispose");
+                _logger.LogTrace("Dispose");
 
                 if (disposing)
                 {

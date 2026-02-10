@@ -15,7 +15,7 @@ namespace ACAT.Core.Utility
 {
     public class VerifyDigitalSignature
     {
-        private static ILogger<VerifyDigitalSignature> _logger;
+        private static ILogger<VerifyDigitalSignature> _logger => LogManager.GetLogger<VerifyDigitalSignature>();
 #if ENABLE_DIGITAL_VERIFICATION
         private static string[] _dllFiles =
         {

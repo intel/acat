@@ -59,7 +59,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             WordPredictionResponse response;
             try
             {
-                _logger.LogDebug("_prevMode: {PrevMode}, currentMode: {CurrentMode}", _prevMode, _wordPredictor.GetMode());
+                _logger?.LogDebug("_prevMode: {PrevMode}, currentMode: {CurrentMode}", _prevMode, _wordPredictor.GetMode());
                 if (_prevMode != _wordPredictor.GetMode() ||
                     _prevPrevWords == null ||
                     _prevCurrentWord == null ||
@@ -96,7 +96,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                             {
                                 predictedSentences = _wordPredictor.SendMessageConvAssistSentencePrediction(preceedingWords.ToString(),
                                                                                     request.WordPredictionMode);
-                                _logger.LogDebug("ConvAssist sentences response: {PredictedSentences}", predictedSentences);
+                                _logger?.LogDebug("ConvAssist sentences response: {PredictedSentences}", predictedSentences);
                             }
                             else
                             {
@@ -133,13 +133,13 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
                 else
                 {
-                    _logger.LogDebug("Nothing changed. returning previous");
+                    _logger?.LogDebug("Nothing changed. returning previous");
                     response = new WordPredictionResponse(request, _prevSentencePredictionResults, true);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ConvAssist Predict Exception");
+                _logger?.LogError(ex, "ConvAssist Predict Exception");
 
                 _prevSentencePredictionResults = new List<string>();
                 response = new WordPredictionResponse(request, new List<String>(), false);
@@ -208,7 +208,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception sentencesLetters)
             {
-                _logger.LogError(sentencesLetters, "ConvAssist Predict sentencesLetters");
+                _logger?.LogError(sentencesLetters, "ConvAssist Predict sentencesLetters");
             }
             return retVal;
         }

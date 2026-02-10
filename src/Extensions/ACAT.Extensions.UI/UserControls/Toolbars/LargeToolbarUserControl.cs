@@ -14,7 +14,6 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
     [DesignerCategory("code")]
     public abstract class LargeToolbarUserControl : KeyboardUserControl
     {
-        private readonly ILogger<LargeToolbarUserControl> _logger;
         private readonly TableLayoutPanel ToolbarBox = new()
         {
             Name = "ToolbarBox",

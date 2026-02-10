@@ -23,7 +23,7 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public abstract class GenericAppAgentBase : AgentBase
     {
-        protected GenericAppAgentBase() : base(LoggingConfiguration.CreateLogger<AgentBase>())
+        protected GenericAppAgentBase(ILogger<AgentBase> logger = null) : base(logger ?? LoggingConfiguration.CreateLogger<AgentBase>())
         {
         }
 

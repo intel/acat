@@ -21,7 +21,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
     /// </summary>
     public class KeyLogTextControlAgent : TextControlAgentBase
     {
-        private static ILogger<KeyLogTextControlAgent> _logger;
+        private static ILogger<KeyLogTextControlAgent> _logger => LogManager.GetLogger<KeyLogTextControlAgent>();
 
         /// <summary>
         /// Windows constant

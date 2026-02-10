@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
@@ -29,7 +30,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
     public class DAQ_OpenBCI : BaseDAQ
     {
-        private readonly ILogger<DAQ_OpenBCI> _logger;
+        private new readonly ILogger<DAQ_OpenBCI> _logger;
 
         // ********** Params set here (not read from settings)
         // private readonly string[] otherChannelsPinsNameList = { "x", "D11", "D12", "D13", "D17", "D18", "x" };
@@ -59,17 +60,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Status of the board
         /// </summary>
-        private BoardStatus status;
+        private new BoardStatus status;
 
         /// <summary>
         /// Boolean, true if device initialized
         /// </summary>
-        public bool deviceInitialized = false;
+        public new bool deviceInitialized = false;
 
         /// <summary>
         /// Buffer to store data and calculate signal stauts
         /// </summary>
-        private double[,] _bufferSignalStatus;
+        private new double[,] _bufferSignalStatus;
 
         /// <summary>
         /// Buffer to store data for eyes closed detection
@@ -80,16 +81,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Index of the EEG channels in data returned from sensor
         /// This is directly via from brainflow
         /// </summary>
-        public int[] indEegChannels;
+        public new int[] indEegChannels;
 
-        public enum DeviceStatus
+        public new enum DeviceStatus
         {
             DEVICE_STANDBY,
             DEVICE_ERROR,
             DEVICE_ACQUIRINGDATA,
         };
 
-        public DeviceStatus deviceStatus;
+        public new DeviceStatus deviceStatus;
 
         // BoardStatus enum is now inherited from BaseDAQ
 
@@ -749,7 +750,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
-        private bool AppendDataToBuffer(double[,] data, double[,] inBuffer, int numSamplesInBuffer, out double[,] outBuffer)
+        protected override bool AppendDataToBuffer(double[,] data, double[,] inBuffer, int numSamplesInBuffer, out double[,] outBuffer)
         {
             bool result = false;
             outBuffer = null;
@@ -964,7 +965,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Creates files where data is stored
         /// </summary>
         /// <param name="sessionID"></param>
-        private void CreateFiles(String sessionID)
+        protected override void CreateFiles(String sessionID)
         {
             if (saveDataToFile)
             {
@@ -1103,7 +1104,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Send lower level config command to BoardShim device
         /// </summary>
         /// <param name="cmd"></param>
-        public void Config_Board(string cmd)
+        public override void Config_Board(string cmd)
         {
             try
             {

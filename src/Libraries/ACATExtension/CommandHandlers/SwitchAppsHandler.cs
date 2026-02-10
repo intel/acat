@@ -50,7 +50,7 @@ namespace ACAT.Extension.CommandHandlers
             //DialogUtils.ShowTaskSwitcher();
             throw new NotImplementedException();
 
-            return true;
+            //return true;
         }
     }
 }

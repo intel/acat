@@ -26,7 +26,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class FileUtils
     {
-        private static ILogger<FileUtils> _logger;
+        private static ILogger<FileUtils> _logger => LogManager.GetLogger<FileUtils>();
 
         /// <summary>
         /// Folder under which ACAT extensions are stored

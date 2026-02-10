@@ -22,10 +22,10 @@ using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
 using ACATResources;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
-using System.Windows.Navigation;
 
 namespace ACATApp
 {
@@ -36,8 +36,9 @@ namespace ACATApp
     internal static class Program
     {
         private static Splash splash = null;
-        private static Microsoft.Extensions.Logging.ILoggerFactory modernLoggingFactory = null;
+        private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
+        private static IServiceProvider _serviceProvider;
 
         /// <summary>
         /// The main entry point for the application.
@@ -56,6 +57,7 @@ namespace ACATApp
             InitializeGlobals();
             InitializeUser();
             InitializeLogging();
+            InitializeDependencyInjection();
             InitializeContext();
 
             if (!PerformOnboarding())
@@ -101,12 +103,29 @@ namespace ACATApp
         {
             // Initialize legacy logging
             Log.SetupListeners();
-            
-            // Initialize modern logging infrastructure (ticket #3)
+
+            // Initialize modern logging infrastructure
             modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
             _logger = modernLoggingFactory.CreateLogger(typeof(Program));
 
             _logger.LogDebug("ACAT Dashboard Application Launch");
+        }
+
+        private static void InitializeDependencyInjection()
+        {
+            // Set up dependency injection for extension instantiation
+            var services = new ServiceCollection();
+
+            // Add logging (reuse existing factory)
+            services.AddSingleton<ILoggerFactory>(modernLoggingFactory);
+            services.AddLogging();
+
+            _serviceProvider = services.BuildServiceProvider();
+
+            // Make service provider available to Context for extension loading
+            Context.ServiceProvider = _serviceProvider;
+
+            _logger.LogDebug("Dependency injection initialized");
         }
 
         private static void InitializeUser()
@@ -213,7 +232,7 @@ namespace ACATApp
             Context.Dispose();
             Common.Uninit();
             CloseSplashScreen();
-            _logger.LogDebug("ACATTalk Application shutdown");
+            _logger.LogDebug("ACAT Dashboard Application shutdown");
             Log.Close();
             modernLoggingFactory?.Dispose();
             AppCommon.OnExit();

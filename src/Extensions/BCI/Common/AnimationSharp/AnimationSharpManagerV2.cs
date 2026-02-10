@@ -41,7 +41,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
     /// </summary>
     public class AnimationSharpManagerV2
     {
-        private readonly ILogger<AnimationSharpManagerV2> _logger;
+        private readonly ILogger<AnimationSharpManagerV2> _logger = LogManager.GetLogger<AnimationSharpManagerV2>();
         /// <summary>
         /// Current active Keyboard Layout
         /// </summary>

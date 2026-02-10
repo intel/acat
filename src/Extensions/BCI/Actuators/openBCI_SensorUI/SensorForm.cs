@@ -29,7 +29,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public partial class SensorForm : Form
     {
-        private static ILogger<SensorForm> _logger;
+        private static ILogger<SensorForm> _logger => LogManager.GetLogger<SensorForm>();
 
         /// <summary>
         /// User control displayed while trying to connect to sensor

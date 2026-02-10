@@ -18,7 +18,7 @@ namespace ACAT.Core.Utility
     [Serializable]
     public class GlobalPreferences
     {
-        private static ILogger<GlobalPreferences> _logger;
+        private static ILogger<GlobalPreferences> _logger => LogManager.GetLogger<GlobalPreferences>();
         public static String DefaultPreferencesFilePath = String.Empty;
 
         public static String LogFileName = String.Empty;

@@ -28,7 +28,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
     /// </summary>
     public class WinsockServerActuatorBase : ActuatorBase
     {
-        private static ILogger<WinsockServerActuatorBase> _logger;
+        private static ILogger<WinsockServerActuatorBase> _logger => LogManager.GetLogger<WinsockServerActuatorBase>();
 
         /// <summary>
         /// Has this object been disposed?

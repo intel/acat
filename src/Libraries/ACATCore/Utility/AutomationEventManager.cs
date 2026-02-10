@@ -1,10 +1,11 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
@@ -31,13 +32,18 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class AutomationEventManager : IDisposable
     {
-        private static readonly ILogger<AutomationEventManager> _staticLogger = LoggingConfiguration.CreateLogger<AutomationEventManager>();
         private readonly ILogger<AutomationEventManager> _logger;
 
         /// <summary>
-        /// Returns the singleton instance
+        /// Returns the singleton instance - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly AutomationEventManager _instance = new();
+        private static readonly Lazy<AutomationEventManager> _instance = new Lazy<AutomationEventManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<AutomationEventManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<AutomationEventManager>)) as ILogger<AutomationEventManager>
+                ?? LogManager.GetLogger<AutomationEventManager>();
+            return new AutomationEventManager(logger);
+        });
 
         /// <summary>
         /// Maps a window handle to its WindowElement object (see below)
@@ -69,9 +75,9 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Prevents a default instance of AutomationEventManager class from being created
         /// </summary>
-        private AutomationEventManager(ILogger<AutomationEventManager> logger = null)
+        private AutomationEventManager(ILogger<AutomationEventManager> logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Start();
         }
 
@@ -80,7 +86,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         public static AutomationEventManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -96,7 +102,7 @@ namespace ACAT.Core.Utility
                                         AutomationElement element,
                                         AutomationEventHandler eventHandler)
         {
-            _staticLogger?.LogTrace("AddAutomationEventHandler called");
+            Instance._logger.LogTrace("AddAutomationEventHandler called");
 
             var windowElement = (WindowElement)WindowTable[hWnd];
             if (windowElement == null)
@@ -118,7 +124,7 @@ namespace ACAT.Core.Utility
             }
             else
             {
-                _staticLogger?.LogDebug("Found window element");
+                Instance._logger.LogDebug("Found window element");
             }
 
             // create the item and add it
@@ -173,7 +179,7 @@ namespace ACAT.Core.Utility
         /// <param name="hwnd">window handle</param>
         public static void RemoveAllAutomationEventHandlers(IntPtr hwnd)
         {
-            _instance._logger?.LogDebug("RemoveAllAutomationEventHandlers: {Hwnd}", hwnd);
+            Instance._logger.LogDebug("RemoveAllAutomationEventHandlers: {Hwnd}", hwnd);
 
             lock (WindowTable)
             {
@@ -182,17 +188,17 @@ namespace ACAT.Core.Utility
                     var windowElement = (WindowElement)WindowTable[hwnd];
 
                     windowElement.EvtOnWindowClosed -= windowElement_EvtOnWindowClosed;
-                    _instance._logger?.LogDebug("Found {Hwnd} in hashtable. removing it", hwnd);
+                    Instance._logger.LogDebug("Found {Hwnd} in hashtable. removing it", hwnd);
                     WindowTable.Remove(hwnd);
 
-                    _instance._logger?.LogDebug("Calling RemoveAllEvents");
+                    Instance._logger.LogDebug("Calling RemoveAllEvents");
 
                     var item = new RemoveAllEventsItem { WinElement = windowElement };
                     RemoveAllEvents(item);
                 }
                 else
                 {
-                    _instance._logger?.LogDebug("Did not find {Hwnd} in hashtable", hwnd);
+                    Instance._logger.LogDebug("Did not find {Hwnd} in hashtable", hwnd);
                 }
             }
         }
@@ -205,7 +211,7 @@ namespace ACAT.Core.Utility
         /// <param name="element">the automation element</param>
         public static void RemoveAutomationEventHandler(IntPtr hWnd, AutomationEvent autoEvent, AutomationElement element)
         {
-            _instance._logger?.LogDebug("RemoveAutomationEventHandler: hWnd={HWnd}", hWnd);
+            Instance._logger.LogDebug("RemoveAutomationEventHandler: hWnd={HWnd}", hWnd);
             if (hWnd != IntPtr.Zero)
             {
                 lock (WindowTable)
@@ -239,7 +245,7 @@ namespace ACAT.Core.Utility
                                                                 AutomationElement element,
                                                                 AutomationPropertyChangedEventHandler eventHandler)
         {
-            _instance._logger?.LogTrace("RemoveAutomationPropertyChangedEventHandler called");
+            Instance._logger.LogTrace("RemoveAutomationPropertyChangedEventHandler called");
 
             if (hWnd == IntPtr.Zero)
             {
@@ -351,7 +357,7 @@ namespace ACAT.Core.Utility
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger?.LogTrace("Dispose called");
+                _logger.LogTrace("Dispose called");
 
                 try
                 {
@@ -363,15 +369,15 @@ namespace ACAT.Core.Utility
 
                         _queue.Enqueue(item);
 
-                        _logger?.LogDebug("Aborting thread...");
+                        _logger.LogDebug("Aborting thread...");
                         _thread.Abort();
-                        _logger?.LogDebug("Returned from abort");
+                        _logger.LogDebug("Returned from abort");
                         // Wait until oThread finishes. Join also has overloads
                         // that take a millisecond interval or a TimeSpan object.
 
-                        _logger?.LogDebug("Calling Join");
+                        _logger.LogDebug("Calling Join");
                         _thread.Join();
-                        _logger?.LogDebug("Returned from join");
+                        _logger.LogDebug("Returned from join");
 
                         // dispose all managed resources.
                         Automation.RemoveAllEventHandlers();
@@ -392,7 +398,7 @@ namespace ACAT.Core.Utility
         /// <param name="item">item to add</param>
         private static void AddAutomationEvent(AddEventHandlerItem item)
         {
-            _instance._queue.Enqueue(item);
+            Instance._queue.Enqueue(item);
         }
 
         /// <summary>
@@ -401,7 +407,7 @@ namespace ACAT.Core.Utility
         /// <param name="item">item to add</param>
         private static void AddAutomationPropertyChanged(AddAutomationPropertyChangedItem item)
         {
-            _instance._queue.Enqueue(item);
+            Instance._queue.Enqueue(item);
         }
 
         /// <summary>
@@ -449,7 +455,7 @@ namespace ACAT.Core.Utility
         /// <param name="item">item to add</param>
         private static void RemoveAllEvents(RemoveAllEventsItem item)
         {
-            _instance._queue.Enqueue(item);
+            Instance._queue.Enqueue(item);
         }
 
         /// <summary>
@@ -458,7 +464,7 @@ namespace ACAT.Core.Utility
         /// <param name="item">item to add</param>
         private static void RemoveAutomationEvent(RemoveEventHandlerItem item)
         {
-            _instance._queue.Enqueue(item);
+            Instance._queue.Enqueue(item);
         }
 
         /// <summary>
@@ -467,7 +473,7 @@ namespace ACAT.Core.Utility
         /// <param name="item">item to add</param>
         private static void RemoveAutomationPropertyChanged(RemoveAutomationPropertyChangedItem item)
         {
-            _instance._queue.Enqueue(item);
+            Instance._queue.Enqueue(item);
         }
 
         /// <summary>
@@ -477,7 +483,7 @@ namespace ACAT.Core.Utility
         /// <param name="hwnd">handle to the window that was closed</param>
         private static void windowElement_EvtOnWindowClosed(IntPtr hwnd)
         {
-            _instance._logger?.LogDebug("Window closed: {Hwnd}", hwnd);
+            Instance._logger?.LogDebug("Window closed: {Hwnd}", hwnd);
             RemoveAllAutomationEventHandlers(hwnd);
         }
 
@@ -574,7 +580,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    _instance._logger?.LogError(ex, "Exception in WindowElement constructor");
+                    Instance._logger?.LogError(ex, "Exception in WindowElement constructor");
                 }
             }
 
@@ -597,38 +603,38 @@ namespace ACAT.Core.Utility
             /// <param name="eventHandler">the event handler</param>
             public void AddAutomationEventHandler(AutomationElement element, AutomationEvent autoEvent, AutomationEventHandler eventHandler)
             {
-                _instance._logger?.LogTrace("AddAutomationEventHandler called");
+                Instance._logger?.LogTrace("AddAutomationEventHandler called");
                 try
                 {
                     var events = (Hashtable)_controlElements[element];
                     if (events == null)
                     {
-                        _instance._logger?.LogDebug("events Arraylist is null. Creating one...");
+                        Instance._logger?.LogDebug("events Arraylist is null. Creating one...");
                         _controlElements.Add(element, new Hashtable());
                         events = (Hashtable)_controlElements[element];
                     }
 
                     if (!events.Contains(autoEvent))
                     {
-                        _instance._logger?.LogDebug("Events array does not contain. Adding automation event {EventName}. AutomationID: {AutomationId}",
+                        Instance._logger?.LogDebug("Events array does not contain. Adding automation event {EventName}. AutomationID: {AutomationId}",
                                             autoEvent.ProgrammaticName,
                                             element.Current.AutomationId ?? "none");
 
                         Automation.AddAutomationEventHandler(autoEvent, element, TreeScope.Element, eventHandler);
-                        _instance._logger?.LogDebug("Returned from AddAutomationEventHandler");
+                        Instance._logger?.LogDebug("Returned from AddAutomationEventHandler");
                         events.Add(autoEvent, eventHandler);
-                        _instance._logger?.LogDebug("Done adding");
+                        Instance._logger?.LogDebug("Done adding");
                     }
                     else
                     {
-                        _instance._logger?.LogDebug("Event already registered. Will not be readded {EventName}. AutomationID: {AutomationId}",
+                        Instance._logger?.LogDebug("Event already registered. Will not be readded {EventName}. AutomationID: {AutomationId}",
                                         autoEvent.ProgrammaticName,
                                         element.Current.AutomationId ?? "none");
                     }
                 }
                 catch (Exception e)
                 {
-                    _instance._logger?.LogError(e, "Exception occurred in AddAutomationEventHandler");
+                    Instance._logger?.LogError(e, "Exception occurred in AddAutomationEventHandler");
                 }
             }
 
@@ -642,7 +648,7 @@ namespace ACAT.Core.Utility
                                                                 AutomationProperty property,
                                                                 AutomationPropertyChangedEventHandler eventHandler)
             {
-                _instance._logger?.LogTrace("AddAutomationPropertyChangedEventHandler called");
+                Instance._logger?.LogTrace("AddAutomationPropertyChangedEventHandler called");
 
                 try
                 {
@@ -657,7 +663,7 @@ namespace ACAT.Core.Utility
                     {
                         Automation.AddAutomationPropertyChangedEventHandler(element, TreeScope.Element, onPropertyChanged, property);
 
-                        _instance._logger?.LogDebug("Adding property changed event {PropertyName}. AutomationID: {AutomationId}",
+                        Instance._logger?.LogDebug("Adding property changed event {PropertyName}. AutomationID: {AutomationId}",
                                         property.ProgrammaticName,
                                         element.Current.AutomationId ?? "none");
 
@@ -672,7 +678,7 @@ namespace ACAT.Core.Utility
                         var eventHandlerList = (List<AutomationPropertyChangedEventHandler>)events[property];
                         if (!eventHandlerList.Contains(eventHandler))
                         {
-                            _instance._logger?.LogDebug("Registering event. {PropertyName}. AutomationID: {AutomationId}",
+                            Instance._logger?.LogDebug("Registering event. {PropertyName}. AutomationID: {AutomationId}",
                                         property.ProgrammaticName,
                                         element.Current.AutomationId ?? "none");
 
@@ -680,7 +686,7 @@ namespace ACAT.Core.Utility
                         }
                         else
                         {
-                            _instance._logger?.LogDebug("Property change already registered. {PropertyName}. AutomationID: {AutomationId}",
+                            Instance._logger?.LogDebug("Property change already registered. {PropertyName}. AutomationID: {AutomationId}",
                                         property.ProgrammaticName,
                                         element.Current.AutomationId ?? "none");
                         }
@@ -688,7 +694,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception e)
                 {
-                    _instance._logger?.LogError(e, "Exception in AddAutomationPropertyChangedEventHandler");
+                    Instance._logger?.LogError(e, "Exception in AddAutomationPropertyChangedEventHandler");
                 }
             }
 
@@ -697,15 +703,15 @@ namespace ACAT.Core.Utility
             /// </summary>
             public void RemoveAllEvents()
             {
-                _instance._logger?.LogTrace("RemoveAllEvents called");
+                Instance._logger?.LogTrace("RemoveAllEvents called");
 
                 try
                 {
-                    _instance._logger?.LogDebug("ControlElements count: {Count}", _controlElements.Count);
+                    Instance._logger?.LogDebug("ControlElements count: {Count}", _controlElements.Count);
                     foreach (AutomationElement element in _controlElements.Keys)
                     {
                         var events = (Hashtable)_controlElements[element];
-                        _instance._logger?.LogDebug("events count: {Count}", events.Count);
+                        Instance._logger?.LogDebug("events count: {Count}", events.Count);
                         foreach (var key in events.Keys)
                         {
                             if (key is AutomationEvent)
@@ -714,9 +720,9 @@ namespace ACAT.Core.Utility
                                 var eventHandler = (AutomationEventHandler)events[autoEvent];
                                 try
                                 {
-                                    _instance._logger?.LogDebug("Removing automation event {EventName}", autoEvent.ProgrammaticName);
+                                    Instance._logger?.LogDebug("Removing automation event {EventName}", autoEvent.ProgrammaticName);
                                     Automation.RemoveAutomationEventHandler(autoEvent, element, eventHandler);
-                                    _instance._logger?.LogDebug("Done removing automation event");
+                                    Instance._logger?.LogDebug("Done removing automation event");
                                 }
                                 catch { }
                             }
@@ -726,9 +732,9 @@ namespace ACAT.Core.Utility
                                 var eventHandler = (AutomationPropertyChangedEventHandler)events[autoProperty];
                                 try
                                 {
-                                    _instance._logger?.LogDebug("Removing automation property {PropertyName}", autoProperty.ProgrammaticName);
+                                    Instance._logger?.LogDebug("Removing automation property {PropertyName}", autoProperty.ProgrammaticName);
                                     Automation.RemoveAutomationPropertyChangedEventHandler(element, eventHandler);
-                                    _instance._logger?.LogDebug("Done removing automation property");
+                                    Instance._logger?.LogDebug("Done removing automation property");
                                 }
                                 catch { }
                             }
@@ -739,7 +745,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception e)
                 {
-                    _instance._logger?.LogError(e, "Exception occurred in RemoveAllEvents");
+                    Instance._logger?.LogError(e, "Exception occurred in RemoveAllEvents");
                 }
             }
 
@@ -750,28 +756,28 @@ namespace ACAT.Core.Utility
             /// <param name="autoEvent">the event</param>
             public void RemoveAutomationEventHandler(AutomationElement element, AutomationEvent autoEvent)
             {
-                _instance._logger?.LogTrace("RemoveAutomationEventHandler called");
+                Instance._logger?.LogTrace("RemoveAutomationEventHandler called");
                 try
                 {
                     var events = (Hashtable)_controlElements[element];
                     if (events != null && events.Contains(autoEvent))
                     {
-                        _instance._logger?.LogDebug("Removing automation event {EventName}", autoEvent.ProgrammaticName);
+                        Instance._logger?.LogDebug("Removing automation event {EventName}", autoEvent.ProgrammaticName);
                         var eventHandler = (AutomationEventHandler)events[autoEvent];
                         Automation.RemoveAutomationEventHandler(autoEvent, element, eventHandler);
-                        _instance._logger?.LogDebug("RemoveAutomationEventHandler succeeded!");
+                        Instance._logger?.LogDebug("RemoveAutomationEventHandler succeeded!");
                         events.Remove(autoEvent);
                     }
                     else
                     {
-                        _instance._logger?.LogDebug("Event already Removed. {EventName}. AutomationID: {AutomationId}",
+                        Instance._logger?.LogDebug("Event already Removed. {EventName}. AutomationID: {AutomationId}",
                                         autoEvent.ProgrammaticName,
                                         element.Current.AutomationId ?? "none");
                     }
                 }
                 catch (Exception e)
                 {
-                    _instance._logger?.LogError(e, "Exception in RemoveAutomationEventHandler");
+                    Instance._logger?.LogError(e, "Exception in RemoveAutomationEventHandler");
                 }
             }
 
@@ -785,11 +791,11 @@ namespace ACAT.Core.Utility
                                                                     AutomationProperty property,
                                                                     AutomationPropertyChangedEventHandler eventHandler)
             {
-                _instance._logger?.LogTrace("RemoveAutomationPropertyChangedEventHandler called");
+                Instance._logger?.LogTrace("RemoveAutomationPropertyChangedEventHandler called");
 
                 try
                 {
-                    _instance._logger?.LogDebug("Removing propertychanged event for automation property {PropertyName}", property.ProgrammaticName);
+                    Instance._logger?.LogDebug("Removing propertychanged event for automation property {PropertyName}", property.ProgrammaticName);
                     var events = (Hashtable)_controlElements[element];
                     if (events != null && events.Contains(property))
                     {
@@ -797,28 +803,28 @@ namespace ACAT.Core.Utility
                         if (eventHandlerList.Contains(eventHandler))
                         {
                             eventHandlerList.Remove(eventHandler);
-                            _instance._logger?.LogDebug("RemoveAutomationPropertyChangedEventHandler succeeded!");
+                            Instance._logger?.LogDebug("RemoveAutomationPropertyChangedEventHandler succeeded!");
 
                             if (eventHandlerList.Count == 0)
                             {
-                                _instance._logger?.LogDebug("Event handler list is empty. No more subscribers. Removing event");
+                                Instance._logger?.LogDebug("Event handler list is empty. No more subscribers. Removing event");
                                 Automation.RemoveAutomationPropertyChangedEventHandler(element, onPropertyChanged);
                                 events.Remove(property);
                             }
                         }
                         else
                         {
-                            _instance._logger?.LogError("Could not remove event. Did not find event handler in the eventhandlers list");
+                            Instance._logger?.LogError("Could not remove event. Did not find event handler in the eventhandlers list");
                         }
                     }
                     else
                     {
-                        _instance._logger?.LogError("Could not remove event. Did not find property in the events list");
+                        Instance._logger?.LogError("Could not remove event. Did not find property in the events list");
                     }
                 }
                 catch (Exception e)
                 {
-                    _instance._logger?.LogError(e, "Exception occurred in RemoveAutomationPropertyChangedEventHandler");
+                    Instance._logger?.LogError(e, "Exception occurred in RemoveAutomationPropertyChangedEventHandler");
                 }
             }
 
@@ -830,7 +836,7 @@ namespace ACAT.Core.Utility
             /// <param name="e">event args</param>
             private void onPropertyChanged(object sender, AutomationPropertyChangedEventArgs e)
             {
-                _instance._logger?.LogDebug("Property changed: {PropertyName}", e.Property.ProgrammaticName);
+                Instance._logger?.LogDebug("Property changed: {PropertyName}", e.Property.ProgrammaticName);
 
                 var element = sender as AutomationElement;
                 Hashtable events = (Hashtable)_controlElements[element];
@@ -838,10 +844,10 @@ namespace ACAT.Core.Utility
                 if (events != null && events.Contains(e.Property))
                 {
                     var eventHandlerList = (List<AutomationPropertyChangedEventHandler>)events[e.Property];
-                    _instance._logger?.LogDebug("eventHandlerList.Count = {Count}", eventHandlerList.Count);
+                    Instance._logger?.LogDebug("eventHandlerList.Count = {Count}", eventHandlerList.Count);
                     foreach (var p in eventHandlerList)
                     {
-                        _instance._logger?.LogDebug("Calling property changed for {PropertyName}", e.Property.ProgrammaticName);
+                        Instance._logger?.LogDebug("Calling property changed for {PropertyName}", e.Property.ProgrammaticName);
                         p(sender, e);
                     }
                 }
@@ -856,10 +862,11 @@ namespace ACAT.Core.Utility
             {
                 if (EvtOnWindowClosed != null)
                 {
-                    _instance._logger?.LogDebug("Triggering event closed");
+                    Instance._logger?.LogDebug("Triggering event closed");
                     EvtOnWindowClosed(_hwnd);
                 }
             }
         }
     }
 }
+

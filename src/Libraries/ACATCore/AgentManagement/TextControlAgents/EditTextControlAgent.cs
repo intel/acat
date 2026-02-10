@@ -23,7 +23,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
     /// </summary>
     public class EditTextControlAgent : TextControlAgentBase
     {
-        private static ILogger<EditTextControlAgent> _logger;
+        private static ILogger<EditTextControlAgent> _logger => LogManager.GetLogger<EditTextControlAgent>();
 
         /// <summary>
         /// Handle of the active target window (eg the Notepad window)

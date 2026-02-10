@@ -9,6 +9,7 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="lioncs.ColorSlider" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
@@ -503,6 +504,12 @@
     <Compile Include="WordPredictorManagement\WordPredictionRequest.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionResponse.cs" />
     <Compile Include="WordPredictorManagement\WordPredictors.cs" />
+    <Compile Include="Configuration\ActuatorSettingsJson.cs" />
+    <Compile Include="Configuration\ThemeJson.cs" />
+    <Compile Include="Configuration\PanelConfigJson.cs" />
+    <Compile Include="Validation\ActuatorSettingsValidator.cs" />
+    <Compile Include="Validation\ThemeValidator.cs" />
+    <Compile Include="Validation\PanelConfigValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ActuatorManagement\UI\ActuatorErrorForm.resx">

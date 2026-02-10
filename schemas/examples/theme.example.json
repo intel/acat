@@ -1,0 +1,131 @@
+{
+  "$schema": "../json/theme.schema.json",
+  "description": "The default theme with high contrast",
+  "colorSchemes": [
+    {
+      "name": "Scanner",
+      "background": "#232433",
+      "foreground": "White",
+      "highlightSelectedBackground": "Blue",
+      "highlightSelectedForeground": "White",
+      "highlightBackground": "#ffaa00",
+      "highlightForeground": "#232433"
+    },
+    {
+      "name": "ScannerButton",
+      "background": "#232433",
+      "foreground": "White",
+      "highlightSelectedBackground": "Blue",
+      "highlightSelectedForeground": "White",
+      "highlightBackground": "#ffaa00",
+      "highlightForeground": "#232433"
+    },
+    {
+      "name": "DisabledScannerButton",
+      "background": "#585453",
+      "foreground": "Gray",
+      "highlightSelectedBackground": "Black",
+      "highlightSelectedForeground": "White",
+      "highlightBackground": "#FFB100",
+      "highlightForeground": "Gray"
+    },
+    {
+      "name": "WordListItemButton",
+      "background": "#232433",
+      "foreground": "White",
+      "highlightSelectedBackground": "Black",
+      "highlightSelectedForeground": "White",
+      "highlightBackground": "#ffaa00",
+      "highlightForeground": "#232433"
+    },
+    {
+      "name": "Dialog",
+      "background": "#232433",
+      "foreground": "White",
+      "highlightSelectedBackground": "Gray",
+      "highlightSelectedForeground": "White",
+      "highlightBackground": "#ffaa00",
+      "highlightForeground": "#232433"
+    },
+    {
+      "name": "Menu",
+      "background": "#232433",
+      "foreground": "White",
+      "highlightSelectedBackground": "Gray",
+      "highlightSelectedForeground": "White",
+      "highlightBackground": "#ffaa00",
+      "highlightForeground": "#232433"
+    },
+    {
+      "name": "MenuTitle",
+      "background": "#232433",
+      "foreground": "White",
+      "highlightBackground": "#ffaa00",
+      "highlightForeground": "#232433"
+    },
+    {
+      "name": "Button",
+      "background": "#232433",
+      "foreground": "White",
+      "highlightSelectedBackground": "Blue",
+      "highlightSelectedForeground": "White",
+      "highlightBackground": "#FFAA00",
+      "highlightForeground": "#232433"
+    },
+    {
+      "name": "HighContrast",
+      "background": "#484848",
+      "foreground": "White"
+    },
+    {
+      "name": "TalkWindow",
+      "background": "#C1C2D3",
+      "foreground": "#232433"
+    },
+    {
+      "name": "BCIColorCodedRegionDefault",
+      "background": "#232433",
+      "foreground": "#FFAA00",
+      "highlightSelectedBackground": "Black",
+      "highlightSelectedForeground": "#ffffff",
+      "highlightBackground": "#FFB100",
+      "highlightForeground": "#C1C2D3"
+    },
+    {
+      "name": "BCIColorCodedRegion1",
+      "background": "#232433",
+      "foreground": "#FFAA00",
+      "highlightSelectedBackground": "Black",
+      "highlightSelectedForeground": "#ffffff",
+      "highlightBackground": "#FFB100",
+      "highlightForeground": "#C1C2D3"
+    },
+    {
+      "name": "BCIColorCodedRegion2",
+      "background": "#232433",
+      "foreground": "#FFAA00",
+      "highlightSelectedBackground": "Black",
+      "highlightSelectedForeground": "#FFFF7F",
+      "highlightBackground": "#FFB100",
+      "highlightForeground": "#C1C2D3"
+    },
+    {
+      "name": "BCIColorCodedRegion3",
+      "background": "#232433",
+      "foreground": "#FFAA00",
+      "highlightSelectedBackground": "Black",
+      "highlightSelectedForeground": "#009900",
+      "highlightBackground": "#FFB100",
+      "highlightForeground": "#C1C2D3"
+    },
+    {
+      "name": "BCIColorCodedRegion4",
+      "background": "#232433",
+      "foreground": "#FFAA00",
+      "highlightSelectedBackground": "Black",
+      "highlightSelectedForeground": "#0099FF",
+      "highlightBackground": "#FFB100",
+      "highlightForeground": "#C1C2D3"
+    }
+  ]
+}

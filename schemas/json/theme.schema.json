@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/schemas/theme.schema.json",
+  "title": "ACAT Theme Configuration",
+  "description": "Color schemes and styling configuration for ACAT user interface",
+  "type": "object",
+  "required": ["description", "colorSchemes"],
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Description of the theme",
+      "examples": ["The default theme with high contrast", "Light theme", "Dark theme"]
+    },
+    "colorSchemes": {
+      "type": "array",
+      "description": "List of color schemes for different UI elements",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/colorScheme"
+      }
+    }
+  },
+  "definitions": {
+    "colorScheme": {
+      "type": "object",
+      "description": "Color configuration for a specific UI element type",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the color scheme (refers to widget type)",
+          "minLength": 1,
+          "examples": [
+            "Scanner",
+            "ScannerButton",
+            "DisabledScannerButton",
+            "WordListItemButton",
+            "Dialog",
+            "Menu",
+            "MenuTitle",
+            "Button",
+            "HighContrast",
+            "TalkWindow"
+          ]
+        },
+        "background": {
+          "type": "string",
+          "description": "Background color in normal state (Color enum or RGB hex: #FFF or #FFF200)",
+          "default": "",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
+          "examples": ["#232433", "White", "Black", "#FFAA00", "#FFF"]
+        },
+        "foreground": {
+          "type": "string",
+          "description": "Foreground (text) color in normal state",
+          "default": "",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
+          "examples": ["White", "Black", "#232433"]
+        },
+        "highlightBackground": {
+          "type": "string",
+          "description": "Background color when highlighted",
+          "default": "",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
+          "examples": ["#FFAA00", "Blue", "#FFB100"]
+        },
+        "highlightForeground": {
+          "type": "string",
+          "description": "Foreground color when highlighted",
+          "default": "",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
+          "examples": ["#232433", "White", "Black"]
+        },
+        "highlightSelectedBackground": {
+          "type": "string",
+          "description": "Background color when highlighted and selected",
+          "default": "",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
+          "examples": ["Blue", "Black", "Gray"]
+        },
+        "highlightSelectedForeground": {
+          "type": "string",
+          "description": "Foreground color when highlighted and selected",
+          "default": "",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
+          "examples": ["White", "#FFFFFF", "#FFFF7F"]
+        },
+        "backgroundImage": {
+          "type": "string",
+          "description": "Background image file (if specified, background color is ignored)",
+          "default": ""
+        },
+        "highlightBackgroundImage": {
+          "type": "string",
+          "description": "Background image when highlighted (if specified, highlightBackground is ignored)",
+          "default": ""
+        }
+      }
+    }
+  }
+}

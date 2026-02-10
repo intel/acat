@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36105.17
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11429.125 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{A1CD68C8-CE85-4A15-BF82-6154CB6E4A77}"
 EndProject
@@ -134,6 +134,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATConfig", "Applications\ACATConfigNext\ACATConfig.csproj", "{489EAED8-55EB-C35C-59B7-6B862E57F816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.AppAgents.WindowsExplorerAgent", "Extensions\Default\AppAgents\WindowsExplorerAgent\ACAT.Extensions.AppAgents.WindowsExplorerAgent.csproj", "{07818F5B-4F27-1E9D-C94F-4D082D234906}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Configuration", "Libraries\ACATCore.Tests.Configuration\ACATCore.Tests.Configuration.csproj", "{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -434,6 +438,16 @@ Global
 		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release_signed|x64.Build.0 = Release_signed|x64
 		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release|x64.ActiveCfg = Release|x64
 		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release|x64.Build.0 = Release|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug|x64.ActiveCfg = Debug|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug|x64.Build.0 = Debug|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release_signed|x64.Build.0 = Release_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release|x64.ActiveCfg = Release|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -481,9 +495,10 @@ Global
 		{A7F35610-4A21-CBD9-229C-8A82A0A975B6} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{489EAED8-55EB-C35C-59B7-6B862E57F816} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{07818F5B-4F27-1E9D-C94F-4D082D234906} = {7E0D614D-B425-44A5-BD39-277AC72EBA0B}
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
 		RESX_AutoCreateNewLanguageFiles = True
+		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
 	EndGlobalSection
 EndGlobal

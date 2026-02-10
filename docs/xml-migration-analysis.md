@@ -10,7 +10,7 @@
 
 - **Total XML Files:** 86 configuration files
 - **Distinct Schemas:** 8 major schema types identified
-- **Total File Size:** ~450 KB (440 KB)
+- **Total File Size:** ~440 KB
 - **Estimated Migration Effort:** 40-60 hours (1-1.5 weeks for 1 developer)
 - **Critical Path:** ActuatorSettings → Panel Configurations → Theme Settings
 

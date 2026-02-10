@@ -1,0 +1,235 @@
+{
+  "$schema": "../json/panel-config.schema.json",
+  "widgetAttributes": [
+    {
+      "name": "MenuTitleIcon",
+      "label": "H",
+      "value": "",
+      "fontSize": 32,
+      "fontName": "ACAT FONT 1",
+      "bold": false
+    },
+    {
+      "name": "MenuTitle",
+      "label": "",
+      "value": "",
+      "fontSize": 22,
+      "fontName": "Montserrat ExtraBold",
+      "bold": false
+    },
+    {
+      "name": "ItemIcon1",
+      "label": "j",
+      "value": "@CmdGoBack",
+      "fontSize": 32,
+      "fontName": "ACAT FONT 1",
+      "bold": false
+    },
+    {
+      "name": "ItemText1",
+      "label": "Back",
+      "value": "@CmdGoBack",
+      "fontSize": 22,
+      "fontName": "Montserrat SemiBold",
+      "bold": false
+    },
+    {
+      "name": "ItemIcon2",
+      "label": "Q",
+      "value": "@CmdLockScreen",
+      "fontSize": 32,
+      "fontName": "ACAT FONT 1",
+      "bold": false
+    },
+    {
+      "name": "ItemText2",
+      "label": "Lock Screen",
+      "value": "@CmdLockScreen",
+      "fontSize": 22,
+      "fontName": "Montserrat SemiBold",
+      "bold": false
+    },
+    {
+      "name": "ItemIcon3",
+      "label": "i",
+      "value": "@CmdAdjustScanSpeed",
+      "fontSize": 32,
+      "fontName": "ACAT FONT 1",
+      "bold": false
+    },
+    {
+      "name": "ItemText3",
+      "label": "Scan Speed",
+      "value": "@CmdAdjustScanSpeed",
+      "fontSize": 22,
+      "fontName": "Montserrat SemiBold",
+      "bold": false
+    },
+    {
+      "name": "ItemIcon4",
+      "label": "n",
+      "value": "@Exit",
+      "fontSize": 32,
+      "fontName": "ACAT FONT 1",
+      "bold": false
+    },
+    {
+      "name": "ItemText4",
+      "label": "Exit Application",
+      "value": "@Exit",
+      "fontSize": 22,
+      "fontName": "Montserrat SemiBold",
+      "bold": false
+    },
+    {
+      "name": "ItemIcon5",
+      "label": "J",
+      "value": "@CmdCalibrateActuator",
+      "fontSize": 32,
+      "fontName": "ACAT FONT 1",
+      "bold": false
+    },
+    {
+      "name": "ItemText5",
+      "label": "Calibrate Switch",
+      "value": "@CmdCalibrateActuator",
+      "fontSize": 22,
+      "fontName": "Montserrat SemiBold",
+      "bold": false
+    },
+    {
+      "name": "ItemIcon6",
+      "label": "F",
+      "value": "@CmdShowAboutBox",
+      "fontSize": 32,
+      "fontName": "ACAT FONT 1",
+      "bold": false
+    },
+    {
+      "name": "ItemText6",
+      "label": "About",
+      "value": "@CmdShowAboutBox",
+      "fontSize": 22,
+      "fontName": "Montserrat SemiBold",
+      "bold": false
+    }
+  ],
+  "layout": {
+    "colorScheme": "Dialog",
+    "widgets": [
+      {
+        "class": "RowWidget",
+        "name": "TitleRow",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "MenuTitleIcon",
+            "colorScheme": "MenuTitle"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "MenuTitle",
+            "colorScheme": "MenuTitle"
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row1",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "ItemIcon1",
+            "colorScheme": "Menu"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "ItemText1",
+            "colorScheme": "Menu"
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row2",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "ItemIcon2",
+            "colorScheme": "Menu"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "ItemText2",
+            "colorScheme": "Menu"
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row3",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "ItemIcon3",
+            "colorScheme": "Menu",
+            "enabled": "contextual",
+            "defaultEnabled": true
+          },
+          {
+            "class": "ScannerButton",
+            "name": "ItemText3",
+            "colorScheme": "Menu",
+            "enabled": "contextual",
+            "defaultEnabled": true
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row4",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "ItemIcon4",
+            "colorScheme": "Menu"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "ItemText4",
+            "colorScheme": "Menu"
+          }
+        ]
+      }
+    ]
+  },
+  "animations": [
+    {
+      "name": "TopLevelRotation",
+      "start": true,
+      "autoStart": true,
+      "firstPauseTime": "@FirstPauseTime",
+      "onEnter": "@RowScanIterations",
+      "scanTime": "@MenuDialogScanTime",
+      "iterations": "@GridScanIterations",
+      "steps": [
+        {
+          "widgetName": "Row1",
+          "onSelect": "actuate(ItemText1);transition(TopLevelRotation)"
+        },
+        {
+          "widgetName": "Row2",
+          "onSelect": "actuate(ItemText2);transition(TopLevelRotation)"
+        },
+        {
+          "widgetName": "Row3",
+          "onSelect": "actuate(ItemText3);transition(TopLevelRotation)"
+        },
+        {
+          "widgetName": "Row4",
+          "onSelect": "actuate(ItemText4);transition(TopLevelRotation)"
+        }
+      ]
+    }
+  ]
+}

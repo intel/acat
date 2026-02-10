@@ -1,0 +1,205 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/schemas/panel-config.schema.json",
+  "title": "ACAT Panel Configuration",
+  "description": "UI layout configuration for scanners, keyboards, menus, and dialogs in ACAT",
+  "type": "object",
+  "required": ["widgetAttributes", "layout"],
+  "properties": {
+    "widgetAttributes": {
+      "type": "array",
+      "description": "List of widget attribute definitions",
+      "default": [],
+      "items": {
+        "$ref": "#/definitions/widgetAttribute"
+      }
+    },
+    "layout": {
+      "type": "object",
+      "description": "Layout configuration for the panel",
+      "required": ["colorScheme"],
+      "properties": {
+        "colorScheme": {
+          "type": "string",
+          "description": "Default color scheme for the layout",
+          "default": "Dialog",
+          "examples": ["Dialog", "Scanner", "Menu"]
+        },
+        "widgets": {
+          "type": "array",
+          "description": "Hierarchical widget tree",
+          "items": {
+            "$ref": "#/definitions/widget"
+          }
+        }
+      }
+    },
+    "animations": {
+      "type": "array",
+      "description": "Animation sequences for scanning behavior",
+      "default": [],
+      "items": {
+        "$ref": "#/definitions/animation"
+      }
+    }
+  },
+  "definitions": {
+    "widgetAttribute": {
+      "type": "object",
+      "description": "Attributes for a widget (label, value, font settings)",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the widget attribute",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "description": "Display label for the widget",
+          "default": ""
+        },
+        "value": {
+          "type": "string",
+          "description": "Value or command associated with the widget",
+          "default": ""
+        },
+        "fontName": {
+          "type": "string",
+          "description": "Font family name (may reference DTD entity)",
+          "default": "",
+          "examples": ["Montserrat SemiBold", "ACAT FONT 1", "&characterButtonFontName;"]
+        },
+        "fontSize": {
+          "type": ["string", "number"],
+          "description": "Font size in points (may reference DTD entity)",
+          "default": "",
+          "examples": [22, 32, "&characterButtonFontSize;"]
+        },
+        "bold": {
+          "type": ["string", "boolean"],
+          "description": "Whether text is bold (may reference DTD entity)",
+          "default": "false",
+          "examples": [true, false, "&usebold;"]
+        },
+        "italic": {
+          "type": ["string", "boolean"],
+          "description": "Whether text is italic",
+          "default": "false"
+        }
+      }
+    },
+    "widget": {
+      "type": "object",
+      "description": "UI widget element (button, container, etc.)",
+      "required": ["class", "name"],
+      "properties": {
+        "class": {
+          "type": "string",
+          "description": "Widget class type",
+          "examples": ["RowWidget", "ScannerButton", "WinControlWidget"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Unique name of the widget",
+          "minLength": 1
+        },
+        "colorScheme": {
+          "type": "string",
+          "description": "Color scheme to apply to this widget",
+          "examples": ["Menu", "MenuTitle", "Dialog", "Scanner"]
+        },
+        "enabled": {
+          "type": "string",
+          "description": "Whether widget is enabled (contextual or always)",
+          "examples": ["contextual", "true", "false"]
+        },
+        "defaultEnabled": {
+          "type": ["string", "boolean"],
+          "description": "Default enabled state",
+          "examples": ["true", "false", true, false]
+        },
+        "children": {
+          "type": "array",
+          "description": "Child widgets for container widgets",
+          "items": {
+            "$ref": "#/definitions/widget"
+          }
+        }
+      }
+    },
+    "animation": {
+      "type": "object",
+      "description": "Animation sequence configuration for scanning",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the animation",
+          "minLength": 1
+        },
+        "start": {
+          "type": ["string", "boolean"],
+          "description": "Whether this is the starting animation",
+          "default": "false",
+          "examples": ["true", "false", true, false]
+        },
+        "autoStart": {
+          "type": ["string", "boolean"],
+          "description": "Whether animation starts automatically",
+          "default": "false",
+          "examples": ["true", "false", true, false]
+        },
+        "firstPauseTime": {
+          "type": "string",
+          "description": "Initial pause time before animation starts (may reference variable)",
+          "default": "",
+          "examples": ["@FirstPauseTime", "1000", "500"]
+        },
+        "onEnter": {
+          "type": "string",
+          "description": "Action when entering animation (may reference variable)",
+          "default": "",
+          "examples": ["@RowScanIterations", "5"]
+        },
+        "scanTime": {
+          "type": "string",
+          "description": "Time for each scan step (may reference variable)",
+          "default": "",
+          "examples": ["@MenuDialogScanTime", "@GridScanIterations", "500"]
+        },
+        "iterations": {
+          "type": "string",
+          "description": "Number of scan iterations (may reference variable)",
+          "default": "",
+          "examples": ["@GridScanIterations", "5"]
+        },
+        "steps": {
+          "type": "array",
+          "description": "Animation steps",
+          "items": {
+            "$ref": "#/definitions/animationStep"
+          }
+        }
+      }
+    },
+    "animationStep": {
+      "type": "object",
+      "description": "A single step in an animation sequence",
+      "required": ["widgetName"],
+      "properties": {
+        "widgetName": {
+          "type": "string",
+          "description": "Name of the widget to animate",
+          "minLength": 1
+        },
+        "onSelect": {
+          "type": "string",
+          "description": "Action to perform when widget is selected",
+          "default": "",
+          "examples": ["actuate(ItemText1);transition(TopLevelRotation)", "actuate(B1)", "transition(Row2Animation)"]
+        }
+      }
+    }
+  }
+}

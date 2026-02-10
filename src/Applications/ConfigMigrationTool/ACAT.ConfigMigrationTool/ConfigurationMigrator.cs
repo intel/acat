@@ -163,8 +163,15 @@ namespace ACAT.ConfigMigrationTool
                     throw new InvalidOperationException($"Unsupported schema type: {schemaType}");
             }
 
-            // Validate POCO
-            ValidatePoco(poco, schemaType);
+            // Validate POCO - warnings only, don't fail migration
+            var validationWarnings = ValidatePocoWithWarnings(poco, schemaType);
+            if (validationWarnings.Count > 0)
+            {
+                foreach (var warning in validationWarnings)
+                {
+                    result.Warnings.Add((xmlFile, warning));
+                }
+            }
 
             if (!dryRun)
             {
@@ -265,6 +272,38 @@ namespace ACAT.ConfigMigrationTool
                     throw new ValidationException($"Validation failed: {errors}");
                 }
             }
+        }
+
+        private List<string> ValidatePocoWithWarnings(object poco, SchemaType schemaType)
+        {
+            var warnings = new List<string>();
+            IValidator? validator = null;
+
+            switch (schemaType)
+            {
+                case SchemaType.ActuatorSettings:
+                    validator = new ActuatorSettingsValidator();
+                    break;
+                case SchemaType.Theme:
+                    validator = new ThemeValidator();
+                    break;
+                case SchemaType.PanelConfig:
+                    validator = new PanelConfigValidator();
+                    break;
+            }
+
+            if (validator != null)
+            {
+                var context = new ValidationContext<object>(poco);
+                var validationResult = validator.Validate(context);
+                
+                if (!validationResult.IsValid)
+                {
+                    warnings.AddRange(validationResult.Errors.Select(e => e.ErrorMessage));
+                }
+            }
+
+            return warnings;
         }
 
         /// <summary>

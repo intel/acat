@@ -123,12 +123,15 @@ namespace ACAT.Core.Configuration
 
         /// <summary>
         /// Whether text is bold
+        /// Note: Uses 'object' type to support both boolean values and DTD entity references (strings like "&usebold;")
+        /// from XML configurations. This maintains compatibility with the original XML format.
         /// </summary>
         [JsonPropertyName("bold")]
         public object Bold { get; set; } = false;
 
         /// <summary>
         /// Whether text is italic
+        /// Note: Uses 'object' type to support both boolean values and DTD entity references
         /// </summary>
         [JsonPropertyName("italic")]
         public object Italic { get; set; } = false;
@@ -186,6 +189,7 @@ namespace ACAT.Core.Configuration
 
         /// <summary>
         /// Default enabled state
+        /// Note: Uses 'object' type to support boolean, null (unspecified), and string values
         /// </summary>
         [JsonPropertyName("defaultEnabled")]
         public object DefaultEnabled { get; set; } = null;
@@ -211,12 +215,14 @@ namespace ACAT.Core.Configuration
 
         /// <summary>
         /// Whether this is the starting animation
+        /// Note: Uses 'object' type to support both boolean and string values
         /// </summary>
         [JsonPropertyName("start")]
         public object Start { get; set; } = false;
 
         /// <summary>
         /// Whether animation starts automatically
+        /// Note: Uses 'object' type to support both boolean and string values
         /// </summary>
         [JsonPropertyName("autoStart")]
         public object AutoStart { get; set; } = false;

@@ -45,44 +45,44 @@
         },
         "background": {
           "type": "string",
-          "description": "Background color in normal state (Color enum or RGB hex: #FFF20, #333745)",
+          "description": "Background color in normal state (Color enum or RGB hex: #FFF or #FFF200)",
           "default": "",
-          "pattern": "^(#[0-9A-Fa-f]{3,6}|[A-Za-z]+)$",
-          "examples": ["#232433", "White", "Black", "#FFAA00"]
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
+          "examples": ["#232433", "White", "Black", "#FFAA00", "#FFF"]
         },
         "foreground": {
           "type": "string",
           "description": "Foreground (text) color in normal state",
           "default": "",
-          "pattern": "^(#[0-9A-Fa-f]{3,6}|[A-Za-z]+)$",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
           "examples": ["White", "Black", "#232433"]
         },
         "highlightBackground": {
           "type": "string",
           "description": "Background color when highlighted",
           "default": "",
-          "pattern": "^(#[0-9A-Fa-f]{3,6}|[A-Za-z]+)$",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
           "examples": ["#FFAA00", "Blue", "#FFB100"]
         },
         "highlightForeground": {
           "type": "string",
           "description": "Foreground color when highlighted",
           "default": "",
-          "pattern": "^(#[0-9A-Fa-f]{3,6}|[A-Za-z]+)$",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
           "examples": ["#232433", "White", "Black"]
         },
         "highlightSelectedBackground": {
           "type": "string",
           "description": "Background color when highlighted and selected",
           "default": "",
-          "pattern": "^(#[0-9A-Fa-f]{3,6}|[A-Za-z]+)$",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
           "examples": ["Blue", "Black", "Gray"]
         },
         "highlightSelectedForeground": {
           "type": "string",
           "description": "Foreground color when highlighted and selected",
           "default": "",
-          "pattern": "^(#[0-9A-Fa-f]{3,6}|[A-Za-z]+)$",
+          "pattern": "^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$",
           "examples": ["White", "#FFFFFF", "#FFFF7F"]
         },
         "backgroundImage": {

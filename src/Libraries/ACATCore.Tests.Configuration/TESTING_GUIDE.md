@@ -254,8 +254,8 @@ dotnet test
 **Expected Output:**
 ```
 Test run for ACATCore.Tests.Configuration.dll (.NETFramework,Version=v4.8.1)
-Total tests: 28
-     Passed: 28
+Total tests: 44
+     Passed: 44
  Total time: 2.5 Seconds
 ```
 

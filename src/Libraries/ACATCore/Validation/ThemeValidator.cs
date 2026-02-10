@@ -70,7 +70,7 @@ namespace ACAT.Core.Validation
     /// </summary>
     public class ColorSchemeValidator : AbstractValidator<ColorSchemeJson>
     {
-        private static readonly Regex ColorRegex = new Regex(@"^(#[0-9A-Fa-f]{3,6}|[A-Za-z]+)$", RegexOptions.Compiled);
+        private static readonly Regex ColorRegex = new Regex(@"^(#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})|[A-Za-z]+)$", RegexOptions.Compiled);
 
         public ColorSchemeValidator()
         {

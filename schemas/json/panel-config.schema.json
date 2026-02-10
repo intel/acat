@@ -71,10 +71,10 @@
           "examples": ["Montserrat SemiBold", "ACAT FONT 1", "&characterButtonFontName;"]
         },
         "fontSize": {
-          "type": ["string", "number"],
-          "description": "Font size in points (may reference DTD entity)",
+          "type": "string",
+          "description": "Font size in points (may reference DTD entity like '&characterButtonFontSize;')",
           "default": "",
-          "examples": [22, 32, "&characterButtonFontSize;"]
+          "examples": ["22", "32", "&characterButtonFontSize;"]
         },
         "bold": {
           "type": ["string", "boolean"],

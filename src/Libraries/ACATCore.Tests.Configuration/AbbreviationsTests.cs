@@ -238,10 +238,11 @@ namespace ACATCore.Tests.Configuration
             // Assert
             Assert.IsTrue(saved);
             Assert.IsTrue(File.Exists(testFile));
-            
+
             // Verify content
+            // Note: Abbreviation class converts mnemonics to uppercase internally
             var content = File.ReadAllText(testFile);
-            Assert.IsTrue(content.Contains("tbd"));
+            Assert.IsTrue(content.Contains("TBD"), "Mnemonic should be stored as uppercase");
             Assert.IsTrue(content.Contains("to be determined"));
         }
     }

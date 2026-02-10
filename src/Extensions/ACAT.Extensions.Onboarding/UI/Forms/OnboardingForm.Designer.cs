@@ -56,22 +56,22 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
             this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
             this.tableLayoutPanelMain.RowCount = 4;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(3484, 2112);
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1600, 900);
             this.tableLayoutPanelMain.TabIndex = 0;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(522, 295);
+            this.panel1.Location = new System.Drawing.Point(240, 90);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.tableLayoutPanelMain.SetRowSpan(this.panel1, 2);
-            this.panel1.Size = new System.Drawing.Size(2438, 1519);
+            this.panel1.Size = new System.Drawing.Size(1120, 720);
             this.panel1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -85,9 +85,9 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1381F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 135F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(2438, 1519);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1120, 720);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanelNavigationButtons
@@ -104,15 +104,15 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
             this.tableLayoutPanelNavigationButtons.Controls.Add(this.buttonNext, 4, 0);
             this.tableLayoutPanelNavigationButtons.Controls.Add(this.buttonBack, 3, 0);
             this.tableLayoutPanelNavigationButtons.Controls.Add(this.buttonCancel, 1, 0);
-            this.tableLayoutPanelNavigationButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanelNavigationButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelNavigationButtons.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
-            this.tableLayoutPanelNavigationButtons.Location = new System.Drawing.Point(0, 1400);
-            this.tableLayoutPanelNavigationButtons.Margin = new System.Windows.Forms.Padding(0, 19, 0, 19);
+            this.tableLayoutPanelNavigationButtons.Location = new System.Drawing.Point(0, 648);
+            this.tableLayoutPanelNavigationButtons.Margin = new System.Windows.Forms.Padding(0, 10, 0, 10);
             this.tableLayoutPanelNavigationButtons.Name = "tableLayoutPanelNavigationButtons";
             this.tableLayoutPanelNavigationButtons.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tableLayoutPanelNavigationButtons.RowCount = 1;
             this.tableLayoutPanelNavigationButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelNavigationButtons.Size = new System.Drawing.Size(2438, 100);
+            this.tableLayoutPanelNavigationButtons.Size = new System.Drawing.Size(1120, 52);
             this.tableLayoutPanelNavigationButtons.TabIndex = 5;
             // 
             // buttonNext
@@ -121,12 +121,12 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
             this.buttonNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.buttonNext.FlatAppearance.BorderSize = 0;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonNext.Font = new System.Drawing.Font("Montserrat Medium", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNext.Font = new System.Drawing.Font("Montserrat Medium", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonNext.ForeColor = System.Drawing.Color.Black;
-            this.buttonNext.Location = new System.Drawing.Point(1980, 0);
+            this.buttonNext.Location = new System.Drawing.Point(910, 0);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(0);
             this.buttonNext.Name = "buttonNext";
-            this.buttonNext.Size = new System.Drawing.Size(358, 100);
+            this.buttonNext.Size = new System.Drawing.Size(160, 52);
             this.buttonNext.TabIndex = 3;
             this.buttonNext.Text = "Next";
             this.buttonNext.UseCompatibleTextRendering = true;
@@ -139,12 +139,12 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
             this.buttonBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.buttonBack.FlatAppearance.BorderSize = 0;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonBack.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBack.Font = new System.Drawing.Font("Montserrat Thin", 18F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonBack.ForeColor = System.Drawing.Color.Silver;
-            this.buttonBack.Location = new System.Drawing.Point(1622, 0);
+            this.buttonBack.Location = new System.Drawing.Point(750, 0);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(0);
             this.buttonBack.Name = "buttonBack";
-            this.buttonBack.Size = new System.Drawing.Size(358, 100);
+            this.buttonBack.Size = new System.Drawing.Size(160, 52);
             this.buttonBack.TabIndex = 1;
             this.buttonBack.Text = "Back";
             this.buttonBack.UseCompatibleTextRendering = true;
@@ -157,13 +157,13 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
             this.buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.buttonCancel.FlatAppearance.BorderSize = 0;
             this.buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCancel.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCancel.Font = new System.Drawing.Font("Montserrat Thin", 18F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonCancel.ForeColor = System.Drawing.Color.Silver;
             this.buttonCancel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonCancel.Location = new System.Drawing.Point(100, 0);
+            this.buttonCancel.Location = new System.Drawing.Point(50, 0);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(0);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(404, 100);
+            this.buttonCancel.Size = new System.Drawing.Size(180, 52);
             this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "Exit";
             this.buttonCancel.UseCompatibleTextRendering = true;
@@ -176,20 +176,20 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
             this.panelContainer.Location = new System.Drawing.Point(0, 0);
             this.panelContainer.Margin = new System.Windows.Forms.Padding(0);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(2438, 1381);
+            this.panelContainer.Size = new System.Drawing.Size(1120, 648);
             this.panelContainer.TabIndex = 6;
             // 
             // OnboardingForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(3484, 2112);
+            this.ClientSize = new System.Drawing.Size(1600, 900);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(6);
-            this.MinimumSize = new System.Drawing.Size(2046, 1475);
+            this.Margin = new System.Windows.Forms.Padding(3);
+            this.MinimumSize = new System.Drawing.Size(1366, 768);
             this.Name = "OnboardingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

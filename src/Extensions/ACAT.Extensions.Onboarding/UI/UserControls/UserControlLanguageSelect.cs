@@ -18,33 +18,14 @@ using ACAT.Core.CoreInterfaces;
 
 namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
-    public class LanguageItem
-    {
-        public String DisplayName { get; set; }
-        public CultureInfo CultureInfo { get; set; }
-
-        public override String ToString()
-        {
-            return DisplayName;
-        }
-
-        public LanguageItem(string name, CultureInfo info)
-        {
-            DisplayName = name;
-            CultureInfo = info;
-        }
-    }
-
     /// <summary>
     /// User control that allows the user to select the input switch
     /// </summary>
     public partial class UserControlLanguageSelect : UserControl, IOnboardingUserControl
     {
+        public CultureInfo currentCulture = CultureInfo.CurrentUICulture;
         private readonly IOnboardingExtension _onboardingExtension;
         private readonly String _stepId;
-
-        public CultureInfo currentCulture = CultureInfo.CurrentUICulture;
-
         public UserControlLanguageSelect(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
         {
             InitializeComponent();
@@ -63,30 +44,6 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 {
                     currentCulture = culture;
                 }
-            }
-        }
-
-        private void listBoxLanguages_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var selectedItem = listBoxLanguages.SelectedItem as LanguageItem;
-            if (selectedItem != null)
-            {
-                Thread.CurrentThread.CurrentUICulture = selectedItem.CultureInfo;
-                Thread.CurrentThread.CurrentCulture = selectedItem.CultureInfo;
-
-                //var resourcesAssembly = typeof(ACATResources.ResourceHelper).Assembly;
-                _ = new ComponentResourceManager(typeof(UserControlLanguageSelect));
-                //ApplyResourcesToControls(this, resourceManager);
-                currentCulture = selectedItem.CultureInfo;
-            }
-        }
-
-        private void ApplyResourcesToControls(Control control, ComponentResourceManager resources)
-        {
-            foreach (Control childControl in control.Controls)
-            {
-                resources.ApplyResources(childControl, childControl.Name, Thread.CurrentThread.CurrentUICulture);
-                ApplyResourcesToControls(childControl, resources);
             }
         }
 
@@ -141,6 +98,46 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         public bool QueryGoToPrevStep()
         {
             return true;
+        }
+
+        private void ApplyResourcesToControls(Control control, ComponentResourceManager resources)
+        {
+            foreach (Control childControl in control.Controls)
+            {
+                resources.ApplyResources(childControl, childControl.Name, Thread.CurrentThread.CurrentUICulture);
+                ApplyResourcesToControls(childControl, resources);
+            }
+        }
+
+        private void listBoxLanguages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedItem = listBoxLanguages.SelectedItem as LanguageItem;
+            if (selectedItem != null)
+            {
+                Thread.CurrentThread.CurrentUICulture = selectedItem.CultureInfo;
+                Thread.CurrentThread.CurrentCulture = selectedItem.CultureInfo;
+
+                //var resourcesAssembly = typeof(ACATResources.ResourceHelper).Assembly;
+                _ = new ComponentResourceManager(typeof(UserControlLanguageSelect));
+                //ApplyResourcesToControls(this, resourceManager);
+                currentCulture = selectedItem.CultureInfo;
+            }
+        }
+    }
+
+    public class LanguageItem
+    {
+        public LanguageItem(string name, CultureInfo info)
+        {
+            DisplayName = name;
+            CultureInfo = info;
+        }
+
+        public CultureInfo CultureInfo { get; set; }
+        public String DisplayName { get; set; }
+        public override String ToString()
+        {
+            return DisplayName;
         }
     }
 }

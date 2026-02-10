@@ -91,7 +91,7 @@ namespace ACAT.Core.Utility
                     return createDefaultOnError ? CreateDefault() : null;
                 }
 
-                T config = JsonSerializer.Deserialize<T>(json, _jsonOptions);
+                T config = JsonSerializer.Deserialize<T>(json);
 
                 if (config == null)
                 {
@@ -202,7 +202,7 @@ namespace ACAT.Core.Utility
                 }
 
                 // Serialize and save
-                string json = JsonSerializer.Serialize(config, _jsonOptions);
+                string json = JsonSerializer.Serialize(config);
                 File.WriteAllText(filePath, json);
                 
                 _logger?.LogInformation("Successfully saved configuration to: {FilePath}", filePath);

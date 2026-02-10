@@ -217,7 +217,7 @@ namespace ACAT.Core.ThemeManagement
 
             // create the Theme object. This parses the Theme json/xml file and
             // creates the Theme object
-            var theme = Theme.Create(name, themeDir, themeFile, _logger);
+            var theme = Theme.Create(name, themeDir, themeFile, LoggingConfiguration.CreateLogger<Theme>());
             if (theme != null)
             {
                 _activeTheme?.Dispose();

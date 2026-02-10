@@ -404,7 +404,6 @@
     <Compile Include="Utility\GlobalPreferences.cs" />
     <Compile Include="Utility\ImageUtils.cs" />
     <Compile Include="Utility\KeyStateTracker.cs" />
-    <Compile Include="Utility\Log.cs" />
     <Compile Include="Utility\LoggingConfiguration.cs" />
     <Compile Include="Tests\LoggingConfigurationTest.cs" />
     <Compile Include="Utility\Mouse\MouseUtils.cs" />

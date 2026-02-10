@@ -114,9 +114,6 @@ namespace ACATConfig
 
             AppCommon.CheckDisplayScalingAndResolution();
 
-            // Initialize legacy logging
-            Log.SetupListeners();
-
             // Initialize modern logging infrastructure (ticket #3)  
             var modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
 

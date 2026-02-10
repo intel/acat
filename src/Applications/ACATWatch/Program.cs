@@ -44,9 +44,6 @@ namespace ACATWatch
                 CoreGlobals.AppPreferences.DebugLogMessagesToFile = true;
                 CoreGlobals.AppPreferences.DebugMessagesEnable = true;
 
-                // Initialize legacy logging (existing code)
-                Log.SetupListeners();
-
                 // Initialize modern logging infrastructure (ticket #3)
                 var modernLogger = LoggingConfiguration.CreateLoggerFactory();
                 _logger = modernLogger.CreateLogger(typeof(Program));
@@ -59,16 +56,13 @@ namespace ACATWatch
 
                 _logger.LogInformation("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
 
-                Log.Close();
                 modernLogger?.Dispose();
             }
             else
             {
-                Log.SetupListeners();
                 var tempFactory = LoggingConfiguration.CreateLoggerFactory();
                 var tempLogger = tempFactory.CreateLogger(typeof(Program));
                 tempLogger.LogError("Failed to load user preferences. Exiting application.");
-                Log.Close();
                 tempFactory.Dispose();
             }
         }

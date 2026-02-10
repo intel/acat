@@ -143,7 +143,7 @@ namespace ACAT.Core.ThemeManagement
         }
 
         /// <summary>
-        /// Disposes resoureces
+        /// Disposes resources
         /// </summary>
         public void Dispose()
         {

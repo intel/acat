@@ -101,9 +101,6 @@ namespace ACATApp
 
         private static void InitializeLogging()
         {
-            // Initialize legacy logging
-            Log.SetupListeners();
-
             // Initialize modern logging infrastructure
             modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
             _logger = modernLoggingFactory.CreateLogger(typeof(Program));
@@ -233,7 +230,6 @@ namespace ACATApp
             Common.Uninit();
             CloseSplashScreen();
             _logger.LogDebug("ACAT Dashboard Application shutdown");
-            Log.Close();
             modernLoggingFactory?.Dispose();
             AppCommon.OnExit();
         }

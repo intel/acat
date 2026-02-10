@@ -237,7 +237,6 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
             }
             catch (Exception e)
             {
-                Utility.Log.Warn("an exception occured!  e=" + e.ToString());
                 return false;
             }
 
@@ -265,7 +264,6 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
                 }
                 catch (Exception ex)
                 {
-                    Utility.Log.Warn("Connect error.  an exception occured!  e=" + ex);
                 }
             }
             return false;
@@ -346,7 +344,6 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
             }
             catch (Exception e)
             {
-                Utility.Log.Warn("exception caught! e=" + e.ToString());
                 return -1;
             }
         }
@@ -523,8 +520,6 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
             }
             catch (Exception e)
             {
-                Utility.Log.Warn("exception caught! e=" + e);
-
                 if (OnClientConnectionClosed != null)
                 {
                     OnClientConnectionClosed(getIPAddress(_tcpClient));

@@ -13,9 +13,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.Validation;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -30,6 +35,8 @@ namespace ACAT.Core.ActuatorManagement.Settings
     [Serializable]
     public class ActuatorConfig : PreferencesBase
     {
+        private static readonly ILogger<ActuatorConfig> _logger = LoggingConfiguration.CreateLogger<ActuatorConfig>();
+
         /// <summary>
         /// Name of the settings file
         /// </summary>
@@ -42,12 +49,54 @@ namespace ACAT.Core.ActuatorManagement.Settings
         public List<ActuatorSetting> ActuatorSettings = new();
 
         /// <summary>
-        /// Loads settings from file
+        /// Loads settings from file (JSON format)
         /// </summary>
         /// <returns>Actuator settings object </returns>
         public static ActuatorConfig Load()
         {
-            return Load<ActuatorConfig>(ActuatorSettingsFileName);
+            return LoadFromJson(ActuatorSettingsFileName);
+        }
+
+        /// <summary>
+        /// Loads settings from JSON file with validation
+        /// </summary>
+        /// <param name="filePath">Path to JSON configuration file</param>
+        /// <returns>Actuator settings object</returns>
+        private static ActuatorConfig LoadFromJson(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("ActuatorSettingsFileName is null or empty");
+                return LoadDefaults<ActuatorConfig>();
+            }
+
+            try
+            {
+                // Use JsonConfigurationLoader with validation
+                var validator = new ActuatorSettingsValidator();
+                var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(validator, _logger);
+                
+                var jsonSettings = loader.Load(filePath, createDefaultOnError: true);
+                
+                if (jsonSettings == null)
+                {
+                    _logger.LogWarning("Failed to load JSON settings, using defaults");
+                    return LoadDefaults<ActuatorConfig>();
+                }
+
+                // Convert JSON model to legacy model
+                var config = new ActuatorConfig();
+                config.ActuatorSettings = ActuatorSettingsConverter.FromJson(jsonSettings);
+                
+                _logger.LogInformation("Successfully loaded {Count} actuator(s) from JSON", config.ActuatorSettings.Count);
+                
+                return config;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading actuator settings from JSON: {FilePath}", filePath);
+                return LoadDefaults<ActuatorConfig>();
+            }
         }
 
         /// <summary>
@@ -73,7 +122,7 @@ namespace ACAT.Core.ActuatorManagement.Settings
         public override bool ResetToDefault()
         {
             var tmp = LoadDefaults<ActuatorConfig>();
-            var res = Save(tmp, ActuatorSettingsFileName);
+            var res = SaveToJson(tmp, ActuatorSettingsFileName);
             Load();
 
             return res;
@@ -86,7 +135,56 @@ namespace ACAT.Core.ActuatorManagement.Settings
         /// <returns></returns>
         public override bool Save()
         {
-            return !string.IsNullOrEmpty(ActuatorSettingsFileName) && Save(this, ActuatorSettingsFileName);
+            return !string.IsNullOrEmpty(ActuatorSettingsFileName) && SaveToJson(this, ActuatorSettingsFileName);
+        }
+
+        /// <summary>
+        /// Saves settings to JSON file with validation
+        /// </summary>
+        /// <param name="config">Configuration to save</param>
+        /// <param name="filePath">Path to JSON file</param>
+        /// <returns>True if successful</returns>
+        private static bool SaveToJson(ActuatorConfig config, string filePath)
+        {
+            if (config == null)
+            {
+                _logger.LogError("Cannot save null ActuatorConfig");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("ActuatorSettingsFileName is null or empty");
+                return false;
+            }
+
+            try
+            {
+                // Convert legacy model to JSON model
+                var jsonSettings = ActuatorSettingsConverter.ToJson(config.ActuatorSettings);
+                
+                // Use JsonConfigurationLoader with validation
+                var validator = new ActuatorSettingsValidator();
+                var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(validator, _logger);
+                
+                bool success = loader.Save(jsonSettings, filePath);
+                
+                if (success)
+                {
+                    _logger.LogInformation("Successfully saved actuator settings to JSON: {FilePath}", filePath);
+                }
+                else
+                {
+                    _logger.LogError("Failed to save actuator settings to JSON: {FilePath}", filePath);
+                }
+                
+                return success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving actuator settings to JSON: {FilePath}", filePath);
+                return false;
+            }
         }
     }
 }

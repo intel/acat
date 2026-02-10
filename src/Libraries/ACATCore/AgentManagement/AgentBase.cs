@@ -457,8 +457,6 @@ namespace ACAT.Core.AgentManagement
         {
             if (!_disposed)
             {
-                Log.Verbose();
-
                 if (disposing)
                 {
                     _nullTextInterface?.Dispose();

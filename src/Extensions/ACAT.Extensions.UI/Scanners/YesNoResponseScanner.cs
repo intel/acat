@@ -218,7 +218,7 @@ namespace ACAT.Extensions.UI.Menus
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Warn("Could not initialize form " + Name);
+                _logger.LogWarning("Could not initialize form {Name}", Name);
                 return false;
             }
 
@@ -354,8 +354,6 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         private void YesNoResponseScanner_Load(object sender, EventArgs e)
         {
-            Log.Verbose();
-
             scannerCommon.OnLoad();
 
             if (!String.IsNullOrEmpty(_title))

@@ -97,8 +97,6 @@ namespace ACAT.Core.AbbreviationsManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
-
                 if (disposing)
                 {
                     Context.EvtCultureChanged -= Context_EvtCultureChanged;

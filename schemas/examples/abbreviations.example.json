@@ -1,0 +1,44 @@
+{
+  "abbreviations": [
+    {
+      "word": "btw",
+      "replaceWith": "by the way",
+      "mode": "Write"
+    },
+    {
+      "word": "omg",
+      "replaceWith": "oh my goodness",
+      "mode": "Speak"
+    },
+    {
+      "word": "brb",
+      "replaceWith": "be right back",
+      "mode": "Write"
+    },
+    {
+      "word": "lol",
+      "replaceWith": "laughing out loud",
+      "mode": "Write"
+    },
+    {
+      "word": "tbd",
+      "replaceWith": "to be determined",
+      "mode": "Write"
+    },
+    {
+      "word": "fyi",
+      "replaceWith": "for your information",
+      "mode": "Write"
+    },
+    {
+      "word": "asap",
+      "replaceWith": "as soon as possible",
+      "mode": "Write"
+    },
+    {
+      "word": "imo",
+      "replaceWith": "in my opinion",
+      "mode": "Write"
+    }
+  ]
+}

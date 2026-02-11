@@ -1,4 +1,5 @@
 {
+  "$schema": "../json/pronunciations.schema.json",
   "pronunciations": [
     {
       "word": "github",

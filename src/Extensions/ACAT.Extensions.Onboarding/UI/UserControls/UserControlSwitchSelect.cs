@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.Onboarding.UI.UserControls
@@ -72,23 +73,46 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
             var actuators = Context.AppActuatorManager.ActuatorsList;
 
+            _logger.LogDebug($"Initializing UserControlSwitchSelect. Found {actuators.Count()} actuators");
+
             _actuatorConfig = ActuatorConfig.Load();
+
+            if (_actuatorConfig == null)
+            {
+                _logger.LogError("ActuatorConfig.Load() returned null");
+                return false;
+            }
+
+            _logger.LogDebug($"ActuatorConfig loaded with {_actuatorConfig.ActuatorSettings.Count} actuator settings");
 
             foreach (var actuator in actuators)
             {
+                _logger.LogDebug($"Processing actuator: {actuator.Name} (ID: {actuator.Descriptor.Id})");
+
                 var actuatorSetting = getAcutatorSetting(actuator.Descriptor.Id);
                 if (actuatorSetting != null)
                 {
+                    _logger.LogDebug($"Found actuator setting for {actuatorSetting.Name}");
                     listBoxActuators.Items.Add(actuatorSetting.Name);
                     _actuatorSettings.Add(actuatorSetting);
                 }
+                else
+                {
+                    _logger.LogWarning($"No actuator setting found for actuator {actuator.Name} (ID: {actuator.Descriptor.Id})");
+                }
             }
+
+            _logger.LogDebug($"Added {listBoxActuators.Items.Count} actuators to listbox");
 
             listBoxActuators.SelectedIndexChanged += ListBoxActuators_SelectedIndexChanged;
 
             if (listBoxActuators.Items.Count > 0)
             {
                 listBoxActuators.SelectedIndex = 0;
+            }
+            else
+            {
+                _logger.LogWarning("No actuators were added to the listbox");
             }
 
             webBrowserDesc.DocumentCompleted += WebBrowserDesc_DocumentCompleted;

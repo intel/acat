@@ -43,6 +43,13 @@ ACAT uses JSON configuration files for flexible customization. Key configuration
 - **[Quick Reference](docs/JSON_CONFIGURATION_QUICK_REFERENCE.md)** - Quick reference card
 - **[Migration Guide](docs/JSON_CONFIGURATION_MIGRATION.md)** - Migrating from XML to JSON
 
+### Modernization Documentation
+
+- **[ACAT Modernization Plan](ACAT_MODERNIZATION_PLAN.md)** - Complete modernization roadmap
+- **[Phase 1 Completion Report](PHASE_1_COMPLETION_REPORT.md)** - Phase 1 results and metrics
+- **[Phase 1 Retrospective](PHASE_1_RETROSPECTIVE.md)** - Lessons learned from Phase 1
+- **[Documentation Index](INDEX.md)** - Complete documentation index
+
 ### Configuration Files
 
 Configuration files are located in `%APPDATA%\ACAT\Config\` and support VS Code IntelliSense for easy editing. See the [JSON Configuration Guide](docs/JSON_CONFIGURATION_GUIDE.md) for details.

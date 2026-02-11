@@ -292,7 +292,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         public string SendMessageConvAssistWordPrediction(string text, WordPredictionModes mode)
         {
             ConvAssistMessage message = new(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
-            string jsonMessage = JsonSerializer.Serialize(message);
+            string jsonMessage = JsonSerializer.SerializeForInterop(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
         }

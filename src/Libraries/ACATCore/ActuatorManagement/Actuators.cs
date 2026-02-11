@@ -203,12 +203,21 @@ namespace ACAT.Core.ActuatorManagement
             }
             if (_DLLError)
                 return false;
-            if (!File.Exists(configFile))
-            {
-                return false;
-            }
 
             ActuatorConfig.ActuatorSettingsFileName = configFile;
+
+            // If config file doesn't exist, create a default one
+            if (!File.Exists(configFile))
+            {
+                _logger?.LogWarning("ActuatorSettings config file not found at {ConfigFile}, creating default", configFile);
+
+                // Create a default config and save it
+                var defaultConfig = new ActuatorConfig();
+                defaultConfig.Save();
+
+                _logger?.LogInformation("Created default ActuatorSettings.json at {ConfigFile}", configFile);
+            }
+
             Config = ActuatorConfig.Load();
 
             // walk through the settings file create and configure

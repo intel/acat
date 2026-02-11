@@ -18,13 +18,17 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes
     [Serializable]
     internal class ConvAssistMessage
     {
-        public string Data { get; set; }
-        public WordPredictorMessageTypes MessageType { get; set; }
-        public WordPredictionModes PredictionType { get; set; }
+        public string Data { get; set; } = string.Empty;
+        public WordPredictorMessageTypes MessageType { get; set; } = WordPredictorMessageTypes.None;
+        public WordPredictionModes PredictionType { get; set; } = WordPredictionModes.None;
 
-        // Parameterless constructor for deserialization
+        // Parameterless constructor for deserialization - explicitly initialize all properties
         public ConvAssistMessage()
-        { }
+        {
+            Data = string.Empty;
+            MessageType = WordPredictorMessageTypes.None;
+            PredictionType = WordPredictionModes.None;
+        }
 
         // this is the JSON representation of the data
         /// <summary>
@@ -37,7 +41,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes
         {
             MessageType = msgType;
             PredictionType = PredictionMode;
-            Data = message;
+            Data = message ?? string.Empty;
         }
     }
 }

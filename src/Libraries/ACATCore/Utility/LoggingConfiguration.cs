@@ -14,7 +14,7 @@ namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Configures Microsoft.Extensions.Logging infrastructure for ACAT
-    /// Provides structured logging with Console and File sinks
+    /// Provides structured logging with Console, Debug, and File sinks
     /// </summary>
     public static class LoggingConfiguration
     {
@@ -39,6 +39,9 @@ namespace ACAT.Core.Utility
             {
                 // Add console logging
                 builder.AddConsole();
+
+                // Add debug output logging for Visual Studio Debug window
+                builder.AddDebug();
 
                 // Set minimum log level based on build configuration
 #if DEBUG

@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
@@ -178,6 +179,7 @@
     <Compile Include="CommandManagement\CmdScopeTable.cs" />
     <Compile Include="CommandManagement\CommandManager.cs" />
     <Compile Include="Configuration\AbbreviationsJson.cs" />
+    <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
     <Compile Include="Configuration\PronunciationsJson.cs" />
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
@@ -428,6 +430,7 @@
     <Compile Include="Utility\Windows.cs" />
     <Compile Include="Utility\EnumWindows.cs" />
     <Compile Include="Validation\AbbreviationsValidator.cs" />
+    <Compile Include="Validation\PreferredWordPredictorsValidator.cs" />
     <Compile Include="Validation\PronunciationsValidator.cs" />
     <Compile Include="WidgetManagement\Interfaces\IBoxWidget.cs" />
     <Compile Include="WidgetManagement\Interfaces\IToggleButtonWidget.cs" />
@@ -506,6 +509,7 @@
     <Compile Include="WordPredictorManagement\NullWordPredictor.cs" />
     <Compile Include="WordPredictorManagement\PreferredWordPredictor.cs" />
     <Compile Include="WordPredictorManagement\PreferredWordPredictors.cs" />
+    <Compile Include="WordPredictorManagement\PreferredWordPredictorsConverter.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionManager.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionRequest.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionResponse.cs" />

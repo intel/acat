@@ -26,6 +26,27 @@ If you are cloning for the first time:
 Pull in all the latest changes for the submodules:  
 **$ git pull origin master --recurse-submodules**
 
+## Configuration
+
+ACAT uses JSON configuration files for flexible customization. Key configuration types include:
+
+- **ActuatorSettings** - Input device configurations (keyboard, camera, BCI, switches)
+- **Theme** - Color schemes and UI styling
+- **PanelConfig** - UI panel layouts (scanners, keyboards, menus)
+- **Abbreviations** - Text abbreviation expansions
+- **Pronunciations** - Custom word pronunciations for text-to-speech
+
+### Documentation
+
+- **[JSON Configuration Guide](docs/JSON_CONFIGURATION_GUIDE.md)** - User guide for configuring ACAT
+- **[Developer Guide](docs/JSON_CONFIGURATION_DEVELOPER_GUIDE.md)** - For developers extending the configuration system
+- **[Quick Reference](docs/JSON_CONFIGURATION_QUICK_REFERENCE.md)** - Quick reference card
+- **[Migration Guide](docs/JSON_CONFIGURATION_MIGRATION.md)** - Migrating from XML to JSON
+
+### Configuration Files
+
+Configuration files are located in `%APPDATA%\ACAT\Config\` and support VS Code IntelliSense for easy editing. See the [JSON Configuration Guide](docs/JSON_CONFIGURATION_GUIDE.md) for details.
+
 ## License
 ACAT is distributed under the Apache License, Version 2.0.
 

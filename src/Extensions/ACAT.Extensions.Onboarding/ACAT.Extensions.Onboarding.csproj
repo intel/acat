@@ -55,9 +55,7 @@
     <Compile Include="UI\UserControls\UserControlKeyboardConfigSelect.Designer.cs">
       <DependentUpon>UserControlKeyboardConfigSelect.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\UserControlLanguageSelect.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\UserControls\UserControlLanguageSelect.cs" />
     <Compile Include="UI\UserControls\UserControlLanguageSelect.Designer.cs">
       <DependentUpon>UserControlLanguageSelect.cs</DependentUpon>
     </Compile>

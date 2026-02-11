@@ -187,7 +187,7 @@ namespace ACAT.Applications.ConvAssistTerminate
             {
                 Console.WriteLine("Sending Request to close ConvAssist");
                 ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.ForceQuitApp, WordPredictionModes.None, "NA");
-                string jsonMessage = JsonSerializer.Serialize(message);
+                string jsonMessage = JsonSerializer.SerializeForInterop(message);
                 _pipeServer.Send(jsonMessage);
             }
             catch (Exception es)

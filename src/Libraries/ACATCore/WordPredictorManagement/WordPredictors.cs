@@ -31,7 +31,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// <summary>
         /// Name of the config file where Id's of preferred word predictors are stored
         /// </summary>
-        private const string PreferredConfigFile = "PreferredWordPredictors.xml";
+        private const string PreferredConfigFile = "PreferredWordPredictors.json";
 
         /// <summary>
         /// Null word predictor. Doesn't do anything :-)

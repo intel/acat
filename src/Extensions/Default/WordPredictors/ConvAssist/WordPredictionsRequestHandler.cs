@@ -165,7 +165,23 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             StringBuilder resultFullPredictionWords = new();
             WordAndCharacterPredictionResponse answer = new();
             var retVal = new List<string>();
-            answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
+
+            // Check for empty response before deserializing
+            if (string.IsNullOrWhiteSpace(predictions))
+            {
+                return retVal; // Return empty list
+            }
+
+            try
+            {
+                answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
+            }
+            catch (System.Text.Json.JsonException ex)
+            {
+                // Log and return empty list if deserialization fails
+                return retVal;
+            }
+
             List<string> predictWords = new();
             List<string> predictLetters = new();
             int i = 0;

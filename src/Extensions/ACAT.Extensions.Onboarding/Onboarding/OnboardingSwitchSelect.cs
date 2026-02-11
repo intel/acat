@@ -11,6 +11,8 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.Onboarding.UI;
 using ACAT.Extensions.Onboarding.UI.UserControls;
+using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace ACAT.Extensions.Onboarding.Onboarding
 {
@@ -76,7 +78,19 @@ namespace ACAT.Extensions.Onboarding.Onboarding
         {
             _wizard = wizard;
 
+            var logger = LoggingConfiguration.CreateLogger<OnboardingSwitchSelect>();
+            logger.LogDebug("OnboardingSwitchSelect.Initialize() called");
+            logger.LogDebug($"Loading actuator extensions from: {Context.ExtensionDirs}");
+
             Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true);
+
+            var actuators = Context.AppActuatorManager.ActuatorsList;
+            logger.LogDebug($"After LoadExtensions, ActuatorsList contains {actuators.Count()} actuators");
+
+            foreach (var actuator in actuators)
+            {
+                logger.LogDebug($"  Actuator loaded: {actuator.Name} (ID: {actuator.Descriptor.Id})");
+            }
 
             return true;
         }

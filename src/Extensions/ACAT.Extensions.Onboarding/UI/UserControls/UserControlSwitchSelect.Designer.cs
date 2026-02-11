@@ -73,7 +73,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             this.listBoxActuators.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listBoxActuators.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxActuators.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.listBoxActuators.Font = new System.Drawing.Font("Montserrat", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxActuators.Font = new System.Drawing.Font("Montserrat", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxActuators.ForeColor = System.Drawing.Color.White;
             this.listBoxActuators.FormattingEnabled = true;
             this.listBoxActuators.Location = new System.Drawing.Point(53, 153);
@@ -87,7 +87,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             this.label1.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Montserrat", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(53, 50);
             this.label1.Name = "label1";

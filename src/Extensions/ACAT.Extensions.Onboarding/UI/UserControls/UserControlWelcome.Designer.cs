@@ -79,7 +79,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             // labelWelcome1
             // 
             this.labelWelcome1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.labelWelcome1.Font = new System.Drawing.Font("Montserrat Light", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWelcome1.Font = new System.Drawing.Font("Montserrat Light", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWelcome1.ForeColor = System.Drawing.Color.Gray;
             this.labelWelcome1.Location = new System.Drawing.Point(50, 0);
             this.labelWelcome1.Margin = new System.Windows.Forms.Padding(0);
@@ -94,7 +94,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             // labelWelcome2
             // 
             this.labelWelcome2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelWelcome2.Font = new System.Drawing.Font("Montserrat Thin", 180F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWelcome2.Font = new System.Drawing.Font("Montserrat Thin", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWelcome2.ForeColor = System.Drawing.Color.White;
             this.labelWelcome2.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.labelWelcome2.Location = new System.Drawing.Point(50, 108);
@@ -122,7 +122,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             // labelWelcome3
             // 
             this.labelWelcome3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.labelWelcome3.Font = new System.Drawing.Font("Montserrat Light", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWelcome3.Font = new System.Drawing.Font("Montserrat Light", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWelcome3.ForeColor = System.Drawing.Color.Gray;
             this.labelWelcome3.Location = new System.Drawing.Point(50, 348);
             this.labelWelcome3.Margin = new System.Windows.Forms.Padding(0);
@@ -170,7 +170,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             this.buttonConfigure.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonConfigure.FlatAppearance.BorderSize = 0;
             this.buttonConfigure.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonConfigure.Font = new System.Drawing.Font("Montserrat Light", 33.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonConfigure.Font = new System.Drawing.Font("Montserrat Light", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonConfigure.ForeColor = System.Drawing.Color.Silver;
             this.buttonConfigure.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.buttonConfigure.Location = new System.Drawing.Point(324, 0);

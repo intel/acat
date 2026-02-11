@@ -177,6 +177,8 @@
     <Compile Include="CommandManagement\CmdScopeMapEntry.cs" />
     <Compile Include="CommandManagement\CmdScopeTable.cs" />
     <Compile Include="CommandManagement\CommandManager.cs" />
+    <Compile Include="Configuration\AbbreviationsJson.cs" />
+    <Compile Include="Configuration\PronunciationsJson.cs" />
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
     <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />
@@ -425,6 +427,8 @@
     <Compile Include="Utility\WindowActivityMonitorInfo.cs" />
     <Compile Include="Utility\Windows.cs" />
     <Compile Include="Utility\EnumWindows.cs" />
+    <Compile Include="Validation\AbbreviationsValidator.cs" />
+    <Compile Include="Validation\PronunciationsValidator.cs" />
     <Compile Include="WidgetManagement\Interfaces\IBoxWidget.cs" />
     <Compile Include="WidgetManagement\Interfaces\IToggleButtonWidget.cs" />
     <Compile Include="WidgetManagement\Interfaces\IButtonWidget.cs" />

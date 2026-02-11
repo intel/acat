@@ -5,8 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.Validation;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -119,8 +121,8 @@ namespace ACAT.Core.TTSManagement
         }
 
         /// <summary>
-        /// Loads pronunciation from the specified file. Parses the XML file
-        /// and populates the sorted list
+        /// Loads pronunciation from the specified file. Supports both JSON and XML formats.
+        /// JSON is preferred; XML is used for backward compatibility.
         /// </summary>
         /// <param name="filePath">fullpath to the file</param>
         /// <returns>true on success</returns>
@@ -133,13 +135,95 @@ namespace ACAT.Core.TTSManagement
                 return false;
             }
 
+            _pronunciationList.Clear();
+
+            if (!File.Exists(filePath))
+            {
+                _logger?.LogDebug("Pronunciation file not found: {FilePath}", filePath);
+                return true; // Return true for non-existent file (empty list is valid)
+            }
+
+            try
+            {
+                // Determine format based on file extension
+                var extension = Path.GetExtension(filePath)?.ToLowerInvariant();
+                
+                if (extension == ".json")
+                {
+                    retVal = LoadFromJson(filePath);
+                }
+                else if (extension == ".xml")
+                {
+                    retVal = LoadFromXml(filePath);
+                }
+                else
+                {
+                    _logger?.LogWarning("Unknown pronunciation file format: {Extension}", extension);
+                    retVal = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error loading pronunciation file {FilePath}", filePath);
+                retVal = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Loads pronunciations from a JSON file
+        /// </summary>
+        /// <param name="filePath">Path to JSON file</param>
+        /// <returns>true on success</returns>
+        private bool LoadFromJson(string filePath)
+        {
+            try
+            {
+                var loader = new JsonConfigurationLoader<PronunciationsJson>(
+                    new PronunciationsValidator(), 
+                    _logger);
+                
+                var config = loader.Load(filePath, createDefaultOnError: false);
+                
+                if (config == null)
+                {
+                    _logger?.LogError("Failed to load pronunciations from JSON: {FilePath}", filePath);
+                    return false;
+                }
+
+                // Convert JSON entries to Pronunciation objects
+                foreach (var entry in config.Pronunciations)
+                {
+                    if (!string.IsNullOrWhiteSpace(entry.Word) && 
+                        !string.IsNullOrWhiteSpace(entry.Pronunciation))
+                    {
+                        Add(new Pronunciation(entry.Word, entry.Pronunciation));
+                    }
+                }
+
+                _logger?.LogInformation("Loaded {Count} pronunciations from JSON", _pronunciationList.Count);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error loading pronunciations from JSON: {FilePath}", filePath);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Loads pronunciations from a legacy XML file
+        /// </summary>
+        /// <param name="filePath">Path to XML file</param>
+        /// <returns>true on success</returns>
+        private bool LoadFromXml(string filePath)
+        {
             var doc = new XmlDocument();
 
             try
             {
-                _pronunciationList.Clear();
-
-                _logger?.LogDebug("Found pronuncation file {FilePath}", filePath);
+                _logger?.LogDebug("Loading pronunciations from legacy XML file: {FilePath}", filePath);
 
                 doc.Load(filePath);
 
@@ -150,28 +234,78 @@ namespace ACAT.Core.TTSManagement
                 {
                     createAndAddPronunciation(node);
                 }
+
+                _logger?.LogInformation("Loaded {Count} pronunciations from XML", _pronunciationList.Count);
+                return true;
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Error processing pronunciation file {FilePath}", filePath);
-                retVal = false;
+                _logger?.LogError(ex, "Error processing pronunciation XML file {FilePath}", filePath);
+                return false;
             }
-
-            return retVal;
         }
 
         /// <summary>
-        /// Loads pronunciation from the specified file. Parses the XML file
-        /// and populates the sorted list
+        /// Loads pronunciation from the specified file. Parses the file
+        /// and populates the sorted list. Tries JSON first, then XML.
         /// </summary>
         /// <param name="ci">Culture for which to load the file</param>
-        /// <param name="pronunciationsFileName">Name of the file</param>
+        /// <param name="pronunciationsFileName">Name of the file (e.g., "Pronunciations.json")</param>
         /// <returns>true on success</returns>
         public bool Load(CultureInfo ci, String pronunciationsFileName)
         {
             _logger?.LogDebug("Loading pronunciations for culture {Culture}, file {FileName}", ci.Name, pronunciationsFileName);
 
             String filePath = getPronunciationsFilePath(ci, pronunciationsFileName);
+            
+            // If specified file doesn't exist, try alternate formats
+            if (string.IsNullOrEmpty(filePath))
+            {
+                // Validate pronunciationsFileName is not null or empty
+                if (string.IsNullOrWhiteSpace(pronunciationsFileName))
+                {
+                    _logger?.LogWarning("Pronunciation file name is null or empty for culture {Culture}", ci.Name);
+                    return false;
+                }
+
+                var baseName = Path.GetFileNameWithoutExtension(pronunciationsFileName);
+                
+                // Validate baseName is not empty after extraction
+                if (string.IsNullOrWhiteSpace(baseName))
+                {
+                    _logger?.LogWarning("Invalid pronunciation file name for culture {Culture}: {FileName}", 
+                        ci.Name, pronunciationsFileName);
+                    return false;
+                }
+                
+                // Try JSON format first
+                var jsonFileName = baseName + ".json";
+                filePath = getPronunciationsFilePath(ci, jsonFileName);
+                
+                // If JSON not found, try XML format
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    var xmlFileName = baseName + ".xml";
+                    filePath = getPronunciationsFilePath(ci, xmlFileName);
+                    
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        _logger?.LogDebug("Found XML pronunciation file: {FilePath}", filePath);
+                    }
+                }
+                else
+                {
+                    _logger?.LogDebug("Found JSON pronunciation file: {FilePath}", filePath);
+                }
+
+                // Log with baseName variable (already validated)
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    _logger?.LogWarning("Pronunciation file not found for culture {Culture}. Tried: {BaseName}.json and {BaseName}.xml", 
+                        ci.Name, baseName);
+                    return false;
+                }
+            }
 
             return Load(filePath);
         }
@@ -257,7 +391,7 @@ namespace ACAT.Core.TTSManagement
         }
 
         /// <summary>
-        /// Saves all the pronunciation from the lookup table to the pronunciation file
+        /// Saves all the pronunciation from the lookup table to the pronunciation file in JSON format
         /// </summary>
         /// <returns>true on success</returns>
         public bool Save(String pronunciationsFile)
@@ -265,24 +399,34 @@ namespace ACAT.Core.TTSManagement
             bool retVal = true;
             try
             {
-                var xmlTextWriter = createPronunciationsFile(pronunciationsFile);
-                if (xmlTextWriter != null)
+                // Create JSON configuration object
+                var config = new PronunciationsJson();
+                
+                foreach (var pronunciationObj in _pronunciationList.Values)
                 {
-                    foreach (var pronunciationObj in _pronunciationList.Values)
+                    config.Pronunciations.Add(new PronunciationJson
                     {
-                        xmlTextWriter.WriteStartElement("Pronunciation");
-                        xmlTextWriter.WriteAttributeString(WordAttr, pronunciationObj.Word);
-                        xmlTextWriter.WriteAttributeString(PronunciationAttr, pronunciationObj.AltPronunciation);
+                        Word = pronunciationObj.Word,
+                        Pronunciation = pronunciationObj.AltPronunciation
+                    });
+                }
 
-                        xmlTextWriter.WriteEndElement();
-                    }
-
-                    closePronunciationFile(xmlTextWriter);
+                // Save using JsonConfigurationLoader
+                var loader = new JsonConfigurationLoader<PronunciationsJson>(
+                    new PronunciationsValidator(), 
+                    _logger);
+                
+                retVal = loader.Save(config, pronunciationsFile);
+                
+                if (retVal)
+                {
+                    _logger?.LogInformation("Saved {Count} pronunciations to JSON: {FilePath}", 
+                        _pronunciationList.Count, pronunciationsFile);
                 }
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
-                _logger?.LogError(ex, "IO exception while saving pronunciations");
+                _logger?.LogError(ex, "Error saving pronunciations to: {PronunciationsFile}", pronunciationsFile);
                 retVal = false;
             }
 

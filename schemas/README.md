@@ -1,10 +1,10 @@
 # ACAT JSON Configuration Schemas
 
-This directory contains JSON schemas, POCO classes, validators, and examples for ACAT's top 5 configuration types.
+This directory contains JSON schemas, POCO classes, validators, and examples for ACAT's configuration types.
 
 ## Overview
 
-As part of the XML-to-JSON migration effort (Issues #6 and #7), we have created:
+As part of the XML-to-JSON migration effort (Issues #6, #7, and #9), we have created:
 - **JSON Schemas** - For VS Code IntelliSense and validation
 - **C# POCO Classes** - For strongly-typed configuration with System.Text.Json
 - **FluentValidation Validators** - For business rule validation
@@ -17,24 +17,32 @@ schemas/
 ├── json/                                   # JSON Schema files
 │   ├── actuator-settings.schema.json      # Input device configuration
 │   ├── theme.schema.json                  # Color schemes and styling
-│   └── panel-config.schema.json           # UI panel layouts
+│   ├── panel-config.schema.json           # UI panel layouts
+│   ├── abbreviations.schema.json          # Text abbreviation expansions
+│   └── pronunciations.schema.json         # Custom word pronunciations
 ├── examples/                               # Example JSON files
 │   ├── actuator-settings.example.json
 │   ├── theme.example.json
 │   ├── main-menu.example.json
 │   ├── talk-application-scanner.example.json
-│   └── keyboard-qwerty.example.json
+│   ├── keyboard-qwerty.example.json
+│   ├── abbreviations.example.json
+│   └── pronunciations.example.json
 └── README.md                               # This file
 
 src/Libraries/ACATCore/
 ├── Configuration/                          # C# POCO classes
 │   ├── ActuatorSettingsJson.cs
 │   ├── ThemeJson.cs
-│   └── PanelConfigJson.cs
+│   ├── PanelConfigJson.cs
+│   ├── AbbreviationsJson.cs
+│   └── PronunciationsJson.cs
 └── Validation/                             # FluentValidation validators
     ├── ActuatorSettingsValidator.cs
     ├── ThemeValidator.cs
-    └── PanelConfigValidator.cs
+    ├── PanelConfigValidator.cs
+    ├── AbbreviationsValidator.cs
+    └── PronunciationsValidator.cs
 ```
 
 ## Schemas
@@ -146,6 +154,64 @@ var validator = new PanelConfigValidator();
 var result = validator.Validate(panel);
 ```
 
+### 4. Abbreviations
+
+**Purpose:** Text abbreviation expansions for faster typing
+
+**Files:**
+- Schema: `schemas/json/abbreviations.schema.json`
+- POCO: `src/Libraries/ACATCore/Configuration/AbbreviationsJson.cs`
+- Validator: `src/Libraries/ACATCore/Validation/AbbreviationsValidator.cs`
+- Example: `schemas/examples/abbreviations.example.json`
+
+**Key Features:**
+- Expand abbreviations to full text (e.g., "btw" → "by the way")
+- Multiple expansion modes (Write, Speak, None)
+- Simple word and replacement pairs
+- Factory methods for common abbreviations
+
+**Usage:**
+```csharp
+using ACAT.Core.Configuration;
+using System.Text.Json;
+
+// Load abbreviations
+var json = File.ReadAllText("abbreviations.json");
+var abbreviations = JsonSerializer.Deserialize<AbbreviationsJson>(json);
+
+// Create default abbreviations
+var defaultAbbreviations = AbbreviationsJson.CreateDefault();
+```
+
+### 5. Pronunciations
+
+**Purpose:** Custom word pronunciations for text-to-speech engines
+
+**Files:**
+- Schema: `schemas/json/pronunciations.schema.json`
+- POCO: `src/Libraries/ACATCore/Configuration/PronunciationsJson.cs`
+- Validator: `src/Libraries/ACATCore/Validation/PronunciationsValidator.cs`
+- Example: `schemas/examples/pronunciations.example.json`
+
+**Key Features:**
+- Customize how words are pronounced by TTS
+- Simple word and pronunciation pairs
+- Supports phonetic spelling
+- Factory methods for common technical terms
+
+**Usage:**
+```csharp
+using ACAT.Core.Configuration;
+using System.Text.Json;
+
+// Load pronunciations
+var json = File.ReadAllText("pronunciations.json");
+var pronunciations = JsonSerializer.Deserialize<PronunciationsJson>(json);
+
+// Create default pronunciations
+var defaultPronunciations = PronunciationsJson.CreateDefault();
+```
+
 ## VS Code IntelliSense
 
 To enable IntelliSense in VS Code:
@@ -206,6 +272,21 @@ When migrating XML configurations to JSON:
 - ✅ Container widgets should have children
 - ✅ Animations should have at least one step
 - ✅ All widget references in animations must exist
+
+### Abbreviations
+
+- ✅ Word field is required and cannot be empty
+- ✅ ReplaceWith field is required and cannot be empty
+- ✅ Mode must be one of: "Write", "Speak", or "None"
+- ✅ Word must be at least 1 character long
+- ✅ ReplaceWith must be at least 1 character long
+
+### Pronunciations
+
+- ✅ Word field is required and cannot be empty
+- ✅ Pronunciation field is required and cannot be empty
+- ✅ Word must be at least 1 character long
+- ✅ Pronunciation must be at least 1 character long
 
 ## Testing
 

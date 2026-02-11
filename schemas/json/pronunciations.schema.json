@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/schemas/pronunciations.schema.json",
+  "title": "ACAT Pronunciations Configuration",
+  "description": "Configuration for custom word pronunciations in ACAT text-to-speech",
+  "type": "object",
+  "properties": {
+    "pronunciations": {
+      "type": "array",
+      "description": "List of custom pronunciation definitions",
+      "items": {
+        "$ref": "#/definitions/pronunciation"
+      },
+      "minItems": 0
+    }
+  },
+  "required": ["pronunciations"],
+  "definitions": {
+    "pronunciation": {
+      "type": "object",
+      "description": "A word and its custom pronunciation",
+      "properties": {
+        "word": {
+          "type": "string",
+          "description": "The word to pronounce (e.g., 'github')",
+          "minLength": 1
+        },
+        "pronunciation": {
+          "type": "string",
+          "description": "How the word should be pronounced (e.g., 'git hub')",
+          "minLength": 1
+        }
+      },
+      "required": ["word", "pronunciation"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

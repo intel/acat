@@ -1,4 +1,5 @@
 {
+  "$schema": "../json/abbreviations.schema.json",
   "abbreviations": [
     {
       "word": "btw",

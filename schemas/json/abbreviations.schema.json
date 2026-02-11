@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/schemas/abbreviations.schema.json",
+  "title": "ACAT Abbreviations Configuration",
+  "description": "Configuration for text abbreviation expansions in ACAT",
+  "type": "object",
+  "properties": {
+    "abbreviations": {
+      "type": "array",
+      "description": "List of abbreviation definitions",
+      "items": {
+        "$ref": "#/definitions/abbreviation"
+      },
+      "minItems": 0
+    }
+  },
+  "required": ["abbreviations"],
+  "definitions": {
+    "abbreviation": {
+      "type": "object",
+      "description": "An abbreviation and its expansion",
+      "properties": {
+        "word": {
+          "type": "string",
+          "description": "The abbreviation to be replaced (e.g., 'btw')",
+          "minLength": 1
+        },
+        "replaceWith": {
+          "type": "string",
+          "description": "The full text to replace the abbreviation with (e.g., 'by the way')",
+          "minLength": 1
+        },
+        "mode": {
+          "type": "string",
+          "description": "How the abbreviation should be expanded",
+          "enum": ["Write", "Speak", "None"],
+          "default": "Write"
+        }
+      },
+      "required": ["word", "replaceWith", "mode"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

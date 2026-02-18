@@ -29,12 +29,8 @@ namespace ACATConfigNext
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            // Configure logging
-            services.AddLogging(builder =>
-            {
-                builder.AddConsole();
-                builder.SetMinimumLevel(LogLevel.Information);
-            });
+            // Add ACAT infrastructure (logging and core services)
+            services.AddACATInfrastructure();
 
             // Register SettingsForm - IServiceProvider will be injected automatically
             services.AddTransient<SettingsForm>();

@@ -45,42 +45,52 @@ namespace ACAT.Core.Utility
             // ActuatorManager
             services.AddSingleton<ActuatorManager>(provider => ActuatorManager.Instance);
             services.AddSingleton<IActuatorManager>(provider => provider.GetRequiredService<ActuatorManager>());
+            services.AddSingleton<IActuatorManagerFactory, ActuatorManagerFactory>();
 
             // AgentManager
             services.AddSingleton<AgentManager>(provider => AgentManager.Instance);
             services.AddSingleton<IAgentManager>(provider => provider.GetRequiredService<AgentManager>());
+            services.AddSingleton<IAgentManagerFactory, AgentManagerFactory>();
 
             // TTSManager
             services.AddSingleton<TTSManager>(provider => TTSManager.Instance);
             services.AddSingleton<ITTSManager>(provider => provider.GetRequiredService<TTSManager>());
+            services.AddSingleton<ITTSManagerFactory, TTSManagerFactory>();
 
             // PanelManager
             services.AddSingleton<PanelManager>(provider => PanelManager.Instance);
             services.AddSingleton<IPanelManager>(provider => provider.GetRequiredService<PanelManager>());
+            services.AddSingleton<IPanelManagerFactory, PanelManagerFactory>();
 
             // ThemeManager
             services.AddSingleton<ThemeManager>(provider => ThemeManager.Instance);
             services.AddSingleton<IThemeManager>(provider => provider.GetRequiredService<ThemeManager>());
+            services.AddSingleton<IThemeManagerFactory, ThemeManagerFactory>();
 
             // WordPredictionManager
             services.AddSingleton<WordPredictionManager>(provider => WordPredictionManager.Instance);
             services.AddSingleton<IWordPredictionManager>(provider => provider.GetRequiredService<WordPredictionManager>());
+            services.AddSingleton<IWordPredictionManagerFactory, WordPredictionManagerFactory>();
 
             // SpellCheckManager
             services.AddSingleton<SpellCheckManager>(provider => SpellCheckManager.Instance);
             services.AddSingleton<ISpellCheckManager>(provider => provider.GetRequiredService<SpellCheckManager>());
+            services.AddSingleton<ISpellCheckManagerFactory, SpellCheckManagerFactory>();
 
             // AbbreviationsManager
             services.AddSingleton<AbbreviationsManager>(provider => AbbreviationsManager.Instance);
             services.AddSingleton<IAbbreviationsManager>(provider => provider.GetRequiredService<AbbreviationsManager>());
+            services.AddSingleton<IAbbreviationsManagerFactory, AbbreviationsManagerFactory>();
 
             // CommandManager
             services.AddSingleton<CommandManager>(provider => CommandManager.Instance);
             services.AddSingleton<ICommandManager>(provider => provider.GetRequiredService<CommandManager>());
+            services.AddSingleton<ICommandManagerFactory, CommandManagerFactory>();
 
             // AutomationEventManager
             services.AddSingleton<AutomationEventManager>(provider => AutomationEventManager.Instance);
             services.AddSingleton<IAutomationEventManager>(provider => provider.GetRequiredService<AutomationEventManager>());
+            services.AddSingleton<IAutomationEventManagerFactory, AutomationEventManagerFactory>();
 
             return services;
         }

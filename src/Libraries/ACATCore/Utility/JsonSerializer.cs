@@ -9,6 +9,26 @@ namespace ACAT.Core.Utility
     /// <summary>
     /// JSON serialization utility for ACAT configuration files.
     /// Supports comments and trailing commas in JSON for user-friendly editing.
+    /// 
+    /// ⚠️ CRITICAL: Choose the correct serialization method based on your use case:
+    /// 
+    /// ✅ Use Serialize() for:
+    ///    - ACAT configuration files (internal use)
+    ///    - User preferences
+    ///    - Application settings
+    ///    - Any JSON that stays within ACAT
+    ///    
+    /// ✅ Use SerializeForInterop() for:
+    ///    - External processes (ConvAssist, Python, etc.)
+    ///    - Named pipes / Socket communication
+    ///    - REST APIs / HTTP requests
+    ///    - Any JSON sent to non-.NET applications
+    ///    
+    /// ⚠️ Why this matters:
+    ///    Serialize() uses camelCase (messageType) - wrong for external apps expecting PascalCase (MessageType)
+    ///    SerializeForInterop() preserves property names exactly as written in C# classes
+    ///    
+    /// 💡 When in doubt: Use SerializeForInterop() - it's safer for compatibility
     /// </summary>
     public static class JsonSerializer
     {
@@ -48,7 +68,29 @@ namespace ACAT.Core.Utility
         };
 
         /// <summary>
-        /// Serializes an object to JSON string
+        /// Serializes an object to JSON string using camelCase property naming.
+        /// 
+        /// ⚠️ FOR INTERNAL ACAT CONFIGURATION FILES ONLY
+        /// 
+        /// This method converts property names to camelCase:
+        ///   C# property: MessageType → JSON: "messageType"
+        ///   C# property: PredictionType → JSON: "predictionType"
+        ///   
+        /// ❌ DO NOT USE FOR:
+        ///   - External process communication (use SerializeForInterop instead)
+        ///   - Named pipes to non-.NET apps
+        ///   - Socket communication
+        ///   - REST APIs
+        ///   
+        /// ✅ USE FOR:
+        ///   - ACAT configuration files
+        ///   - User preferences
+        ///   - Internal settings that stay within ACAT
+        ///   
+        /// Example:
+        ///   var config = new MyConfig { MaxRetries = 5 };
+        ///   string json = JsonSerializer.Serialize(config);
+        ///   // Result: { "maxRetries": 5 }
         /// </summary>
         public static string Serialize<TValue>(TValue message)
         {
@@ -80,9 +122,32 @@ namespace ACAT.Core.Utility
         }
 
         /// <summary>
-        /// Serializes an object to JSON string using PascalCase property names (as-is).
-        /// Used for interop scenarios like named pipes where external applications
-        /// expect exact property name matches.
+        /// Serializes an object to JSON string preserving exact property names (PascalCase).
+        /// 
+        /// ✅ FOR EXTERNAL COMMUNICATION - ALWAYS SAFE TO USE
+        /// 
+        /// This method preserves property names exactly as written in C#:
+        ///   C# property: MessageType → JSON: "MessageType"
+        ///   C# property: PredictionType → JSON: "PredictionType"
+        ///   
+        /// ✅ USE FOR:
+        ///   - Named pipes to external processes (Python, Node.js, etc.)
+        ///   - Socket communication
+        ///   - REST APIs / HTTP requests
+        ///   - Any JSON sent outside of ACAT
+        ///   - Interop scenarios where external code expects exact property names
+        ///   
+        /// ✅ ALSO SAFE FOR:
+        ///   - Internal ACAT configuration (will work, just less conventional)
+        ///   
+        /// Example:
+        ///   var message = new ConvAssistMessage { MessageType = 4, PredictionType = 1 };
+        ///   string json = JsonSerializer.SerializeForInterop(message);
+        ///   // Result: { "MessageType": 4, "PredictionType": 1 }
+        ///   // Python/Node.js can access properties by their exact C# names
+        ///   
+        /// 💡 This is the ConvAssist bug fix - sentence predictions failed because
+        ///    Python expected "MessageType" but received "messageType" from Serialize()
         /// </summary>
         public static string SerializeForInterop<TValue>(TValue message)
         {

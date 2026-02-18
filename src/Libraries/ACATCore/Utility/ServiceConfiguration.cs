@@ -29,6 +29,7 @@ namespace ACAT.Core.Utility
     {
         /// <summary>
         /// Adds ACAT core services to the service collection with proper dependency injection
+        /// Registers both interface and concrete types for all managers
         /// </summary>
         /// <param name="services">The service collection to configure</param>
         /// <returns>The configured service collection for chaining</returns>
@@ -38,66 +39,48 @@ namespace ACAT.Core.Utility
                 throw new ArgumentNullException(nameof(services));
 
             // Register all managers as singletons (matching existing behavior)
-            // Managers are registered as their concrete types since interfaces will be added in Task 2
-            services.AddSingleton<ActuatorManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<ActuatorManager>>();
-                return ActuatorManager.Instance;
-            });
+            // Each manager is registered as both its interface and concrete type
+            // This allows dependency injection via interface while maintaining backward compatibility
+            
+            // ActuatorManager
+            services.AddSingleton<ActuatorManager>(provider => ActuatorManager.Instance);
+            services.AddSingleton<IActuatorManager>(provider => provider.GetRequiredService<ActuatorManager>());
 
-            services.AddSingleton<AgentManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<AgentManager>>();
-                return AgentManager.Instance;
-            });
+            // AgentManager
+            services.AddSingleton<AgentManager>(provider => AgentManager.Instance);
+            services.AddSingleton<IAgentManager>(provider => provider.GetRequiredService<AgentManager>());
 
-            services.AddSingleton<TTSManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<TTSManager>>();
-                return TTSManager.Instance;
-            });
+            // TTSManager
+            services.AddSingleton<TTSManager>(provider => TTSManager.Instance);
+            services.AddSingleton<ITTSManager>(provider => provider.GetRequiredService<TTSManager>());
 
-            services.AddSingleton<PanelManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<PanelManager>>();
-                return PanelManager.Instance;
-            });
+            // PanelManager
+            services.AddSingleton<PanelManager>(provider => PanelManager.Instance);
+            services.AddSingleton<IPanelManager>(provider => provider.GetRequiredService<PanelManager>());
 
-            services.AddSingleton<ThemeManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<ThemeManager>>();
-                return ThemeManager.Instance;
-            });
+            // ThemeManager
+            services.AddSingleton<ThemeManager>(provider => ThemeManager.Instance);
+            services.AddSingleton<IThemeManager>(provider => provider.GetRequiredService<ThemeManager>());
 
-            services.AddSingleton<WordPredictionManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<WordPredictionManager>>();
-                return WordPredictionManager.Instance;
-            });
+            // WordPredictionManager
+            services.AddSingleton<WordPredictionManager>(provider => WordPredictionManager.Instance);
+            services.AddSingleton<IWordPredictionManager>(provider => provider.GetRequiredService<WordPredictionManager>());
 
-            services.AddSingleton<SpellCheckManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<SpellCheckManager>>();
-                return SpellCheckManager.Instance;
-            });
+            // SpellCheckManager
+            services.AddSingleton<SpellCheckManager>(provider => SpellCheckManager.Instance);
+            services.AddSingleton<ISpellCheckManager>(provider => provider.GetRequiredService<SpellCheckManager>());
 
-            services.AddSingleton<AbbreviationsManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<AbbreviationsManager>>();
-                return AbbreviationsManager.Instance;
-            });
+            // AbbreviationsManager
+            services.AddSingleton<AbbreviationsManager>(provider => AbbreviationsManager.Instance);
+            services.AddSingleton<IAbbreviationsManager>(provider => provider.GetRequiredService<AbbreviationsManager>());
 
-            services.AddSingleton<CommandManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<CommandManager>>();
-                return CommandManager.Instance;
-            });
+            // CommandManager
+            services.AddSingleton<CommandManager>(provider => CommandManager.Instance);
+            services.AddSingleton<ICommandManager>(provider => provider.GetRequiredService<CommandManager>());
 
-            services.AddSingleton<AutomationEventManager>(provider =>
-            {
-                var logger = provider.GetService<ILogger<AutomationEventManager>>();
-                return AutomationEventManager.Instance;
-            });
+            // AutomationEventManager
+            services.AddSingleton<AutomationEventManager>(provider => AutomationEventManager.Instance);
+            services.AddSingleton<IAutomationEventManager>(provider => provider.GetRequiredService<AutomationEventManager>());
 
             return services;
         }

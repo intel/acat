@@ -51,7 +51,7 @@ namespace ACATCore.Tests.Configuration
             services.AddACATServices();
             var serviceProvider = services.BuildServiceProvider();
 
-            // Assert - All managers should be resolvable
+            // Assert - All managers should be resolvable by concrete type
             Assert.IsNotNull(serviceProvider.GetService<ActuatorManager>());
             Assert.IsNotNull(serviceProvider.GetService<AgentManager>());
             Assert.IsNotNull(serviceProvider.GetService<TTSManager>());
@@ -62,6 +62,47 @@ namespace ACATCore.Tests.Configuration
             Assert.IsNotNull(serviceProvider.GetService<AbbreviationsManager>());
             Assert.IsNotNull(serviceProvider.GetService<CommandManager>());
             Assert.IsNotNull(serviceProvider.GetService<AutomationEventManager>());
+        }
+
+        [TestMethod]
+        public void AddACATServices_RegistersAllManagerInterfaces()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddLogging();
+
+            // Act
+            services.AddACATServices();
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Assert - All manager interfaces should be resolvable
+            Assert.IsNotNull(serviceProvider.GetService<IActuatorManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IAgentManager>());
+            Assert.IsNotNull(serviceProvider.GetService<ITTSManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IPanelManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IThemeManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IWordPredictionManager>());
+            Assert.IsNotNull(serviceProvider.GetService<ISpellCheckManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IAbbreviationsManager>());
+            Assert.IsNotNull(serviceProvider.GetService<ICommandManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IAutomationEventManager>());
+        }
+
+        [TestMethod]
+        public void AddACATServices_InterfaceAndConcreteTypeResolveToSameInstance()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddACATServices();
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Act - Get manager via interface and concrete type
+            var actuatorInterface = serviceProvider.GetService<IActuatorManager>();
+            var actuatorConcrete = serviceProvider.GetService<ActuatorManager>();
+
+            // Assert - Should be same instance
+            Assert.AreSame(actuatorInterface, actuatorConcrete);
         }
 
         [TestMethod]

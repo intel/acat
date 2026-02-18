@@ -197,7 +197,7 @@ namespace ACATApp
                 QuitAppOnFormClose = false
             };
 
-            var form = PanelManager.Instance.CreatePanel("DashboardAppScanner", startupArg);
+            Form form = PanelManager.Instance.CreatePanel("DashboardAppScanner", startupArg);
             if (form == null)
             {
                 MessageBox.Show(string.Format(StringResources.InvalidFormName, startupArg.ToString()));
@@ -267,7 +267,7 @@ namespace ACATApp
                 return;
             }
 
-            var form = PanelManager.Instance.CreatePanel("DefaultInterfaceScanner", "ACAT Talk Description");
+            Form form = PanelManager.Instance.CreatePanel("DefaultInterfaceScanner", "ACAT Talk Description");
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);

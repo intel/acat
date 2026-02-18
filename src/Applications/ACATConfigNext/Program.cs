@@ -20,10 +20,10 @@ namespace ACATConfigNext
             // Set up dependency injection
             var services = new ServiceCollection();
             ConfigureServices(services);
-            var serviceProvider = services.BuildServiceProvider();
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
 
             // Get SettingsForm from DI container
-            var settingsForm = serviceProvider.GetRequiredService<SettingsForm>();
+            SettingsForm settingsForm = serviceProvider.GetRequiredService<SettingsForm>();
             Application.Run(settingsForm);
         }
 

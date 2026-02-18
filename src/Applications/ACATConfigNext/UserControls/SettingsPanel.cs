@@ -36,7 +36,7 @@ namespace ACATConfigNext.UserControls
             this.Disposed += SettingsPanel_Disposed;
             var builder = new SettingsPanelBuilder();
 
-            var scrollViewer = builder.CreateScrollViewer(prefs);
+            FrameworkElement scrollViewer = builder.CreateScrollViewer(prefs);
 
             var host = new ElementHost
             {

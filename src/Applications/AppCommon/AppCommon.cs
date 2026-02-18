@@ -8,6 +8,7 @@ using ACAT.Extension;
 using ACATResources;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -245,7 +246,7 @@ namespace ACAT.Applications
 
             if (Common.AppPreferences.ShowDisplayScaleMessageOnStartup)
             {
-                var tuple = DualMonitor.GetDisplayWidthAndScaling();
+                Tuple<int, uint> tuple = DualMonitor.GetDisplayWidthAndScaling();
 
                 String prompt = String.Empty;
 
@@ -310,7 +311,7 @@ namespace ACAT.Applications
             string userFontDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft", "Windows", "Fonts");
             Directory.CreateDirectory(userFontDir);
 
-            var fontFiles = Directory.EnumerateFiles(sourceDir, "*.*", SearchOption.AllDirectories)
+            IEnumerable<string> fontFiles = Directory.EnumerateFiles(sourceDir, "*.*", SearchOption.AllDirectories)
                                      .Where(f => f.EndsWith(".ttf", StringComparison.OrdinalIgnoreCase) ||
                                                  f.EndsWith(".otf", StringComparison.OrdinalIgnoreCase));
 
@@ -388,12 +389,12 @@ namespace ACAT.Applications
 
         public static void addBCIActuatorSetting()
         {
-            var config = ActuatorManager.Instance.GetActuatorConfig();
+            ActuatorConfig config = ActuatorManager.Instance.GetActuatorConfig();
 
-            var actuatorSettings = config.ActuatorSettings;
+            List<ActuatorSetting> actuatorSettings = config.ActuatorSettings;
 
             var guid = new Guid("77809D19-F450-4D36-A633-D818400B3D9A");
-            foreach (var setting in actuatorSettings)
+            foreach (ActuatorSetting setting in actuatorSettings)
             {
                 if (Guid.Equals(guid, setting.Id))
                 {

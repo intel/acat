@@ -7,6 +7,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement.Agents;
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.AgentManagement.TextControlAgents;
@@ -503,7 +504,7 @@ namespace ACAT.Core.AgentManagement
             agent.EvtPanelRequest += agent_EvtPanelRequest;
             _agentsCache.AddAgent(handle, agent);
 
-            var fgWindow = User32Interop.GetForegroundWindow();
+            IntPtr fgWindow = User32Interop.GetForegroundWindow();
             if (fgWindow != IntPtr.Zero)
             {
                 if (fgWindow == handle)
@@ -583,7 +584,7 @@ namespace ACAT.Core.AgentManagement
 
         public IFunctionalAgent GetFunctionalAgentByName(String name)
         {
-            var agent = _agentsCache.GetAgentByName(name);
+            IApplicationAgent agent = _agentsCache.GetAgentByName(name);
             if (agent is IFunctionalAgent functionalAgent)
             {
                 return functionalAgent;
@@ -670,7 +671,7 @@ namespace ACAT.Core.AgentManagement
         {
             if (_agentsCache == null)
             {
-                var agentsCacheLogger = Context.ServiceProvider?.GetService(typeof(ILogger<AgentsCache>)) as ILogger<AgentsCache>
+                ILogger<AgentsCache> agentsCacheLogger = Context.ServiceProvider?.GetService(typeof(ILogger<AgentsCache>)) as ILogger<AgentsCache>
                     ?? LoggingConfiguration.CreateLogger<AgentsCache>();
                 _agentsCache = new AgentsCache(agentsCacheLogger);
                 _agentsCache.EvtAgentAdded += _agentsCache_EvtAgentAdded;
@@ -693,7 +694,7 @@ namespace ACAT.Core.AgentManagement
             _logger.LogDebug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
             {
-                var currentWindow = WindowActivityMonitor.CurrentWindowInfo();
+                WindowActivityMonitorInfo currentWindow = WindowActivityMonitor.CurrentWindowInfo();
                 _currentAgent.OnPanelClosed(panelClass, currentWindow);
             }
         }
@@ -924,7 +925,7 @@ namespace ACAT.Core.AgentManagement
 
             if (EvtScannerHitTest != null)
             {
-                var delegates = EvtScannerHitTest.GetInvocationList();
+                Delegate[] delegates = EvtScannerHitTest.GetInvocationList();
 
                 hitCount += delegates.Cast<ScannerHitTest>().Count(hitTest => hitTest.Invoke(mouseEventArgs.X, mouseEventArgs.Y));
             }
@@ -1216,7 +1217,7 @@ namespace ACAT.Core.AgentManagement
 
             // check if there is an adhoc agent for the current window
             // if not, check if there is an agent for the current process
-            var agent = _agentsCache.GetAgent(monitorInfo.FgHwnd);
+            IApplicationAgent agent = _agentsCache.GetAgent(monitorInfo.FgHwnd);
             if (agent == null)
             {
                 if (String.Compare(monitorInfo.FgProcess.ProcessName, _currentProcessName, true) == 0)
@@ -1295,7 +1296,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         private void getKeyboardActuator()
         {
-            var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+            IActuator actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
             if (actuator is KeyboardActuator)
             {
                 _keyboardActuator = actuator as KeyboardActuator;

@@ -342,7 +342,7 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
         /// <returns>true if it is</returns>
         protected bool isDesktopWindow(AutomationElement focusedElement)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
             AutomationElement parent = focusedElement;
 

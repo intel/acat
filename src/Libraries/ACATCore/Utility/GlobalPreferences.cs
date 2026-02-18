@@ -51,7 +51,7 @@ namespace ACAT.Core.Utility
         {
             saveFactoryDefaultSettings();
 
-            var retVal = XmlUtils.XmlFileLoad<GlobalPreferences>(prefFile);
+            GlobalPreferences retVal = XmlUtils.XmlFileLoad<GlobalPreferences>(prefFile);
 
             if (retVal == null)
             {

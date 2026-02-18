@@ -73,7 +73,7 @@ namespace ACAT.Core.Utility
 
         /// <summary>
         /// Ensures the logger factory is initialized.
-        /// If not explicitly initialized, creates a default factory.
+        /// If not explicitly initialized, uses the shared singleton factory.
         /// </summary>
         private static void EnsureInitialized()
         {
@@ -83,8 +83,8 @@ namespace ACAT.Core.Utility
                 {
                     if (!_isInitialized)
                     {
-                        // Create default factory if not explicitly initialized
-                        _loggerFactory = LoggingConfiguration.CreateLoggerFactory();
+                        // Use shared singleton factory if not explicitly initialized
+                        _loggerFactory = LoggingConfiguration.GetSharedLoggerFactory();
                         _isInitialized = true;
                     }
                 }

@@ -540,7 +540,7 @@ namespace ACAT.Core.Utility
             {
                 if (c.Visible && c.Bounds.Contains(pos))
                 {
-                    var child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
+                    Control child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
                     if (child == null)
                     {
                         return c;
@@ -719,7 +719,7 @@ namespace ACAT.Core.Utility
 
             try
             {
-                var osInfo = Environment.OSVersion;
+                OperatingSystem osInfo = Environment.OSVersion;
                 if (osInfo.Version.Major == 6 && osInfo.Version.Minor == 1)
                 {
                     windowsVersion = WindowsVersion.Win7;
@@ -1900,7 +1900,7 @@ namespace ACAT.Core.Utility
         {
             try
             {
-                var osVersion = GetOSVersion();
+                WindowsVersion osVersion = GetOSVersion();
 
                 if (osVersion == WindowsVersion.Win8 || osVersion == WindowsVersion.Win10)
                 {

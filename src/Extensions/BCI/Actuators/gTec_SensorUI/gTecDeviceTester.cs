@@ -190,7 +190,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             else
             {
-                intializeDebugStates(); // Create list of states to show all the different screens for debugging
+                initializeDebugStates(); // Create list of states to show all the different screens for debugging
                 _mainForm.EvtButtonExitClicked += _mainForm_EvtButtonExitClicked_DEBUG; // Handler for button click for debugging mode
             }
 
@@ -453,7 +453,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     // Check if testing parameter set to ignore signal quality check result
                     if (BCIActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
                     {
-                        _logger.LogDebug("BCIGtecActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
+                        _logger.LogDebug("BCIGTECActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
                         exitBCIOnboarding = true;
 
                         if (!userPassedLastSignalQualityCheck)
@@ -542,8 +542,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     ["maxTimeMins"] = maxTimeMins
                 };
-                Dictionary<String, object> resultParms = dictionary;
-                updateOnboardingStatus(_currentOnboardingUserState, resultParms);
+                Dictionary<String, object> resultParams = dictionary;
+                updateOnboardingStatus(_currentOnboardingUserState, resultParams);
             }
 
             // Go to screen telling user that signal check required because they failed their most recent one
@@ -566,7 +566,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void buttonRetestHandler(object sender)
         {
-            // Retest BCI connections - can just run function testing usb and bluetooth connections
+            // Retest BCI connections - can just run function testing usb and Bluetooth connections
             // Do not need to handle separate states based on where retest request is coming from
 
             // Go to screen that displays "connecting..." status
@@ -579,7 +579,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         }
 
         /// <summary>
-        /// Handler for Exit button click - dispayed on all device testing screens and does the same thing,
+        /// Handler for Exit button click - displayed on all device testing screens and does the same thing,
         /// completely exits testing process early without completion
         /// </summary>
         private void buttonExitHandler(String buttonExitName)
@@ -645,7 +645,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Initializes debug states to step through all the onboarding screens
         /// </summary>
-        private void intializeDebugStates()
+        private void initializeDebugStates()
         {
             _DebugStates = new OnboardingUserState[8];
             _DebugStates[0] = OnboardingUserState.Testing_BCIConnections;

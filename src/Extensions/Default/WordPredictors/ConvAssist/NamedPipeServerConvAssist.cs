@@ -274,7 +274,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                             continue;
                         }
 
-                        var resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
+                        WordAndCharacterPredictionResponse resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
                         if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
                         {
                             clientReady = true;
@@ -343,7 +343,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 {
                     try
                     {
-                        var sendTask = SendParams();
+                        Task sendTask = SendParams();
                         if(await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(60))) != sendTask)
                         {
                             throw new TimeoutException("SendParam() took too long.");
@@ -564,6 +564,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                         byte[] payload = Encoding.UTF8.GetBytes(value);
                         byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
 
+                        // Log the message being sent to ConvAssist
+                        _logger.LogInformation(">>> SENDING to ConvAssist - Length: {Length}, Content: {Content}", 
+                            payload.Length, value);
+
                         this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
                         this.NamedPipeServer.Write(payload, 0, payload.Length);
                         this.NamedPipeServer.Flush();
@@ -589,6 +593,17 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     message = messageReceived;
                     messageReceived = string.Empty;
                     TaskFinished = true;
+
+                    // Log the response received from ConvAssist
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        _logger.LogInformation("<<< RECEIVED from ConvAssist - Length: {Length}, Content: {Content}", 
+                            message.Length, message);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("<<< RECEIVED from ConvAssist - Empty or timeout after {Delay}ms", msDelay);
+                    }
                 }
             }
             catch (Exception ex)
@@ -682,10 +697,15 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             // Extract payload
             string stringData = Encoding.UTF8.GetString(pipeState.Buffer, 4, messageLength);
 
+            // Log incoming message from ConvAssist at async receive point
+            _logger.LogDebug("ConvAssist ReadCallback received {Bytes} bytes, MessageLength: {MessageLength}, IsComplete: {IsComplete}", 
+                received, messageLength, pipeState.PipeServer.IsMessageComplete);
+
             pipeState.Message.Append(stringData);
 
             if (pipeState.PipeServer.IsMessageComplete)
             {
+                _logger.LogDebug("ConvAssist message complete, triggering MessageReceived event");
                 OnMessageReceived(new MessageReceivedEventArgs(stringData));
                 pipeState.Message.Clear();
             }

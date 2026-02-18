@@ -12,6 +12,7 @@
 
 using ACAT.Core.Configuration;
 using ACAT.Core.Validation;
+using FluentValidation.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text.Json;
@@ -67,7 +68,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var settings = JsonSerializer.Deserialize<ActuatorSettingsJson>(json);
+            ActuatorSettingsJson settings = JsonSerializer.Deserialize<ActuatorSettingsJson>(json);
 
             // Assert
             Assert.IsNotNull(settings);
@@ -85,7 +86,7 @@ namespace ACATCore.Tests.Configuration
 
             // Act
             var json = JsonSerializer.Serialize(original);
-            var deserialized = JsonSerializer.Deserialize<ActuatorSettingsJson>(json);
+            ActuatorSettingsJson deserialized = JsonSerializer.Deserialize<ActuatorSettingsJson>(json);
 
             // Assert
             Assert.IsNotNull(deserialized);
@@ -171,7 +172,7 @@ namespace ACATCore.Tests.Configuration
             var settings = ActuatorSettingsJson.CreateDefault();
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -185,7 +186,7 @@ namespace ACATCore.Tests.Configuration
             var settings = new ActuatorSettingsJson { ActuatorSettings = null };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -199,7 +200,7 @@ namespace ACATCore.Tests.Configuration
             var settings = new ActuatorSettingsJson();
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -224,7 +225,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -246,7 +247,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -271,7 +272,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -296,7 +297,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -325,7 +326,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -355,7 +356,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -384,7 +385,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(settings);
+            ValidationResult result = _validator.Validate(settings);
 
             // Assert
             Assert.IsFalse(result.IsValid);

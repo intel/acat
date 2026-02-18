@@ -69,7 +69,7 @@ namespace ACAT.Extension.CommandHandlers
                     break;
 
                 case "CmdCloseWindow":
-                    var info = WindowActivityMonitor.CurrentWindowInfo();
+                    WindowActivityMonitorInfo info = WindowActivityMonitor.CurrentWindowInfo();
                     
                     WindowHighlight win = null;
                     if (info.FgHwnd != IntPtr.Zero)
@@ -260,15 +260,15 @@ namespace ACAT.Extension.CommandHandlers
                 return retVal;
             }
 
-            var titleBar = findTitleBar(window);
+            AutomationElement titleBar = findTitleBar(window);
 
             if (titleBar == null)
             {
                 return false;
             }
 
-            var maximizeButton = AgentUtils.FindElementByAutomationId(titleBar, "", ControlType.Button, "Maximize");
-            var restoreButton = AgentUtils.FindElementByAutomationId(titleBar, "", ControlType.Button, "Restore");
+            AutomationElement maximizeButton = AgentUtils.FindElementByAutomationId(titleBar, "", ControlType.Button, "Maximize");
+            AutomationElement restoreButton = AgentUtils.FindElementByAutomationId(titleBar, "", ControlType.Button, "Restore");
 
             return maximizeButton != null || restoreButton != null;
         }
@@ -303,7 +303,7 @@ namespace ACAT.Extension.CommandHandlers
                 return retVal;
             }
 
-            var titleBar = findTitleBar(window);
+            AutomationElement titleBar = findTitleBar(window);
 
             if (titleBar == null)
             {

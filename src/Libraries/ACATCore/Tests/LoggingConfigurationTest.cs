@@ -21,16 +21,23 @@ namespace ACAT.Core.Tests
         {
             Console.WriteLine("=== ACAT Logging Configuration Test ===\n");
 
+            ILoggerFactory loggerFactory = null;
+
             try
             {
-                // Test 1: Create logger using factory method
-                Console.WriteLine("Test 1: Creating logger using CreateLogger<T>()...");
-                var logger1 = LoggingConfiguration.CreateLogger<LoggingConfigurationTest>();
+                // Create a SINGLE shared logger factory (as should be done in real application)
+                Console.WriteLine("Creating shared logger factory...");
+                loggerFactory = LoggingConfiguration.CreateLoggerFactory();
+                Console.WriteLine("✓ Logger factory created successfully\n");
+
+                // Test 1: Create logger using factory
+                Console.WriteLine("Test 1: Creating logger using factory.CreateLogger<T>()...");
+                ILogger<LoggingConfigurationTest> logger1 = loggerFactory.CreateLogger<LoggingConfigurationTest>();
                 Console.WriteLine("✓ Logger created successfully\n");
 
                 // Test 2: Create logger with category name
                 Console.WriteLine("Test 2: Creating logger with category name...");
-                var logger2 = LoggingConfiguration.CreateLogger("TestCategory");
+                ILogger logger2 = loggerFactory.CreateLogger("TestCategory");
                 Console.WriteLine("✓ Logger created successfully\n");
 
                 // Test 3: Log at different levels
@@ -44,7 +51,7 @@ namespace ACAT.Core.Tests
                 // Test 4: Structured logging with parameters
                 Console.WriteLine("Test 4: Testing structured logging...");
                 var userId = "TestUser123";
-                var timestamp = DateTime.Now;
+                DateTime timestamp = DateTime.Now;
                 logger1.LogInformation("User {UserId} performed test at {Timestamp}", userId, timestamp);
                 Console.WriteLine("✓ Structured logging successful\n");
 
@@ -98,6 +105,12 @@ namespace ACAT.Core.Tests
                 Console.WriteLine("\nPress any key to exit...");
                 Console.ReadKey();
                 Environment.Exit(1);
+            }
+            finally
+            {
+                // Dispose the logger factory to ensure logs are flushed
+                loggerFactory?.Dispose();
+                Console.WriteLine("\nLogger factory disposed - logs flushed to disk.");
             }
         }
     }

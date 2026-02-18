@@ -226,7 +226,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
         {
             try
             {
-                foreach (var obj in Switches)
+                foreach (IActuatorSwitch obj in Switches)
                 {
                     var keySwitch = obj as KeyboardSwitch;
                     if (keySwitch != null)
@@ -264,7 +264,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
 
             // check if this is one of the keys we recognize.  If so, trigger
             // a switch-activated event
-            var actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
+            IActuatorSwitch actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
             if (actuatorSwitch != null)
             {
                 e.Handled = true;
@@ -340,7 +340,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
 
             KeyStateTracker.KeyUp(e.KeyCode);
 
-            var actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
+            IActuatorSwitch actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
             if (actuatorSwitch != null)
             {
                 e.Handled = true;

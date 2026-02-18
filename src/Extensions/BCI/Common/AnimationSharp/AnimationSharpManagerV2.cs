@@ -24,6 +24,7 @@ using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DirectWrite;
 using SharpDX.DXGI;
+using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -563,7 +564,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 BCIUtils.SetTargetValuesForCalibration(_flashingSequenceBoxList.Length);
             else
                 BCIUtils.SetTargetValuesForCalibration(_ButtonDataList[_CalibrationBox].Count);
-            var strBciMode = bCIMode;
+            BCIMode strBciMode = bCIMode;
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
         }
 
@@ -582,7 +583,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _sessionMode = BCIModes.TYPING;
                 ChangeColorButtons(_flashingSequenceBoxList[0].ToList(), false, true, 0);
                 var bciCalibrationEnd = new BCICalibrationEnd { DiscardCalibrationData = true };
-                var strCalEnd = bciCalibrationEnd;
+                BCICalibrationEnd strCalEnd = bciCalibrationEnd;
                 _actuator.IoctlRequest((int)OpCodes.CalibrationEnd, strCalEnd);
                 _mainForm.Invoke(new MethodInvoker(delegate { EvtBCICalibrationComplete?.Invoke("Calibration cancelled \nSelect calibration mode to start again"); }));
             }
@@ -809,7 +810,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 NumIterationsPerTarget = bCISimpleParameters.IterationsPertarget,
                 MinScoreRequired = bCISimpleParameters.MinScore,
             };
-            var strBciModeParams = bCIUserInputParameters;
+            BCIUserInputParameters strBciModeParams = bCIUserInputParameters;
             _actuator.IoctlRequest((int)OpCodes.RequestParameters, strBciModeParams);
         }
 
@@ -865,26 +866,26 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             for (int index = 0; index < boxesData.Count; index++)
             {
-                var val = boxesData.ElementAt(index);
+                KeyValuePair<List<Control>, string> val = boxesData.ElementAt(index);
                 amountBoxes += AnimationManagerUtils.GetAmountBoxes(val.Value);
             }
             SetInitialObjectsSize(amountBoxes, _amountOfKeyboards);//Sets the size for all the objects used by the class and mostly SharpDX based on the user controls buttons and amount of controls
             for (int indexBoxData = 0; indexBoxData < boxesData.Count; indexBoxData++)//populate the objects so they are ready to be used in the UI, is like a second layer of UI but manually fill instead of Windows Controls do the work
             {
-                var boxData = boxesData.ElementAt(indexBoxData);
+                KeyValuePair<List<Control>, string> boxData = boxesData.ElementAt(indexBoxData);
                 int amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
                 _ = new List<int[]>[amountBoxesPerUserControl];
                 _ = new List<int[]>[amountBoxesPerUserControl];
                 _ = new string[amountBoxesPerUserControl];
-                var temp_rectanglesButtonsList = SharpDXUtils.GetRectanglesButtonsList(boxData, amountBoxesPerUserControl);
-                var temp_rectanglesButtonsRoundList = SharpDXUtils.GetRectanglesButtonsRoundList(boxData, amountBoxesPerUserControl, _RadiusCornersButtons);
-                var temp_ButtonDataList = AnimationManagerUtils.GetButtonDataList(boxData, amountBoxesPerUserControl, _sharpDX_d2dRenderTarget);
-                var temp_ControlsButtons = AnimationManagerUtils.GetControlsBtns(boxData, amountBoxesPerUserControl, out List<int[]>[] temp_flashingSequenceIDList, out List<int[]>[] temp_flashingSequenceList);
-                var temp_buttonTextFormatList = SharpDXUtils.GetListButtonTextFormat(boxData, widgetsData[indexBoxData], _directWriteFactory, amountBoxesPerUserControl, out string[] temp_typeOfBox);
-                var temp_widgets = AnimationManagerUtils.GetBoxWidgetsList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
-                var temp_offsetStrings = AnimationManagerUtils.GetButtonsOffsetList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
-                var tempRectProbBars = SharpDXUtils.GetRecProbabilityBars(boxData.Key, boxData.Value, amountBoxesPerUserControl);
-                var tempRectProbBarsBox = SharpDXUtils.GetRecProbabilityBarsBox(boxData.Key, boxData.Value);
+                List<RawRectangleF>[] temp_rectanglesButtonsList = SharpDXUtils.GetRectanglesButtonsList(boxData, amountBoxesPerUserControl);
+                List<RoundedRectangle>[] temp_rectanglesButtonsRoundList = SharpDXUtils.GetRectanglesButtonsRoundList(boxData, amountBoxesPerUserControl, _RadiusCornersButtons);
+                List<ButtonsData>[] temp_ButtonDataList = AnimationManagerUtils.GetButtonDataList(boxData, amountBoxesPerUserControl, _sharpDX_d2dRenderTarget);
+                List<ScannerButtonControl>[] temp_ControlsButtons = AnimationManagerUtils.GetControlsBtns(boxData, amountBoxesPerUserControl, out List<int[]>[] temp_flashingSequenceIDList, out List<int[]>[] temp_flashingSequenceList);
+                List<TextFormat>[] temp_buttonTextFormatList = SharpDXUtils.GetListButtonTextFormat(boxData, widgetsData[indexBoxData], _directWriteFactory, amountBoxesPerUserControl, out string[] temp_typeOfBox);
+                List<Widget>[] temp_widgets = AnimationManagerUtils.GetBoxWidgetsList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
+                List<int>[] temp_offsetStrings = AnimationManagerUtils.GetButtonsOffsetList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
+                Dictionary<int, RawRectangleF>[] tempRectProbBars = SharpDXUtils.GetRecProbabilityBars(boxData.Key, boxData.Value, amountBoxesPerUserControl);
+                Dictionary<int, RawRectangleF> tempRectProbBarsBox = SharpDXUtils.GetRecProbabilityBarsBox(boxData.Key, boxData.Value);
                 for (int boxIndexUserControl = 0; boxIndexUserControl < amountBoxesPerUserControl; boxIndexUserControl++)
                 {
                     _rectanglesButtonsList[indexBox] = temp_rectanglesButtonsList[boxIndexUserControl];
@@ -902,7 +903,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         for (int pbIndex = 0; pbIndex < tempRectProbBarsBox.Count; pbIndex++)
                         {
-                            var pbBox = tempRectProbBarsBox.ElementAt(pbIndex);
+                            KeyValuePair<int, RawRectangleF> pbBox = tempRectProbBarsBox.ElementAt(pbIndex);
                             _rectanglesProbBarsBox.Add(indexBox + 1 + pbIndex, pbBox.Value);
                         }
                     }
@@ -950,7 +951,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _sessionMode = BCIModes.TRIGGERTEST;
             _triggerTestActive = true;
             BCIMode bCIMode = new() { BciMode = BCIModes.TRIGGERTEST };
-            var strBciMode = bCIMode;
+            BCIMode strBciMode = bCIMode;
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
             _actuator.IoctlRequest((int)OpCodes.TriggerTestStart, string.Empty);
         }
@@ -966,7 +967,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _isBoxScanning = true;
             _numberOfSequences = _amountOfKeyboards;
             BCIMode bCIMode = new() { BciMode = BCIModes.TYPING };
-            var strBciMode = bCIMode;
+            BCIMode strBciMode = bCIMode;
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
         }
 
@@ -1038,7 +1039,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 _logger.LogError("BCI LOG | Exception occurred during request to Actuator in ENDCAL: " + es.Message);
             }
-            var strCalEnd = bciCalibrationEnd;
+            BCICalibrationEnd strCalEnd = bciCalibrationEnd;
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEnd, strCalEnd);
         }
 
@@ -1091,7 +1092,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 _logger.LogError("BCI LOG | Exception occurred during request to Actuator in CAl: " + es.Message);
             }
-            var strCalRepEnd = bciCalibrationInput;
+            BCICalibrationInput strCalRepEnd = bciCalibrationInput;
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEndRepetition, strCalRepEnd);
         }
 
@@ -1151,7 +1152,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 _logger.LogError("BCI LOG | Exception occurred during request to Actuator in TYPE: " + es.Message);
             }
-            var strTypRepEnd = bciTypingRepetitionEnd;
+            BCITypingRepetitionEnd strTypRepEnd = bciTypingRepetitionEnd;
             _actuator?.IoctlRequest((int)OpCodes.TypingEndRepetition, strTypRepEnd);
         }
 
@@ -1211,7 +1212,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     if (nextProbs.Count != 0)
                     {
                         bciLanguageModelProbabilities.LanguageModelProbabilities = nextProbs;
-                        var strNextProb = bciLanguageModelProbabilities;
+                        BCILanguageModelProbabilities strNextProb = bciLanguageModelProbabilities;
                         _actuator?.IoctlRequest((int)OpCodes.LanguageModelProbabilities, strNextProb);
                     }
                 }
@@ -1620,16 +1621,16 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 switch (bCIModes)
                 {
                     case BCIModes.CALIBRATION:
-                        var roundRectc = SharpDXUtils.GetFocalAreaForBox(_rectanglesButtonsRoundList[_currentCalibrationTarget.id - 1], 100, 100, 50, 50, BCIFocalAreaRegion.Center);
+                        RoundedRectangle roundRectc = SharpDXUtils.GetFocalAreaForBox(_rectanglesButtonsRoundList[_currentCalibrationTarget.id - 1], 100, 100, 50, 50, BCIFocalAreaRegion.Center);
                         _sharpDX_d2dRenderTarget.DrawRoundedRectangle(roundRectc, _FocalCircleColor.ToLower().Equals("yellow") ? SharpDXColors.SolidColorBrushOn : SharpDXColors.SolidColorBrushDecisionCorrect, 8);
                         if (_IsFocalCircleFilled)
                             _sharpDX_d2dRenderTarget.FillRoundedRectangle(roundRectc, _FocalCircleColor.ToLower().Equals("yellow") ? SharpDXColors.SolidColorBrushOn : SharpDXColors.SolidColorBrushDecisionCorrect);
                         break;
 
                     case BCIModes.TYPING:
-                        foreach (var rects in _rectanglesButtonsRoundList)
+                        foreach (List<RoundedRectangle> rects in _rectanglesButtonsRoundList)
                         {
-                            var roundRectt = SharpDXUtils.GetFocalAreaForBox(rects, 100, 100, 50, 50, BCIFocalAreaRegion.Center);
+                            RoundedRectangle roundRectt = SharpDXUtils.GetFocalAreaForBox(rects, 100, 100, 50, 50, BCIFocalAreaRegion.Center);
                             _sharpDX_d2dRenderTarget.DrawRoundedRectangle(roundRectt, _FocalCircleColor.ToLower().Equals("yellow") ? SharpDXColors.SolidColorBrushOn : SharpDXColors.SolidColorBrushDecisionCorrect, 8);
                             if (_IsFocalCircleFilled)
                                 _sharpDX_d2dRenderTarget.FillRoundedRectangle(roundRectt, _FocalCircleColor.ToLower().Equals("yellow") ? SharpDXColors.SolidColorBrushOn : SharpDXColors.SolidColorBrushDecisionCorrect);
@@ -1800,7 +1801,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             try
             {
-                var button = _ButtonDataList[_activeKeyboard].FirstOrDefault(m => m.id == id);
+                ButtonsData button = _ButtonDataList[_activeKeyboard].FirstOrDefault(m => m.id == id);
                 return button;
             }
             catch (Exception es)
@@ -2258,7 +2259,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 if (_progressBarsProbs != null && _actuator != null && SensorErrorState.ErrorCode == BCIErrorCodes.Status_Ok)
                 {
-                    foreach (var value in _progressBarsProbs)
+                    foreach (KeyValuePair<int, double> value in _progressBarsProbs)
                     {
                         try
                         {
@@ -2288,7 +2289,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     if (_showProbabilityIndicator)
                     {
-                        foreach (var rect in rectBtnsss)
+                        foreach (RawRectangleF rect in rectBtnsss)
                         {
                             if (!_stopAnimation && !_changeUserControl)
                                 _sharpDX_d2dRenderTarget.FillRectangle(rect, SharpDXColors.SolidColorBrushProgressBars);
@@ -2830,9 +2831,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         int indexTypeBox = 0;
                         for (int ib = 0; ib < _BoxesData.Count; ib++)
                         {
-                            var val = _BoxesData.ElementAt(ib);
+                            KeyValuePair<List<Control>, string> val = _BoxesData.ElementAt(ib);
                             amountBoxes = AnimationManagerUtils.GetAmountBoxes(val.Value);
-                            var tempbtnsStringsAll = AnimationManagerUtils.ExtractButtonText(val.Key, val.Value, amountBoxes);
+                            List<string>[] tempbtnsStringsAll = AnimationManagerUtils.ExtractButtonText(val.Key, val.Value, amountBoxes);
                             for (int ii = 0; ii < amountBoxes; ii++)
                             {
                                 if (_typeOfBox[indexTypeBox] != null)

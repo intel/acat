@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
@@ -145,7 +146,7 @@ namespace ACAT.Core.PanelManagement.Utils
                             if (focusedElement != null && _outlineWindow != null)
                             {
                                 // Convert System.Windows.Rect to System.Drawing.Rectangle
-                                var rect = focusedElement.Current.BoundingRectangle;
+                                Rect rect = focusedElement.Current.BoundingRectangle;
                                 var drawingRect = new System.Drawing.Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
                                 _outlineWindow.Draw(drawingRect, 6);
                             }

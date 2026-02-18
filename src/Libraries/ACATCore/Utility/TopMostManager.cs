@@ -109,7 +109,7 @@ namespace ACAT.Core.Utility
         {
             lock (_lock)
             {
-                foreach (var form in _forms.ToList())
+                foreach (Form form in _forms.ToList())
                 {
                     if (form.IsDisposed)
                     {

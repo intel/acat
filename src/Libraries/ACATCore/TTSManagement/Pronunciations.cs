@@ -183,8 +183,8 @@ namespace ACAT.Core.TTSManagement
                 var loader = new JsonConfigurationLoader<PronunciationsJson>(
                     new PronunciationsValidator(), 
                     _logger);
-                
-                var config = loader.Load(filePath, createDefaultOnError: false);
+
+                PronunciationsJson config = loader.Load(filePath, createDefaultOnError: false);
                 
                 if (config == null)
                 {
@@ -193,7 +193,7 @@ namespace ACAT.Core.TTSManagement
                 }
 
                 // Convert JSON entries to Pronunciation objects
-                foreach (var entry in config.Pronunciations)
+                foreach (PronunciationJson entry in config.Pronunciations)
                 {
                     if (!string.IsNullOrWhiteSpace(entry.Word) && 
                         !string.IsNullOrWhiteSpace(entry.Pronunciation))
@@ -227,7 +227,7 @@ namespace ACAT.Core.TTSManagement
 
                 doc.Load(filePath);
 
-                var xmlNodes = doc.SelectNodes("/ACAT/Pronunciations/Pronunciation");
+                XmlNodeList xmlNodes = doc.SelectNodes("/ACAT/Pronunciations/Pronunciation");
 
                 // load all the pronunciations
                 foreach (XmlNode node in xmlNodes)
@@ -402,7 +402,7 @@ namespace ACAT.Core.TTSManagement
                 // Create JSON configuration object
                 var config = new PronunciationsJson();
                 
-                foreach (var pronunciationObj in _pronunciationList.Values)
+                foreach (Pronunciation pronunciationObj in _pronunciationList.Values)
                 {
                     config.Pronunciations.Add(new PronunciationJson
                     {
@@ -458,7 +458,7 @@ namespace ACAT.Core.TTSManagement
 
                 if (disposing)
                 {
-                    foreach (var p in _pronunciationList.Values)
+                    foreach (Pronunciation p in _pronunciationList.Values)
                     {
                         p.Dispose();
                     }

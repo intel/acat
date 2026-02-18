@@ -227,7 +227,7 @@ namespace ACAT.Core.Extensions
 
             try
             {
-                var methodInfo = _objThis.GetType().GetMethod(methodName);
+                MethodInfo methodInfo = _objThis.GetType().GetMethod(methodName);
                 if (methodInfo != null)
                 {
                     result = methodInfo.Invoke(_objThis, args);

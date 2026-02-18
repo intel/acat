@@ -313,12 +313,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             if (avgAlphaValues != null && avgAlphaValues.Count > 0)
             {
                 // Sort values
-                var sortedAvgAlphaValues = avgAlphaValues.OrderBy(d => d);
+                IOrderedEnumerable<double> sortedAvgAlphaValues = avgAlphaValues.OrderBy(d => d);
 
                 // Remove 3 outliers
                 int numOutliers = 3;
                 int numValuesForEstimation = sortedAvgAlphaValues.Count() - 2 * numOutliers;
-                var avgAlphaValuesForEstimaton = sortedAvgAlphaValues.ToList().GetRange(numOutliers, numValuesForEstimation);
+                List<double> avgAlphaValuesForEstimaton = sortedAvgAlphaValues.ToList().GetRange(numOutliers, numValuesForEstimation);
 
                 // Calculate average = baseline
                 var avg = avgAlphaValuesForEstimaton.Average();

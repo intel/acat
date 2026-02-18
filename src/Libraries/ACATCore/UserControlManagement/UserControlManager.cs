@@ -101,7 +101,7 @@ namespace ACAT.Core.UserControlManagement
 
         public bool AddUserControlByGuid(Control parent, Guid guid)
         {
-            var mapEntry = UserControlConfigMap.GetUserControlConfigMapEntry(guid);
+            UserControlConfigMapEntry mapEntry = UserControlConfigMap.GetUserControlConfigMapEntry(guid);
 
             if (mapEntry == null)
             {
@@ -143,7 +143,7 @@ namespace ACAT.Core.UserControlManagement
         {
             Context.AppActuatorManager.EvtSwitchActivated -= appActuatorManager_EvtSwitchActivated;
 
-            foreach (var control in _userControls)
+            foreach (IUserControl control in _userControls)
             {
                 closeUserControl(control);
             }
@@ -156,7 +156,7 @@ namespace ACAT.Core.UserControlManagement
             _logger.LogDebug("CALIBTEST UserControlManager.OnPause()");
             _playerTransitioned = false;
 
-            foreach (var userControl in _userControls)
+            foreach (IUserControl userControl in _userControls)
             {
                 _logger.LogTrace("CALIBTEST calling onPause for {UserControlName}", userControl.Descriptor.Name);
                 userControl.OnPause();
@@ -169,7 +169,7 @@ namespace ACAT.Core.UserControlManagement
 
             _logger.LogDebug("CALIBTEST UserControlManager.OnResume()");
 
-            foreach (var userControl in _userControls)
+            foreach (IUserControl userControl in _userControls)
             {
                 _logger.LogTrace("CALIBTEST. Calling onResume for uc{UserControlName}", userControl.Descriptor.Name);
                 userControl.OnResume();
@@ -265,7 +265,7 @@ namespace ACAT.Core.UserControlManagement
         public void StopTopLevelAnimation()
         {
             _stopTopLevelAnimation = true;
-            foreach (var userControl in _userControls)
+            foreach (IUserControl userControl in _userControls)
             {
                 userControl.UserControlCommon.AnimationManager.Interrupt();
             }
@@ -283,7 +283,7 @@ namespace ACAT.Core.UserControlManagement
             bool retVal;
             try
             {
-                var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(_scannerPanel.PanelClass);
+                PanelConfigMapEntry panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(_scannerPanel.PanelClass);
                 if (panelConfigMapEntry == null)
                 {
                     return false;
@@ -343,9 +343,9 @@ namespace ACAT.Core.UserControlManagement
         private void appActuatorManager_EvtSwitchActivated(object sender, ActuatorSwitchEventArgs e)
         {
             _logger.LogDebug("Switch activated");
-            foreach (var userControl in _userControls)
+            foreach (IUserControl userControl in _userControls)
             {
-                var playerState = userControl.UserControlCommon.AnimationManager.GetPlayerState();
+                PlayerState playerState = userControl.UserControlCommon.AnimationManager.GetPlayerState();
 
                 _logger.LogTrace("userControl: {UserControlName}, state: {PlayerState}", userControl.Descriptor.Name, playerState);
 
@@ -372,14 +372,14 @@ namespace ACAT.Core.UserControlManagement
 
         private bool createAndInitializeUserControl(Control parent, String userControlName, object tag = null)
         {
-            var mapEntry = UserControlConfigMap.GetUserControlConfigMapEntry(userControlName);
+            UserControlConfigMapEntry mapEntry = UserControlConfigMap.GetUserControlConfigMapEntry(userControlName);
 
             if (mapEntry == null)
             {
                 return false;
             }
 
-            var guid = mapEntry.UserControlId;
+            Guid guid = mapEntry.UserControlId;
 
             UserControl userControl;
 
@@ -490,7 +490,7 @@ namespace ACAT.Core.UserControlManagement
             if (e.NewState == PlayerState.Timeout)
             {
                 _logger.LogTrace("PlayerState timeout for {UserControlName}", userControl.Descriptor.Name);
-                var next = getNextUserControl(userControl);
+                IUserControl next = getNextUserControl(userControl);
                 if (next != null)
                 {
                     _iterationCount++;

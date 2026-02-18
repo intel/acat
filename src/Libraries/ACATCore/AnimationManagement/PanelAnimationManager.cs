@@ -13,6 +13,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Windows.Forms;
 
 namespace ACAT.Core.AnimationManagement
 {
@@ -77,7 +78,7 @@ namespace ACAT.Core.AnimationManagement
             _variables.Set(Variables.CurrentPanel, panelWidget);
 
             // get all the animations for the specified animation name.
-            var animations = getAnimations(animationName);
+            Animations animations = getAnimations(animationName);
 
             if (!CoreGlobals.AppPreferences.EnableAutoStartScan)
             {
@@ -92,13 +93,13 @@ namespace ACAT.Core.AnimationManagement
                 }
 
                 // transition to the one that is marked as "first"
-                var firstAnimation = animations.GetFirst();
+                Animation firstAnimation = animations.GetFirst();
                 if (firstAnimation == null)
                 {
                     return;
                 }
 
-                foreach (var animation in animations.Values)
+                foreach (Animation animation in animations.Values)
                 {
                     animation.EvtResolveWidgetChildren += animation_EvtResolveWidgetChildren;
                 }
@@ -134,8 +135,8 @@ namespace ACAT.Core.AnimationManagement
                     return;
                 }
 
-                var animations = _animationsCollection["default"];
-                var animation = animations[animationName];
+                Animations animations = _animationsCollection["default"];
+                Animation animation = animations[animationName];
                 if (animation == null)
                 {
                     _logger.LogDebug("Transition: animation is NULL!");
@@ -188,7 +189,7 @@ namespace ACAT.Core.AnimationManagement
                     return;
                 }
 
-                var manualScanMode = (!CoreGlobals.AppPreferences.EnableManualScan)
+                ManualScanModes manualScanMode = (!CoreGlobals.AppPreferences.EnableManualScan)
                     ? ManualScanModes.None
                     : mapTriggerScanMode(switchObj.GetTriggerScanMode());
 
@@ -226,7 +227,7 @@ namespace ACAT.Core.AnimationManagement
 
                     if (switchObj.IsSelectTriggerSwitch())
                     {
-                        var widget = _player.HighlightedWidget;
+                        Widget widget = _player.HighlightedWidget;
                         if (widget != null)
                         {
                             _logger.LogDebug("Actuate. widgetname: {WidgetName} Text: {WidgetText}", widget.Name, widget.GetText());
@@ -338,10 +339,10 @@ namespace ACAT.Core.AnimationManagement
             bool runCommand = true;
             String onTrigger = switchObj.Command;
 
-            var form = _currentPanel.UIControl;
+            Control form = _currentPanel.UIControl;
             if (form is IScannerPanel)
             {
-                var panelCommon = (form as IScannerPanel).PanelCommon;
+                IPanelCommon panelCommon = (form as IScannerPanel).PanelCommon;
                 var arg = new CommandEnabledArg(null, onTrigger);
                 panelCommon.CheckCommandEnabled(new CommandEnabledArg(null, onTrigger));
 
@@ -366,7 +367,7 @@ namespace ACAT.Core.AnimationManagement
                     {
                         strTrigger = strTrigger.Substring(1);
                     }
-                    var cmdDescriptor = CommandManager.Instance.AppCommandTable.Get(strTrigger);
+                    CmdDescriptor cmdDescriptor = CommandManager.Instance.AppCommandTable.Get(strTrigger);
                     if (cmdDescriptor != null && !cmdDescriptor.EnableSwitchMap)
                     {
                         _logger.LogDebug("EnableswitchMap is not enabled for {Command}", onTrigger);

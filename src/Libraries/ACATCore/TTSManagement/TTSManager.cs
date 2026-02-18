@@ -280,9 +280,9 @@ namespace ACAT.Core.TTSManagement
         /// </summary>
         public void SavePreferences(object sender, IEnumerable<PreferencesCategory> preferencesCategories)
         {
-            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+            CultureInfo ci = CultureInfo.DefaultThreadCurrentUICulture;
 
-            foreach (var category in preferencesCategories)
+            foreach (PreferencesCategory category in preferencesCategories)
             {
                 if (category.Enable && category.PreferenceObj is IExtension)
                 {
@@ -307,7 +307,7 @@ namespace ACAT.Core.TTSManagement
             bool retVal;
             if (!Equals(guid, Guid.Empty))  // found something for the specific culture
             {
-                var type = _ttsEngines.Lookup(guid);
+                Type type = _ttsEngines.Lookup(guid);
 
                 if (ActiveEngine != null)
                 {
@@ -327,7 +327,7 @@ namespace ACAT.Core.TTSManagement
             {
                 if (!Equals(cultureNeutralGuid, Guid.Empty))
                 {
-                    var type = _ttsEngines.Lookup(cultureNeutralGuid);
+                    Type type = _ttsEngines.Lookup(cultureNeutralGuid);
                     retVal = createAndSetActiveEngine(type, ci);
                 }
                 else

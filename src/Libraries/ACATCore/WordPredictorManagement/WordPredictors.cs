@@ -132,7 +132,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// <returns>list of word predictors</returns>
         public ICollection<Type> Get(string language)
         {
-            var list = _wordPredictorsTypeCache.Values;
+            Dictionary<Guid, Tuple<string, Type>>.ValueCollection list = _wordPredictorsTypeCache.Values;
 
             //return (from tuple in list where String.Compare(tuple.Item1, language, true) == 0 select tuple.Item2).ToList();
 
@@ -153,7 +153,7 @@ namespace ACAT.Core.WordPredictorManagement
             Tuple<string, Type> foundTuple = null;
 
             // first look for culture-specific word predictors
-            foreach (var tuple in _wordPredictorsTypeCache.Values)
+            foreach (Tuple<string, Type> tuple in _wordPredictorsTypeCache.Values)
             {
                 if (ci == null)
                 {
@@ -204,7 +204,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// <returns>id of the word predictor</returns>
         public Guid GetPreferredOrDefaultByCulture(CultureInfo ci)
         {
-            var guid = GetPreferredByCulture(ci);
+            Guid guid = GetPreferredByCulture(ci);
 
             if (Equals(guid, Guid.Empty))
             {
@@ -231,7 +231,7 @@ namespace ACAT.Core.WordPredictorManagement
             if (_DLLError)
                 return false;
 
-            var languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
+            IEnumerable<string> languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
             foreach (string dir in languageDirs)
             {
                 var extensionDir = dir + "\\" + FileUtils.ExtensionsDir;
@@ -356,7 +356,7 @@ namespace ACAT.Core.WordPredictorManagement
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
 
-            foreach (var predictor in _WordPredictorsTypeLoader?.LoadedTypes)
+            foreach (KeyValuePair<Guid, Type> predictor in _WordPredictorsTypeLoader?.LoadedTypes)
             {
                 Add(predictor.Key, _dirWalkCurrentCulture, predictor.Value);
             }

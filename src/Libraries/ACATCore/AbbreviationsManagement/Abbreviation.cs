@@ -89,7 +89,7 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <returns></returns>
         public static AbbreviationMode Convert(String mode)
         {
-            var retVal = AbbreviationMode.None;
+            AbbreviationMode retVal = AbbreviationMode.None;
             try
             {
                 retVal = (AbbreviationMode)Enum.Parse(typeof(AbbreviationMode), mode);

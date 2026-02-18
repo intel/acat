@@ -13,6 +13,7 @@ using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
@@ -476,7 +477,7 @@ namespace ACAT.Core.PanelManagement
         {
             _logger?.LogDebug($"Searching for panel of type {panelClass}");
 
-            var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(panelClass);
+            PanelConfigMapEntry panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(panelClass);
             if (panelConfigMapEntry == null)
             {
                 _logger?.LogWarning($"Could not find panel for {panelClass} - Using default.");
@@ -493,7 +494,7 @@ namespace ACAT.Core.PanelManagement
 
             _logger?.LogDebug($"Found panel class {panelConfigMapEntry.PanelClass} with. name {panelConfigMapEntry.FormType.Name}");
 
-            var form = DynamicallyCreatePanelForm(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
+            Form form = DynamicallyCreatePanelForm(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
             return form;
         }
 
@@ -763,8 +764,8 @@ namespace ACAT.Core.PanelManagement
             {
                 try
                 {
-                    var argTypes = Array.ConvertAll(args, a => a?.GetType() ?? typeof(object));
-                    var ctor = type.GetConstructor(argTypes);
+                    Type[] argTypes = Array.ConvertAll(args, a => a?.GetType() ?? typeof(object));
+                    ConstructorInfo ctor = type.GetConstructor(argTypes);
 
                     if (ctor != null)
                     {
@@ -798,7 +799,7 @@ namespace ACAT.Core.PanelManagement
                 Arg = arg.RequestArg
             };
 
-            var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(arg.PanelClass);
+            PanelConfigMapEntry panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(arg.PanelClass);
 
             _logger?.LogDebug("panelClass:  " + arg.PanelClass + ", ConfigFile: " + ((panelConfigMapEntry != null) ? panelConfigMapEntry.ConfigFileName : String.Empty));
             return scannerPanel.Initialize(startupArg);

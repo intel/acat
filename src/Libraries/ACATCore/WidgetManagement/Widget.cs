@@ -365,7 +365,7 @@ namespace ACAT.Core.WidgetManagement
 
                 if (oldValue != _enabled)
                 {
-                    foreach (var widget in _children)
+                    foreach (Widget widget in _children)
                     {
                         widget.Enabled = _enabled;
                     }
@@ -1466,7 +1466,7 @@ namespace ACAT.Core.WidgetManagement
         /// <returns></returns>
         private EnabledStates parseEnabledValue(String value)
         {
-            var retVal = value.ToLower() switch
+            EnabledStates retVal = value.ToLower() switch
             {
                 "false" => EnabledStates.Disabled,
                 "contextual" => EnabledStates.Contextual,

@@ -14,6 +14,7 @@ using ACAT.Core.Configuration;
 using ACAT.Core.Validation;
 using ACAT.Core.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentValidation.Results;
 //using System.Text.Json;
 
 namespace ACATCore.Tests.Configuration
@@ -63,7 +64,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
+            PanelConfigJson panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
 
             // Assert
             Assert.IsNotNull(panel);
@@ -107,7 +108,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
+            PanelConfigJson panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
 
             // Assert
             Assert.IsNotNull(panel);
@@ -137,7 +138,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
+            PanelConfigJson panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
 
             // Assert
             Assert.IsNotNull(panel);
@@ -166,7 +167,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
+            PanelConfigJson panel = JsonSerializer.Deserialize<PanelConfigJson>(json);
 
             // Assert
             Assert.IsNotNull(panel);
@@ -195,7 +196,7 @@ namespace ACATCore.Tests.Configuration
             var panel = PanelConfigJson.CreateSimpleMenu();
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -212,7 +213,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -229,7 +230,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -246,7 +247,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -270,7 +271,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -294,7 +295,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -316,7 +317,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -338,7 +339,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -363,7 +364,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -391,7 +392,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(panel);
+            ValidationResult result = _validator.Validate(panel);
 
             // Assert
             Assert.IsFalse(result.IsValid);

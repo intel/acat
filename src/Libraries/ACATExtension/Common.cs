@@ -78,7 +78,7 @@ namespace ACAT.Extension
 
         private static void AppPanelManager_EvtStartupAddUserControls(object sender, EventArgs e)
         {
-            var guid = UserControlConfigMap.GetUserControlId(typeof(UserControlDefaultTryout));
+            Guid guid = UserControlConfigMap.GetUserControlId(typeof(UserControlDefaultTryout));
             UserControlConfigMap.AddUserControlToCache(guid, typeof(UserControlDefaultTryout));
 
             guid = UserControlConfigMap.GetUserControlId(typeof(UserControlLayoutInterface));

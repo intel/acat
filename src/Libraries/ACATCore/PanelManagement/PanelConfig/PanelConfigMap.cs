@@ -79,11 +79,11 @@ namespace ACAT.Core.PanelManagement.PanelConfig
             {
                 var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
 
-                var panelClassConfig = appPanelClassConfig.Find(appId);
+                PanelClassConfig panelClassConfig = appPanelClassConfig.Find(appId);
 
                 if (panelClassConfig != null)
                 {
-                    var result = panelClassConfig.PanelClassConfigMaps.Find(mapEntry => string.Compare(mapEntry.Name, panelClassConfigMap.Name, true) == 0);
+                    PanelClassConfigMap result = panelClassConfig.PanelClassConfigMaps.Find(mapEntry => string.Compare(mapEntry.Name, panelClassConfigMap.Name, true) == 0);
 
                     if (result != null)
                     {
@@ -123,7 +123,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         public static string GetConfigFileForPanel(string panelClass)
         {
             var retVal = string.Empty;
-            var mapEntry = GetPanelConfigMapEntry(panelClass);
+            PanelConfigMapEntry mapEntry = GetPanelConfigMapEntry(panelClass);
             if (mapEntry != null)
             {
                 retVal = mapEntry.ConfigFileName;
@@ -140,7 +140,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns>config id</returns>
         public static Guid GetConfigIdForConfigName(string configName)
         {
-            foreach (var panelConfigMapEntry in _masterPanelConfigMapTable.Values)
+            foreach (PanelConfigMapEntry panelConfigMapEntry in _masterPanelConfigMapTable.Values)
             {
                 if (string.Compare(configName, panelConfigMapEntry.ConfigName, true) == 0)
                 {
@@ -237,10 +237,10 @@ namespace ACAT.Core.PanelManagement.PanelConfig
             _loadConfigFileLocationMap = new Dictionary<string, string>();
 
             // Load Agents from the Agent Manager Instance
-            var agents = AgentManager.Instance.GetExtensions();
+            IEnumerable<object> agents = AgentManager.Instance.GetExtensions();
             foreach (IApplicationAgent agent in agents.Cast<IApplicationAgent>())
             {
-                _logger?.LogDebug("Loading agent {Agent}", agent);
+                _logger?.LogTrace("Loading agent {Agent}", agent);
                 addTypeToCache(agent.GetType());
             }
 
@@ -380,11 +380,11 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         {
             if (_formsCache.ContainsKey(guid))
             {
-                _logger?.LogDebug("Form Type {TypeName} with guid {Guid} is already added", type.FullName, guid);
+                _logger?.LogTrace("Form Type {TypeName} with guid {Guid} is already added", type.FullName, guid);
                 return;
             }
 
-            _logger?.LogDebug("Adding form {TypeName} with guid {Guid} to cache", type.FullName, guid);
+            _logger?.LogTrace("Adding form {TypeName} with guid {Guid} to cache", type.FullName, guid);
             _formsCache.Add(guid, type);
 
             updateFormTypeReferences(guid, type);
@@ -399,9 +399,9 @@ namespace ACAT.Core.PanelManagement.PanelConfig
             _logger?.LogDebug("Cleaning up panelConfigMap entries");
 
             var removeList = new List<PanelConfigMapEntry>();
-            foreach (var mapEntry in _masterPanelConfigMapTable.Values)
+            foreach (PanelConfigMapEntry mapEntry in _masterPanelConfigMapTable.Values)
             {
-                _logger?.LogDebug("Looking up entry: {Entry}", mapEntry.ToString());
+                _logger?.LogTrace("Looking up entry: {Entry}", mapEntry.ToString());
                 if (_formsCache.ContainsKey(mapEntry.FormId))
                 {
                     mapEntry.FormType = (Type)_formsCache[mapEntry.FormId];
@@ -413,17 +413,17 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
                 if (mapEntry.FormType != null && !string.IsNullOrEmpty(configFilePath))
                 {
-                    _logger?.LogDebug("Found config file {ConfigFileName} in location map", mapEntry.ConfigFileName);
+                    _logger?.LogTrace("Found config file {ConfigFileName} in location map", mapEntry.ConfigFileName);
                     mapEntry.ConfigFileName = configFilePath;
                 }
                 else
                 {
-                    _logger?.LogDebug("Config file {ConfigFileName} not found in location map - marking for removal", mapEntry.ConfigFileName);
+                    _logger?.LogTrace("Config file {ConfigFileName} not found in location map - marking for removal", mapEntry.ConfigFileName);
                     removeList.Add(mapEntry);
                 }
             }
 
-            foreach (var panelConfigMapEntry in removeList)
+            foreach (PanelConfigMapEntry panelConfigMapEntry in removeList)
             {
                 removeMapEntry(panelConfigMapEntry);
             }
@@ -487,7 +487,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         {
             if (typeof(IPanel).IsAssignableFrom(type))
             {
-                var guid = GetFormId(type);
+                Guid guid = GetFormId(type);
 
                 if (guid != Guid.Empty)
                 {
@@ -507,7 +507,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         {
             if (_PanelClassConfigMapTable.ContainsKey(DefaultKey))
             {
-                var panelClassConfig = _PanelClassConfigMapTable[DefaultKey];
+                PanelClassConfig panelClassConfig = _PanelClassConfigMapTable[DefaultKey];
 
                 return panelClassConfig.GetDefaultClassConfigMapEntry(panelClass);
             }
@@ -525,7 +525,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         {
             if (_configFileLocationMap.ContainsKey(DefaultKey))
             {
-                var map = _configFileLocationMap[DefaultKey];
+                Dictionary<string, string> map = _configFileLocationMap[DefaultKey];
 
                 if (map.ContainsKey(configFile))
                 {
@@ -552,11 +552,11 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
             List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
-            foreach (var configId in configIds)
+            foreach (Guid configId in configIds)
             {
                 if (_masterPanelConfigMapTable.ContainsKey(configId))
                 {
-                    var panelConfigMapEntry = _masterPanelConfigMapTable[configId];
+                    PanelConfigMapEntry panelConfigMapEntry = _masterPanelConfigMapTable[configId];
                     if (string.Compare(panelConfigMapEntry.PanelClass, panelClass, true) == 0)
                     {
                         return panelConfigMapEntry;
@@ -575,14 +575,14 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns>the object, null if not found</returns>
         private static PanelConfigMapEntry getMapEntryFromPanelClassConfigMap(string panelClass)
         {
-            var entry = getClassConfigMapEntry(panelClass);
+            PanelClassConfigMapEntry entry = getClassConfigMapEntry(panelClass);
 
             if (entry == null)
             {
                 return null;
             }
 
-            var configId = entry.ConfigId;
+            Guid configId = entry.ConfigId;
 
             return _masterPanelConfigMapTable.ContainsKey(configId)
                             ? _masterPanelConfigMapTable[configId]
@@ -626,7 +626,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
                 var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
                 _AppPanelClassConfig[DefaultKey] = appPanelClassConfig;
 
-                var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
+                PanelClassConfig panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
 
                 if (panelClassConfig != null && panelClassConfig.PanelClassConfigMaps.Count > 0)
                 {
@@ -683,17 +683,25 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="dllName">name of the dll</param>
         private static void onDllFound(string dllName)
         {
+            // Skip resource assemblies (satellite assemblies for localization)
+            // These are automatically loaded by .NET and should not be loaded directly
+            string fileName = Path.GetFileName(dllName);
+            if (fileName.EndsWith(".resources.dll", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
             TypeLoader<IPanel> typeLoader = new();
 
             try
             {
-                _logger?.LogDebug("Found dll {DllName}", dllName);
+                _logger?.LogTrace("Found dll {DllName}", dllName);
 
                 typeLoader.LoadFromAssembly(dllName, false);
 
-                foreach (var type in typeLoader.LoadedTypes.Values)
+                foreach (Type type in typeLoader.LoadedTypes.Values)
                 {
-                    _logger?.LogDebug("Found type {TypeName}", type.FullName);
+                    _logger?.LogTrace("Found type {TypeName}", type.FullName);
                     addTypeToCache(type);
                 }
             }
@@ -727,7 +735,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
                 doc.Load(configFileName);
 
-                var configNodes = doc.SelectNodes("/ACAT/ConfigMapEntries/ConfigMapEntry");
+                XmlNodeList configNodes = doc.SelectNodes("/ACAT/ConfigMapEntries/ConfigMapEntry");
 
                 // load each scheme from the config file
                 foreach (XmlNode node in configNodes)
@@ -761,12 +769,12 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
             if (_loadConfigFileLocationMap.ContainsKey(fileName))
             {
-                _logger?.LogDebug("Updating xml file {FileName}, full path: {FullPath}", fileName, xmlFileName);
+                _logger?.LogTrace("Updating xml file {FileName}, full path: {FullPath}", fileName, xmlFileName);
                 _loadConfigFileLocationMap[fileName] = xmlFileName;
             }
             else
             {
-                _logger?.LogDebug("Adding xml file {FileName}, full path: {FullPath}", fileName, xmlFileName);
+                _logger?.LogTrace("Adding xml file {FileName}, full path: {FullPath}", fileName, xmlFileName);
                 _loadConfigFileLocationMap.Add(fileName, xmlFileName);
             }
         }
@@ -792,7 +800,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="type">Scanner Type</param>
         private static void updateFormTypeReferences(Guid guid, Type type)
         {
-            foreach (var panelConfigMapEntry in _masterPanelConfigMapTable.Values)
+            foreach (PanelConfigMapEntry panelConfigMapEntry in _masterPanelConfigMapTable.Values)
             {
                 if (panelConfigMapEntry.FormType == null && panelConfigMapEntry.FormId.Equals(guid))
                 {

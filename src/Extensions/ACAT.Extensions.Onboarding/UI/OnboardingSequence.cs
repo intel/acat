@@ -36,7 +36,7 @@ namespace ACAT.Extensions.Onboarding.UI
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<OnboardingSequence>();
+            OnboardingSequence tmp = LoadDefaults<OnboardingSequence>();
             var res = Save<OnboardingSequence>(tmp, SettingsFilePath);
             Load();
 

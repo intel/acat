@@ -175,7 +175,7 @@ namespace ACAT.Core.PanelManagement.Utils
 
             foreach (var name in fontNames)
             {
-                foreach (var family in _installedFamilies)
+                foreach (FontFamily family in _installedFamilies)
                 {
                     if (string.Compare(family.Name, name, true) == 0)
                     {

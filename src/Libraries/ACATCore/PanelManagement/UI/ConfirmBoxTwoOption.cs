@@ -60,7 +60,7 @@ namespace ACAT.Core.PanelManagement
                 Op1Prompt = opc1Prompt,
                 Op3Prompt = opc3Prompt
             };
-            var result = confirmBox.ShowDialog(parent);
+            DialogResult result = confirmBox.ShowDialog(parent);
             confirmBox.Dispose();
             return result == DialogResult.Yes;
         }

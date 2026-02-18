@@ -37,7 +37,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
             List<CultureInfo> installedCultures = ResourceHelper.GetAvailableResourceCultures(Assembly.GetExecutingAssembly());
 
-            foreach (var culture in installedCultures)
+            foreach (CultureInfo culture in installedCultures)
             {
                 int index = listBoxLanguages.Items.Add(new LanguageItem(culture.DisplayName, culture));
                 if (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals(culture.TwoLetterISOLanguageName))

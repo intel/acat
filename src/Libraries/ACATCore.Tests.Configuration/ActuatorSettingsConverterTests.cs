@@ -36,7 +36,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
+            ActuatorSetting legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
 
             // Assert
             Assert.IsNotNull(legacyActuator);
@@ -73,13 +73,13 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
+            ActuatorSetting legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
 
             // Assert
             Assert.IsNotNull(legacyActuator.SwitchSettings);
             Assert.AreEqual(1, legacyActuator.SwitchSettings.Count);
-            
-            var legacySwitch = legacyActuator.SwitchSettings[0];
+
+            SwitchSetting legacySwitch = legacyActuator.SwitchSettings[0];
             Assert.AreEqual("Trigger", legacySwitch.Name);
             Assert.AreEqual("F12", legacySwitch.Source);
             Assert.AreEqual("Trigger switch", legacySwitch.Description);
@@ -105,7 +105,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var jsonActuator = ActuatorSettingsConverter.ToJson(legacyActuator);
+            ActuatorSettingJson jsonActuator = ActuatorSettingsConverter.ToJson(legacyActuator);
 
             // Assert
             Assert.IsNotNull(jsonActuator);
@@ -142,13 +142,13 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var jsonActuator = ActuatorSettingsConverter.ToJson(legacyActuator);
+            ActuatorSettingJson jsonActuator = ActuatorSettingsConverter.ToJson(legacyActuator);
 
             // Assert
             Assert.IsNotNull(jsonActuator.SwitchSettings);
             Assert.AreEqual(1, jsonActuator.SwitchSettings.Count);
-            
-            var jsonSwitch = jsonActuator.SwitchSettings[0];
+
+            SwitchSettingJson jsonSwitch = jsonActuator.SwitchSettings[0];
             Assert.AreEqual("Trigger", jsonSwitch.Name);
             Assert.AreEqual("F12", jsonSwitch.Source);
             Assert.AreEqual("Trigger switch", jsonSwitch.Description);
@@ -184,8 +184,8 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act - Legacy -> JSON -> Legacy
-            var json = ActuatorSettingsConverter.ToJson(originalLegacy);
-            var convertedLegacy = ActuatorSettingsConverter.FromJson(json);
+            ActuatorSettingJson json = ActuatorSettingsConverter.ToJson(originalLegacy);
+            ActuatorSetting convertedLegacy = ActuatorSettingsConverter.FromJson(json);
 
             // Assert
             Assert.AreEqual(originalLegacy.Name, convertedLegacy.Name);
@@ -211,7 +211,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var legacyList = ActuatorSettingsConverter.FromJson(jsonSettings);
+            List<ActuatorSetting> legacyList = ActuatorSettingsConverter.FromJson(jsonSettings);
 
             // Assert
             Assert.IsNotNull(legacyList);
@@ -231,7 +231,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var jsonSettings = ActuatorSettingsConverter.ToJson(legacyList);
+            ActuatorSettingsJson jsonSettings = ActuatorSettingsConverter.ToJson(legacyList);
 
             // Assert
             Assert.IsNotNull(jsonSettings);
@@ -245,7 +245,7 @@ namespace ACATCore.Tests.Configuration
         public void ConvertNullJsonReturnsEmpty()
         {
             // Act
-            var legacyList = ActuatorSettingsConverter.FromJson((ActuatorSettingsJson)null);
+            List<ActuatorSetting> legacyList = ActuatorSettingsConverter.FromJson((ActuatorSettingsJson)null);
 
             // Assert
             Assert.IsNotNull(legacyList);
@@ -256,7 +256,7 @@ namespace ACATCore.Tests.Configuration
         public void ConvertNullLegacyListReturnsEmptyJson()
         {
             // Act
-            var jsonSettings = ActuatorSettingsConverter.ToJson((List<ActuatorSetting>)null);
+            ActuatorSettingsJson jsonSettings = ActuatorSettingsConverter.ToJson((List<ActuatorSetting>)null);
 
             // Assert
             Assert.IsNotNull(jsonSettings);
@@ -276,7 +276,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
+            ActuatorSetting legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
 
             // Assert
             Assert.IsNotNull(legacyActuator);
@@ -296,7 +296,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
+            ActuatorSetting legacyActuator = ActuatorSettingsConverter.FromJson(jsonActuator);
 
             // Assert
             Assert.IsNotNull(legacyActuator);

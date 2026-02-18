@@ -240,7 +240,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>actuator object, null if not found</returns>
         public IActuator GetActuator(Guid id)
         {
-            foreach (var actuator in _actuators.ActuatorList)
+            foreach (IActuator actuator in _actuators.ActuatorList)
             {
                 var descAttribute = ClassDescriptorAttribute.GetDescriptor(actuator.GetType());
 
@@ -290,7 +290,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             bool retVal = true;
 
-            foreach (var actuatorEx in _actuators.Collection)
+            foreach (ActuatorEx actuatorEx in _actuators.Collection)
             {
                 actuatorEx.PostInit();
                 if (actuatorEx.PostInitError)
@@ -299,7 +299,7 @@ namespace ACAT.Core.ActuatorManagement
                 }
             }
 
-            foreach (var actuatorEx in _actuators.Collection)
+            foreach (ActuatorEx actuatorEx in _actuators.Collection)
             {
                 actuatorEx.WaitForCalibration();
             }
@@ -408,7 +408,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="enableConfigure">should "configure" button be enabled?</param>
         public void OnError(IActuator source, String message, bool enableConfigure = true)
         {
-            var aex = _actuators.find(source);
+            ActuatorEx aex = _actuators.find(source);
             aex?.OnError(message, enableConfigure);
         }
 
@@ -420,13 +420,13 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="success">was init successful?</param>
         public void OnInitDone(IActuator source, bool success = true)
         {
-            var aex = _actuators.find(source);
+            ActuatorEx aex = _actuators.find(source);
             aex?.OnInitDone(success);
         }
 
         public void OnPostInitDone(IActuator source, bool success = true)
         {
-            var aex = _actuators.find(source);
+            ActuatorEx aex = _actuators.find(source);
             aex?.OnPostInitDone(success);
         }
 
@@ -435,7 +435,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         public void Pause()
         {
-            foreach (var actuator in _actuators.Collection)
+            foreach (ActuatorEx actuator in _actuators.Collection)
             {
                 actuator.SourceActuator.Pause();
             }
@@ -462,7 +462,7 @@ namespace ACAT.Core.ActuatorManagement
 
         public IActuator GetCalibrationSupportedActuator()
         {
-            foreach (var actuator in _actuators.Collection)
+            foreach (ActuatorEx actuator in _actuators.Collection)
             {
                 if (actuator.SourceActuator.SupportsCalibration())
                 {
@@ -495,7 +495,7 @@ namespace ACAT.Core.ActuatorManagement
                 return;
             }
 
-            var aex = _actuators.find(source);
+            ActuatorEx aex = _actuators.find(source);
 
             if (aex != null)
             {
@@ -511,7 +511,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         public void Resume()
         {
-            foreach (var actuator in _actuators.Collection)
+            foreach (ActuatorEx actuator in _actuators.Collection)
             {
                 actuator.SourceActuator.Resume();
             }
@@ -567,17 +567,17 @@ namespace ACAT.Core.ActuatorManagement
             ActuatorConfig.ActuatorSettingsFileName = UserManager.GetFullPath(ActuatorSettingsFileName);
             var actuatorSettings = ActuatorConfig.Load();
 
-            foreach (var category in preferencesCategories)
+            foreach (PreferencesCategory category in preferencesCategories)
             {
                 if (category.PreferenceObj is IExtension)
                 {
                     var extension = category.PreferenceObj as IExtension;
-                    var actuatorSetting = actuatorSettings.Find(extension.Descriptor.Id);
+                    ActuatorSetting actuatorSetting = actuatorSettings.Find(extension.Descriptor.Id);
                     if (actuatorSetting != null)
                     {
                         actuatorSetting.Enabled = category.Enable;
 
-                        foreach (var actuator in _actuators.ActuatorList.Where(actuator => Equals(actuatorSetting.Id, actuator.Descriptor.Id)))
+                        foreach (IActuator actuator in _actuators.ActuatorList.Where(actuator => Equals(actuatorSetting.Id, actuator.Descriptor.Id)))
                         {
                             actuator.Enabled = actuatorSetting.Enabled;
                         }
@@ -657,9 +657,9 @@ namespace ACAT.Core.ActuatorManagement
 
         public bool CheckScanTimingConfigureEnable()
         {
-            var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+            IActuator keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
-            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
+            foreach (IActuator actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -681,11 +681,11 @@ namespace ACAT.Core.ActuatorManagement
 
         public void ShowTryoutDialog(bool startup = false)
         {
-            var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+            IActuator keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
+            foreach (IActuator actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -716,11 +716,11 @@ namespace ACAT.Core.ActuatorManagement
 
         public void ShowScanTimingsConfigureDialog()
         {
-            var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+            IActuator keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
+            foreach (IActuator actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -803,8 +803,8 @@ namespace ACAT.Core.ActuatorManagement
         {
             bool handled = false;
 
-            var actuator = switchObj.Actuator;
-            var action = switchObj.GetTriggerScanMode();
+            IActuator actuator = switchObj.Actuator;
+            TriggerScanModes action = switchObj.GetTriggerScanMode();
 
             switch (action)
             {
@@ -918,7 +918,7 @@ namespace ACAT.Core.ActuatorManagement
                 {
                     _calibratingActuatorEx = obj as ActuatorEx;
                     _logger.LogDebug("Before start calib");
-                    var actuator = _calibratingActuatorEx;
+                    ActuatorEx actuator = _calibratingActuatorEx;
                     actuator.StartCalibration();
                     _logger.LogDebug("after start calib");
 
@@ -982,7 +982,7 @@ namespace ACAT.Core.ActuatorManagement
                         if (switches.ContainsKey(switchObj.Name))
                         {
                             _logger.LogDebug("SWITCH UP switches contains " + switchObj.Name);
-                            var activeSwitch = switches[switchObj.Name];
+                            IActuatorSwitch activeSwitch = switches[switchObj.Name];
 
                             elapsedTime = (activeSwitch != null && activeSwitch.AcceptTimer.IsRunning) ?
                                                     activeSwitch.AcceptTimer.ElapsedMilliseconds : 0;
@@ -1076,7 +1076,7 @@ namespace ACAT.Core.ActuatorManagement
                 return Windows.WindowPosition.CenterScreen;
             }
 
-            var position = Windows.WindowPosition.CenterScreen;
+            Windows.WindowPosition position = Windows.WindowPosition.CenterScreen;
 
             switch (Context.AppWindowPosition)
             {
@@ -1115,7 +1115,7 @@ namespace ACAT.Core.ActuatorManagement
 
             _disposed = false;
 
-            foreach (var actuatorEx in _actuators.Collection)
+            foreach (ActuatorEx actuatorEx in _actuators.Collection)
             {
                 actuatorEx.Init();
 
@@ -1131,7 +1131,7 @@ namespace ACAT.Core.ActuatorManagement
             }
             */
 
-            foreach (var actuatorEx in _actuators.Collection)
+            foreach (ActuatorEx actuatorEx in _actuators.Collection)
             {
                 if (actuatorEx.InitError)
                 {
@@ -1187,8 +1187,8 @@ namespace ACAT.Core.ActuatorManagement
                 return;
             }
 
-            var delegates = EvtSwitchActivated.GetInvocationList();
-            foreach (var del in delegates)
+            Delegate[] delegates = EvtSwitchActivated.GetInvocationList();
+            foreach (Delegate del in delegates)
             {
                 var switchActivated = (ActuatorSwitchEvent)del;
                 _logger.LogDebug("Calling begininvoke for " + switchObj.Name);
@@ -1225,8 +1225,8 @@ namespace ACAT.Core.ActuatorManagement
 
             _logger.LogTrace(string.Empty);
 
-            var delegates = EvtSwitchHook.GetInvocationList();
-            foreach (var del in delegates)
+            Delegate[] delegates = EvtSwitchHook.GetInvocationList();
+            foreach (Delegate del in delegates)
             {
                 var switchHook = (SwitchHook)del;
                 switchHook.Invoke(switchObj, ref evtHandled);

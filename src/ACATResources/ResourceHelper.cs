@@ -65,7 +65,7 @@ namespace ACATResources
             var cultures = new List<CultureInfo>();
             string baseDirectory = Path.GetDirectoryName(mainAssembly.Location);
 
-            foreach (var culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures | CultureTypes.NeutralCultures))
+            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures | CultureTypes.NeutralCultures))
             {
                 string cultureName = culture.Name;
                 if (string.IsNullOrEmpty(cultureName)) continue;

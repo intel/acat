@@ -71,7 +71,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             bool retVal = true;
 
-            var actuators = Context.AppActuatorManager.ActuatorsList;
+            IEnumerable<IActuator> actuators = Context.AppActuatorManager.ActuatorsList;
 
             _logger.LogDebug($"Initializing UserControlSwitchSelect. Found {actuators.Count()} actuators");
 
@@ -85,11 +85,11 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
             _logger.LogDebug($"ActuatorConfig loaded with {_actuatorConfig.ActuatorSettings.Count} actuator settings");
 
-            foreach (var actuator in actuators)
+            foreach (IActuator actuator in actuators)
             {
                 _logger.LogDebug($"Processing actuator: {actuator.Name} (ID: {actuator.Descriptor.Id})");
 
-                var actuatorSetting = getAcutatorSetting(actuator.Descriptor.Id);
+                ActuatorSetting actuatorSetting = getAcutatorSetting(actuator.Descriptor.Id);
                 if (actuatorSetting != null)
                 {
                     _logger.LogDebug($"Found actuator setting for {actuatorSetting.Name}");
@@ -151,8 +151,8 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         private IActuator getActuator(int index)
         {
-            var actuatorSetting = _actuatorSettings[index];
-            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
+            ActuatorSetting actuatorSetting = _actuatorSettings[index];
+            foreach (IActuator actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (actuatorSetting.Id.Equals(actuator.Descriptor.Id))
                 {
@@ -165,7 +165,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         private ActuatorSetting getAcutatorSetting(Guid guid)
         {
-            foreach (var actuatorSetting in _actuatorConfig.ActuatorSettings)
+            foreach (ActuatorSetting actuatorSetting in _actuatorConfig.ActuatorSettings)
             {
                 if (guid.Equals(actuatorSetting.Id))
                 {

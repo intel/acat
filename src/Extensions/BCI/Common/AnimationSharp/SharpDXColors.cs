@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ThemeManagement;
 using ACAT.Extensions.BCI.Common.AnimationSharp.Utility;
 using SharpDX.Direct2D1;
 using System.Drawing;
@@ -92,7 +93,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private void InitializeColors()
         {
-            var mainColorScheme = AnimationManagerUtils.GetMainColorScheme("BCIColorCodedRegionDefault");
+            ColorScheme mainColorScheme = AnimationManagerUtils.GetMainColorScheme("BCIColorCodedRegionDefault");
 
             ColorBackground = GetColorScheme(mainColorScheme.Background);
 

@@ -50,7 +50,7 @@ namespace ACAT.Applications
 
         public static bool ResetAllPreferences(List<PreferencesCategory> currentCategory)
         {
-            var logger = LoggingConfiguration.CreateLogger<AppCommon>();
+            ILogger<AppCommon> logger = LoggingConfiguration.CreateLogger<AppCommon>();
             try
             {
                 // Reset general preferences  
@@ -65,12 +65,12 @@ namespace ACAT.Applications
                     }
                 }
 
-                foreach (var category in currentCategory)
+                foreach (PreferencesCategory category in currentCategory)
                 {
                     if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
                     {
-                        var defaultPrefs = supportsPrefs.GetDefaultPreferences();
-                        var currentPrefs = supportsPrefs.GetPreferences();
+                        IPreferences defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                        IPreferences currentPrefs = supportsPrefs.GetPreferences();
 
                         if (defaultPrefs != null && currentPrefs != null)
                         {
@@ -91,20 +91,20 @@ namespace ACAT.Applications
 
         private static void CopyPreferencesValues(IPreferences source, IPreferences target)
         {
-            var logger = LoggingConfiguration.CreateLogger<AppCommon>();
-            var sourceType = source.GetType();
-            var targetType = target.GetType();
+            ILogger<AppCommon> logger = LoggingConfiguration.CreateLogger<AppCommon>();
+            Type sourceType = source.GetType();
+            Type targetType = target.GetType();
 
-            var properties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] properties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-            foreach (var prop in properties)
+            foreach (PropertyInfo prop in properties)
             {
                 if (prop.CanRead && prop.CanWrite)
                 {
                     try
                     {
                         var value = prop.GetValue(source);
-                        var targetProp = targetType.GetProperty(prop.Name);
+                        PropertyInfo targetProp = targetType.GetProperty(prop.Name);
 
                         if (targetProp != null && targetProp.CanWrite)
                         {

@@ -113,7 +113,7 @@ namespace ACAT.Core.AgentManagement.Agents
         {
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                foreach (var agentProcessInfo in agent.ProcessesSupported)
+                foreach (AgentProcessInfo agentProcessInfo in agent.ProcessesSupported)
                 {
                     if (string.Compare(processName, agentProcessInfo.Name, true) == 0)
                     {
@@ -135,7 +135,7 @@ namespace ACAT.Core.AgentManagement.Agents
             IApplicationAgent nullPathAgent = null;
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                foreach (var processInfo in agent.ProcessesSupported)
+                foreach (AgentProcessInfo processInfo in agent.ProcessesSupported)
                 {
                     if (string.Compare(process.ProcessName, processInfo.Name, true) == 0)
                     {

@@ -107,7 +107,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<Settings>();
+            Settings tmp = LoadDefaults<Settings>();
             var res = Save(tmp, SettingsFilePath);
             Load();
 

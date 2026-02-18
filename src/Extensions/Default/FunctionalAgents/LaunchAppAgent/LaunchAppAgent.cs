@@ -445,7 +445,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             try
             {
                 process.WaitForInputIdle(6000);
-                var handle = process.MainWindowHandle;
+                IntPtr handle = process.MainWindowHandle;
                 if (handle != IntPtr.Zero)
                 {
                     activateWindow(handle);

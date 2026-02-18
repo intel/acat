@@ -81,7 +81,7 @@ namespace ACAT.UserControls
             if (string.IsNullOrEmpty(_displayText))
                 return;
 
-            var textSize = TextRenderer.MeasureText(_displayText, Font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding | TextFormatFlags.SingleLine);
+            Size textSize = TextRenderer.MeasureText(_displayText, Font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding | TextFormatFlags.SingleLine);
             int y = (Height - textSize.Height) / 2;
 
             TextRenderer.DrawText(e.Graphics, _displayText, Font, new Point(_textX, Math.Max(0, y)), ForeColor,

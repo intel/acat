@@ -8,6 +8,7 @@ using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Microsoft.Extensions.Logging;
 using SharpDX.Direct2D1;
@@ -32,7 +33,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static RawColor4 GetBorderColorScheme(string colorCodeRegion)
         {
-            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(colorCodeRegion);
+            ColorScheme colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(colorCodeRegion);
             return ConvertToRawColor4(colorScheme);
         }
 
@@ -92,7 +93,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             try
             {
                 var temptypeOfBox = AnimationManagerUtils.GetTypeOfBox(boxesData.Value, totalAmountOfBoxes);
-                var tempbuttonTextFormat = GetTextFormat(widgetsData, boxesData.Value, totalAmountOfBoxes, directWriteFactory, temptypeOfBox);
+                List<TextFormat>[] tempbuttonTextFormat = GetTextFormat(widgetsData, boxesData.Value, totalAmountOfBoxes, directWriteFactory, temptypeOfBox);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     typeOfBox[indexBox] = temptypeOfBox[boxIndex];
@@ -117,7 +118,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static List<RawRectangleF>[] GetRecButtons(List<Control> controls, string configFilePath, int amountBoxes)
         {
-            var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
+            XmlNodeList configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             int index = 0;
             string xmlSection = "KeyboardBoxMapping".ToLower();
             List<RawRectangleF>[] rectBtns = Enumerable.Range(0, amountBoxes).Select(_ => new List<RawRectangleF>()).ToArray();
@@ -132,7 +133,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
+                            ScannerButtonControl btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
                             if (btn != null)
                             {
                                 btn.Tag = tag;
@@ -161,7 +162,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static Dictionary<int, RawRectangleF>[] GetRecProbabilityBars(List<Control> PBcontrols, string configFilePath, int amountBoxes)
         {
-            var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
+            XmlNodeList configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             string xmlSection = "ProgressBarsMapping".ToLower();
             int index = 0;
             Dictionary<int, RawRectangleF>[] probBars = Enumerable.Range(0, amountBoxes).Select(_ => new Dictionary<int, RawRectangleF>()).ToArray();
@@ -176,7 +177,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
+                            ScannerButtonControl btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
                             if (btn != null)
                             {
                                 btn.Tag = tag;
@@ -204,7 +205,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static Dictionary<int, RawRectangleF> GetRecProbabilityBarsBox(List<Control> PBcontrols, string configFilePath)
         {
-            var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
+            XmlNodeList configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             string xmlSection = "ProgressBarsBoxMapping".ToLower();
             Dictionary<int, RawRectangleF> probBars = new();
             try
@@ -218,7 +219,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
+                            ScannerButtonControl btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
                             if (btn != null)
                             {
                                 btn.Tag = tag;
@@ -247,7 +248,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static List<RoundedRectangle>[] GetRecRoundButtons(List<Control> controls, string configFilePath, int amountBoxes, float radius)
         {
-            var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
+            XmlNodeList configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             int index = 0;
             string xmlSection = "KeyboardBoxMapping".ToLower();
             List<RoundedRectangle>[] rectBtns = Enumerable.Range(0, amountBoxes).Select(_ => new List<RoundedRectangle>()).ToArray();
@@ -262,11 +263,11 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
+                            ScannerButtonControl btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
                             if (btn != null)
                             {
                                 btn.Tag = tag;
-                                var rectBtn = GetRectangleFromLocationOnForm(btn);
+                                RawRectangleF rectBtn = GetRectangleFromLocationOnForm(btn);
                                 rectBtns[index].Add(GetRoundedRectangle(rectBtn, radius));
                             }
                         }
@@ -333,7 +334,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             int indexBox = 0;
             try
             {
-                var temprectBtnsAllRound = GetRecRoundButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes, radiusCornersButtons);
+                List<RoundedRectangle>[] temprectBtnsAllRound = GetRecRoundButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes, radiusCornersButtons);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     rectanglesButtonsRoundList[indexBox] = temprectBtnsAllRound[boxIndex];
@@ -369,9 +370,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             {
                 for (int indexBoxData = 0; indexBoxData < boxesData.Count; indexBoxData++)
                 {
-                    var boxData = boxesData.ElementAt(indexBoxData);
+                    KeyValuePair<List<Control>, string> boxData = boxesData.ElementAt(indexBoxData);
                     amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                    var temprectExtraButtonCRG = GetRectangleCRG(boxData.Key);
+                    RawRectangleF temprectExtraButtonCRG = GetRectangleCRG(boxData.Key);
                     int tempoffsetCRG = AnimationManagerUtils.GetOffsetCRG(widgetsData[indexBoxData]);
                     TextFormat tempbuttonTextFormatCRG = GetTextFormatCRG(widgetsData[indexBoxData], directWriteFactory);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
@@ -406,10 +407,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             int indexBox = 0;
             try
             {
-                foreach (var boxData in boxesData)
+                foreach (KeyValuePair<List<Control>, string> boxData in boxesData)
                 {
                     amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                    var temprectExtraButton = GetRectangleTriggerBox(boxData.Key);
+                    RawRectangleF temprectExtraButton = GetRectangleTriggerBox(boxData.Key);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
                     {
                         if (temprectExtraButton.Bottom != 0 && temprectExtraButton.Top != 0 && temprectExtraButton.Left != 0 && temprectExtraButton.Right != 0)
@@ -457,7 +458,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns>List with the text format for each button</returns>
         public static List<TextFormat>[] GetTextFormat(List<Widget> widgets, string configFilePath, int amountBoxes, SharpDX.DirectWrite.Factory directWriteFactory, string[] typeBox)
         {
-            var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
+            XmlNodeList configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             int index = 0;
             string xmlSection = "KeyboardBoxMapping".ToLower();
             List<TextFormat>[] textFormats = Enumerable.Range(0, amountBoxes).Select(_ => new List<TextFormat>()).ToArray();
@@ -472,7 +473,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
+                            Widget btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
                             if (typeBox[index] != null)
                             {
                                 if (typeBox[index].ToLower().Contains("keyboard".ToLower()) || typeBox[index].ToLower().Contains("Menus".ToLower()) || btnWidget.Name.Equals("PWLItem10") || btnWidget.Name.Equals("SPLItem5"))
@@ -507,7 +508,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             TextFormat textFormatCRG = null;
             try
             {
-                var btnCRGWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals("BtnCRG"));
+                Widget btnCRGWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals("BtnCRG"));
                 if (btnCRGWidget != null)
                     return GetButtonTextFormat(btnCRGWidget, directWriteFactory, TextAlignment.Center);
             }
@@ -605,7 +606,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         private static TextFormat GetButtonTextFormat(Widget widget, SharpDX.DirectWrite.Factory directWriteFactory, TextAlignment textAlignment)
         {
             IButtonWidget widbtn = widget as IButtonWidget;
-            var fontData = widbtn.GetWidgetAttribute();
+            WidgetAttribute fontData = widbtn.GetWidgetAttribute();
             var buttonTextFormat = new TextFormat(directWriteFactory,
                                             fontData.FontName,
                                             GetFontWeight(fontData.FontBold),
@@ -715,7 +716,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         private static RawRectangleF GetRectangleFromName(List<Control> controls, string name)
         {
             RawRectangleF rectExtraButton = new();
-            var btn = AnimationManagerUtils.GetControl(controls, name, 1, false);
+            ScannerButtonControl btn = AnimationManagerUtils.GetControl(controls, name, 1, false);
             if (btn != null)
                 rectExtraButton = GetRectangleFromLocationOnForm(btn);
             return rectExtraButton;

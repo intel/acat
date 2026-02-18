@@ -214,7 +214,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="type">the .NET type</param>
         public void AddFormToCache(Type type)
         {
-            var guid = PanelConfigMap.GetFormId(type);
+            Guid guid = PanelConfigMap.GetFormId(type);
             PanelConfigMap.AddFormToCache(guid, type);
         }
 
@@ -226,7 +226,7 @@ namespace ACAT.Core.PanelManagement
         {
             while (_stack.Count > 0)
             {
-                var panelStack = _stack.Pop();
+                PanelStack panelStack = _stack.Pop();
 
                 panelStack.CloseCurrentPanel();
 
@@ -275,7 +275,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_stack.Count > 0)
             {
-                var panelStack = _stack.Pop();
+                PanelStack panelStack = _stack.Pop();
 
                 panelStack.CloseCurrentPanel();
 
@@ -452,7 +452,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_stack.Count > 0)
             {
-                var panelStack = _stack.Peek();
+                PanelStack panelStack = _stack.Peek();
                 panelStack.Pause();
             }
 
@@ -601,7 +601,7 @@ namespace ACAT.Core.PanelManagement
 
             WindowActivityMonitor.Resume();
 
-            var panelStack = _stack.Peek();
+            PanelStack panelStack = _stack.Peek();
 
             if (panelStack.IsPaused)
             {
@@ -623,7 +623,7 @@ namespace ACAT.Core.PanelManagement
 
             WindowActivityMonitor.Pause();
 
-            var panelStack = _stack.Peek();
+            PanelStack panelStack = _stack.Peek();
 
             if (!panelStack.IsPaused)
             {
@@ -640,7 +640,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="e"></param>
         private void AppAgent_EvtFocusChanged(object sender, FocusChangedEventArgs e)
         {
-            var panel = getTopOfStack().GetCurrentPanel();
+            IPanel panel = getTopOfStack().GetCurrentPanel();
             if (panel is IScannerPanel)
             {
                 ((IScannerPanel)panel).OnFocusChanged(e.WindowActivityInfo);

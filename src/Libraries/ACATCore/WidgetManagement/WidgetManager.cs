@@ -348,8 +348,8 @@ namespace ACAT.Core.WidgetManagement
                 if (ex is ReflectionTypeLoadException)
                 {
                     var typeLoadException = (ReflectionTypeLoadException)ex;
-                    var exceptions = typeLoadException.LoaderExceptions;
-                    foreach (var e in exceptions)
+                    Exception[] exceptions = typeLoadException.LoaderExceptions;
+                    foreach (Exception e in exceptions)
                     {
                         _staticLogger.LogDebug("Loader exception: {Exception}", e);
                     }
@@ -365,11 +365,16 @@ namespace ACAT.Core.WidgetManagement
         private static void onFileFound(String file)
         {
             String filePath = file.ToLower();
-            _ = Path.GetFileName(filePath);
+            String fileName = Path.GetFileName(filePath);
             String extension = Path.GetExtension(filePath);
             if (String.Compare(extension, ".dll", true) == 0)
             {
-                onDllFound(filePath);
+                // Skip resource assemblies (satellite assemblies for localization)
+                // These are automatically loaded by .NET and should not be loaded directly
+                if (!fileName.EndsWith(".resources.dll", StringComparison.OrdinalIgnoreCase))
+                {
+                    onDllFound(filePath);
+                }
             }
         }
 

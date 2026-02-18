@@ -413,7 +413,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                                       BCIActuatorSettings.Settings.Classifier_EnableChannel16
                                                     };
 
-                foreach (var typingMapping in DictTypingCalibrationMappings)
+                foreach (KeyValuePair<BCIScanSections, BCIScanSections> typingMapping in DictTypingCalibrationMappings)
                 {
                     String classifierFileName = BCIActuatorSettings.Settings.Calibration_TrainedClassifiersFilePath + "_" + typingMapping.Value;
                     String classifierFilePath = Path.Combine(UserManager.CurrentUserDir, classifierFileName);
@@ -448,7 +448,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                     MinimumScoreRequired = DictCalibrationParameters[typingMapping.Key].MinimumScoreRequired,
                                     IsClassifierLoaded = !missingClassifier
                                 };
-                                var jsonString = bciLogEntry;
+                                BCILogEntryClassifierLoaded jsonString = bciLogEntry;
                                 AuditLog.Audit(new AuditEvent("BCIClassifierLoaded", jsonString));
                             }
                         }
@@ -983,7 +983,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             try
             {
                 var bciUpdatedMappings = request as BCICalibrationUpdatedMappings;
-                var dictUpdatedMappings = bciUpdatedMappings.DictUpdatedMappings;
+                Dictionary<BCIScanSections, BCIScanSections> dictUpdatedMappings = bciUpdatedMappings.DictUpdatedMappings;
 
                 if (dictUpdatedMappings != null && dictUpdatedMappings.Count > 0)
                 {
@@ -1295,7 +1295,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 // Write marker values to file
                                 _daqInstance.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
 
-                                var overallStatus = ((DAQ_OpenBCI)_daqInstance).GetStatus(out SignalStatus[] signalStatus);
+                                SignalStatus overallStatus = ((DAQ_OpenBCI)_daqInstance).GetStatus(out SignalStatus[] signalStatus);
                                 if (overallStatus == SignalStatus.SIGNAL_OK)
                                     statusSignal = SignalStatus.SIGNAL_OK;
 
@@ -1329,7 +1329,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                     AvgAlphaValue = avgAlpha,
                                     AvgBetaValue = avgBeta
                                 };
-                                var jsonString = bciLogEntry;
+                                BCILogEntryEyesClosed jsonString = bciLogEntry;
                                 AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString));
                                 _logger.LogDebug("Line added to audit file: " + jsonString);
                             }
@@ -1433,7 +1433,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 LanguageModelProbabilityType = languageModelProbabilityType,
                 LanguageModelProbabilitiesEnabled = enableLanguageModelprobabilities
             };
-            var jsonString = bciLogEntry;
+            BCILogEntryLanguageModelProbabilitiesReceived jsonString = bciLogEntry;
             AuditLog.Audit(new AuditEvent("BCILanguageModelProbabilitiesReceived", jsonString));
             _logger.LogDebug("Line added to audit file: " + jsonString);
         }
@@ -1849,7 +1849,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                     AvgAlphaValue = avgAlpha, 
                                     AvgBetaValue = avgBeta 
                                 };
-                                var jsonString2 = bciLogEntry2;
+                                BCILogEntryEyesClosed jsonString2 = bciLogEntry2;
                                 AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString2));
 
                                 if (BCIActuatorSettings.Settings.EyesClosed_EnableDetection)
@@ -2001,7 +2001,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     ScanningSection = bciTypingRepetitionEnd.ScanningSection.ToString(),
                     UseLanguageModelProbabilities = (EEGProcessingGlobals.DecisionMakerDict[currentScanSection].enableLanguageModelProbabilities && nextCharProbs != null)
                 };
-                var jsonString2 = bciScanningSectionStarted;
+                BCILogEntrNewScanningSectionStarted jsonString2 = bciScanningSectionStarted;
                 AuditLog.Audit(new AuditEvent("BCIScanningSectionStarted", jsonString2));
             }
 
@@ -2019,7 +2019,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 EegProbabilities = eegProbs ?? new Dictionary<int, double>(),
                 PosteriorProbabilities = posteriorProbsDict ?? new Dictionary<int, double>(),
             };
-            var jsonString = bciLogEntry;
+            BCILogEntryTypingEnd jsonString = bciLogEntry;
             AuditLog.Audit(new AuditEvent("BCIRepetitionEnd", jsonString));
             _logger.LogDebug("Results: " + jsonString);
 

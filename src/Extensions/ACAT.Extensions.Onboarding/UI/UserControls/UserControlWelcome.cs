@@ -74,7 +74,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
                 updateCountdown();
 
-                var font = buttonConfigure.Font;
+                Font font = buttonConfigure.Font;
                 buttonConfigure.Font = new Font(font.FontFamily, font.Size, FontStyle.Underline, GraphicsUnit.Point, 0); ;
 
                 _timer = new Timer

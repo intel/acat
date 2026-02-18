@@ -424,7 +424,7 @@ namespace ACAT.Extension.UI
         {
             List<string> predictedSentenceList1 = new();
 
-            var predictedSentenceList = response.Results;
+            IEnumerable<string> predictedSentenceList = response.Results;
 
             try
             {
@@ -488,7 +488,7 @@ namespace ACAT.Extension.UI
             List<string> predictedWordsList1 = new();
             List<string> predictedLettersList1 = new();
 
-            var predictedWordList = response.Results;
+            IEnumerable<string> predictedWordList = response.Results;
 
             try
             {
@@ -537,7 +537,7 @@ namespace ACAT.Extension.UI
 
             var charAtCaret = '\0';
 
-            using (var agentContext = Context.AppAgentMgr.ActiveContext())
+            using (AgentContext agentContext = Context.AppAgentMgr.ActiveContext())
             {
                 try
                 {
@@ -682,7 +682,7 @@ namespace ACAT.Extension.UI
                 string nwords;
                 var charAtCaret = '\0';
 
-                using (var agentContext = Context.AppAgentMgr.ActiveContext())
+                using (AgentContext agentContext = Context.AppAgentMgr.ActiveContext())
                 {
                     // we need the word at the cursor and also the previous n-words
                     // in the current sentence
@@ -750,7 +750,7 @@ namespace ACAT.Extension.UI
                     request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Words, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
-                        var response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                        WordPredictionResponse response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
                         processWordPredictionResponse(response);
                     }
                     else
@@ -764,7 +764,7 @@ namespace ACAT.Extension.UI
                     request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Sentences, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
-                        var response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                        WordPredictionResponse response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
                         processSentencePredictionResponse(response);
                     }
                     else

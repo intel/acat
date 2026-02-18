@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Speech.Synthesis;
 
@@ -281,7 +282,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public bool Init(CultureInfo ci)
         {
-            var ins = Synthesizer.GetInstalledVoices();
+            ReadOnlyCollection<InstalledVoice> ins = Synthesizer.GetInstalledVoices();
 
             foreach (InstalledVoice iv in ins)
             {

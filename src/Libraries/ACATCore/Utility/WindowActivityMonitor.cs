@@ -47,7 +47,7 @@ namespace ACAT.Core.Utility
                 _form.Show();
                 _form.Visible = false;
                 // Force handle creation to ensure Invoke/BeginInvoke can be called
-                var handle = _form.Handle;
+                IntPtr handle = _form.Handle;
             }
 
             if (_forgroundHook == IntPtr.Zero)
@@ -103,7 +103,7 @@ namespace ACAT.Core.Utility
         {
             if (_isPaused) return;
             // Get the current foreground window and focused element
-            var info = GetForegroundWindowInfo();
+            WindowActivityMonitorInfo info = GetForegroundWindowInfo();
             if (info != null)
             {
                 HandleFocusOrWindowChange(info);
@@ -155,7 +155,7 @@ namespace ACAT.Core.Utility
 
             if(_currentHwnd != IntPtr.Zero)
             {
-                var info = GetForegroundWindowInfo();
+                WindowActivityMonitorInfo info = GetForegroundWindowInfo();
                 EvtWindowMonitorHeartbeat?.Invoke(info);
             }
         }
@@ -165,7 +165,7 @@ namespace ACAT.Core.Utility
         {
             if (_isPaused || hwnd == IntPtr.Zero) return;
 
-            var info = GetForegroundWindowInfo(hwnd);
+            WindowActivityMonitorInfo info = GetForegroundWindowInfo(hwnd);
             HandleFocusOrWindowChange(info);
         }
 
@@ -177,7 +177,7 @@ namespace ACAT.Core.Utility
             const int OBJID_WINDOW = 0;
             if (idObject != OBJID_WINDOW || idChild != 0) return;
 
-            var form = Form.FromChildHandle(hwnd);
+            Control form = Form.FromChildHandle(hwnd);
             if (form == null) return;
 
             switch (eventType)
@@ -195,11 +195,11 @@ namespace ACAT.Core.Utility
         {
             if (_isPaused) return;
 
-            var focusedElement = AutomationElement.FocusedElement;
+            AutomationElement focusedElement = AutomationElement.FocusedElement;
 
             if (focusedElement == null) return;
 
-            var info = GetForegroundWindowInfo();
+            WindowActivityMonitorInfo info = GetForegroundWindowInfo();
 
             if (info == null)
                 return;

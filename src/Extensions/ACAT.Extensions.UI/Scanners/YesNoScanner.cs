@@ -15,6 +15,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement.CommandDispatcher;
@@ -116,7 +117,7 @@ namespace ACAT.Extensions.UI.Menus
             _dispatcher = new Dispatcher(this);
             _invoker = new ExtensionInvoker(this);
 
-            var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+            IActuator actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
             if (actuator is KeyboardActuator)
             {
                 _keyboardActuator = actuator as KeyboardActuator;
@@ -364,7 +365,7 @@ namespace ACAT.Extensions.UI.Menus
 
             PanelCommon.RootWidget.Finder.FindAllButtons(list);
 
-            foreach (var button in list)
+            foreach (Widget button in list)
             {
                 if (button.Value == "@CmdNo")
                 {
@@ -434,7 +435,7 @@ namespace ACAT.Extensions.UI.Menus
         {
             scannerCommon.OnLoad();
 
-            var widget = PanelCommon.RootWidget.Finder.FindChild("Prompt");
+            Widget widget = PanelCommon.RootWidget.Finder.FindChild("Prompt");
             if (widget != null && !String.IsNullOrEmpty(Caption))
             {
                 widget.SetText(Caption);

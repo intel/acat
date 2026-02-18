@@ -72,27 +72,27 @@ namespace ACAT.Core.Utility
                             break;
 
                         case SoundType.CaregiverAttention:
-                            var soundCA = _soundsPlayer[SoundType.CaregiverAttention];
+                            SoundPlayer soundCA = _soundsPlayer[SoundType.CaregiverAttention];
                             soundCA.Play();
                             break;
 
                         case SoundType.OpenEyes:
-                            var soundOE = _soundsPlayer[SoundType.OpenEyes];
+                            SoundPlayer soundOE = _soundsPlayer[SoundType.OpenEyes];
                             soundOE.Play();
                             break;
 
                         case SoundType.Click:
-                            var soundC = _soundsPlayer[SoundType.Click];
+                            SoundPlayer soundC = _soundsPlayer[SoundType.Click];
                             soundC.Play();
                             break;
 
                         case SoundType.OpenEyesCalibration:
-                            var soundOEC = _soundsPlayer[SoundType.OpenEyesCalibration];
+                            SoundPlayer soundOEC = _soundsPlayer[SoundType.OpenEyesCalibration];
                             soundOEC.Play();
                             break;
 
                         case SoundType.CloseEyesCalibration:
-                            var soundCEC = _soundsPlayer[SoundType.CloseEyesCalibration];
+                            SoundPlayer soundCEC = _soundsPlayer[SoundType.CloseEyesCalibration];
                             soundCEC.Play();
                             break;
 

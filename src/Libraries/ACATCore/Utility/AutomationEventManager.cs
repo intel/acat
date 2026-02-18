@@ -110,7 +110,7 @@ namespace ACAT.Core.Utility
                 windowElement = new WindowElement(hWnd);
                 WindowTable.Add(hWnd, windowElement);
 
-                var control = Form.FromHandle(hWnd);
+                Control control = Form.FromHandle(hWnd);
                 if (control is Form)
                 {
                     var form = control as Form;
@@ -845,7 +845,7 @@ namespace ACAT.Core.Utility
                 {
                     var eventHandlerList = (List<AutomationPropertyChangedEventHandler>)events[e.Property];
                     Instance._logger?.LogDebug("eventHandlerList.Count = {Count}", eventHandlerList.Count);
-                    foreach (var p in eventHandlerList)
+                    foreach (AutomationPropertyChangedEventHandler p in eventHandlerList)
                     {
                         Instance._logger?.LogDebug("Calling property changed for {PropertyName}", e.Property.ProgrammaticName);
                         p(sender, e);

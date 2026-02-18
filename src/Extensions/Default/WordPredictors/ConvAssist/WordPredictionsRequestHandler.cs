@@ -95,7 +95,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     var prevWords = request.PrevWords;
                     var currentWord = request.CurrentWord;
 
-                    var pref = (WordPredictor as ISupportsPreferences).GetPreferences();
+                    IPreferences pref = (WordPredictor as ISupportsPreferences).GetPreferences();
 
                     //if ((pref as Settings).UseDefaultEncoding)
                     //{
@@ -208,14 +208,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 //Adding all elements into one single string
                 wordsPred = new string[WordsList.Count];
 
-                foreach (var element in WordsList)
+                foreach (KeyValuePair<string, double> element in WordsList)
                 {
                     wordsPred[i] = ConvAssistUtils.CleanText(element.Key, false, false);
                     i += 1;
                 }
                 for (int ii = 0; ii < wordsPred.Length; ii++)
                 {
-                    var pref = (wordPredictor as ISupportsPreferences).GetPreferences();
+                    IPreferences pref = (wordPredictor as ISupportsPreferences).GetPreferences();
 
                     //if (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("en") && (pref as Settings).UseDefaultEncoding)
                     //{
@@ -262,7 +262,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 wordPredictor.NotifyNextLetterProbabilities(LetterList, true);
                 i = 0;
                 letterPred = new string[LetterList.Count];
-                foreach (var element in LetterList)
+                foreach (KeyValuePair<string, double> element in LetterList)
                 {
                     letterPred[i] = ConvAssistUtils.CleanText(element.Key, false, false);
                     i += 1;

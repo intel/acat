@@ -46,7 +46,7 @@ namespace ACAT.Core.Validation
             RuleFor(x => x.WidgetAttributes)
                 .Must(attributes => {
                     var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                    foreach (var attr in attributes)
+                    foreach (WidgetAttributeJson attr in attributes)
                     {
                         if (!string.IsNullOrEmpty(attr.Name))
                         {
@@ -64,7 +64,7 @@ namespace ACAT.Core.Validation
             RuleFor(x => x.Animations)
                 .Must(animations => {
                     var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                    foreach (var anim in animations)
+                    foreach (AnimationJson anim in animations)
                     {
                         if (!string.IsNullOrEmpty(anim.Name))
                         {

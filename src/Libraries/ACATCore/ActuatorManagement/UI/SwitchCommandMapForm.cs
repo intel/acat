@@ -82,7 +82,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             if (dataGridView2.SelectedRows.Count > 0)
             {
-                var row = dataGridView2.SelectedRows[0];
+                DataGridViewRow row = dataGridView2.SelectedRows[0];
 
                 SelectedCommand = row.Cells[0].Value as String;
                 _ = ConfirmBoxOneOption.ShowDialog("Selected Command: " + SelectedCommand, "", StringResources.OK);
@@ -134,7 +134,7 @@ namespace ACAT.Core.ActuatorManagement
                 return;
             }
 
-            foreach (var cmdDescriptor in CommandManager.Instance.AppCommandTable.CmdDescriptors)
+            foreach (CmdDescriptor cmdDescriptor in CommandManager.Instance.AppCommandTable.CmdDescriptors)
             {
                 if (cmdDescriptor.EnableSwitchMap)
                 {

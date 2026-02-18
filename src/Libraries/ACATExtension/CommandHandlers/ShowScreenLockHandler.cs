@@ -46,7 +46,7 @@ namespace ACAT.Extension.CommandHandlers
             {
                 if (DialogUtils.ConfirmScanner(form as IPanel, StringResources.LockTheScreen))
                 {
-                    var screenLockForm = PanelManager.Instance.CreatePanel("ScreenLockScanner", "Lock Screen");
+                    Form screenLockForm = PanelManager.Instance.CreatePanel("ScreenLockScanner", "Lock Screen");
                     if (screenLockForm != null)
                     {
                         WindowActivityMonitor.Pause();

@@ -26,6 +26,7 @@ using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace ACAT.Core.ActuatorManagement
 {
@@ -279,9 +280,9 @@ namespace ACAT.Core.ActuatorManagement
             // each switch object using the switch ClassFactory
 
             _logger?.LogDebug("Loading switches");
-            foreach (var switchSetting in switchSettings)
+            foreach (SwitchSetting switchSetting in switchSettings)
             {
-                var actuatorSwitch = CreateSwitch();
+                IActuatorSwitch actuatorSwitch = CreateSwitch();
                 if (actuatorSwitch != null)
                 {
                     _logger?.LogDebug("Loading switch: {SwitchName}", switchSetting.Name);
@@ -447,7 +448,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>enum value</returns>
         protected SwitchAction getSwitchAction(String action)
         {
-            var retVal = SwitchAction.Unknown;
+            SwitchAction retVal = SwitchAction.Unknown;
             try
             {
                 retVal = (SwitchAction)Enum.Parse(typeof(SwitchAction), action, true);
@@ -471,9 +472,9 @@ namespace ACAT.Core.ActuatorManagement
                                             String gesture,
                                             IEnumerable<IActuatorSwitch> switches)
         {
-            foreach (var switchObj in switches)
+            foreach (IActuatorSwitch switchObj in switches)
             {
-                var imageSwitch = switchObj;
+                IActuatorSwitch imageSwitch = switchObj;
                 if (String.Compare(imageSwitch.Source, gesture, true) == 0)
                 {
                     _logger?.LogDebug("Found switch object {SwitchName} for gesture {Gesture}", switchObj.Name, gesture);
@@ -569,7 +570,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             IActuatorSwitch actuatorSwitch = null;
             String gesture = String.Empty;
-            var switchAction = SwitchAction.Unknown;
+            SwitchAction switchAction = SwitchAction.Unknown;
             String tag = String.Empty;
             int confidence = -1;
             long time = -1;
@@ -657,7 +658,7 @@ namespace ACAT.Core.ActuatorManagement
                 return false;
             }
 
-            var form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName, "Adjust Scanning Speed");
+            Form form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName, "Adjust Scanning Speed");
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);
@@ -674,7 +675,7 @@ namespace ACAT.Core.ActuatorManagement
                 return false;
             }
 
-            var form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultTryoutPanelName, "Switch Tryout");
+            Form form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultTryoutPanelName, "Switch Tryout");
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);

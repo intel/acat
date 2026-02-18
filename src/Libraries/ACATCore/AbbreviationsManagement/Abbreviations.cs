@@ -232,8 +232,8 @@ namespace ACAT.Core.AbbreviationsManagement
                 var loader = new JsonConfigurationLoader<AbbreviationsJson>(
                     new AbbreviationsValidator(), 
                     _logger);
-                
-                var config = loader.Load(filePath, createDefaultOnError: false);
+
+                AbbreviationsJson config = loader.Load(filePath, createDefaultOnError: false);
                 
                 if (config == null)
                 {
@@ -242,7 +242,7 @@ namespace ACAT.Core.AbbreviationsManagement
                 }
 
                 // Convert JSON entries to Abbreviation objects
-                foreach (var entry in config.Abbreviations)
+                foreach (AbbreviationJson entry in config.Abbreviations)
                 {
                     if (!string.IsNullOrWhiteSpace(entry.Word) && 
                         !string.IsNullOrWhiteSpace(entry.ReplaceWith))
@@ -276,7 +276,7 @@ namespace ACAT.Core.AbbreviationsManagement
                 
                 doc.Load(filePath);
 
-                var abbrNodes = doc.SelectNodes("/ACAT/Abbreviations/Abbreviation");
+                XmlNodeList abbrNodes = doc.SelectNodes("/ACAT/Abbreviations/Abbreviation");
 
                 if (abbrNodes != null)
                 {

@@ -130,7 +130,7 @@ namespace ACAT.Core.AnimationManagement
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    foreach (var animations in _animationsTable.Values)
+                    foreach (Animations animations in _animationsTable.Values)
                     {
                         animations.Dispose();
                     }

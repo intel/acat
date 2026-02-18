@@ -234,7 +234,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _panelName = startupArg.PanelClass;
 
-            var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
+            PanelConfigMapEntry panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
             if (panelConfigMapEntry == null) // did not find the panel
             {
                 return false;
@@ -390,14 +390,14 @@ namespace ACAT.Core.PanelManagement.Common
                 return;
             }
 
-            var startupArg = createStartupArgForScanner(widget);
+            StartupArg startupArg = createStartupArgForScanner(widget);
 
             _logger?.LogDebug("Creating Panel {PanelName}", widget.Panel);
             Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
             var child = panel as IScannerPanel;
             if (child != null)
             {
-                var scanner = child;
+                IScannerPanel scanner = child;
                 scanner.SetTargetControl(_form, widget);
                 Context.AppPanelManager.Show((IPanel)_form, child);
             }
@@ -528,7 +528,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             _rootWidget.Finder.FindAllChildren(widgetList);
 
-            foreach (var widget in widgetList)
+            foreach (Widget widget in widgetList)
             {
                 if (widget is IButtonWidget || !string.IsNullOrEmpty(widget.Panel))
                 {

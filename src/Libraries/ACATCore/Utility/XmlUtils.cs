@@ -220,7 +220,7 @@ namespace ACAT.Core.Utility
                 try
                 {
                     var xmlobject = XmlUtils.XmlSerializeToString(o);
-                    var success = XmlUtils.XmlDeserializeFromString<T>(xmlobject, out var _);
+                    var success = XmlUtils.XmlDeserializeFromString<T>(xmlobject, out T _);
 
                     using (TextWriter writer = new StreamWriter(filename, false))
                     {
@@ -229,7 +229,7 @@ namespace ACAT.Core.Utility
 
                     using StreamReader inputStream = new(filename);
                     var xmlContent = inputStream.ReadToEnd();
-                    retVal = XmlUtils.XmlDeserializeFromString<T>(xmlContent, out var _);
+                    retVal = XmlUtils.XmlDeserializeFromString<T>(xmlContent, out T _);
                 }
                 catch (Exception e)
                 {

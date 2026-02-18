@@ -24,6 +24,7 @@ using ACAT.Core.Utility.TypeLoader;
 using ACATResources;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
@@ -415,7 +416,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 return false;
             }
 
-            var activeCameraList = Cameras.GetCameraNames();
+            IEnumerable<string> activeCameraList = Cameras.GetCameraNames();
 
             return activeCameraList.Any(c => String.Compare(c, camera, false) == 0);
         }
@@ -650,7 +651,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private bool detectAndSetPreferredCamera()
         {
             bool retVal = true;
-            var installedCameras = Cameras.GetCameraNames();
+            IEnumerable<string> installedCameras = Cameras.GetCameraNames();
             PreferredCamera = CameraActuatorSettings.PreferredCamera;
 
             if (!IsCameraInstalled(PreferredCamera))
@@ -679,7 +680,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private bool hasCameraListChanged()
         {
             var listFromSettings = CameraActuatorSettings.CameraList;
-            var activeCameraList = Cameras.GetCameraNames();
+            IEnumerable<string> activeCameraList = Cameras.GetCameraNames();
 
             if (listFromSettings == null || activeCameraList == null)
             {

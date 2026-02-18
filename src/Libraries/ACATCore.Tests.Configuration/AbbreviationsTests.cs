@@ -14,6 +14,7 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.Configuration;
 using ACAT.Core.Utility;
 using ACAT.Core.Validation;
+using FluentValidation.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -95,7 +96,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var config = JsonSerializer.Deserialize<AbbreviationsJson>(json);
+            AbbreviationsJson config = JsonSerializer.Deserialize<AbbreviationsJson>(json);
 
             // Assert
             Assert.IsNotNull(config);
@@ -121,7 +122,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -141,7 +142,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -162,7 +163,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -187,7 +188,7 @@ namespace ACATCore.Tests.Configuration
             bool saveSuccess = loader.Save(config, testFile);
 
             // Act - Load
-            var loadedConfig = loader.Load(testFile, createDefaultOnError: false);
+            AbbreviationsJson loadedConfig = loader.Load(testFile, createDefaultOnError: false);
 
             // Assert
             Assert.IsTrue(saveSuccess);

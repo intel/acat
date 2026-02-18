@@ -466,7 +466,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetBackground(String strColor)
         {
-            var color = _defaultBackgroundColor;
+            Color color = _defaultBackgroundColor;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -487,7 +487,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetForeground(String strColor)
         {
-            var color = _defaultForegroundColor;
+            Color color = _defaultForegroundColor;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -508,7 +508,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightBackground(String strColor)
         {
-            var color = _defaultHighlightBackground;
+            Color color = _defaultHighlightBackground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -529,7 +529,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightForeground(String strColor)
         {
-            var color = _defaultHighlightForeground;
+            Color color = _defaultHighlightForeground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -551,7 +551,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightSelectedBackground(String strColor)
         {
-            var color = _defaultSelectedBackground;
+            Color color = _defaultSelectedBackground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -572,7 +572,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightSelectedForeground(String strColor)
         {
-            var color = _defaultSelectedBackground;
+            Color color = _defaultSelectedBackground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)

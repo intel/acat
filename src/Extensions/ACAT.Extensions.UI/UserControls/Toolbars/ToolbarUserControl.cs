@@ -91,7 +91,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             var defaultSize = new Size((int)(40 * scaleFactor), (int)(40 * scaleFactor));
 
             // Create buttons with specific properties
-            foreach (var (button, index) in buttons.Select((p, i) => (p, i)))
+            foreach ((KeyValuePair<string, string> button, int index) in buttons.Select((p, i) => (p, i)))
             {
                 var scannerButton = new ScannerRoundedButtonControl
                 {

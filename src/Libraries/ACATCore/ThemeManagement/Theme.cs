@@ -90,8 +90,8 @@ namespace ACAT.Core.ThemeManagement
                 // Try loading as JSON first
                 var validator = new ThemeValidator();
                 var loader = new JsonConfigurationLoader<ThemeJson>(validator, logger);
-                
-                var themeJson = loader.Load(themeFile, createDefaultOnError: false);
+
+                ThemeJson themeJson = loader.Load(themeFile, createDefaultOnError: false);
                 
                 if (themeJson != null)
                 {
@@ -129,7 +129,7 @@ namespace ACAT.Core.ThemeManagement
                 doc.Load(themeFile);
 
                 // create the colorschemes object by parsing the colorschemes nodes
-                var colorSchemesNode = doc.SelectSingleNode("/ACAT/Theme/ColorSchemes");
+                XmlNode colorSchemesNode = doc.SelectSingleNode("/ACAT/Theme/ColorSchemes");
                 if (colorSchemesNode != null)
                 {
                     theme = new Theme(themeName, logger) { Colors = ColorSchemes.Create(colorSchemesNode, themeDir) };

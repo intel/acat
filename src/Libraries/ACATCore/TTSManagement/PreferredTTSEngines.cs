@@ -73,14 +73,14 @@ namespace ACAT.Core.TTSManagement
                 return getByLanguage(String.Empty);
             }
 
-            var guid = getByLanguage(ci.TwoLetterISOLanguageName);
+            Guid guid = getByLanguage(ci.TwoLetterISOLanguageName);
 
             return guid;
         }
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<PreferredTTSEngines>();
+            PreferredTTSEngines tmp = LoadDefaults<PreferredTTSEngines>();
             var res = Save(tmp, FilePath);
             Load();
 
@@ -110,7 +110,7 @@ namespace ACAT.Core.TTSManagement
         /// <returns></returns>
         public bool SetAsDefault(String language, Guid guid)
         {
-            var preferredEngine = TTSEngines.FirstOrDefault(engine => String.Compare(language, engine.Language, true) == 0);
+            PreferredTTSEngine preferredEngine = TTSEngines.FirstOrDefault(engine => String.Compare(language, engine.Language, true) == 0);
             if (preferredEngine != null)
             {
                 preferredEngine.ID = guid;
@@ -131,7 +131,7 @@ namespace ACAT.Core.TTSManagement
         /// <returns>ID, Guid.empty if none found</returns>
         private Guid getByLanguage(String language)
         {
-            foreach (var preferredEngine in TTSEngines)
+            foreach (PreferredTTSEngine preferredEngine in TTSEngines)
             {
                 if (String.Compare(preferredEngine.Language, language, true) == 0)
                 {

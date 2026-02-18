@@ -333,8 +333,8 @@ namespace ACAT.Core.Interpreter
                 return;
             }
 
-            var delegates = EvtRunCommandHook.GetInvocationList();
-            foreach (var del in delegates)
+            Delegate[] delegates = EvtRunCommandHook.GetInvocationList();
+            foreach (Delegate del in delegates)
             {
                 var hookDelegate = (RunCommandHook)del;
                 hookDelegate.Invoke(args, ref handled);

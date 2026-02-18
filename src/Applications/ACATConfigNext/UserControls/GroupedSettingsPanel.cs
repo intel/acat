@@ -42,7 +42,7 @@ namespace ACATConfigNext.UserControls
             basePanel.SuspendLayout();
 
 
-            foreach (var extension in acat_extensions)
+            foreach (IExtension extension in acat_extensions)
             {
                 var panel = new TableLayoutPanel
                 {
@@ -156,7 +156,7 @@ namespace ACATConfigNext.UserControls
         {
             control.Click += (s, e) =>
             {
-                var logger = LoggingConfiguration.CreateLogger<GroupedSettingsPanel>();
+                ILogger<GroupedSettingsPanel> logger = LoggingConfiguration.CreateLogger<GroupedSettingsPanel>();
                 logger.LogDebug("Clicked on control: {ControlName}", control.Name);
                 Control clickedControl = s as Control;
 

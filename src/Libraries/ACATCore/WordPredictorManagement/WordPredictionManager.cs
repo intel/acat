@@ -28,7 +28,7 @@ namespace ACAT.Core.WordPredictorManagement
     /// app sets the preferred word predcitor to use.
     /// This is a singleton instance class
     /// </summary>
-    public class WordPredictionManager : IDisposable
+    public class WordPredictionManager : IWordPredictionManager, IDisposable
     {
         private readonly ILogger<WordPredictionManager> _logger;
 

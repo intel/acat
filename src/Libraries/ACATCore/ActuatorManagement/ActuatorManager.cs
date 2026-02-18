@@ -44,7 +44,7 @@ namespace ACAT.Core.ActuatorManagement
     /// than the accept time and if so, trigger the switch events.
     /// This is a singleton class
     /// </summary>
-    public class ActuatorManager : IDisposable
+    public class ActuatorManager : IActuatorManager, IDisposable
     {
         private readonly ILogger<ActuatorManager> _logger;
 

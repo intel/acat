@@ -25,7 +25,7 @@ namespace ACAT.Core.ThemeManagement
     /// name of the folder containing the Theme assets.
     /// </summary>
     ///
-    public class ThemeManager : IDisposable
+    public class ThemeManager : IThemeManager, IDisposable
     {
         private readonly ILogger<ThemeManager> _logger;
 

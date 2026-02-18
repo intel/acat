@@ -10,12 +10,12 @@ namespace ACAT.Core.CommandManagement
     /// <summary>
     /// This class is work-in-progress
     /// </summary>
-    public class CommandManager
+    public class CommandManager : ICommandManager
     {
         /// <summary>
         /// The table containing a list of commands with their descriptions
         /// </summary>
-        public CmdDescriptorTable AppCommandTable;
+        public CmdDescriptorTable AppCommandTable { get; set; }
 
         private static readonly CommandManager _instance = new();
 

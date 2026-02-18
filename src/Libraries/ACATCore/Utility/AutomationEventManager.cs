@@ -30,7 +30,7 @@ namespace ACAT.Core.Utility
     /// removing handlers from the same thread.  This gives the app
     /// the flexibility to add/remove handlers from any thread.
     /// </summary>
-    public class AutomationEventManager : IDisposable
+    public class AutomationEventManager : IAutomationEventManager, IDisposable
     {
         private readonly ILogger<AutomationEventManager> _logger;
 

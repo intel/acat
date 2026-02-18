@@ -1,4 +1,5 @@
-﻿using ACATConfigNext.Forms;
+﻿using ACAT.Core.Utility;
+using ACATConfigNext.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;

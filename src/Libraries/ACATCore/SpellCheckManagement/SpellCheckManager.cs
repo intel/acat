@@ -26,7 +26,7 @@ namespace ACAT.Core.SpellCheckManagement
     ///
     /// This is a singleton instance class.
     /// </summary>
-    public class SpellCheckManager : IDisposable
+    public class SpellCheckManager : ISpellCheckManager, IDisposable
     {
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located

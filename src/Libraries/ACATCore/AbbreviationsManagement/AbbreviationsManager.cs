@@ -21,7 +21,7 @@ using System;
 
 namespace ACAT.Core.AbbreviationsManagement
 {
-    public class AbbreviationsManager : IDisposable
+    public class AbbreviationsManager : IAbbreviationsManager, IDisposable
     {
         private readonly ILogger<AbbreviationsManager> _logger;
 

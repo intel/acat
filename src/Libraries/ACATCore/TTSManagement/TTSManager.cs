@@ -33,7 +33,7 @@ namespace ACAT.Core.TTSManagement
     ///
     /// This class is a singleton.
     /// </summary>
-    public class TTSManager : IDisposable
+    public class TTSManager : ITTSManager, IDisposable
     {
         /// <summary>
         /// The root directory where all the TTS engines are located.

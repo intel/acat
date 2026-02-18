@@ -104,7 +104,7 @@ namespace ACAT.Core.AgentManagement
     /// Notifies subscribers if the text or caret position in the the
     /// active text window.
     /// </summary>
-    public class AgentManager : IDisposable
+    public class AgentManager : IAgentManager, IDisposable
     {
         /// <summary>
         /// Root directory from which application agents will be loaded

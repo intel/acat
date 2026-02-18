@@ -18,13 +18,57 @@
     </PackageReference>
   </ItemGroup>
 
-    <!-- Remove non-Windows files from output -->
-  <Target Name="FilterBrainFlowNativeFiles" AfterTargets="CopyMyPackageFiles">
-    <ItemGroup>
-      <FilesToDelete Include="$(OutputPath)*.dylib;$(OutputPath)*.so;$(OutputPath)*32*;$(OutputPath)*x86*" />
-    </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
-  </Target>
+    <!-- Prevent non-Windows native files from being copied to output -->
+    <Target Name="FilterBrainFlowNativeFiles" BeforeTargets="ResolveAssemblyReferences">
+      <ItemGroup>
+        <!-- Exclude Unix/Linux native libraries -->
+        <None Remove="**\*.dylib" />
+        <None Remove="**\*.so" />
+        <Content Remove="**\*.dylib" />
+        <Content Remove="**\*.so" />
+
+        <!-- Exclude 32-bit and x86 binaries on x64 builds -->
+        <None Remove="**\*32.dll" />
+        <None Remove="**\*x86.dll" />
+        <None Remove="**\x86\*.*" />
+        <None Remove="**\Win32\*.*" />
+        <Content Remove="**\*32.dll" />
+        <Content Remove="**\*x86.dll" />
+        <Content Remove="**\x86\*.*" />
+        <Content Remove="**\Win32\*.*" />
+      </ItemGroup>
+    </Target>
+
+    <!-- Filter NuGet runtime assets to only include win-x64 -->
+    <Target Name="FilterNuGetRuntimeAssets" BeforeTargets="ResolvePackageAssets">
+      <ItemGroup>
+        <!-- Remove non-Windows runtime assets from packages -->
+        <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="$([System.String]::Copy('%(RuntimeCopyLocalItems.Identity)').Contains('linux-'))" />
+        <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="$([System.String]::Copy('%(RuntimeCopyLocalItems.Identity)').Contains('osx-'))" />
+        <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="$([System.String]::Copy('%(RuntimeCopyLocalItems.Identity)').Contains('unix-'))" />
+        <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="$([System.String]::Copy('%(RuntimeCopyLocalItems.Identity)').Contains('win-x86'))" />
+        <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="$([System.String]::Copy('%(RuntimeCopyLocalItems.Identity)').Contains('win-arm'))" />
+
+        <!-- Also filter by file extension -->
+        <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="$([System.String]::Copy('%(RuntimeCopyLocalItems.Identity)').EndsWith('.dylib'))" />
+        <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="$([System.String]::Copy('%(RuntimeCopyLocalItems.Identity)').EndsWith('.so'))" />
+      </ItemGroup>
+    </Target>
+
+    <!-- Fallback: Remove non-Windows files from output if they were copied -->
+    <Target Name="CleanupNonWindowsFiles" AfterTargets="Build">
+      <ItemGroup>
+        <FilesToDelete Include="$(OutputPath)**\*.dylib" />
+        <FilesToDelete Include="$(OutputPath)**\*.so" />
+        <FilesToDelete Include="$(OutputPath)**\*32.dll" />
+        <FilesToDelete Include="$(OutputPath)**\*x86.dll" />
+      </ItemGroup>
+      <!-- Use ContinueOnError to handle locked files gracefully -->
+      <Delete Files="@(FilesToDelete)" ContinueOnError="true">
+        <Output TaskParameter="DeletedFiles" ItemName="SuccessfullyDeleted"/>
+      </Delete>
+      <Message Text="Cleaned up @(SuccessfullyDeleted->Count()) non-Windows native files" Importance="low" Condition="'@(SuccessfullyDeleted)' != ''" />
+    </Target>
 
 
   <PropertyGroup>

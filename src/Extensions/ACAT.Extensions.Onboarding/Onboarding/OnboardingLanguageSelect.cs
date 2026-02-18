@@ -91,7 +91,7 @@ namespace ACAT.Extensions.Onboarding.Onboarding
             switch (userControl.StepId)
             {
                 case Step1:
-                    var cultureInfo = userControlLang.currentCulture;
+                    CultureInfo cultureInfo = userControlLang.currentCulture;
                     _logger.LogDebug("User selected language: {LanguageName}", cultureInfo.DisplayName);
 
                     CoreGlobals.AppPreferences.Language = cultureInfo.TwoLetterISOLanguageName;

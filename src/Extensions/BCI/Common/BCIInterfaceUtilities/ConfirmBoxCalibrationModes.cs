@@ -363,7 +363,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonOtherTest_Click(object sender, EventArgs e)
         {
-            var result = BCIInterfaceUtils.ShowMoreTestForm(this);
+            BCIMenuOptions.Options result = BCIInterfaceUtils.ShowMoreTestForm(this);
             switch (result)
             {
                 case BCIMenuOptions.Options.RemapCalibrations:
@@ -652,7 +652,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             try
             {
-                foreach (var calibrationData in ActuatorResponse.DictClassifierInfo)
+                foreach (KeyValuePair<BCIScanSections, BCIClassifierInfo> calibrationData in ActuatorResponse.DictClassifierInfo)
                 {
                     switch (calibrationData.Key)
                     {

@@ -51,8 +51,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         {
             StringBuilder preceedingWords = new();
 
+            _logger?.LogInformation(">>> ProcessPredictionRequest called - Type: {Type}, PrevWords: '{PrevWords}', CurrentWord: '{CurrentWord}', Mode: {Mode}", 
+                request.PredictionType, request.PrevWords ?? "", request.CurrentWord ?? "", request.WordPredictionMode);
+
             if (request.PredictionType != PredictionTypes.Sentences)
             {
+                _logger?.LogWarning("Request type is not Sentences, returning empty response");
                 return new WordPredictionResponse(request, new List<String>(), false);
             }
 
@@ -60,17 +64,21 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             try
             {
                 _logger?.LogDebug("_prevMode: {PrevMode}, currentMode: {CurrentMode}", _prevMode, _wordPredictor.GetMode());
-                if (_prevMode != _wordPredictor.GetMode() ||
-                    _prevPrevWords == null ||
-                    _prevCurrentWord == null ||
-                    String.Compare(_prevPrevWords, request.PrevWords) != 0 ||
-                    String.Compare(_prevCurrentWord, request.CurrentWord) != 0)
+
+                bool modeChanged = _prevMode != _wordPredictor.GetMode();
+                bool prevWordsChanged = _prevPrevWords == null || String.Compare(_prevPrevWords, request.PrevWords) != 0;
+                bool currentWordChanged = _prevCurrentWord == null || String.Compare(_prevCurrentWord, request.CurrentWord) != 0;
+
+                _logger?.LogDebug("Change detection - ModeChanged: {ModeChanged}, PrevWordsChanged: {PrevWordsChanged}, CurrentWordChanged: {CurrentWordChanged}",
+                    modeChanged, prevWordsChanged, currentWordChanged);
+
+                if (modeChanged || prevWordsChanged || currentWordChanged)
                 {
                     _prevMode = _wordPredictor.GetMode();
                     _prevPrevWords = request.PrevWords;
                     _prevCurrentWord = request.CurrentWord;
 
-                    var pref = (_wordPredictor as ISupportsPreferences).GetPreferences();
+                    IPreferences pref = (_wordPredictor as ISupportsPreferences).GetPreferences();
 
                     String prevWords = request.PrevWords;
                     String currentWord = request.CurrentWord;
@@ -84,6 +92,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     preceedingWords.Clear();
                     preceedingWords.Append(prevWords);
                     preceedingWords.Append(currentWord);
+
+                    _logger?.LogInformation("Building prediction request - PreceedingWords: '{PreceedingWords}', CurrentWordEmpty: {IsEmpty}", 
+                        preceedingWords.ToString(), String.IsNullOrEmpty(currentWord.Trim()));
+
                     List<string> result;
                     try
                     {
@@ -92,25 +104,35 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                         if (String.IsNullOrEmpty(currentWord.Trim()))// && (prevWords.Length + currentWord.Length > 1))
                         {
+                            _logger?.LogInformation("CurrentWord is empty, requesting predictions in mode: {Mode}", request.WordPredictionMode);
+
                             if (request.WordPredictionMode == WordPredictionModes.Sentence)
                             {
+                                _logger?.LogInformation("Calling SendMessageConvAssistSentencePrediction with text: '{Text}'", preceedingWords.ToString());
                                 predictedSentences = _wordPredictor.SendMessageConvAssistSentencePrediction(preceedingWords.ToString(),
                                                                                     request.WordPredictionMode);
-                                _logger?.LogDebug("ConvAssist sentences response: {PredictedSentences}", predictedSentences);
+                                _logger?.LogInformation("ConvAssist sentences response received - Length: {Length}, Content: {Content}", 
+                                    predictedSentences?.Length ?? 0, predictedSentences);
                             }
                             else
                             {
+                                _logger?.LogInformation("Calling SendMessageConvAssistWordPrediction with text: '{Text}'", preceedingWords.ToString());
                                 predictedWords = _wordPredictor.SendMessageConvAssistWordPrediction(preceedingWords.ToString(),
                                                                                 request.WordPredictionMode);
                                 predictedSentences = predictedWords;
+                                _logger?.LogInformation("ConvAssist words response: {PredictedWords}", predictedWords);
                             }
 
                             try
                             {
+                                _logger?.LogDebug("Processing sentence predictions, predictedSentences: '{Sentences}'", predictedSentences);
                                 result = ProcessSentencesPredictions(predictedSentences, currentWord);
+                                _logger?.LogInformation("ProcessSentencesPredictions returned {Count} results: [{Results}]", 
+                                    result.Count, String.Join(", ", result));
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
+                                _logger?.LogError(ex, "Error in ProcessSentencesPredictions");
                                 result = new List<string>();
                             }
 
@@ -118,22 +140,25 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                         }
                         else
                         {
+                            _logger?.LogInformation("CurrentWord is NOT empty ('{CurrentWord}'), returning empty result", currentWord);
                             result = new List<string>();
                             _prevSentencePredictionResults = result;
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        _logger?.LogError(ex, "Exception in sentence prediction processing");
                         result = new List<string>();
                         _prevSentencePredictionResults = result;
                     }
 
                     var s = String.Join(", ", result);
+                    _logger?.LogInformation("Creating response with {Count} predictions: [{Results}]", result.Count, s);
                     response = new WordPredictionResponse(request, result, true);
                 }
                 else
                 {
-                    _logger?.LogDebug("Nothing changed. returning previous");
+                    _logger?.LogInformation("Nothing changed. returning previous {Count} results", _prevSentencePredictionResults.Count);
                     response = new WordPredictionResponse(request, _prevSentencePredictionResults, true);
                 }
             }
@@ -148,6 +173,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             {
             }
 
+            _logger?.LogInformation("<<< ProcessPredictionRequest returning response with {Count} predictions", 
+                response.Results != null ? System.Linq.Enumerable.Count(response.Results) : 0);
             return response;
         }
 
@@ -196,7 +223,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             List<KeyValuePair<string, double>> SentenceList = new();
             SentenceList = ConvAssistUtils.ToList(predictSenetnces);
             sentencePred = new string[SentenceList.Count];
-            foreach (var element in SentenceList)
+            foreach (KeyValuePair<string, double> element in SentenceList)
             {
                 sentencePred[i] = ConvAssistUtils.CleanText(element.Key, true, false); //ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharactersSentences(element.Key), true);
                 i += 1;
@@ -217,7 +244,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 SentenceChList = ConvAssistUtils.ToList(predictLettersSentence);
                 sentenceChPred = new string[SentenceChList.Count];
 
-                foreach (var (item, index) in SentenceChList.Select((item, index) => (item, index)))
+                foreach ((KeyValuePair<string, double> item, int index) in SentenceChList.Select((item, index) => (item, index)))
                 {
                     sentenceChPred[index] = ConvAssistUtils.CleanText(item.Key, false, false); //ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(item.Key));
                 }

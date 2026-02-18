@@ -54,7 +54,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         public static BaseDAQ CreateDAQFromSettings()
         {
             // Read from settings to determine which DAQ implementation to use
-            var settings = BCIActuatorSettings.Settings;
+            BCISettings settings = BCIActuatorSettings.Settings;
 
 
             if (settings.DAQ_DeviceType == "GTecBCI")

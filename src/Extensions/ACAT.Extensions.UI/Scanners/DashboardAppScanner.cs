@@ -148,7 +148,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         protected override void ScannerFormLoaded(object sender, EventArgs e)
         {
-            var icon = ImageUtils.GetEntryAssemblyIcon();
+            Icon icon = ImageUtils.GetEntryAssemblyIcon();
             if (icon != null)
             {
                 Icon = icon;
@@ -182,7 +182,7 @@ namespace ACAT.Extensions.UI.Scanners
 
             if (_launchAppAgent != null) 
             {
-                var uc = panelDashboardControls.Controls.Find("LaunchAppUserControl", true);
+                Control[] uc = panelDashboardControls.Controls.Find("LaunchAppUserControl", true);
                 _launchAppAgent?.Activate(uc.Length > 0 ? uc[0] as IUserControl : null);
             }
 
@@ -207,14 +207,14 @@ namespace ACAT.Extensions.UI.Scanners
             };
 
             // create the panel instance
-            var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+            Form form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
             if (form == null)
             {
                 _logger.LogError("Could not create TalkApplicationScanner panel.");
                 return false;
             }
 
-            var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+            IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
             if (agent == null)
             {
                 _logger.LogError("Talk Application Agent not found. Ensure it is registered in the ACAT configuration.");
@@ -253,7 +253,7 @@ namespace ACAT.Extensions.UI.Scanners
             ScannerCommon.UserControlManager.StopTopLevelAnimation();
             this.Hide();
 
-            var predictionMode = WordPredictionModes.None;
+            WordPredictionModes predictionMode = WordPredictionModes.None;
             if (Command == "CmdTalkSentenceMode")
             {
                 predictionMode = WordPredictionModes.Sentence;

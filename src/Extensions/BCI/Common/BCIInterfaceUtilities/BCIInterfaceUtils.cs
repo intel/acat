@@ -154,7 +154,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         public static BCIMenuOptions.MainMenuOptions ShowMainOptionsWindow(Form form, string title, string Label, bool enableOp3)
         {
-            var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
+            BCIMenuOptions.MainMenuOptions result = BCIMenuOptions.MainMenuOptions.ExitApplication;
 
             var confirmDialog = new ConfirmBoxThreeOption
             {
@@ -202,7 +202,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         public static BCIMenuOptions.MainMenuOptions ShowRecalibrationWindow(Form form, float auc)
         {
-            var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
+            BCIMenuOptions.MainMenuOptions result = BCIMenuOptions.MainMenuOptions.ExitApplication;
             var confirmDialog = new ConfirmBoxThreeOption
             {
                 PromptTitle = CALIBRATIONSTATUS,

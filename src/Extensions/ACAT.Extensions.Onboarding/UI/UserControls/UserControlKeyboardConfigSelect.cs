@@ -5,6 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.PanelConfig;
@@ -63,19 +65,19 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             bool retVal = true;
 
-            var actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
-            var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+            ActuatorConfig actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
+            IActuator keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
             if (keyboardActuator == null)
             {
                 return false;
             }
 
-            var keyboardActuatorConfigs = keyboardActuator.GetSupportedKeyboardConfigs();
+            IEnumerable<string> keyboardActuatorConfigs = keyboardActuator.GetSupportedKeyboardConfigs();
             List<String> keyboardConfigs = new();
 
-            var actuators = Context.AppActuatorManager.ActuatorsList;
-            foreach (var actuator in actuators)
+            IEnumerable<IActuator> actuators = Context.AppActuatorManager.ActuatorsList;
+            foreach (IActuator actuator in actuators)
             {
                 if (!actuator.Enabled)
                 {
@@ -84,7 +86,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
                 if (!actuator.Descriptor.Id.Equals(keyboardActuator.Descriptor.Id))
                 {
-                    var configs = actuator.GetSupportedKeyboardConfigs();
+                    IEnumerable<string> configs = actuator.GetSupportedKeyboardConfigs();
                     if (configs != null)
                     {
                         keyboardConfigs.AddRange(configs);
@@ -101,7 +103,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
             _panelClassConfigForApp = PanelConfigMap.GetPanelClassConfigForApp();
 
-            foreach (var panelClassConfigMap in _panelClassConfigForApp.PanelClassConfigMaps)
+            foreach (PanelClassConfigMap panelClassConfigMap in _panelClassConfigForApp.PanelClassConfigMaps)
             {
                 foreach (var name in keyboardConfigs)
                 {

@@ -344,7 +344,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 _numChannels, _samplingRate, _scaleIdx, _bufSize, _indEegChannels_str);
 
             // Set some text fields to smaller font size for 125 scaling (100 scaling is default)
-            var tuple = DualMonitor.GetDisplayWidthAndScaling();
+            Tuple<int, uint> tuple = DualMonitor.GetDisplayWidthAndScaling();
             if (tuple.Item1 > 0 && tuple.Item2 == 125)
             {
                 handle125Scaling();

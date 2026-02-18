@@ -15,6 +15,7 @@ using ACAT.Extension.UI.ScannerForms;
 using ACATResources;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
@@ -69,7 +70,7 @@ namespace ACAT.Extensions.UI.Scanners
 
                 case "CmdSaveToCanned":
                     arg.Handled = true;
-                    var mode = Context.AppWordPredictionManager.ActiveWordPredictor.GetMode();
+                    WordPredictionModes mode = Context.AppWordPredictionManager.ActiveWordPredictor.GetMode();
                     arg.Enabled = mode != WordPredictionModes.None && mode != WordPredictionModes.CannedPhrases &&
                         _textBoxTalkWindow != null && _textBoxTalkWindow.Text.Length != 0;
                     break;
@@ -139,7 +140,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         protected override void ScannerFormLoaded(object sender, EventArgs e)
         {
-            var icon = ImageUtils.GetEntryAssemblyIcon();
+            Icon icon = ImageUtils.GetEntryAssemblyIcon();
             if (icon != null)
             {
                 Icon = icon;
@@ -199,7 +200,7 @@ namespace ACAT.Extensions.UI.Scanners
         {
             if (panelTextBox.Controls.Count > 0 && panelTextBox.Controls[0] is ITalkWindowTextBox)
             {
-                var textBox = (panelTextBox.Controls[0] as ITalkWindowTextBox).TextBoxControl;
+                TextBox textBox = (panelTextBox.Controls[0] as ITalkWindowTextBox).TextBoxControl;
                 if (textBox != null)
                 {
                     textBox.KeyPress -= TextBoxTalkWindowOnKeyPress;
@@ -272,7 +273,7 @@ namespace ACAT.Extensions.UI.Scanners
                 return;
             }
             String textToLearn = String.Empty;
-            using (var context = Context.AppAgentMgr.ActiveContext())
+            using (AgentContext context = Context.AppAgentMgr.ActiveContext())
             {
                 int caretPos = context.TextAgent().GetCaretPos();
                 var start = TextUtils.GetStartIndexCurrOrPrevSentence(text, caretPos);
@@ -352,7 +353,7 @@ namespace ACAT.Extensions.UI.Scanners
 
                     String textToSpeak;
 
-                    using (var context = Context.AppAgentMgr.ActiveContext())
+                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
                     {
                         context.TextAgent().GetParagraphAtCaret(out textToSpeak);
                     }
@@ -502,7 +503,7 @@ namespace ACAT.Extensions.UI.Scanners
 
                     case "CmdEntryModeSelect":
                         {
-                            var panel = Context.AppPanelManager.CreatePanel("WordPredictionSetModeScanner", "ACAT");
+                            Form panel = Context.AppPanelManager.CreatePanel("WordPredictionSetModeScanner", "ACAT");
                             if (panel is IPanel)
                             {
                                 Context.AppPanelManager.ShowDialog(form as IPanel, panel as IPanel);
@@ -519,7 +520,7 @@ namespace ACAT.Extensions.UI.Scanners
 
                     case "CmdYesNoResponse":
                         {
-                            var panel = Context.AppPanelManager.CreatePanel("YesNoResponseScanner", "Select Response");
+                            Form panel = Context.AppPanelManager.CreatePanel("YesNoResponseScanner", "Select Response");
                             if (panel is IPanel)
                             {
                                 Context.AppPanelManager.ShowDialog(form as IPanel, panel as IPanel);

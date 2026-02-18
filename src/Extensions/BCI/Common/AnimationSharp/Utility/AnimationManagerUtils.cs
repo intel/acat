@@ -10,6 +10,7 @@ using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Microsoft.Extensions.Logging;
 using SharpDX.Direct2D1;
@@ -79,7 +80,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns>List with the text from each button</returns>
         public static List<string>[] ExtractButtonText(List<Control> controls, string configFilePath, int amountBoxes)
         {
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             int index = 0;
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             List<string>[] btnStringsAll = Enumerable.Range(0, amountBoxes).Select(_ => new List<string>()).ToArray();
@@ -118,7 +119,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static int GetAmountBoxes(string configFilePath)
         {
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             int amountBoxes = configNodes.Cast<XmlNode>().Count(node => XmlUtils.GetXMLAttrString(node, "name", null)?.ToLower() == xmlSection.ToLower());
             configNodes = null;
@@ -134,7 +135,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns>List with the text from each button</returns>
         public static List<Widget>[] GetBoxWidgets(List<Widget> widgets, string configFilePath, int amountBoxes)
         {
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             int index = 0;
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             List<Widget>[] widgetsBox = Enumerable.Range(0, amountBoxes).Select(_ => new List<Widget>()).ToArray();
@@ -149,7 +150,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var widgetButton = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
+                            Widget widgetButton = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
                             widgetsBox[index].Add(widgetButton);
                         }
                         index += 1;
@@ -178,7 +179,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             int indexBox = 0;
             try
             {
-                var tempwidgets = GetBoxWidgets(widgetsData, boxesData.Value, totalAmountOfBoxes);
+                List<Widget>[] tempwidgets = GetBoxWidgets(widgetsData, boxesData.Value, totalAmountOfBoxes);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     widgets[indexBox] = tempwidgets[boxIndex];
@@ -280,7 +281,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             int indexBox = 0;
             try
             {
-                var tempoffsetStrings = GetOffset(widgetsData, boxesData.Value, totalAmountOfBoxes, boxesData.Key);
+                List<int>[] tempoffsetStrings = GetOffset(widgetsData, boxesData.Value, totalAmountOfBoxes, boxesData.Key);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     offsetStrings[indexBox] = tempoffsetStrings[boxIndex];
@@ -308,7 +309,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             int indexBox = 0;
             try
             {
-                foreach (var boxData in boxesData)
+                foreach (KeyValuePair<List<Control>, string> boxData in boxesData)
                 {
                     amountBoxesPerUserControl = GetAmountBoxes(boxData.Value);
                     List<string>[] tempbtnsStringsAll = ExtractButtonText(boxData.Key, boxData.Value, amountBoxesPerUserControl);
@@ -369,7 +370,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         public static ScannerButtonControl GetControlFromID(int tag, List<ScannerButtonControl>[] controlsBtns, int activeKeyboard)
         {
             ScannerButtonControl tempButton = null;
-            foreach (var button in controlsBtns[activeKeyboard])
+            foreach (ScannerButtonControl button in controlsBtns[activeKeyboard])
             {
                 if (int.Parse(button.Tag.ToString()) == tag)
                 {
@@ -425,7 +426,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static List<ScannerButtonControl>[] GetControlsButtons(List<Control> controls, string configFilePath, int amountBoxes)
         {
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             int index = 0;
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             List<ScannerButtonControl>[] ctrlBtnsAll = Enumerable.Range(0, amountBoxes).Select(_ => new List<ScannerButtonControl>()).ToArray();
@@ -440,7 +441,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btn = GetControl(controls, name2, tag);
+                            ScannerButtonControl btn = GetControl(controls, name2, tag);
                             if (btn != null)
                                 ctrlBtnsAll[index].Add(btn);
                         }
@@ -472,9 +473,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             int indexBox = 0;
             try
             {
-                foreach (var widgetArray in widgetsData)
+                foreach (List<Widget> widgetArray in widgetsData)
                 {
-                    foreach (var widget in widgetArray)
+                    foreach (Widget widget in widgetArray)
                     {
                         if (widget.UIControl.Tag != null)
                         {
@@ -512,7 +513,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                     {
                         if (!control.Name.Contains("PWLItem") && control.Text.Length == 1 && (control.Text[0] >= 'a' && control.Text[0] <= 'z' || control.Text[0] == ' ') || control.Text[0] >= 'A' && control.Text[0] <= 'Z' || control.Text[0] == ' ')
                         {
-                            foreach (var probs in _lettersProbs)
+                            foreach (KeyValuePair<string, double> probs in _lettersProbs)
                             {
                                 string s = probs.Key.Trim('\'');
                                 if (control.Text.ToLower().Equals(s))
@@ -552,10 +553,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                             if (!widget.Name.Contains("PWLItem") && (widget.GetText()[0] >= 'a' && widget.GetText()[0] <= 'z' || widget.GetText()[0] == ' ') || widget.GetText()[0] >= 'A' && widget.GetText()[0] <= 'Z' || widget.GetText()[0] == ' ')
                             {
                                 IButtonWidget widbtn = widget as IButtonWidget;
-                                var fontData = widbtn.GetWidgetAttribute();
+                                WidgetAttribute fontData = widbtn.GetWidgetAttribute();
                                 if (fontData.FontName.Equals("acat font 1"))
                                 {
-                                    foreach (var probs in _lettersProbs)
+                                    foreach (KeyValuePair<string, double> probs in _lettersProbs)
                                     {
                                         string s = probs.Key.Trim('\'');
                                         // Validation for the "space" charcater for "acat font 1" -> m = space
@@ -565,7 +566,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                                 }
                                 else
                                 {
-                                    foreach (var probs in _lettersProbs)
+                                    foreach (KeyValuePair<string, double> probs in _lettersProbs)
                                     {
                                         string s = probs.Key.Trim('\'');
                                         if (widget.GetText().ToLower().Equals(s))
@@ -594,7 +595,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static ColorScheme GetMainColorScheme(string colorCodeRegion)
         {
-            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(colorCodeRegion);
+            ColorScheme colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(colorCodeRegion);
             return colorScheme;
         }
 
@@ -609,7 +610,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns></returns>
         public static List<ButtonsData>[] GetMatrixButtons(List<Control> controls, RenderTarget sharpDX_d2dRenderTarget, string configFilePath, int amountBoxes, int margin = 0)
         {
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             int index = 0;
             List<ButtonsData>[] matrixButtonList = Enumerable.Range(0, amountBoxes).Select(_ => new List<ButtonsData>()).ToArray();
@@ -626,7 +627,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             string borderColor = XmlUtils.GetXMLAttrString(subnode, "borderColor", "BCIColorCodedRegionDefault");
-                            var btn = GetControl(controls, name2, tag);
+                            ScannerButtonControl btn = GetControl(controls, name2, tag);
                             if (btn != null)
                             {
                                 currMatrixButton.id = int.Parse(btn.Tag.ToString());
@@ -659,7 +660,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns>List with the text from each button</returns>
         public static List<int>[] GetOffset(List<Widget> widgets, string configFilePath, int amountBoxes, List<Control> controls)
         {
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             int index = 0;
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             List<int>[] offsets = Enumerable.Range(0, amountBoxes).Select(_ => new List<int>()).ToArray();
@@ -674,7 +675,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
                             int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
+                            Widget btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
                             if (btnWidget != null)
                                 offsets[index].Add(GetOffset(btnWidget));
                             else
@@ -701,7 +702,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         public static int GetOffsetCRG(List<Widget> widgets)
         {
             int offset = 0;
-            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals("BtnCRG"));
+            Widget btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals("BtnCRG"));
             if (btnWidget != null)
                 offset = GetOffset(btnWidget);
             return offset;
@@ -737,7 +738,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         public static List<int[]>[] GetSequences(List<Control> controls, string configFilePath, int amountBoxes)
         {
             int index = 0;
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATAnimationsAnimation);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATAnimationsAnimation);
             string xmlSection = XmlSectionName.KeyboardSequences.ToLower();
             List<int> seq = new();
             List<int[]>[] flashingSeqAll = Enumerable.Range(0, amountBoxes).Select(_ => new List<int[]>()).ToArray();
@@ -757,7 +758,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                                 {
                                     string name2 = XmlUtils.GetXMLAttrString(secNode, "name", null);
                                     int tag = int.Parse(XmlUtils.GetXMLAttrString(secNode, "tagID", null));
-                                    var btn = GetControl(controls, name2, tag);
+                                    ScannerButtonControl btn = GetControl(controls, name2, tag);
                                     if (btn != null && int.Parse(btn.Tag.ToString()) == tag && btn.Name.Equals(name2))
                                         seq.Add(tag);
                                 }
@@ -786,7 +787,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         /// <returns>Type of box for each layout</returns>
         public static string[] GetTypeOfBox(string configFilePath, int amountBoxes)
         {
-            var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
+            XmlNodeList configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             string xmlSection = XmlSectionName.KeyboardType.ToLower();
             string[] type = new string[amountBoxes];
             int index = 0;
@@ -825,7 +826,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
                     {
                         if (control.Name.Contains("PWLItem") && control.Text.Length >= 1)
                         {
-                            foreach (var probs in _wordsProbs)
+                            foreach (KeyValuePair<string, double> probs in _wordsProbs)
                             {
                                 string s = probs.Key.Trim('\'');
                                 if (control.Text.ToLower().Equals(s))
@@ -887,7 +888,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             IDictionary<string, double> words = new Dictionary<string, double>();
             try
             {
-                foreach (var element in wordList)
+                foreach (KeyValuePair<string, double> element in wordList)
                 {
                     string newValue = element.Key.Trim(new char[] { (char)39 });
                     newValue = newValue.Replace("\"", "");
@@ -923,7 +924,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         private static int GetOffset(Widget widget)
         {
             IButtonWidget widbtn = widget as IButtonWidget;
-            var fontData = widbtn.GetWidgetAttribute();
+            WidgetAttribute fontData = widbtn.GetWidgetAttribute();
             // Set a dynamic offset of the letters if the buttons change size due to the resolution of the screen The value "1.333" is an aproximation of the value from Font units to Pixels units (6pt aprox 8px)
             return (widget.Height - (int)(fontData.FontSize * 1.333)) / 2;
         }

@@ -53,7 +53,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             try
             {
                 using var client = new HttpClient();
-                var response = await client.PostAsync(Url, stringContent);
+                HttpResponseMessage response = await client.PostAsync(Url, stringContent);
             }
             catch (Exception ex)
             {

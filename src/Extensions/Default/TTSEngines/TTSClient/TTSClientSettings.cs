@@ -118,7 +118,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <returns>true on success</returns>
         public static TTSClientSettings Load()
         {
-            var retVal = PreferencesBase.Load<TTSClientSettings>(PreferencesFilePath);
+            TTSClientSettings retVal = PreferencesBase.Load<TTSClientSettings>(PreferencesFilePath);
             if (!File.Exists(PreferencesFilePath))
             {
                 retVal.Save();
@@ -144,7 +144,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<TTSClientSettings>();
+            TTSClientSettings tmp = LoadDefaults<TTSClientSettings>();
             var res = Save(tmp, PreferencesFilePath);
             Load();
 

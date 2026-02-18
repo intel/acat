@@ -37,6 +37,7 @@ using ACATResources;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -383,7 +384,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
 
                 case "CmdSaveToCanned":
                     arg.Handled = true;
-                    var mode = Context.AppWordPredictionManager.ActiveWordPredictor.GetMode();
+                    WordPredictionModes mode = Context.AppWordPredictionManager.ActiveWordPredictor.GetMode();
                     arg.Enabled = mode != WordPredictionModes.None && mode != WordPredictionModes.CannedPhrases &&
                         _textBoxTalkWindow != null && _textBoxTalkWindow.Text.Length != 0;
                     break;
@@ -449,7 +450,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <returns>list of controls</returns>
         public IEnumerable<Control> GetAll(Control control, Type type)
         {
-            var controls = control.Controls.Cast<Control>();
+            IEnumerable<Control> controls = control.Controls.Cast<Control>();
 
             return controls.SelectMany(ctrl => GetAll(ctrl, type))
                                       .Concat(controls)
@@ -516,7 +517,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             animationSharpManager.Init(this);
             animationSharpManager.CRGText = GetCRGText();
 
-            var widgets = SaveUserControlWidgets();
+            List<Widget>[] widgets = SaveUserControlWidgets();
             SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardABCUserControlBCI.getpathConfigFile(), true);
             await Task.Delay(700);
 
@@ -680,7 +681,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             {
                 if (panelTextbox.Controls.Count > 0 && panelTextbox.Controls[0] is ITalkWindowTextBox)
                 {
-                    var textBox = (panelTextbox.Controls[0] as ITalkWindowTextBox).TextBoxControl;
+                    TextBox textBox = (panelTextbox.Controls[0] as ITalkWindowTextBox).TextBoxControl;
                     if (textBox != null)
                     {
                         textBox.KeyPress -= TextBoxTalkWindowOnKeyPress;
@@ -770,7 +771,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     if (_ShowMainOptions)//This window should only display once
                     {
                         _ShowMainOptions = false;
-                        var resultmenu = BCIShowMainOptionsWindow(bciCalibrationStatus);
+                        BCIMenuOptions.MainMenuOptions resultmenu = BCIShowMainOptionsWindow(bciCalibrationStatus);
                         switch (resultmenu)
                         {
                             case BCIMenuOptions.MainMenuOptions.ExitApplication:
@@ -782,7 +783,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                                 break;
 
                             case BCIMenuOptions.MainMenuOptions.CalibrateOrShowCalibrationModes:
-                                var result = BCIShowCalibrationModesWindow(bciCalibrationStatus);
+                                Tuple<BCIMenuOptions.Options, BCISimpleParameters> result = BCIShowCalibrationModesWindow(bciCalibrationStatus);
                                 BCIProcessCalibrationFormResult(result);
                                 break;
 
@@ -793,7 +794,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     }
                     else
                     {
-                        var result = BCIShowCalibrationModesWindow(bciCalibrationStatus);
+                        Tuple<BCIMenuOptions.Options, BCISimpleParameters> result = BCIShowCalibrationModesWindow(bciCalibrationStatus);
                         BCIProcessCalibrationFormResult(result);
                     }
                     break;
@@ -875,7 +876,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
 
                 case BCIMenuOptions.Options.TriggerTest:
                     OnPause();
-                    var triggertestParams2 = BCIInterfaceUtils.ShowTriggerTestSettingsForm(this);
+                    Tuple<BCIMenuOptions.Options, BCISimpleParameters> triggertestParams2 = BCIInterfaceUtils.ShowTriggerTestSettingsForm(this);
                     switch (triggertestParams2.Item1)
                     {
                         case BCIMenuOptions.Options.TriggerTest:
@@ -1147,7 +1148,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         private string GetCRGText()
         {
             string crgText = string.Empty;
-            var mode = Context.AppWordPredictionManager.ActiveWordPredictor.GetMode();
+            WordPredictionModes mode = Context.AppWordPredictionManager.ActiveWordPredictor.GetMode();
             switch (mode)
             {
                 case WordPredictionModes.None:
@@ -1222,7 +1223,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 return string.Empty;
             }
             String textToLearn = String.Empty;
-            using (var context = Context.AppAgentMgr.ActiveContext())
+            using (AgentContext context = Context.AppAgentMgr.ActiveContext())
             {
                 int caretPos = context.TextAgent().GetCaretPos();
                 var start = TextUtils.GetStartIndexCurrOrPrevSentence(text, caretPos);
@@ -1387,9 +1388,9 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         private void SetUserControlData(List<Widget>[] widgets, string panel1Path, string panel2Path, string panel3Path, bool init = false)
         {
             //The order of the panels and boxesData matters is the order of the box ID that will carry on to the class that handles the animations sequences
-            var panelWordPredictions = GetControls("ScannerButtonControl", scannerPanelWordPredictions.Controls[0]);
-            var panelSentences = GetControls("ScannerButtonControl", scannerPanelSentences.Controls[0]);
-            var panelKeyboard = GetControls("ScannerButtonControl", scannerPanelKeyboard.Controls[0]);
+            List<Control> panelWordPredictions = GetControls("ScannerButtonControl", scannerPanelWordPredictions.Controls[0]);
+            List<Control> panelSentences = GetControls("ScannerButtonControl", scannerPanelSentences.Controls[0]);
+            List<Control> panelKeyboard = GetControls("ScannerButtonControl", scannerPanelKeyboard.Controls[0]);
             Dictionary<List<Control>, string> boxesData = new()
                     {
                         { panelWordPredictions, panel1Path },
@@ -1473,7 +1474,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         private void TalkApplicationScanner_Load(object sender, EventArgs e)
         {
-            var icon = ImageUtils.GetEntryAssemblyIcon();
+            Icon icon = ImageUtils.GetEntryAssemblyIcon();
             if (icon != null)
                 Icon = icon;
             _bciActuator = Context.AppActuatorManager.GetActuator(new Guid("77809D19-F450-4D36-A633-D818400B3D9A"));
@@ -1482,7 +1483,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             _textBoxTalkWindow.Focus();
             WordPredictionManager.Instance.ActiveWordPredictor.PredictionWordCount = 9;
             _scannerCommon.OnLoad();
-            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
+            ColorScheme colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
             _textBoxTalkWindow.BackColor = colorScheme.Background;
             _textBoxTalkWindow.ForeColor = colorScheme.Foreground;
             _scannerCommon.ResizeToFitDesktop(this);
@@ -1503,7 +1504,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <param name="e">event args</param>
         private void TalkApplicationScannerQwerty_Shown(object sender, EventArgs e)
         {
-            var mainColorScheme = AnimationManagerUtils.GetMainColorScheme("BCIColorCodedRegionDefault");
+            ColorScheme mainColorScheme = AnimationManagerUtils.GetMainColorScheme("BCIColorCodedRegionDefault");
             _textBoxTalkWindow.BackColor = mainColorScheme.HighlightForeground;
             panelTextbox.BackColor = mainColorScheme.Background;
         }
@@ -1529,7 +1530,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
 
                     String textToSpeak;
 
-                    using (var context = Context.AppAgentMgr.ActiveContext())
+                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
                     {
                         context.TextAgent().GetParagraphAtCaret(out textToSpeak);
                     }

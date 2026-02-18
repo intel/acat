@@ -11,6 +11,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
@@ -306,7 +308,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             setControlsEnable(false);
 
-            var form = Context.AppPanelManager.GetCurrentForm() as Form ?? this;
+            Form form = Context.AppPanelManager.GetCurrentForm() as Form ?? this;
             try
             {
                 form.Invoke(new MethodInvoker(delegate
@@ -383,7 +385,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void enableSwitch(String source)
         {
-            foreach (var actuatorSwitch in _cameraActuator.Switches)
+            foreach (IActuatorSwitch actuatorSwitch in _cameraActuator.Switches)
             {
                 actuatorSwitch.Enabled = String.Compare(actuatorSwitch.Source, source, true) == 0 || String.Compare(source, "Either", true) == 0;
             }
@@ -392,7 +394,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private List<String> getSelectedSwitchList()
         {
             var list = new List<String>();
-            foreach (var actuatorSwitch in _cameraActuator.Switches)
+            foreach (IActuatorSwitch actuatorSwitch in _cameraActuator.Switches)
             {
                 if (actuatorSwitch.Enabled)
                 {
@@ -405,7 +407,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private bool isSwitchEnabled(String source)
         {
-            foreach (var actuatorSwitch in _cameraActuator.Switches)
+            foreach (IActuatorSwitch actuatorSwitch in _cameraActuator.Switches)
             {
                 if (String.Compare(actuatorSwitch.Source, source, true) == 0)
                 {
@@ -426,10 +428,10 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void saveActuatorConfig()
         {
-            var actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
+            ActuatorConfig actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
 
-            var actuatorSetting = actuatorConfig.Find(_cameraActuator.Descriptor.Id);
-            foreach (var switchSetting in actuatorSetting.SwitchSettings)
+            ActuatorSetting actuatorSetting = actuatorConfig.Find(_cameraActuator.Descriptor.Id);
+            foreach (SwitchSetting switchSetting in actuatorSetting.SwitchSettings)
             {
                 switchSetting.Enabled = isSwitchEnabled(switchSetting.Source);
             }
@@ -494,7 +496,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                     break;
 
                 case Mode.SetParameters:
-                    var list = getSelectedSwitchList();
+                    List<string> list = getSelectedSwitchList();
                     _webcamGestureSettingsUserControl.Initialize(list);
                     _webcamGestureSettingsUserControl.Dock = DockStyle.Fill;
                     labelPrompt.Text = textSetParameters;
@@ -538,7 +540,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 Op3Prompt = StringResources.No
             };
 
-            var result = msgBox.ShowDialog(this);
+            DialogResult result = msgBox.ShowDialog(this);
 
             msgBox.Dispose();
 

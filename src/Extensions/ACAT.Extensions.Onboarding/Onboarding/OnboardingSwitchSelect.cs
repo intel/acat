@@ -6,12 +6,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.Onboarding.UI;
 using ACAT.Extensions.Onboarding.UI.UserControls;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ACAT.Extensions.Onboarding.Onboarding
@@ -78,16 +80,16 @@ namespace ACAT.Extensions.Onboarding.Onboarding
         {
             _wizard = wizard;
 
-            var logger = LoggingConfiguration.CreateLogger<OnboardingSwitchSelect>();
+            ILogger<OnboardingSwitchSelect> logger = LoggingConfiguration.CreateLogger<OnboardingSwitchSelect>();
             logger.LogDebug("OnboardingSwitchSelect.Initialize() called");
             logger.LogDebug($"Loading actuator extensions from: {Context.ExtensionDirs}");
 
             Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true);
 
-            var actuators = Context.AppActuatorManager.ActuatorsList;
+            IEnumerable<IActuator> actuators = Context.AppActuatorManager.ActuatorsList;
             logger.LogDebug($"After LoadExtensions, ActuatorsList contains {actuators.Count()} actuators");
 
-            foreach (var actuator in actuators)
+            foreach (IActuator actuator in actuators)
             {
                 logger.LogDebug($"  Actuator loaded: {actuator.Name} (ID: {actuator.Descriptor.Id})");
             }
@@ -115,10 +117,10 @@ namespace ACAT.Extensions.Onboarding.Onboarding
             {
                 case Step1:
                     actuatorSelected = (userControl as UserControlSwitchSelect).ActuatorSelected;
-                    var actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
-                    var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+                    ActuatorConfig actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
+                    IActuator keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
-                    foreach (var actuatorSetting in actuatorConfig.ActuatorSettings)
+                    foreach (ActuatorSetting actuatorSetting in actuatorConfig.ActuatorSettings)
                     {
                         if (keyboardActuator != null && actuatorSetting.Id.Equals(keyboardActuator.Descriptor.Id))
                         {
@@ -129,7 +131,7 @@ namespace ACAT.Extensions.Onboarding.Onboarding
                             actuatorSetting.Enabled = actuatorSelected.Descriptor.Id.Equals(actuatorSetting.Id);
                         }
 
-                        foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
+                        foreach (IActuator actuator in Context.AppActuatorManager.ActuatorsList)
                         {
                             if (actuator.Descriptor.Id.Equals(actuatorSetting.Id))
                             {

@@ -240,18 +240,24 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public override bool PredictAsync(WordPredictionRequest req)
         {
+            _logger.LogInformation(">>> PredictAsync called - Type: {Type}, Mode: {Mode}, PrevWords: '{PrevWords}', CurrentWord: '{CurrentWord}'",
+                req.PredictionType, req.WordPredictionMode, req.PrevWords ?? "", req.CurrentWord ?? "");
+
             if (req.PredictionType == PredictionTypes.Words)
             {
+                _logger.LogDebug("Pushing to wpStack (word predictions)");
                 wpStack.Push(req);
                 mEvent.Set();
             }
             else if (req.PredictionType == PredictionTypes.Sentences)
             {
+                _logger.LogInformation("Pushing to sentenceStack (sentence predictions)");
                 sentenceStack.Push(req);
                 mEvent.Set();
             }
             else
             {
+                _logger.LogWarning("Unknown prediction type: {Type}, returning false", req.PredictionType);
                 return false;
             }
 
@@ -266,7 +272,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         public string ConvAssistLearn(string text, WordPredictorMessageTypes requestType)
         {
             ConvAssistMessage message = new(requestType, WordPredictionModes.None, text);
-            string jsonMessage = JsonSerializer.Serialize(message);
+            string jsonMessage = JsonSerializer.SerializeForInterop(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
         }
@@ -279,7 +285,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         public string SendMessageConvAssistSentencePrediction(string text, WordPredictionModes mode)
         {
             ConvAssistMessage message = new(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
-            string jsonMessage = JsonSerializer.Serialize(message);
+            string jsonMessage = JsonSerializer.SerializeForInterop(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
         }
@@ -392,6 +398,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         private void WordPredictionTaskProcess()
         {
+            _logger.LogInformation("WordPredictionTaskProcess started");
+
             while (true)
             {
                 WordPredictionRequest item = null;
@@ -399,7 +407,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                 if (wpStack.Count == 0 && sentenceStack.Count == 0)
                 {
+                    _logger.LogDebug("Both stacks empty, waiting for event");
                     mEvent.WaitOne();
+                    _logger.LogDebug("Event signaled, wpStack count: {WpCount}, sentenceStack count: {SentenceCount}", 
+                        wpStack.Count, sentenceStack.Count);
                 }
 
                 while (wpStack.Count > 0)
@@ -408,9 +419,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     {
                         if (wpStack.Count > 0)
                         {
+                            _logger.LogDebug("Processing word prediction from wpStack, count: {Count}", wpStack.Count);
                             item = wpStack.Pop() as WordPredictionRequest;
                             if (item == null)
                             {
+                                _logger.LogWarning("wpStack.Pop returned null, exiting task");
                                 mEvent.Reset();
                                 return;
                             }
@@ -428,9 +441,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 {
                     if (sentenceStack.Count > 0)
                     {
+                        _logger.LogInformation("Processing sentence prediction from sentenceStack, count: {Count}", sentenceStack.Count);
                         item = sentenceStack.Pop() as WordPredictionRequest;
                         if (item == null)
                         {
+                            _logger.LogWarning("sentenceStack.Pop returned null, exiting task");
                             mEvent.Reset();
                             return;
                         }
@@ -440,11 +455,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                 if (item == null)
                 {
+                    _logger.LogDebug("No sentence item to process, resetting event");
                     mEvent.Reset();
                     return;
                 }
 
+                _logger.LogInformation("Calling ProcessPredictionRequest for sentence");
                 response = ProcessPredictionRequest(item);
+                _logger.LogInformation("ProcessPredictionRequest returned, notifying results");
 
                 notifyPredictionResults(response);
 

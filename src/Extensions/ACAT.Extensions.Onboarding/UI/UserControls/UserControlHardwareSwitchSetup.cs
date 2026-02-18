@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
@@ -104,7 +105,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             SetDefaultStringsToControls();
             _strTriggerHotkey = String.Empty;
 
-            var config = Context.AppActuatorManager.GetActuatorConfig();
+            ActuatorConfig config = Context.AppActuatorManager.GetActuatorConfig();
 
             IActuator actuator;
 
@@ -113,11 +114,11 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                                         Context.AppActuatorManager.GetSwitchInterfaceActuator();
             if (actuator != null)
             {
-                foreach (var setting in config.ActuatorSettings)
+                foreach (ActuatorSetting setting in config.ActuatorSettings)
                 {
                     if (setting.Id.Equals(actuator.Descriptor.Id))
                     {
-                        foreach (var switchSetting in setting.SwitchSettings)
+                        foreach (SwitchSetting switchSetting in setting.SwitchSettings)
                         {
                             if (String.Compare(switchSetting.Command, "@Trigger", true) == 0)
                             {
@@ -166,7 +167,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 return;
             }
 
-            var config = Context.AppActuatorManager.GetActuatorConfig();
+            ActuatorConfig config = Context.AppActuatorManager.GetActuatorConfig();
             IActuator actuator;
             if (_switchType == OnboardingHardwareSwitchSetup.SwitchType.Keyboard)
             {
@@ -177,11 +178,11 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 actuator = Context.AppActuatorManager.GetSwitchInterfaceActuator();
             }
 
-            foreach (var setting in config.ActuatorSettings)
+            foreach (ActuatorSetting setting in config.ActuatorSettings)
             {
                 if (actuator != null && setting.Id.Equals(actuator.Descriptor.Id))
                 {
-                    foreach (var switchSetting in setting.SwitchSettings)
+                    foreach (SwitchSetting switchSetting in setting.SwitchSettings)
                     {
                         if (String.Compare(switchSetting.Command, "@Trigger", true) == 0)
                         {
@@ -318,7 +319,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         private void clearButtonTags()
         {
-            foreach (var button in _buttonMap.Values)
+            foreach (Button button in _buttonMap.Values)
             {
                 button.Tag = false;
             }
@@ -412,7 +413,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         private void setButtonColors()
         {
-            foreach (var button in _buttonMap.Values)
+            foreach (Button button in _buttonMap.Values)
             {
                 bool? flag = button.Tag as bool?;
                 button.BackColor = (flag == true) ? Color.Green : _buttonDefaultBackColor;
@@ -426,7 +427,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
             foreach (var key in _buttonMap.Keys)
             {
-                var button = _buttonMap[key];
+                Button button = _buttonMap[key];
 
                 if ((button.Tag as bool?) == true)
                 {

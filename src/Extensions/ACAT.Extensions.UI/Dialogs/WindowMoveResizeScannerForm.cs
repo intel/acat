@@ -96,7 +96,7 @@ namespace ACAT.Extensions.UI.Dialogs
             get
             {
                 new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).Demand();
-                var createParams = base.CreateParams;
+                CreateParams createParams = base.CreateParams;
 
                 const int WS_SYSMENU = 0x80000;
                 createParams.Style &= ~WS_SYSMENU;

@@ -109,7 +109,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<Settings>();
+            Settings tmp = LoadDefaults<Settings>();
             var res = Save(tmp, PreferencesFilePath);
             Load();
 

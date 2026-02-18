@@ -93,7 +93,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             try
             {
-                foreach (var classifier in bCIClassifierInfos)
+                foreach (BCIClassifierInfo classifier in bCIClassifierInfos)
                 {
                     string auc = " - ";
                     if (classifier.Auc > 0)
@@ -131,7 +131,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonDone_Click(object sender, EventArgs e)
         {
-            var strBCICalibrationUpdatedMappings = GetMappingsValues();
+            BCICalibrationUpdatedMappings strBCICalibrationUpdatedMappings = GetMappingsValues();
             _bciActuator?.IoctlRequest((int)OpCodes.SendUpdatedMappings, strBCICalibrationUpdatedMappings);
             OptionResult = CheckIfComboBoxValuesChanged();
             _logger.LogDebug("BCI LOG | Mappings change: {MappingsChanged}", OptionResult);
@@ -247,7 +247,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             try
             {
-                foreach (var mapping in _bCIMapOptions.AllowedMappingsDict)
+                foreach (KeyValuePair<BCIScanSections, List<BCIClassifierInfo>> mapping in _bCIMapOptions.AllowedMappingsDict)
                 {
                     switch (mapping.Key)
                     {

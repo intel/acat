@@ -11,6 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using System;
 using System.Collections.Generic;
@@ -174,7 +175,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private String getSwitchName(String sw)
         {
-            foreach (var actuatorSwitch in _cameraActuator.Switches)
+            foreach (IActuatorSwitch actuatorSwitch in _cameraActuator.Switches)
             {
                 if (String.Compare(actuatorSwitch.Source, sw, true) == 0)
                 {

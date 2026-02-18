@@ -13,6 +13,7 @@
 
 using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
@@ -178,7 +179,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             _strTriggerHotkey = String.Empty;
 
-            var config = Context.AppActuatorManager.GetActuatorConfig();
+            ActuatorConfig config = Context.AppActuatorManager.GetActuatorConfig();
 
             IActuator actuator;
 
@@ -193,11 +194,11 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
             if (actuator != null)
             {
-                foreach (var setting in config.ActuatorSettings)
+                foreach (ActuatorSetting setting in config.ActuatorSettings)
                 {
                     if (setting.Id.Equals(actuator.Descriptor.Id))
                     {
-                        foreach (var switchSetting in setting.SwitchSettings)
+                        foreach (SwitchSetting switchSetting in setting.SwitchSettings)
                         {
                             if (String.Compare(switchSetting.Command, "@Trigger", true) == 0)
                             {

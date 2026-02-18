@@ -77,11 +77,11 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         /// <returns></returns>
         public static IEnumerable<String> GetCameraNames()
         {
-            var monikerList = getDevicesOfCategory(VideoInputDevice);
+            List<IMoniker> monikerList = getDevicesOfCategory(VideoInputDevice);
 
             var namesList = new List<string>();
 
-            foreach (var moniker in monikerList)
+            foreach (IMoniker moniker in monikerList)
             {
                 var name = getPropBagValue(moniker, "FriendlyName");
 
@@ -91,7 +91,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 }
             }
 
-            foreach (var moniker in monikerList)
+            foreach (IMoniker moniker in monikerList)
             {
                 Marshal.ReleaseComObject(moniker);
             }
@@ -140,7 +140,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
             catch
             {
-                foreach (var m in monikerList)
+                foreach (IMoniker m in monikerList)
                 {
                     Marshal.ReleaseComObject(m);
                 }
@@ -163,7 +163,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             try
             {
-                var guid = typeof(IPropertyBag).GUID;
+                Guid guid = typeof(IPropertyBag).GUID;
                 moniker.BindToStorage(null, null, ref guid, out bagObject);
 
                 var bag = (IPropertyBag)bagObject;

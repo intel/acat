@@ -35,7 +35,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public static String FilterChars(String chars, String input)
         {
-            var removedChars = input.Select(ch => chars.Contains(ch) ? (char?)null : ch);
+            IEnumerable<char?> removedChars = input.Select(ch => chars.Contains(ch) ? (char?)null : ch);
 
             return string.Concat(removedChars.ToArray());
         }

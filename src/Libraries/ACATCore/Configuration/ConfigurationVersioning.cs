@@ -46,6 +46,20 @@ namespace ACAT.Core.Configuration
             return $"{Major}.{Minor}.{Patch}";
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is ConfigurationVersion other)
+            {
+                return Major == other.Major && Minor == other.Minor && Patch == other.Patch;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Major, Minor, Patch);
+        }
+
         public static ConfigurationVersion Parse(string version)
         {
             if (string.IsNullOrEmpty(version))
@@ -327,13 +341,13 @@ namespace ACAT.Core.Configuration
 
             // Simple sequential migration path
             ConfigurationVersion current = from;
-            while (current.IsNewerThan(to) == false && !current.ToString().Equals(to.ToString()))
+            while (!current.Equals(to) && !current.IsNewerThan(to))
             {
                 IConfigurationMigration nextMigration = null;
                 
                 foreach (var migration in _migrations[configType])
                 {
-                    if (migration.FromVersion.ToString().Equals(current.ToString()))
+                    if (migration.FromVersion.Equals(current))
                     {
                         nextMigration = migration;
                         break;

@@ -69,7 +69,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         public static TValue Deserialize<TValue>(string json)
         {
-            var res = System.Text.Json.JsonSerializer.Deserialize<TValue>(json, _readOptions);
+            TValue res = System.Text.Json.JsonSerializer.Deserialize<TValue>(json, _readOptions);
             Debug.Assert(res != null);
             if (res is not TValue)
             {

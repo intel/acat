@@ -44,7 +44,7 @@ namespace ACAT.Core.Validation
             RuleFor(x => x.ActuatorSettings)
                 .Must(actuators => {
                     var ids = new System.Collections.Generic.HashSet<string>();
-                    foreach (var actuator in actuators)
+                    foreach (ActuatorSettingJson actuator in actuators)
                     {
                         if (!string.IsNullOrEmpty(actuator.Id))
                         {
@@ -108,7 +108,7 @@ namespace ACAT.Core.Validation
             RuleFor(x => x.SwitchSettings)
                 .Must(switches => {
                     var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                    foreach (var sw in switches)
+                    foreach (SwitchSettingJson sw in switches)
                     {
                         if (!string.IsNullOrEmpty(sw.Name))
                         {

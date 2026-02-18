@@ -83,13 +83,13 @@ namespace ACAT.Core.Utility
         /// <param name="ignoreHandle">ignore this window</param>
         public static void RestoreFocusToTopWindow(int ignoreHandle = 0)
         {
-            var winList = Enumerate(false);
+            List<WindowInfo> winList = Enumerate(false);
             _logger.LogDebug("winList Count: " + winList.Count);
             bool found = false;
-            var handle = IntPtr.Zero;
+            IntPtr handle = IntPtr.Zero;
             IntPtr ignoreWindowHandle = new(ignoreHandle);
 
-            foreach (var windowInfo in winList)
+            foreach (WindowInfo windowInfo in winList)
             {
                 //Log.Debug("Title: " + w.Title);
                 handle = windowInfo.Handle;
@@ -99,7 +99,7 @@ namespace ACAT.Core.Utility
                     continue;
                 }
 
-                var control = Form.FromHandle(handle);
+                Control control = Form.FromHandle(handle);
                 if (control is IDialogPanel)
                 {
                     _logger.LogDebug("Setting focus to ACAT dialog." + windowInfo.Title);
@@ -138,12 +138,12 @@ namespace ACAT.Core.Utility
         /// </summary>
         public static void RestoreFocusToTopWindowOnDesktop()
         {
-            var winList = Enumerate();
+            List<WindowInfo> winList = Enumerate();
             _logger.LogDebug("winList Count: " + winList.Count);
             bool found = false;
-            var handle = IntPtr.Zero;
+            IntPtr handle = IntPtr.Zero;
 
-            foreach (var windowInfo in winList)
+            foreach (WindowInfo windowInfo in winList)
             {
                 //Log.Debug("Title: " + w.Title);
                 handle = windowInfo.Handle;
@@ -183,7 +183,7 @@ namespace ACAT.Core.Utility
                 return false;
             }
 
-            var root = User32Interop.GetAncestor(hWnd, User32Interop.GetAncestorFlags.GetRootOwner);
+            IntPtr root = User32Interop.GetAncestor(hWnd, User32Interop.GetAncestorFlags.GetRootOwner);
 
             if (getWindowPopup(root) != hWnd)
             {
@@ -275,7 +275,7 @@ namespace ACAT.Core.Utility
         private static IntPtr getWindowPopup(IntPtr window)
         {
             var windowLevel = 32;
-            var targetWindow = window;
+            IntPtr targetWindow = window;
 
             while (windowLevel-- > 0)
             {

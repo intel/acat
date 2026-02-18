@@ -181,7 +181,7 @@ namespace ACAT.Core.ActuatorManagement
 
             if (senderGrid.Columns[e.ColumnIndex] == TriggerColumn)
             {
-                var row = dataGridView2.Rows[e.RowIndex];
+                DataGridViewRow row = dataGridView2.Rows[e.RowIndex];
                 var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
 
                 bool isChecked = (Boolean)checkCell.Value;
@@ -229,7 +229,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void dataGridView2_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var senderGrid = dataGridView2;
+            DataGridView senderGrid = dataGridView2;
 
             if (e.RowIndex < 0)
             {
@@ -238,7 +238,7 @@ namespace ACAT.Core.ActuatorManagement
 
             if (senderGrid.Columns[e.ColumnIndex] == EnableColumn && !AllowMultiEnable)
             {
-                var row = dataGridView2.Rows[e.RowIndex];
+                DataGridViewRow row = dataGridView2.Rows[e.RowIndex];
 
                 var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
 
@@ -352,11 +352,11 @@ namespace ACAT.Core.ActuatorManagement
         {
             var actuatorConfig = ActuatorConfig.Load();
 
-            var actuatorSetting = actuatorConfig.Find(Actuator.Descriptor.Id);
+            ActuatorSetting actuatorSetting = actuatorConfig.Find(Actuator.Descriptor.Id);
 
-            foreach (var actuatorSwitch in Actuator.Switches)
+            foreach (IActuatorSwitch actuatorSwitch in Actuator.Switches)
             {
-                var switchSetting = actuatorSetting.Find(actuatorSwitch.Name);
+                SwitchSetting switchSetting = actuatorSetting.Find(actuatorSwitch.Name);
                 if (switchSetting == null)
                 {
                     continue;
@@ -439,12 +439,12 @@ namespace ACAT.Core.ActuatorManagement
         private void updateDataFromUIAndSave()
         {
             var actuatorConfig = ActuatorConfig.Load();
-            var actuatorSetting = actuatorConfig.Find(Actuator.Name);
+            ActuatorSetting actuatorSetting = actuatorConfig.Find(Actuator.Name);
 
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
                 var actuatorSwitch = dataGridView2.Rows[ii].Tag as IActuatorSwitch;
-                var switchSetting = actuatorSetting.Find(actuatorSwitch.Name);
+                SwitchSetting switchSetting = actuatorSetting.Find(actuatorSwitch.Name);
                 if (switchSetting == null)
                 {
                     continue;

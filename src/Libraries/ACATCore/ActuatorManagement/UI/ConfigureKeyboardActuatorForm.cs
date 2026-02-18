@@ -149,7 +149,7 @@ namespace ACAT.Core.ActuatorManagement
 
             var editKeyboardActuatorForm = new EditKeyboardActuatorSwitchForm();
 
-            var dialogResult = editKeyboardActuatorForm.ShowDialog();
+            DialogResult dialogResult = editKeyboardActuatorForm.ShowDialog();
 
             Show();
 
@@ -252,7 +252,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void dataGridView2_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var senderGrid = dataGridView2;
+            DataGridView senderGrid = dataGridView2;
 
             if (e.RowIndex < 0)
             {
@@ -261,7 +261,7 @@ namespace ACAT.Core.ActuatorManagement
 
             if (senderGrid.Columns[e.ColumnIndex] == EnableColumn && !AllowMultiEnable)
             {
-                var row = dataGridView2.Rows[e.RowIndex];
+                DataGridViewRow row = dataGridView2.Rows[e.RowIndex];
 
                 var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
 
@@ -345,7 +345,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void handleEditSwitch(DataGridViewCellEventArgs e)
         {
-            var row = dataGridView2.Rows[e.RowIndex];
+            DataGridViewRow row = dataGridView2.Rows[e.RowIndex];
 
             Hide();
 
@@ -366,7 +366,7 @@ namespace ACAT.Core.ActuatorManagement
             editKeyboardActuatorForm.Shortcut =
                 dataGridView2.Rows[e.RowIndex].Cells[ShortcutColumn.Name].Value as String;
 
-            var dialogResult = editKeyboardActuatorForm.ShowDialog();
+            DialogResult dialogResult = editKeyboardActuatorForm.ShowDialog();
 
             Show();
 
@@ -427,7 +427,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void handleTriggerSelect(DataGridViewCellEventArgs e)
         {
-            var row = dataGridView2.Rows[e.RowIndex];
+            DataGridViewRow row = dataGridView2.Rows[e.RowIndex];
 
             var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
 
@@ -525,7 +525,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             dataGridView2.Rows.Clear();
 
-            foreach (var switchSetting in _actuatorSetting.SwitchSettings)
+            foreach (SwitchSetting switchSetting in _actuatorSetting.SwitchSettings)
             {
                 addDataGridRow(switchSetting);
             }
@@ -569,7 +569,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true if it does</returns>
         private bool switchNameExists(String name)
         {
-            foreach (var actuatorSwitch in Actuator.Switches)
+            foreach (IActuatorSwitch actuatorSwitch in Actuator.Switches)
             {
                 if (String.Compare(name, actuatorSwitch.Name, true) == 0)
                 {
@@ -631,7 +631,7 @@ namespace ACAT.Core.ActuatorManagement
                 ActuatorName = "Keyboard";
             }
 
-            var actuatorSetting = actuatorConfig.Find(ActuatorName);
+            ActuatorSetting actuatorSetting = actuatorConfig.Find(ActuatorName);
 
             if (actuatorSetting != null)
             {

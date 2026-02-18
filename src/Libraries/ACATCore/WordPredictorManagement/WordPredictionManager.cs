@@ -290,9 +290,9 @@ namespace ACAT.Core.WordPredictorManagement
         /// </summary>
         public void SavePreferences(object sender, IEnumerable<PreferencesCategory> preferencesCategories)
         {
-            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+            CultureInfo ci = CultureInfo.DefaultThreadCurrentUICulture;
 
-            foreach (var category in preferencesCategories)
+            foreach (PreferencesCategory category in preferencesCategories)
             {
                 if (category.Enable && category.PreferenceObj is IExtension)
                 {
@@ -326,7 +326,7 @@ namespace ACAT.Core.WordPredictorManagement
             bool retVal;
             if (!Equals(guid, Guid.Empty))  // found something for the specific culture
             {
-                var type = _wordPredictors.Lookup(guid);
+                Type type = _wordPredictors.Lookup(guid);
 
                 if (_activeWordPredictor != null)
                 {
@@ -345,7 +345,7 @@ namespace ACAT.Core.WordPredictorManagement
             {
                 if (!Equals(cultureNeutralGuid, Guid.Empty))
                 {
-                    var type = _wordPredictors.Lookup(cultureNeutralGuid);
+                    Type type = _wordPredictors.Lookup(cultureNeutralGuid);
                     retVal = createAndSetActiveWordPredictor(type, ci);
 
                     if (!retVal)

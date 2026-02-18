@@ -58,7 +58,7 @@ namespace ACAT.Core.CommandManagement
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<CmdScopeTable>();
+            CmdScopeTable tmp = LoadDefaults<CmdScopeTable>();
             var res = Save(tmp, FilePath);
             Load();
 

@@ -140,7 +140,7 @@ namespace ACAT.Core.AgentManagement
         {
             bool handled = false;
             _logger.LogDebug("base.createEditControlTextInterface()");
-            var textInterface = createEditControlTextInterface(handleMain, focusedElement, ref handled);
+            TextControlAgentBase textInterface = createEditControlTextInterface(handleMain, focusedElement, ref handled);
             if (handled)
             {
                 return textInterface;
@@ -160,7 +160,7 @@ namespace ACAT.Core.AgentManagement
         {
             disposeTextInterface();
             _logger.LogDebug("Calling createEditControlTextInterface");
-            var textInterface = createEditControlTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement) ??
+            TextControlAgentBase textInterface = createEditControlTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement) ??
                                 createKeyLoggerTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement);
 
             appTextInterface = textInterface;

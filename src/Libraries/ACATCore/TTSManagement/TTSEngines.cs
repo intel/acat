@@ -127,7 +127,7 @@ namespace ACAT.Core.TTSManagement
         {
             get
             {
-                foreach (var type in Collection)
+                foreach (Type type in Collection)
                 {
                     ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                     if (descriptor != null && Guid.Equals(guid, descriptor.Id))
@@ -161,7 +161,7 @@ namespace ACAT.Core.TTSManagement
         /// <returns>list of TTS Engines</returns>
         public ICollection<Type> Get(String language)
         {
-            var list = _ttsEnginesTypeCache.Values;
+            Dictionary<Guid, Tuple<string, Type>>.ValueCollection list = _ttsEnginesTypeCache.Values;
 
             //return (from tuple in list where String.Compare(tuple.Item1, language, true) == 0 select tuple.Item2).ToList();
 
@@ -182,7 +182,7 @@ namespace ACAT.Core.TTSManagement
             Tuple<String, Type> foundTuple = null;
 
             // first look for culture-specific TTS Engines
-            foreach (var tuple in _ttsEnginesTypeCache.Values)
+            foreach (Tuple<string, Type> tuple in _ttsEnginesTypeCache.Values)
             {
                 if (ci == null)
                 {
@@ -234,7 +234,7 @@ namespace ACAT.Core.TTSManagement
         /// <returns>id of the TTS Engine</returns>
         public Guid GetPreferredOrDefaultByCulture(CultureInfo ci)
         {
-            var guid = GetPreferredByCulture(ci);
+            Guid guid = GetPreferredByCulture(ci);
 
             if (Equals(guid, Guid.Empty))
             {
@@ -261,7 +261,7 @@ namespace ACAT.Core.TTSManagement
             if (_DLLError)
                 return false;
 
-            var languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
+            IEnumerable<string> languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
             foreach (string dir in languageDirs)
             {
                 var extensionDir = dir + "\\" + FileUtils.ExtensionsDir;
@@ -382,7 +382,7 @@ namespace ACAT.Core.TTSManagement
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
 
-            foreach (var ttsEngine in _ttsEngineTypeLoader.LoadedTypes)
+            foreach (KeyValuePair<Guid, Type> ttsEngine in _ttsEngineTypeLoader.LoadedTypes)
             {
                 Add(ttsEngine.Key, _dirWalkCurrentCulture, ttsEngine.Value);
             }

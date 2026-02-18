@@ -69,7 +69,7 @@ namespace ACAT.Extension.UI
                 Context.AppPanelManager.ShowDialog(parent, form as IPanel);
                 if (form is IExtension)
                 {
-                    var invoker = (form as IExtension).GetInvoker();
+                    ExtensionInvoker invoker = (form as IExtension).GetInvoker();
                     bool? yesNo = invoker != null && invoker.GetBoolValue("Choice").Value;
                     retVal = yesNo != null && yesNo.Value;
                 }
@@ -127,7 +127,7 @@ namespace ACAT.Extension.UI
         /// </summary>
         public static async void LaunchVolumeSettingsAgent()
         {
-            var volumeSettingsAgent = Context.AppAgentMgr.GetAgentByCategory("VolumeSettingsAgent");
+            IApplicationAgent volumeSettingsAgent = Context.AppAgentMgr.GetAgentByCategory("VolumeSettingsAgent");
             if (volumeSettingsAgent == null)
             {
                 return;
@@ -326,7 +326,7 @@ namespace ACAT.Extension.UI
 
             if (form is IExtension)
             {
-                var invoker = (form as IExtension).GetInvoker();
+                ExtensionInvoker invoker = (form as IExtension).GetInvoker();
                 invoker.SetValue("TitleBar", string.IsNullOrEmpty(title) ? Common.AppPreferences.AppName : title);
                 invoker.SetValue("Caption", caption);
             }
@@ -352,7 +352,7 @@ namespace ACAT.Extension.UI
 
             if (form is IExtension)
             {
-                var invoker = (form as IExtension).GetInvoker();
+                ExtensionInvoker invoker = (form as IExtension).GetInvoker();
                 invoker.SetValue("Caption", caption);
             }
 
@@ -377,7 +377,7 @@ namespace ACAT.Extension.UI
                 Context.AppPanelManager.ShowDialog(parent, form as IPanel);
                 if (form is IExtension)
                 {
-                    var invoker = (form as IExtension).GetInvoker();
+                    ExtensionInvoker invoker = (form as IExtension).GetInvoker();
                     bool? yesNo = invoker != null && invoker.GetBoolValue("Choice").Value;
                     retVal = yesNo != null && yesNo.Value;
                 }

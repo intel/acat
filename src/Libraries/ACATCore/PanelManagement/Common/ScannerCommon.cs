@@ -10,6 +10,7 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.Interpreter;
+using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.PanelManagement.Utils;
@@ -574,7 +575,7 @@ namespace ACAT.Core.PanelManagement.Common
             var buttonList = new List<Widget>();
             _rootWidget.Finder.FindAllChildren(buttonList);
 
-            foreach (var widget in buttonList)
+            foreach (Widget widget in buttonList)
             {
                 if (widget is IButtonWidget)
                 {
@@ -952,7 +953,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             try
             {
-                var newState = _animationManager.GetPlayerState();
+                PlayerState newState = _animationManager.GetPlayerState();
                 _logger?.LogDebug(ScannerForm.Name + ": PlayerState changed from " + e.OldState + " to " + newState);
                 switch (newState)
                 {
@@ -1428,7 +1429,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="handled">was it handled?</param>
         private void runCommandScanner(string command, ref bool handled)
         {
-            var dispatcher = _scannerPanel.CommandDispatcher;
+            RunCommandDispatcher dispatcher = _scannerPanel.CommandDispatcher;
             dispatcher?.Dispatch(command, ref handled);
         }
 
@@ -1528,7 +1529,7 @@ namespace ACAT.Core.PanelManagement.Common
             var buttonList = new List<Widget>();
             _rootWidget.Finder.FindAllChildren(buttonList);
 
-            foreach (var widget in buttonList)
+            foreach (Widget widget in buttonList)
             {
                 if (widget is IButtonWidget)
                 {
@@ -1616,7 +1617,7 @@ namespace ACAT.Core.PanelManagement.Common
                 return;
             }
 
-            var widget = e.SourceWidget;
+            Widget widget = e.SourceWidget;
 
             bool handled = false;
             _scannerPanel.OnWidgetActuated(e, ref handled);

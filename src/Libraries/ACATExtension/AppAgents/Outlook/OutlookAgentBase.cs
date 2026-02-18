@@ -336,7 +336,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "EmailSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
+                        WindowActivityMonitorInfo monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
 
@@ -381,7 +381,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "ApptSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
+                        WindowActivityMonitorInfo monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
 
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
@@ -434,7 +434,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "ContactSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
+                        WindowActivityMonitorInfo monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
                         
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
@@ -464,7 +464,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "TaskSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
+                        WindowActivityMonitorInfo monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
 
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
@@ -585,12 +585,12 @@ namespace ACAT.Extension.AppAgents.Outlook
 
             for (int ii = 0; ii < 10; ii++)
             {
-                var info1 = WindowActivityMonitor.CurrentWindowInfo();
+                WindowActivityMonitorInfo info1 = WindowActivityMonitor.CurrentWindowInfo();
       
                 if (String.Compare(info1.Title, "TODO", true) == 0)
                 {
                     _logger.LogDebug("YES!  Found Attach file window");
-                    var automationElement = AgentUtils.GetElementOrAncestorByAutomationId(
+                    AutomationElement automationElement = AgentUtils.GetElementOrAncestorByAutomationId(
                                                                     info1.FocusedElement,
                                                                     "Edit",
                                                                     "ControlType.Edit",

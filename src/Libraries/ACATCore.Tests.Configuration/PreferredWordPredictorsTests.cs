@@ -14,6 +14,7 @@ using ACAT.Core.Configuration;
 using ACAT.Core.Utility;
 using ACAT.Core.Validation;
 using ACAT.Core.WordPredictorManagement;
+using FluentValidation.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -94,7 +95,7 @@ namespace ACATCore.Tests.Configuration
             }}";
 
             // Act
-            var config = JsonSerializer.Deserialize<PreferredWordPredictorsJson>(json);
+            PreferredWordPredictorsJson config = JsonSerializer.Deserialize<PreferredWordPredictorsJson>(json);
 
             // Assert
             Assert.IsNotNull(config);
@@ -118,7 +119,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -137,7 +138,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -157,7 +158,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -182,7 +183,7 @@ namespace ACATCore.Tests.Configuration
             bool saveSuccess = loader.Save(config, testFile);
 
             // Act - Load
-            var loadedConfig = loader.Load(testFile, createDefaultOnError: false);
+            PreferredWordPredictorsJson loadedConfig = loader.Load(testFile, createDefaultOnError: false);
 
             // Assert
             Assert.IsTrue(saveSuccess);
@@ -248,7 +249,7 @@ namespace ACATCore.Tests.Configuration
         public void ConverterHandlesEmptyList()
         {
             // Act
-            var jsonConfig = PreferredWordPredictorsConverter.ToJson(new System.Collections.Generic.List<PreferredWordPredictor>());
+            PreferredWordPredictorsJson jsonConfig = PreferredWordPredictorsConverter.ToJson(new System.Collections.Generic.List<PreferredWordPredictor>());
 
             // Assert
             Assert.IsNotNull(jsonConfig);
@@ -259,7 +260,7 @@ namespace ACATCore.Tests.Configuration
         public void ConverterHandlesNullList()
         {
             // Act
-            var jsonConfig = PreferredWordPredictorsConverter.ToJson(null);
+            PreferredWordPredictorsJson jsonConfig = PreferredWordPredictorsConverter.ToJson(null);
 
             // Assert
             Assert.IsNotNull(jsonConfig);

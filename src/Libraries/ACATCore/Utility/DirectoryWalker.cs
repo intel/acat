@@ -7,6 +7,7 @@
 
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -83,7 +84,7 @@ namespace ACAT.Core.Utility
         {
             try
             {
-                var dllFiles = Directory.EnumerateFiles(_rootDir, _wildCard, SearchOption.AllDirectories);
+                IEnumerable<string> dllFiles = Directory.EnumerateFiles(_rootDir, _wildCard, SearchOption.AllDirectories);
 
                 foreach (var file in dllFiles)
                 {

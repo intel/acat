@@ -7,6 +7,7 @@
 
 using ACAT.Core.Utility;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
@@ -56,7 +57,7 @@ namespace ACAT.Core.PreferencesManagement
         /// <returns>The selected culture</returns>
         public static CultureInfo SelectLanguage()
         {
-            var cultureInfos = ResourceUtils.EnumerateInstalledLanguages();
+            IEnumerable<CultureInfo> cultureInfos = ResourceUtils.EnumerateInstalledLanguages();
 
             if (cultureInfos.Count() == 1)
             {
@@ -181,11 +182,11 @@ namespace ACAT.Core.PreferencesManagement
             listBoxLanguages.View = View.List;
 
             listBoxLanguages.DoubleClick += listBoxLanguages_DoubleClick;
-            var cultureInfos = ResourceUtils.EnumerateInstalledLanguages();
+            IEnumerable<CultureInfo> cultureInfos = ResourceUtils.EnumerateInstalledLanguages();
 
             checkBoxSetAsDefault.CheckState = CheckState.Checked;
 
-            foreach (var culture in cultureInfos)
+            foreach (CultureInfo culture in cultureInfos)
             {
                 var text = culture.DisplayName + " (" + culture.TwoLetterISOLanguageName + ")";
                 listBoxLanguages.Items.Add(new ListViewItem(text) { Tag = culture });

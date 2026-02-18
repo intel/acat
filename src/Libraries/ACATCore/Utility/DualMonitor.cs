@@ -62,7 +62,7 @@ namespace ACAT.Core.Utility
         /// <returns>Screen object for the primary monitor, null if not found</returns>
         public static Screen GetPrimaryMonitor()
         {
-            foreach (var scr in Screen.AllScreens)
+            foreach (Screen scr in Screen.AllScreens)
             {
                 if (scr.Primary)
                 {
@@ -84,7 +84,7 @@ namespace ACAT.Core.Utility
                 return null;
             }
 
-            foreach (var scr in Screen.AllScreens)
+            foreach (Screen scr in Screen.AllScreens)
             {
                 if (!scr.Primary)
                 {
@@ -107,9 +107,9 @@ namespace ACAT.Core.Utility
                 return;
             }
 
-            var scr = GetMonitorForHandle(handle);
+            Screen scr = GetMonitorForHandle(handle);
 
-            var other = scr.Primary ? GetSecondaryMonitor() : GetPrimaryMonitor();
+            Screen other = scr.Primary ? GetSecondaryMonitor() : GetPrimaryMonitor();
 
             if (other == null)
             {
@@ -138,9 +138,9 @@ namespace ACAT.Core.Utility
                 return;
             }
 
-            var scr = GetMonitorForHandle(handle);
+            Screen scr = GetMonitorForHandle(handle);
 
-            var other = scr.Primary ? GetSecondaryMonitor() : GetPrimaryMonitor();
+            Screen other = scr.Primary ? GetSecondaryMonitor() : GetPrimaryMonitor();
 
             if (other == null)
             {

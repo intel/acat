@@ -112,7 +112,7 @@ namespace ACAT.Core.Interpreter
             bool retVal = true;
             bool done = false;
             int index;
-            var state = ParseState.Begin;
+            ParseState state = ParseState.Begin;
             var action = new StringBuilder();
             var arguments = new StringBuilder();
 

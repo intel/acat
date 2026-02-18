@@ -54,7 +54,7 @@ namespace ACAT.Core.Widgets
 
                 var list = new List<Widget>();
                 WidgetLayout.RootWidget.Finder.FindAllButtons(list);
-                foreach (var widget in list)
+                foreach (Widget widget in list)
                 {
                     if (widget == this)
                     {

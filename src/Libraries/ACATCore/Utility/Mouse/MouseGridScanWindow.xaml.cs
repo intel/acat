@@ -345,7 +345,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         private void animateHorizontalLine()
         {
-            var point = _rectHoriz.PointToScreen(new Point(0, 0));
+            Point point = _rectHoriz.PointToScreen(new Point(0, 0));
 
             _rectHorizStoryboard.Pause(this);
             _rectHoriz.Opacity = 1.0;
@@ -363,7 +363,7 @@ namespace ACAT.Core.Utility
 
         private void animateVerticalLine()
         {
-            var point = _rectVert.PointToScreen(new Point(0, 0));
+            Point point = _rectVert.PointToScreen(new Point(0, 0));
 
             _rectVertStoryboard.Pause(this);
             _rectVert.Opacity = 1.0;

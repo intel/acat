@@ -130,7 +130,7 @@ namespace ACAT.Core.ThemeManagement
                 return colorSchemes;
             }
 
-            foreach (var colorSchemeJson in colorSchemeJsonList)
+            foreach (ColorSchemeJson colorSchemeJson in colorSchemeJsonList)
             {
                 var colorScheme = ColorScheme.CreateFromJson(colorSchemeJson, themeDir);
                 if (colorScheme != null)
@@ -171,7 +171,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>the color scheme object</returns>
         public ColorScheme GetColorScheme(String scheme)
         {
-            var retVal = DefaultColorScheme;
+            ColorScheme retVal = DefaultColorScheme;
 
             var schemeName = scheme.ToLower();
             if (String.IsNullOrEmpty(schemeName))
@@ -216,7 +216,7 @@ namespace ACAT.Core.ThemeManagement
         /// <param name="themeDir">directory where assets are located</param>
         private void loadAndAddColorScheme(XmlNode node, String themeDir)
         {
-            var colorSchemeNodes = node.SelectNodes("ColorScheme");
+            XmlNodeList colorSchemeNodes = node.SelectNodes("ColorScheme");
 
             if (colorSchemeNodes == null)
             {

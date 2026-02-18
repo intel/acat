@@ -182,7 +182,7 @@ namespace ACAT.Core.SpellCheckManagement
             bool retVal;
             if (!Equals(guid, Guid.Empty))  // found something for the specific culture
             {
-                var type = _spellCheckers.Lookup(guid);
+                Type type = _spellCheckers.Lookup(guid);
 
                 if (_activeSpellChecker != null)
                 {
@@ -202,7 +202,7 @@ namespace ACAT.Core.SpellCheckManagement
             {
                 if (!Equals(cultureNeutralGuid, Guid.Empty))
                 {
-                    var type = _spellCheckers.Lookup(cultureNeutralGuid);
+                    Type type = _spellCheckers.Lookup(cultureNeutralGuid);
                     retVal = createAndSetActiveSpellChecker(type, ci);
                 }
                 else

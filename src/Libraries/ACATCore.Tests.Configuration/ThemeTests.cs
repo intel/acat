@@ -12,6 +12,7 @@
 
 using ACAT.Core.Configuration;
 using ACAT.Core.Validation;
+using FluentValidation.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.Json;
 
@@ -64,7 +65,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var theme = JsonSerializer.Deserialize<ThemeJson>(json);
+            ThemeJson theme = JsonSerializer.Deserialize<ThemeJson>(json);
 
             // Assert
             Assert.IsNotNull(theme);
@@ -116,7 +117,7 @@ namespace ACATCore.Tests.Configuration
             var theme = ThemeJson.CreateDefaultHighContrast();
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -136,7 +137,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -154,7 +155,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -172,7 +173,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -194,7 +195,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -215,7 +216,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -236,7 +237,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -257,7 +258,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -277,7 +278,7 @@ namespace ACATCore.Tests.Configuration
             };
 
             // Act
-            var result = _validator.Validate(theme);
+            ValidationResult result = _validator.Validate(theme);
 
             // Assert
             Assert.IsTrue(result.IsValid);

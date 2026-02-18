@@ -430,11 +430,11 @@ namespace ACAT.Core.AnimationManagement
                 var widgetName = resolveName(variables, name);
                 _logger?.LogTrace("Resolved name: {WidgetName}", widgetName);
 
-                var uiWidget = rootWidget.Finder.FindChild(widgetName);
+                Widget uiWidget = rootWidget.Finder.FindChild(widgetName);
                 if (uiWidget != null && (uiWidget.UIControl == null || uiWidget.Visible))
                 {
                     _logger?.LogTrace("Found child name: {WidgetName}", widgetName);
-                    var animationWidget = createAndAddAnimationWidget(uiWidget);
+                    AnimationWidget animationWidget = createAndAddAnimationWidget(uiWidget);
                     animationWidget?.Load(xmlNode);
                 }
                 else
@@ -463,19 +463,19 @@ namespace ACAT.Core.AnimationManagement
             {
                 _logger?.LogDebug("name={Name}", name);
 
-                var containerWidget = getContainerWidget(rootWidget, variables, name);
+                Widget containerWidget = getContainerWidget(rootWidget, variables, name);
                 if (containerWidget != null)
                 {
                     _logger?.LogDebug("containerWidget: {ContainerWidgetName}", containerWidget.Name);
 
                     EvtResolveWidgetChildren?.Invoke(this, new ResolveWidgetChildrenEventArgs(rootWidget, containerWidget, xmlNode));
 
-                    foreach (var childWidget in containerWidget.Children)
+                    foreach (Widget childWidget in containerWidget.Children)
                     {
                         if (childWidget.UIControl == null || childWidget.Visible)
                         {
                             _logger?.LogDebug("Found child name: {ChildWidgetName}", childWidget.Name);
-                            var animationWidget = createAndAddAnimationWidget(childWidget);
+                            AnimationWidget animationWidget = createAndAddAnimationWidget(childWidget);
                             animationWidget?.Load(xmlNode);
                         }
                     }

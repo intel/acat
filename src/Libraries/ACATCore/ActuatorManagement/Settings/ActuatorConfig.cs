@@ -75,8 +75,8 @@ namespace ACAT.Core.ActuatorManagement.Settings
                 // Use JsonConfigurationLoader with validation
                 var validator = new ActuatorSettingsValidator();
                 var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(validator, _logger);
-                
-                var jsonSettings = loader.Load(filePath, createDefaultOnError: true);
+
+                ActuatorSettingsJson jsonSettings = loader.Load(filePath, createDefaultOnError: true);
                 
                 if (jsonSettings == null)
                 {
@@ -121,7 +121,7 @@ namespace ACAT.Core.ActuatorManagement.Settings
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<ActuatorConfig>();
+            ActuatorConfig tmp = LoadDefaults<ActuatorConfig>();
             var res = SaveToJson(tmp, ActuatorSettingsFileName);
             Load();
 
@@ -161,7 +161,7 @@ namespace ACAT.Core.ActuatorManagement.Settings
             try
             {
                 // Convert legacy model to JSON model
-                var jsonSettings = ActuatorSettingsConverter.ToJson(config.ActuatorSettings);
+                ActuatorSettingsJson jsonSettings = ActuatorSettingsConverter.ToJson(config.ActuatorSettings);
                 
                 // Use JsonConfigurationLoader with validation
                 var validator = new ActuatorSettingsValidator();

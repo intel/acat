@@ -5,10 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Interfaces;
 using System;
+using System.Windows.Forms;
 
 namespace ACAT.Extension.CommandHandlers
 {
@@ -39,11 +41,11 @@ namespace ACAT.Extension.CommandHandlers
             switch (Command)
             {
                 case "CmdTalkApp":
-                    var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner");
+                    Form form = PanelManager.Instance.CreatePanel("TalkApplicationScanner");
                     if (form != null)
                     {
                         // Add ad-hoc agent that will handle the form
-                        var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+                        IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
                         if (agent != null)
                         {
                             Context.AppAgentMgr.AddAgent(form.Handle, agent);

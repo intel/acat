@@ -483,7 +483,7 @@ namespace ACAT.Core.AnimationManagement
             if (_player != null)
             {
                 _switchDownAnimation = _player.CurrentAnimation;
-                var widget = _player.HighlightedAnimationWidget;
+                AnimationWidget widget = _player.HighlightedAnimationWidget;
                 if (widget != null)
                 {
                     _logger.LogTrace("Highlighted widget: {WidgetName}", widget.UIWidget.Name);
@@ -545,7 +545,7 @@ namespace ACAT.Core.AnimationManagement
                 var children = new List<Widget>();
                 e.ContainerWidget.Finder.FindAllButtons(children);
 
-                foreach (var widget in children)
+                foreach (Widget widget in children)
                 {
                     widget.EvtMouseClicked -= button_EvtMouseClicked;
                     widget.EvtMouseClicked += button_EvtMouseClicked;
@@ -567,7 +567,7 @@ namespace ACAT.Core.AnimationManagement
                 String widgetName = resolvedArgs[0];
 
                 // get the widget object
-                 var widget = _currentPanel.Finder.FindChild(widgetName);
+                Widget widget = _currentPanel.Finder.FindChild(widgetName);
                 if (widget != null)
                 {
                     _logger.LogInformation("Actuate. widgetname: {WidgetName} Text: {Text}", widget.Name, widget.GetText());
@@ -627,7 +627,7 @@ namespace ACAT.Core.AnimationManagement
             String widgetName = resolvedArgs[0];
 
             _logger.LogTrace("_currentPanel {PanelName} widgetname: {WidgetName}", _currentPanel.Name, widgetName);
-            var widget = _currentPanel.Finder.FindChild(widgetName);
+            Widget widget = _currentPanel.Finder.FindChild(widgetName);
             if (widget != null)
             {
                 if (onOff)
@@ -705,7 +705,7 @@ namespace ACAT.Core.AnimationManagement
                 return;
             }
 
-            var widget = e.SourceWidget;
+            Widget widget = e.SourceWidget;
 
             SetSelectedWidget(widget);
 
@@ -758,7 +758,7 @@ namespace ACAT.Core.AnimationManagement
         /// <returns>scan mode</returns>
         protected ManualScanModes mapTriggerScanMode(TriggerScanModes triggerScanMode)
         {
-            var scanMode = ManualScanModes.None;
+            ManualScanModes scanMode = ManualScanModes.None;
 
             switch (triggerScanMode)
             {
@@ -921,7 +921,7 @@ namespace ACAT.Core.AnimationManagement
         {
             var list = new List<Widget>();
             rootWidget.Finder.FindAllButtons(list);
-            foreach (var button in list)
+            foreach (Widget button in list)
             {
                 button.EvtMouseClicked += button_EvtMouseClicked;
             }
@@ -949,7 +949,7 @@ namespace ACAT.Core.AnimationManagement
             {
                 var list = new List<Widget>();
                 rootWidget.Finder.FindAllButtons(list);
-                foreach (var button in list)
+                foreach (Widget button in list)
                 {
                     button.EvtMouseClicked -= button_EvtMouseClicked;
                 }
@@ -965,8 +965,8 @@ namespace ACAT.Core.AnimationManagement
         {
             if (EvtPlayerStateChanged != null)
             {
-                var delegates = EvtPlayerStateChanged.GetInvocationList();
-                foreach (var del in delegates)
+                Delegate[] delegates = EvtPlayerStateChanged.GetInvocationList();
+                foreach (Delegate del in delegates)
                 {
                     var playerstateChanged = (PlayerStateChanged)del;
                     playerstateChanged.BeginInvoke(sender, e, null, null);

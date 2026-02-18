@@ -33,7 +33,7 @@ namespace ACAT.Core.Utility
 
             var extensions = new List<IExtension>();
 
-            foreach (var type in extensionTypes)
+            foreach (Type type in extensionTypes)
             {
                 try
                 {

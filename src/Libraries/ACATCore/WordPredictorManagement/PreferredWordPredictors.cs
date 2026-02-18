@@ -84,7 +84,7 @@ namespace ACAT.Core.WordPredictorManagement
                 var validator = new PreferredWordPredictorsValidator();
                 var loader = new JsonConfigurationLoader<PreferredWordPredictorsJson>(validator, _logger);
 
-                var jsonSettings = loader.Load(filePath, createDefaultOnError: true);
+                PreferredWordPredictorsJson jsonSettings = loader.Load(filePath, createDefaultOnError: true);
 
                 if (jsonSettings == null)
                 {
@@ -120,13 +120,13 @@ namespace ACAT.Core.WordPredictorManagement
                 return getByLanguage(String.Empty);
             }
 
-            var guid = getByLanguage(ci.TwoLetterISOLanguageName);
+            Guid guid = getByLanguage(ci.TwoLetterISOLanguageName);
             return guid;
         }
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<PreferredWordPredictors>();
+            PreferredWordPredictors tmp = LoadDefaults<PreferredWordPredictors>();
             var res = SaveToJson(tmp, FilePath);
             Load();
 
@@ -165,7 +165,7 @@ namespace ACAT.Core.WordPredictorManagement
             try
             {
                 // Convert legacy model to JSON model
-                var jsonSettings = PreferredWordPredictorsConverter.ToJson(config.WordPredictors);
+                PreferredWordPredictorsJson jsonSettings = PreferredWordPredictorsConverter.ToJson(config.WordPredictors);
 
                 // Use JsonConfigurationLoader with validation
                 var validator = new PreferredWordPredictorsValidator();
@@ -200,7 +200,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// <returns></returns>
         public bool SetAsDefault(String language, Guid guid)
         {
-            var preferredWP = WordPredictors.FirstOrDefault(wordPredictor => String.Compare(language, wordPredictor.Language, true) == 0);
+            PreferredWordPredictor preferredWP = WordPredictors.FirstOrDefault(wordPredictor => String.Compare(language, wordPredictor.Language, true) == 0);
             if (preferredWP != null)
             {
                 preferredWP.ID = guid;
@@ -221,7 +221,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// <returns>ID, Guid.empty if none found</returns>
         private Guid getByLanguage(String language)
         {
-            foreach (var preferredWordPredictor in WordPredictors)
+            foreach (PreferredWordPredictor preferredWordPredictor in WordPredictors)
             {
                 if (String.Compare(preferredWordPredictor.Language, language, true) == 0)
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
@@ -20,7 +21,7 @@ namespace ACAT.Core.Utility
                 new Application();
             }
 
-            var resources = Application.Current.Resources.MergedDictionaries;
+            Collection<ResourceDictionary> resources = Application.Current.Resources.MergedDictionaries;
 
             bool hasMahApps = resources.OfType<ResourceDictionary>().Any(rd =>
                 rd.Source?.ToString()?.Contains("MahApps.Metro") == true);

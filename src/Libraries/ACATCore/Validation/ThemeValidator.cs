@@ -45,7 +45,7 @@ namespace ACAT.Core.Validation
             RuleFor(x => x.ColorSchemes)
                 .Must(schemes => {
                     var names = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                    foreach (var scheme in schemes)
+                    foreach (ColorSchemeJson scheme in schemes)
                     {
                         if (!string.IsNullOrEmpty(scheme.Name))
                         {

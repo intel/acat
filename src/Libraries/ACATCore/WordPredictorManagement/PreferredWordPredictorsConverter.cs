@@ -38,7 +38,7 @@ namespace ACAT.Core.WordPredictorManagement
 
             var result = new List<PreferredWordPredictor>();
 
-            foreach (var jsonItem in jsonConfig.WordPredictors)
+            foreach (PreferredWordPredictorJson jsonItem in jsonConfig.WordPredictors)
             {
                 if (Guid.TryParse(jsonItem.Id, out Guid guid))
                 {
@@ -63,7 +63,7 @@ namespace ACAT.Core.WordPredictorManagement
 
             var jsonConfig = new PreferredWordPredictorsJson();
 
-            foreach (var item in wordPredictors)
+            foreach (PreferredWordPredictor item in wordPredictors)
             {
                 jsonConfig.WordPredictors.Add(new PreferredWordPredictorJson
                 {

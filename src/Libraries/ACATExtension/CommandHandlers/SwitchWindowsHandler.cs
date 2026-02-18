@@ -25,6 +25,8 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.Utility;
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ACAT.Extension.CommandHandlers
@@ -74,12 +76,12 @@ namespace ACAT.Extension.CommandHandlers
                 else
                 {
                     IntPtr foregroundWindow = Windows.GetForegroundWindow();
-                    var process = WindowActivityMonitor.GetProcessForWindow(foregroundWindow);
+                    Process process = WindowActivityMonitor.GetProcessForWindow(foregroundWindow);
                     IExtension extension = switchWindowsAgent;
 
                     extension.GetInvoker().SetValue("FilterByProcessName", process.ProcessName);
 
-                    Context.AppAgentMgr.ActivateAgent(switchWindowsAgent as IFunctionalAgent);
+                    using Task _ = Context.AppAgentMgr.ActivateAgent(switchWindowsAgent as IFunctionalAgent);
 
                     WindowActivityMonitor.Refresh();
                 }

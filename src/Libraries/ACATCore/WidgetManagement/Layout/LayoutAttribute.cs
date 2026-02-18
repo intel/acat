@@ -390,7 +390,7 @@ namespace ACAT.Core.WidgetManagement.Layout
             {
                 foreach (var name in nameList)
                 {
-                    var widget = RootWidget.Finder.FindChild(name);
+                    Widget widget = RootWidget.Finder.FindChild(name);
                     if (widget != null)
                     {
                         widgetList.Add(widget);
@@ -441,7 +441,7 @@ namespace ACAT.Core.WidgetManagement.Layout
         /// <param name="parentWidget">The parent widget</param>
         private void resolveNeighbors(Widget parentWidget)
         {
-            foreach (var widget in parentWidget.Children)
+            foreach (Widget widget in parentWidget.Children)
             {
                 getWidgetList(XmlUtils.GetXMLAttrString(widget.LayoutXmlNode, "left"), widget.Left);
                 getWidgetList(XmlUtils.GetXMLAttrString(widget.LayoutXmlNode, "right"), widget.Right);

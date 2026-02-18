@@ -641,7 +641,7 @@ namespace ACAT.Extension.UI
                 string nwords;
                 var charAtCaret = '\0';
 
-                using (var agentContext = Context.AppAgentMgr.ActiveContext())
+                using (AgentContext agentContext = Context.AppAgentMgr.ActiveContext())
                 {
                     // we need the word at the cursor and also the previous n-words
                     // in the current sentence

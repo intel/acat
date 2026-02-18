@@ -372,11 +372,11 @@ namespace ACAT.Core.PanelManagement
 
             for (int columnIndex = 0; columnIndex < panel.ColumnCount; columnIndex++)
             {
-                var control = panel.GetControlFromPosition(columnIndex, rowIndex);
-                var widget = ScannerCommon.RootWidget.Finder.FindChild(control.Handle);
+                Control control = panel.GetControlFromPosition(columnIndex, rowIndex);
+                Widget widget = ScannerCommon.RootWidget.Finder.FindChild(control.Handle);
                 if (widget != null)
                 {
-                    var parent = widget.Parent;
+                    Widget parent = widget.Parent;
                     parent?.Remove(widget);
                 }
                 panel.Controls.Remove(control);
@@ -387,7 +387,7 @@ namespace ACAT.Core.PanelManagement
             {
                 for (int columnIndex = 0; columnIndex < panel.ColumnCount; columnIndex++)
                 {
-                    var control = panel.GetControlFromPosition(columnIndex, i);
+                    Control control = panel.GetControlFromPosition(columnIndex, i);
                     panel.SetRow(control, i - 1);
                 }
             }

@@ -40,7 +40,7 @@ namespace ACAT.Core.AgentManagement
             var classNameProperty = new PropertyCondition(AutomationElement.ClassNameProperty, className);
             var findControl = new AndCondition(controlTypeProperty, automationIdProperty, classNameProperty);
 
-            var retVal = focusedElement.FindFirst(TreeScope.Descendants, findControl);
+            AutomationElement retVal = focusedElement.FindFirst(TreeScope.Descendants, findControl);
 
             if (retVal != null && !String.IsNullOrEmpty(name))
             {
@@ -64,7 +64,7 @@ namespace ACAT.Core.AgentManagement
                                                                             String controlType,
                                                                             String automationId)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
             if (String.Compare(focusedElement.Current.ClassName, className, true) == 0 &&
                 String.Compare(focusedElement.Current.ControlType.ProgrammaticName, controlType, true) == 0 &&
@@ -73,7 +73,7 @@ namespace ACAT.Core.AgentManagement
                 return focusedElement;
             }
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
 
             while (parent != null)
             {
@@ -108,15 +108,15 @@ namespace ACAT.Core.AgentManagement
                                                                 String controlType,
                                                                 String automationId)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
             if (parent == null)
             {
                 return null;
             }
 
-            var child = walker.GetFirstChild(parent);
+            AutomationElement child = walker.GetFirstChild(parent);
             while (child != null)
             {
                 if (String.Compare(child.Current.ClassName, className, true) == 0 &&
@@ -181,9 +181,9 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true if it is</returns>
         public static bool IsAncestor(AutomationElement focusedElement, String className, String controlType)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
             while (parent != null)
             {
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
@@ -209,9 +209,9 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true if it is</returns>
         public static bool IsAncestorByAutomationId(AutomationElement focusedElement, String className, String controlType, String automationId)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
             while (parent != null)
             {
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
@@ -238,9 +238,9 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true if it is</returns>
         public static bool IsAncestorByName(AutomationElement focusedElement, String className, String controlType, String name)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
             while (parent != null)
             {
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
@@ -294,7 +294,7 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true if it is</returns>
         public static bool IsElementOrAncestor(AutomationElement focusedElement, String className, String controlType)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
             if (String.Compare(focusedElement.Current.ClassName, className, true) == 0 &&
                 String.Compare(focusedElement.Current.ControlType.ProgrammaticName, controlType, true) == 0)
@@ -302,7 +302,7 @@ namespace ACAT.Core.AgentManagement
                 return true;
             }
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
             while (parent != null)
             {
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
@@ -332,7 +332,7 @@ namespace ACAT.Core.AgentManagement
                                                             String controlType,
                                                             String automationId)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
             if (String.Compare(focusedElement.Current.ClassName, className, true) == 0 &&
                 String.Compare(focusedElement.Current.ControlType.ProgrammaticName, controlType, true) == 0 &&
@@ -341,7 +341,7 @@ namespace ACAT.Core.AgentManagement
                 return true;
             }
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
 
             while (parent != null)
             {
@@ -373,7 +373,7 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true if it is</returns>
         public static bool IsElementOrAncestorByName(AutomationElement focusedElement, String className, String controlType, String name)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
             if (String.Compare(focusedElement.Current.ClassName, className, true) == 0 &&
                 String.Compare(focusedElement.Current.ControlType.ProgrammaticName, controlType, true) == 0 &&
@@ -382,7 +382,7 @@ namespace ACAT.Core.AgentManagement
                 return true;
             }
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
             while (parent != null)
             {
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
@@ -409,12 +409,12 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true if it is</returns>
         public static bool IsSiblingByAutomationId(AutomationElement focusedElement, String className, String controlType, String automationId)
         {
-            var walker = TreeWalker.ControlViewWalker;
+            TreeWalker walker = TreeWalker.ControlViewWalker;
 
-            var parent = walker.GetParent(focusedElement);
+            AutomationElement parent = walker.GetParent(focusedElement);
             if (parent != null)
             {
-                var child = walker.GetFirstChild(parent);
+                AutomationElement child = walker.GetFirstChild(parent);
                 while (child != null)
                 {
                     if (String.Compare(child.Current.ClassName, className, true) == 0 &&

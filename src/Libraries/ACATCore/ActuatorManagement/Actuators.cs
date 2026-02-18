@@ -98,13 +98,13 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true on success</returns>
         public bool AddSwitch(IActuator actuator, SwitchSetting switchSetting)
         {
-            var actuatorSetting = Config.Find(actuator.Descriptor.Id);
+            ActuatorSetting actuatorSetting = Config.Find(actuator.Descriptor.Id);
             if (actuatorSetting == null)
             {
                 return false;
             }
 
-            var sw = actuatorSetting.Find(switchSetting.Name);
+            SwitchSetting sw = actuatorSetting.Find(switchSetting.Name);
             if (sw != null)
             {
                 return true;
@@ -140,7 +140,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>actuator object</returns>
         public IActuator Find(String name)
         {
-            foreach (var actuatorEx in _actuatorsEx)
+            foreach (ActuatorEx actuatorEx in _actuatorsEx)
             {
                 if (String.Compare(name, actuatorEx.SourceActuator.Name, true) == 0)
                 {
@@ -159,7 +159,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>The object </returns>
         public IActuator Find(Type actuatorType)
         {
-            foreach (var actuatorEx in _actuatorsEx)
+            foreach (ActuatorEx actuatorEx in _actuatorsEx)
             {
                 if (actuatorType.FullName == actuatorEx.SourceActuator.GetType().FullName)
                 {
@@ -222,7 +222,7 @@ namespace ACAT.Core.ActuatorManagement
 
             // walk through the settings file create and configure
             // actuators
-            foreach (var actuatorSetting in Config.ActuatorSettings)
+            foreach (ActuatorSetting actuatorSetting in Config.ActuatorSettings)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace ACAT.Core.ActuatorManagement
                             continue;
                         }
 
-                        var type = _actuatorTypeLoader.LoadedTypes[actuatorSetting.Id];
+                        Type type = _actuatorTypeLoader.LoadedTypes[actuatorSetting.Id];
                         if (type != null)
                         {
                             var assembly = Assembly.LoadFrom(type.Assembly.Location);
@@ -261,12 +261,12 @@ namespace ACAT.Core.ActuatorManagement
             // settings file and add them to the settings file
 
             bool isDirty = false;
-            foreach (var actuatorType in _actuatorTypeLoader.LoadedTypes.Values)
+            foreach (Type actuatorType in _actuatorTypeLoader.LoadedTypes.Values)
             {
                 ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(actuatorType);
                 if (attr != null && attr.Id != Guid.Empty)
                 {
-                    var actuatorSetting = Config.Find(attr.Id);
+                    ActuatorSetting actuatorSetting = Config.Find(attr.Id);
                     if (actuatorSetting != null) continue;
 
                     try
@@ -308,7 +308,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         public void OnAppQuit()
         {
-            foreach (var actuator in _actuators)
+            foreach (IActuator actuator in _actuators)
             {
                 actuator.OnQuitApplication();
             }
@@ -323,13 +323,13 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true on success</returns>
         public bool RemoveSwitch(IActuator actuator, String switchName)
         {
-            var actuatorSetting = Config.Find(actuator.Descriptor.Id);
+            ActuatorSetting actuatorSetting = Config.Find(actuator.Descriptor.Id);
             if (actuatorSetting == null)
             {
                 return false;
             }
 
-            var sw = actuatorSetting.Find(switchName);
+            SwitchSetting sw = actuatorSetting.Find(switchName);
             if (sw == null)
             {
                 return false;
@@ -351,9 +351,9 @@ namespace ACAT.Core.ActuatorManagement
         {
             var actuatorConfig = ActuatorConfig.Load();
 
-            foreach (var actuatorSetting in actuatorConfig.ActuatorSettings)
+            foreach (ActuatorSetting actuatorSetting in actuatorConfig.ActuatorSettings)
             {
-                var actuator = Find(actuatorSetting.Name);
+                IActuator actuator = Find(actuatorSetting.Name);
                 if (actuator != null)
                 {
                     actuatorSetting.Enabled = actuator.Enabled;
@@ -387,7 +387,7 @@ namespace ACAT.Core.ActuatorManagement
 
                 if (disposing)
                 {
-                    foreach (var actuator in _actuatorsEx)
+                    foreach (ActuatorEx actuator in _actuatorsEx)
                     {
                         actuator.SourceActuator.Dispose();
                     }
@@ -412,6 +412,14 @@ namespace ACAT.Core.ActuatorManagement
 
         private void onFileFound(String dllName)
         {
+            // Skip resource assemblies (satellite assemblies for localization)
+            // These are automatically loaded by .NET and should not be loaded directly
+            string fileName = Path.GetFileName(dllName);
+            if (fileName.EndsWith(".resources.dll", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
             try
             {
                 _actuatorTypeLoader.LoadFromAssembly(dllName);

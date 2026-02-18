@@ -101,7 +101,7 @@ namespace ACAT.Core.Utility
         {
             DateTime now = DateTime.UtcNow;
 
-            var elapsed = now - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime();
+            TimeSpan elapsed = now - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime();
 
             String elapsedTime = ((int)(elapsed.TotalMilliseconds / 1000)).ToString() + "." + (int)(elapsed.TotalMilliseconds % 1000);
 

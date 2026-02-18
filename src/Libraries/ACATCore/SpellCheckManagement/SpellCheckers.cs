@@ -125,7 +125,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <returns>list of spellcheckers</returns>
         public ICollection<Type> Get(String language)
         {
-            var list = _spellCheckersTypeCache.Values;
+            Dictionary<Guid, Tuple<string, Type>>.ValueCollection list = _spellCheckersTypeCache.Values;
 
             return (String.IsNullOrEmpty(language) || language.Length == 0) ?
                 (from tuple in list where String.IsNullOrEmpty(tuple.Item1) select tuple.Item2).ToList() :
@@ -144,7 +144,7 @@ namespace ACAT.Core.SpellCheckManagement
             Tuple<String, Type> foundTuple = null;
 
             // first look for culture-specific word predictors
-            foreach (var tuple in _spellCheckersTypeCache.Values)
+            foreach (Tuple<string, Type> tuple in _spellCheckersTypeCache.Values)
             {
                 if (ci == null)
                 {
@@ -196,7 +196,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <returns>id of the spellchecker</returns>
         public Guid GetPreferredOrDefaultByCulture(CultureInfo ci)
         {
-            var guid = GetPreferredByCulture(ci);
+            Guid guid = GetPreferredByCulture(ci);
 
             if (Equals(guid, Guid.Empty))
             {
@@ -224,7 +224,7 @@ namespace ACAT.Core.SpellCheckManagement
             if (_DLLError)
                 return false;
 
-            var languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
+            IEnumerable<string> languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
             foreach (string dir in languageDirs)
             {
                 var extensionDir = dir + "\\" + FileUtils.ExtensionsDir;
@@ -385,7 +385,7 @@ namespace ACAT.Core.SpellCheckManagement
                 if (!_DLLError)
                 {
                     var wordPredictorAssembly = Assembly.LoadFile(dllName);
-                    foreach (var type in wordPredictorAssembly.GetTypes())
+                    foreach (Type type in wordPredictorAssembly.GetTypes())
                     {
                         if (typeof(ISpellChecker).IsAssignableFrom(type))
                         {

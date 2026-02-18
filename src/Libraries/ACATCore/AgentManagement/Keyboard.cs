@@ -161,7 +161,7 @@ namespace ACAT.Core.AgentManagement
         {
             AgentManager.Instance.TextControlAgent.SetFocus();
 
-            var enumerable = extendedKeys as IList<Keys> ?? extendedKeys.ToList();
+            IList<Keys> enumerable = extendedKeys as IList<Keys> ?? extendedKeys.ToList();
             foreach (Keys key in enumerable)
             {
                 ExtendedKeyDown(key);
@@ -190,7 +190,7 @@ namespace ACAT.Core.AgentManagement
 
             AgentManager.Instance.TextChangedNotifications.Hold();
 
-            var enumerable = extendedKeys as IList<Keys> ?? extendedKeys.ToList();
+            IList<Keys> enumerable = extendedKeys as IList<Keys> ?? extendedKeys.ToList();
             foreach (Keys key in enumerable)
             {
                 ExtendedKeyDown(key);

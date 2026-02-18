@@ -13,9 +13,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 
 namespace ACAT.Core.Utility
@@ -74,7 +76,7 @@ namespace ACAT.Core.Utility
                     if (createDefaultOnError)
                     {
                         _logger?.LogInformation("Creating default configuration at: {FilePath}", filePath);
-                        var defaultConfig = CreateDefault();
+                        T defaultConfig = CreateDefault();
                         Save(defaultConfig, filePath);
                         return defaultConfig;
                     }
@@ -102,13 +104,13 @@ namespace ACAT.Core.Utility
                 // Validate if validator is provided
                 if (_validator != null)
                 {
-                    var validationResult = _validator.Validate(config);
+                    ValidationResult validationResult = _validator.Validate(config);
                     
                     if (!validationResult.IsValid)
                     {
                         _logger?.LogError("Configuration validation failed for: {FilePath}", filePath);
                         
-                        foreach (var error in validationResult.Errors)
+                        foreach (ValidationFailure error in validationResult.Errors)
                         {
                             _logger?.LogError("  - {PropertyName}: {ErrorMessage}", 
                                 error.PropertyName, error.ErrorMessage);
@@ -178,13 +180,13 @@ namespace ACAT.Core.Utility
                 // Validate before saving if validator is provided
                 if (_validator != null)
                 {
-                    var validationResult = _validator.Validate(config);
+                    ValidationResult validationResult = _validator.Validate(config);
                     
                     if (!validationResult.IsValid)
                     {
                         _logger?.LogError("Cannot save invalid configuration to: {FilePath}", filePath);
                         
-                        foreach (var error in validationResult.Errors)
+                        foreach (ValidationFailure error in validationResult.Errors)
                         {
                             _logger?.LogError("  - {PropertyName}: {ErrorMessage}", 
                                 error.PropertyName, error.ErrorMessage);
@@ -224,7 +226,7 @@ namespace ACAT.Core.Utility
             try
             {
                 // Try to call a static CreateDefault() method if it exists
-                var createDefaultMethod = typeof(T).GetMethod("CreateDefault", 
+                MethodInfo createDefaultMethod = typeof(T).GetMethod("CreateDefault", 
                     System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                 
                 if (createDefaultMethod != null && createDefaultMethod.ReturnType == typeof(T))
@@ -254,7 +256,7 @@ namespace ACAT.Core.Utility
                 return string.Empty;
             }
 
-            var validationResult = _validator.Validate(config);
+            ValidationResult validationResult = _validator.Validate(config);
             
             if (validationResult.IsValid)
             {
@@ -262,7 +264,7 @@ namespace ACAT.Core.Utility
             }
 
             var errorMessage = "Configuration validation failed:\n";
-            foreach (var error in validationResult.Errors)
+            foreach (ValidationFailure error in validationResult.Errors)
             {
                 errorMessage += $"- {error.PropertyName}: {error.ErrorMessage}\n";
             }

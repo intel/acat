@@ -294,7 +294,7 @@ namespace ACAT.Core.PanelManagement
             setFormWidth();
 
             _scannerCommon.OnLoad();
-            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
+            ColorScheme colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
             this.BackColor = colorScheme.Background;
             this.ForeColor = colorScheme.Foreground;
 

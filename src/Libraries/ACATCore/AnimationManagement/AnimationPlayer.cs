@@ -302,7 +302,7 @@ namespace ACAT.Core.AnimationManagement
         {
             _rootWidget.HighlightOff();
 
-            var defaultHome = _rootWidget.Finder.FindDefaultHome();
+            Widget defaultHome = _rootWidget.Finder.FindDefaultHome();
 
             if (defaultHome == null)
             {
@@ -658,8 +658,8 @@ namespace ACAT.Core.AnimationManagement
                     return;
                 }
 
-                var currentScanDirection = getScanDirection(_manualScanMode);
-                var scanDirection = getScanDirection(manualScanMode);
+                ScanDirection currentScanDirection = getScanDirection(_manualScanMode);
+                ScanDirection scanDirection = getScanDirection(manualScanMode);
 
                 if ((currentScanDirection == ScanDirection.Horizontal && scanDirection == ScanDirection.Vertical) ||
                     currentScanDirection == ScanDirection.Vertical && scanDirection == ScanDirection.Horizontal)
@@ -809,7 +809,7 @@ namespace ACAT.Core.AnimationManagement
                 }
                 else
                 {
-                    foreach (var h in _manualScanPath)
+                    foreach (Widget h in _manualScanPath)
                     {
                         _logger.LogTrace(h.Name);
                     }
@@ -913,7 +913,7 @@ namespace ACAT.Core.AnimationManagement
                 widget = _manualScanPath[0];
             }
 
-            var start = widget;
+            Widget start = widget;
             while (widget != null)
             {
                 if (widget.Below.Count == 0)
@@ -923,7 +923,7 @@ namespace ACAT.Core.AnimationManagement
 
                 if (_manualScanPath != null)
                 {
-                    foreach (var w in widget.Below)
+                    foreach (Widget w in widget.Below)
                     {
                         if (_manualScanPath.Contains(w))
                         {
@@ -963,7 +963,7 @@ namespace ACAT.Core.AnimationManagement
 
             //dumpManualPath("getWraparoundLeft");
 
-            var start = widget;
+            Widget start = widget;
             while (widget != null)
             {
                 if (widget.Left.Count == 0)
@@ -973,7 +973,7 @@ namespace ACAT.Core.AnimationManagement
 
                 if (_manualScanPath != null)
                 {
-                    foreach (var w in widget.Left)
+                    foreach (Widget w in widget.Left)
                     {
                         if (_manualScanPath.Contains(w))
                         {
@@ -1011,7 +1011,7 @@ namespace ACAT.Core.AnimationManagement
                 widget = _manualScanPath[0];
             }
 
-            var start = widget;
+            Widget start = widget;
             while (widget != null)
             {
                 if (widget.Right.Count == 0)
@@ -1021,7 +1021,7 @@ namespace ACAT.Core.AnimationManagement
 
                 if (_manualScanPath != null)
                 {
-                    foreach (var w in widget.Right)
+                    foreach (Widget w in widget.Right)
                     {
                         if (_manualScanPath.Contains(w))
                         {
@@ -1059,7 +1059,7 @@ namespace ACAT.Core.AnimationManagement
                 widget = _manualScanPath[0];
             }
 
-            var start = widget;
+            Widget start = widget;
             while (widget != null)
             {
                 if (widget.Above.Count == 0)
@@ -1069,7 +1069,7 @@ namespace ACAT.Core.AnimationManagement
 
                 if (_manualScanPath != null)
                 {
-                    foreach (var w in widget.Above)
+                    foreach (Widget w in widget.Above)
                     {
                         if (_manualScanPath.Contains(w))
                         {
@@ -1161,7 +1161,7 @@ namespace ACAT.Core.AnimationManagement
             Widget above = null;
             if (_highlightedWidget.Above.Count > 0)
             {
-                foreach (var widget in _highlightedWidget.Above)
+                foreach (Widget widget in _highlightedWidget.Above)
                 {
                     if (_manualScanPath.Contains(widget))
                     {
@@ -1184,7 +1184,7 @@ namespace ACAT.Core.AnimationManagement
             else
             {
                 _logger.LogTrace("above is null. Will get wraparound");
-                var bottomMost = getWraparoundWidgetBottom();
+                Widget bottomMost = getWraparoundWidgetBottom();
                 if (bottomMost != null)
                 {
                     _logger.LogTrace("bottomMost is " + bottomMost.Name);
@@ -1216,7 +1216,7 @@ namespace ACAT.Core.AnimationManagement
             Widget below = null;
             if (_highlightedWidget.Below.Count > 0)
             {
-                foreach (var widget in _highlightedWidget.Below)
+                foreach (Widget widget in _highlightedWidget.Below)
                 {
                     if (_manualScanPath.Contains(widget))
                     {
@@ -1238,7 +1238,7 @@ namespace ACAT.Core.AnimationManagement
             else
             {
                 _logger.LogTrace("Below is null. Will get wraparound");
-                var topMost = getWraparoundWidgetTop();
+                Widget topMost = getWraparoundWidgetTop();
                 if (topMost != null)
                 {
                     _logger.LogTrace("topMost is " + topMost.Name);
@@ -1270,7 +1270,7 @@ namespace ACAT.Core.AnimationManagement
             Widget left = null;
             if (_highlightedWidget.Left.Count > 0)
             {
-                foreach (var widget in _highlightedWidget.Left)
+                foreach (Widget widget in _highlightedWidget.Left)
                 {
                     if (_manualScanPath.Contains(widget))
                     {
@@ -1294,7 +1294,7 @@ namespace ACAT.Core.AnimationManagement
                 // reached the left edge of the form. Wrap around
                 // to start scanning at the right edge
                 _logger.LogTrace("Left is null. Will get wraparound");
-                var rightmost = getWraparoundWidgetRight();
+                Widget rightmost = getWraparoundWidgetRight();
                 if (rightmost != null)
                 {
                     _logger.LogTrace("Leftmost is " + rightmost.Name);
@@ -1326,7 +1326,7 @@ namespace ACAT.Core.AnimationManagement
             Widget right = null;
             if (_highlightedWidget.Right.Count > 0)
             {
-                foreach (var widget in _highlightedWidget.Right)
+                foreach (Widget widget in _highlightedWidget.Right)
                 {
                     if (_manualScanPath.Contains(widget))
                     {
@@ -1349,7 +1349,7 @@ namespace ACAT.Core.AnimationManagement
             {
                 // reached the right edge of the form. Wrap around
                 // to start scanning at the left edge
-                var leftMost = getWraparoundWidgetLeft();
+                Widget leftMost = getWraparoundWidgetLeft();
                 if (leftMost != null)
                 {
                     leftMost.HighlightOn();
@@ -1493,7 +1493,7 @@ namespace ACAT.Core.AnimationManagement
 
                 check();
 
-                var animationWidget = _currentAnimation.AnimationWidgetList[_currentWidgetIndex];
+                AnimationWidget animationWidget = _currentAnimation.AnimationWidgetList[_currentWidgetIndex];
 
                 _logger.LogTrace(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
 
@@ -1760,7 +1760,7 @@ namespace ACAT.Core.AnimationManagement
 
                 _logger.LogTrace("_manualScanMode is " + _manualScanMode);
 
-                var prevWidgetHighlighted = _highlightedWidget;
+                Widget prevWidgetHighlighted = _highlightedWidget;
 
                 switch (_manualScanMode)
                 {

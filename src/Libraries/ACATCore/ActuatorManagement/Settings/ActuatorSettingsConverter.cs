@@ -49,7 +49,7 @@ namespace ACAT.Core.ActuatorManagement.Settings
             var actuatorSetting = new ActuatorSetting
             {
                 Name = jsonActuator.Name ?? string.Empty,
-                Id = Guid.TryParse(jsonActuator.Id, out var id) ? id : Guid.Empty,
+                Id = Guid.TryParse(jsonActuator.Id, out Guid id) ? id : Guid.Empty,
                 Description = jsonActuator.Description ?? string.Empty,
                 Enabled = jsonActuator.Enabled,
                 ImageFileName = jsonActuator.ImageFileName ?? string.Empty,

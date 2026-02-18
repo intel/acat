@@ -43,7 +43,7 @@ namespace ACAT.Core.Utility
         /// <returns>List of cultureinfo of installed languages</returns>
         public static IEnumerable<CultureInfo> EnumerateInstalledLanguages(bool excludeCurrent = false)
         {
-            var dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
+            IEnumerable<string> dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
 
             var list = new List<CultureInfo>
             {
@@ -94,7 +94,7 @@ namespace ACAT.Core.Utility
         /// <returns>List of language folders</returns>
         public static IEnumerable<String> GetInstalledLangugageDirectories()
         {
-            var dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
+            IEnumerable<string> dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
 
             var list = new List<String>();
 
@@ -175,8 +175,8 @@ namespace ACAT.Core.Utility
         /// <returns>true if it is</returns>
         public static bool IsInstalledCulture(CultureInfo ci)
         {
-            var installedCultures = EnumerateInstalledLanguages();
-            foreach (var c in installedCultures)
+            IEnumerable<CultureInfo> installedCultures = EnumerateInstalledLanguages();
+            foreach (CultureInfo c in installedCultures)
             {
                 if (String.Compare(c.TwoLetterISOLanguageName, ci.TwoLetterISOLanguageName, true) == 0)
                 {

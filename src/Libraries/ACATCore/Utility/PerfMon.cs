@@ -62,7 +62,7 @@ namespace ACAT.Core.Utility
                 PerfMonLogFileName = Path.Combine(logFileFolder, PerfMonLogFileName);
                 PerfMonLogFileName = Path.Combine(logFileFolder, Path.GetFileNameWithoutExtension(PerfMonLogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(PerfMonLogFileName));
 
-                var category = PerformanceCounterCategory.GetCategories();
+                PerformanceCounterCategory[] category = PerformanceCounterCategory.GetCategories();
                 var currentProcess = Process.GetCurrentProcess().ProcessName;
 
                 freeMemCounter = new PerformanceCounter(categoryName: "Memory", counterName: "Available MBytes");
@@ -138,7 +138,7 @@ namespace ACAT.Core.Utility
                 var sb = new StringBuilder();
                 DateTime now = DateTime.UtcNow;
 
-                var elapsed = now - Process.GetCurrentProcess().StartTime.ToUniversalTime();
+                TimeSpan elapsed = now - Process.GetCurrentProcess().StartTime.ToUniversalTime();
 
                 sb.Append(now.ToLocalTime() + ",");
 

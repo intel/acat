@@ -92,7 +92,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns></returns>
         public PanelClassConfigMapEntry Add(string panelClass, Guid configId, bool replaceIfExists = false)
         {
-            var panelClassConfigMapEntry = Find(panelClass);
+            PanelClassConfigMapEntry panelClassConfigMapEntry = Find(panelClass);
 
             if (panelClassConfigMapEntry == null)
             {
@@ -114,7 +114,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="replaceIfExists">set to true if existing entry should be replaced</param>
         public void Add(PanelClassConfigMapEntry mapEntry, bool replaceIfExists)
         {
-            var existingEntry = Find(mapEntry.PanelClass);
+            PanelClassConfigMapEntry existingEntry = Find(mapEntry.PanelClass);
             if (existingEntry == null)
             {
                 PanelClassConfigMapEntries.Add(mapEntry);

@@ -14,6 +14,7 @@ using ACAT.Core.Configuration;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Validation;
+using FluentValidation.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -91,7 +92,7 @@ namespace ACATCore.Tests.Configuration
             }";
 
             // Act
-            var config = JsonSerializer.Deserialize<PronunciationsJson>(json);
+            PronunciationsJson config = JsonSerializer.Deserialize<PronunciationsJson>(json);
 
             // Assert
             Assert.IsNotNull(config);
@@ -115,7 +116,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsTrue(result.IsValid);
@@ -134,7 +135,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -154,7 +155,7 @@ namespace ACATCore.Tests.Configuration
             });
 
             // Act
-            var result = validator.Validate(config);
+            ValidationResult result = validator.Validate(config);
 
             // Assert
             Assert.IsFalse(result.IsValid);
@@ -178,7 +179,7 @@ namespace ACATCore.Tests.Configuration
             bool saveSuccess = loader.Save(config, testFile);
 
             // Act - Load
-            var loadedConfig = loader.Load(testFile, createDefaultOnError: false);
+            PronunciationsJson loadedConfig = loader.Load(testFile, createDefaultOnError: false);
 
             // Assert
             Assert.IsTrue(saveSuccess);

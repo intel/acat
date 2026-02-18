@@ -13,6 +13,7 @@
 using ACAT.Core.Configuration;
 using ACAT.Core.Utility;
 using ACAT.Core.Validation;
+using FluentValidation.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -50,7 +51,7 @@ namespace ACATCore.Tests.Configuration
             var nonExistentPath = Path.Combine(_testDirectory, "does-not-exist.json");
 
             // Act
-            var config = loader.Load(nonExistentPath, createDefaultOnError: true);
+            ActuatorSettingsJson config = loader.Load(nonExistentPath, createDefaultOnError: true);
 
             // Assert
             Assert.IsNotNull(config);
@@ -66,7 +67,7 @@ namespace ACATCore.Tests.Configuration
             var nonExistentPath = Path.Combine(_testDirectory, "does-not-exist.json");
 
             // Act
-            var config = loader.Load(nonExistentPath, createDefaultOnError: false);
+            ActuatorSettingsJson config = loader.Load(nonExistentPath, createDefaultOnError: false);
 
             // Assert
             Assert.IsNull(config);
@@ -85,7 +86,7 @@ namespace ACATCore.Tests.Configuration
             bool saveSuccess = loader.Save(originalConfig, _testFilePath);
 
             // Act - Load
-            var loadedConfig = loader.Load(_testFilePath, createDefaultOnError: false);
+            ActuatorSettingsJson loadedConfig = loader.Load(_testFilePath, createDefaultOnError: false);
 
             // Assert
             Assert.IsTrue(saveSuccess, "Save should succeed");
@@ -121,12 +122,12 @@ namespace ACATCore.Tests.Configuration
             File.WriteAllText(_testFilePath, json);
 
             // Act - Load with validation
-            var loadedConfig = loader.Load(_testFilePath, createDefaultOnError: true);
+            ActuatorSettingsJson loadedConfig = loader.Load(_testFilePath, createDefaultOnError: true);
 
             // Assert - Should return default due to validation failure
             Assert.IsNotNull(loadedConfig);
             // The loaded config should be default (which is valid)
-            var validationResult = validator.Validate(loadedConfig);
+            ValidationResult validationResult = validator.Validate(loadedConfig);
             Assert.IsTrue(validationResult.IsValid);
         }
 
@@ -167,7 +168,7 @@ namespace ACATCore.Tests.Configuration
             File.WriteAllText(_testFilePath, "");
 
             // Act
-            var config = loader.Load(_testFilePath, createDefaultOnError: true);
+            ActuatorSettingsJson config = loader.Load(_testFilePath, createDefaultOnError: true);
 
             // Assert
             Assert.IsNotNull(config);
@@ -182,7 +183,7 @@ namespace ACATCore.Tests.Configuration
             File.WriteAllText(_testFilePath, "{ invalid json }");
 
             // Act
-            var config = loader.Load(_testFilePath, createDefaultOnError: true);
+            ActuatorSettingsJson config = loader.Load(_testFilePath, createDefaultOnError: true);
 
             // Assert
             Assert.IsNotNull(config);
@@ -196,7 +197,7 @@ namespace ACATCore.Tests.Configuration
             var loader = new JsonConfigurationLoader<ActuatorSettingsJson>();
 
             // Act
-            var config = loader.CreateDefault();
+            ActuatorSettingsJson config = loader.CreateDefault();
 
             // Assert
             Assert.IsNotNull(config);
@@ -274,7 +275,7 @@ namespace ACATCore.Tests.Configuration
             File.WriteAllText(_testFilePath, jsonWithComments);
 
             // Act
-            var config = loader.Load(_testFilePath, createDefaultOnError: false);
+            ActuatorSettingsJson config = loader.Load(_testFilePath, createDefaultOnError: false);
 
             // Assert
             Assert.IsNotNull(config);

@@ -11,6 +11,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+#define PERFORMANCE
+
 using ACAT.Applications;
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Audit;
@@ -45,6 +47,12 @@ namespace ACATTalk
         [STAThread]
         public static void Main(string[] args)
         {
+#if PERFORMANCE
+            PerformanceMonitor.Initialize();
+            PerformanceMonitor.StartTimer("TotalStartupTime");
+            PerformanceMonitor.LogEvent("Application", "Main entry point");
+#endif
+
             if (AppCommon.OtherInstancesRunning())
             {
                 return;
@@ -57,7 +65,13 @@ namespace ACATTalk
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
             FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
+#if PERFORMANCE
+            PerformanceMonitor.StartTimer("FileUtilsLogAssemblyInfo");
+#endif
             FileUtils.LogAssemblyInfo();
+#if PERFORMANCE
+            PerformanceMonitor.StopTimer("FileUtilsLogAssemblyInfo", PerformanceMonitor.MetricCategory.Startup);
+#endif
 
             AppCommon.LoadGlobalSettings();
 
@@ -85,7 +99,8 @@ namespace ACATTalk
             Common.AppPreferences.AppName = "ACAT Talk";
 
             // Initialize modern logging infrastructure FIRST - before anything else needs it
-            modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
+            // Use the shared singleton logger factory to ensure single log file
+            modernLoggingFactory = LoggingConfiguration.GetSharedLoggerFactory();
             LogManager.Initialize(modernLoggingFactory);  // Initialize global logger manager
 
             _logger = modernLoggingFactory.CreateLogger(typeof(Program));
@@ -163,7 +178,7 @@ namespace ACATTalk
                     QuitAppOnFormClose = false
                 };
 
-                var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+                Form form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
                 if (form != null)
                 {
                     // Add ad-hoc agent that will handle the form
@@ -203,8 +218,14 @@ namespace ACATTalk
                 MessageBox.Show(ex.ToString());
                 modernLoggingFactory?.Dispose();
             }
+#if PERFORMANCE
+            PerformanceMonitor.StopTimer("TotalStartupTime", PerformanceMonitor.MetricCategory.Startup);
+            PerformanceMonitor.LogEvent("Application", "Exit");
+            PerformanceMonitor.Shutdown();
+#endif
 
             AppCommon.OnExit();
+
         }
 
         private static void InitializeDependencyInjection()
@@ -256,7 +277,7 @@ namespace ACATTalk
                 return;
             }
 
-            var form = PanelManager.Instance.CreatePanel("DefaultInterfaceScanner", "ACAT Talk Description");
+            Form form = PanelManager.Instance.CreatePanel("DefaultInterfaceScanner", "ACAT Talk Description");
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);

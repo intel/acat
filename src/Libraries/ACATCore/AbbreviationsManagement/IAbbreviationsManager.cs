@@ -16,7 +16,7 @@ namespace ACAT.Core.AbbreviationsManagement
     public interface IAbbreviationsManager : IDisposable
     {
         /// <summary>
-        /// Gets or sets the list of abbreviations
+        /// Gets the list of abbreviations
         /// </summary>
         Abbreviations Abbreviations { get; }
 

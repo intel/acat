@@ -15,5 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="..\ACATCore.Tests.Shared\ACATCore.Tests.Shared.csproj" />
   </ItemGroup>
 </Project>

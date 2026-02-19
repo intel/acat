@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader
     [Serializable]
     public class DataParser
     {
-        private static readonly ILogger<DataParser> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<DataParser>();
+        private static readonly ILogger<DataParser> _logger = LogManager.GetLogger<DataParser>();
 
         /// <summary>
         /// Offset added to targets

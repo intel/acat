@@ -11,7 +11,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,9 +21,9 @@ namespace ACATCore.Tests.Fixtures
     /// <summary>
     /// Base class for ACAT test fixtures. Provides isolated temporary
     /// directory management and deterministic cleanup after each test.
+    /// Uses xUnit's IDisposable pattern for test lifecycle management.
     /// </summary>
-    [TestClass]
-    public abstract class TestFixtureBase
+    public abstract class TestFixtureBase : IDisposable
     {
         private readonly List<string> _tempDirectories = new List<string>();
         private readonly List<IDisposable> _disposables = new List<IDisposable>();
@@ -35,26 +34,13 @@ namespace ACATCore.Tests.Fixtures
         protected string TestDirectory { get; private set; }
 
         /// <summary>
-        /// MSTest initialisation hook. Calls <see cref="OnSetUp"/> after
-        /// creating the per-test temp directory.
+        /// Constructor performs test setup, creating the per-test temp directory
+        /// and calling <see cref="OnSetUp"/>.
         /// </summary>
-        [TestInitialize]
-        public void BaseSetUp()
+        protected TestFixtureBase()
         {
             TestDirectory = CreateTempDirectory();
             OnSetUp();
-        }
-
-        /// <summary>
-        /// MSTest cleanup hook. Calls <see cref="OnTearDown"/> then releases
-        /// all disposables and temp directories registered during the test.
-        /// </summary>
-        [TestCleanup]
-        public void BaseTearDown()
-        {
-            OnTearDown();
-            DisposeAll();
-            DeleteTempDirectories();
         }
 
         /// <summary>
@@ -95,13 +81,23 @@ namespace ACATCore.Tests.Fixtures
         }
 
         /// <summary>
-        /// Registers a disposable resource so it is disposed during
-        /// <see cref="BaseTearDown"/>.
+        /// Registers a disposable resource so it is disposed during cleanup.
         /// </summary>
         protected T RegisterDisposable<T>(T resource) where T : IDisposable
         {
             _disposables.Add(resource);
             return resource;
+        }
+
+        /// <summary>
+        /// IDisposable implementation. Calls <see cref="OnTearDown"/> then releases
+        /// all disposables and temp directories registered during the test.
+        /// </summary>
+        public void Dispose()
+        {
+            OnTearDown();
+            DisposeAll();
+            DeleteTempDirectories();
         }
 
         // ----------------------------------------------------------------

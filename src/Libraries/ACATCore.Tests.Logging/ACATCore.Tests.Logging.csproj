@@ -7,12 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.1.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.1.0" />
-    <PackageReference Include="Microsoft.Testing.Platform" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.7.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.7.0" />
   </ItemGroup>
 
   <ItemGroup>

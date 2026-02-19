@@ -38,7 +38,15 @@ namespace ACATCore.Tests.Configuration
             IServiceCollection services = null;
 
             // Act & Assert
-            Assert.ThrowsException<ArgumentNullException>(() => services.AddACATServices());
+            try
+            {
+                services.AddACATServices();
+                Assert.Fail("Expected ArgumentNullException was not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                // Expected exception
+            }
         }
 
         [TestMethod]
@@ -130,7 +138,15 @@ namespace ACATCore.Tests.Configuration
             IServiceCollection services = null;
 
             // Act & Assert
-            Assert.ThrowsException<ArgumentNullException>(() => services.AddACATInfrastructure());
+            try
+            {
+                services.AddACATInfrastructure();
+                Assert.Fail("Expected ArgumentNullException was not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                // Expected exception
+            }
         }
 
         [TestMethod]
@@ -167,7 +183,8 @@ namespace ACATCore.Tests.Configuration
         public void CreateServiceProvider_WithLoggerFactory_UsesProvidedFactory()
         {
             // Arrange
-            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            // Use the shared logger factory instead of creating one with AddConsole
+            var loggerFactory = LoggingConfiguration.GetSharedLoggerFactory();
 
             // Act
             var serviceProvider = ServiceConfiguration.CreateServiceProvider(loggerFactory);
@@ -182,8 +199,15 @@ namespace ACATCore.Tests.Configuration
         public void CreateServiceProvider_WithNullLoggerFactory_ThrowsArgumentNullException()
         {
             // Act & Assert
-            Assert.ThrowsException<ArgumentNullException>(() => 
-                ServiceConfiguration.CreateServiceProvider(null));
+            try
+            {
+                ServiceConfiguration.CreateServiceProvider(null);
+                Assert.Fail("Expected ArgumentNullException was not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                // Expected exception
+            }
         }
 
         [TestMethod]

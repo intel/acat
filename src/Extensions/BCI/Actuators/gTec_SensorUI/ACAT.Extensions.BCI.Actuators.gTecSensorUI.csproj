@@ -40,9 +40,7 @@
     <ProjectReference Include="..\EEGSettings\ACAT.Extensions.BCI.Actuators.EEG.EEGSettings.csproj" />
     <ProjectReference Include="..\..\Common\BCIControl\ACAT.Extensions.BCI.Common.BCIControl.csproj" />
     <ProjectReference Include="..\EEGUtilities\ACAT.Extensions.BCI.Actuators.EEG.EEGUtils.csproj" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageReference Include="lioncs.ColorSlider" Version="1.0.0" />
     <PackageReference Include="Accord" Version="3.8.0.0" />
@@ -51,6 +49,9 @@
       <ExcludeAssets>native;libGanglionLib.dylib</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="UnicornDotNet" version="1.24.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
   </ItemGroup>
 
 </Project>

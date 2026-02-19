@@ -56,9 +56,9 @@ namespace ACATCore.Tests.Configuration
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), $"acat_test_{Guid.NewGuid()}");
             Directory.CreateDirectory(_testDirectory);
-            
-            using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            _logger = loggerFactory.CreateLogger<ConfigurationEnhancementsTests>();
+
+            // Use the shared logger factory instead of creating one with AddConsole
+            _logger = LoggingConfiguration.CreateLogger<ConfigurationEnhancementsTests>();
         }
 
         [TestCleanup]

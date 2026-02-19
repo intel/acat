@@ -9,9 +9,7 @@
     <ProjectReference Include="$(SolutionRoot)\ACATResources\ACATResources.csproj" />
     <ProjectReference Include="$(SolutionRoot)Libraries\ACATCore\ACAT.Core.csproj" />
     <ProjectReference Include="$(SolutionRoot)Libraries\ACATExtension\ACAT.Extension.csproj" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageReference Include="AcatCameraNative" version="1.0.17" />
     <Reference Include="System" />
@@ -21,6 +19,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
   </ItemGroup>
   
 </Project>

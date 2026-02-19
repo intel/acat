@@ -15,7 +15,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
     [DesignerCategory("code")]
     public class LaunchAppUserControl : LargeToolbarUserControl
     {
-        private static readonly ILogger<LaunchAppUserControl> _logger = LoggingConfiguration.CreateLogger<LaunchAppUserControl>();
+        private static readonly ILogger<LaunchAppUserControl> _logger = LogManager.GetLogger <LaunchAppUserControl>();
 
         private class LaunchButtonSpec : ButtonSpec
         {

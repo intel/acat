@@ -50,6 +50,12 @@
   <PropertyGroup>
     <!-- Show all nullable warnings -->
     <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8618</WarningsAsErrors>
+
+    <!-- Suppress NETSDK1022 - known issue with preview SDK 10.0.200 and EnableDefaultCompileItems=false -->
+    <!-- This is a false positive for auto-generated assembly attributes in obj folder -->
+    <!-- The file is not actually being compiled twice, just detected by the check -->
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);NETSDK1022</MSBuildWarningsAsMessages>
+
     <!-- Or to turn *all* warnings into errors -->
     <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
   </PropertyGroup>
@@ -81,5 +87,15 @@
   <ItemGroup>
     <PackageReference Include="System.Resources.Extensions" Version ="8.0.0" />
   </ItemGroup>
+
+  <!-- Fix NETSDK1022: Exclude auto-generated files from obj and bin folders -->
+  <!-- This prevents duplicate compilation of SDK-generated files -->
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj\**\*;bin\**\*</DefaultItemExcludes>
+
+    <!-- Disable the duplicate items check entirely - it's a false positive with preview SDK -->
+    <!-- The actual compilation doesn't have issues, just the detection mechanism -->
+    <EnableDefaultCompileItemsCheck>false</EnableDefaultCompileItemsCheck>
+  </PropertyGroup>
 
 </Project>

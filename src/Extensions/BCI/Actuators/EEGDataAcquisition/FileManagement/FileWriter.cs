@@ -25,7 +25,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement
 {
     public class FileWriter
     {
-        private static readonly ILogger<FileWriter> _logger = LoggingConfiguration.CreateLogger<FileWriter>();
+        private static readonly ILogger<FileWriter> _logger = LogManager.GetLogger <FileWriter>();
         /// <summary>
         /// Directory for session
         /// </summary>

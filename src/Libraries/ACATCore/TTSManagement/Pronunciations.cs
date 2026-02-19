@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -32,7 +32,7 @@ namespace ACAT.Core.TTSManagement
     /// </summary>
     public class Pronunciations : IDisposable
     {
-        private static readonly ILogger<Pronunciations> _staticLogger = LoggingConfiguration.CreateLogger<Pronunciations>();
+        private static readonly ILogger<Pronunciations> _staticLogger = LogManager.GetLogger<Pronunciations>();
         private readonly ILogger<Pronunciations> _logger;
 
         /// <summary>

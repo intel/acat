@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -23,7 +23,7 @@ namespace ACAT.Core.UserControlManagement
         private readonly ILogger<UserControlKeyboardCommon> _logger;
 
         public UserControlKeyboardCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel iScannerPanel, ILogger<UserControlKeyboardCommon> logger = null) :
-            base(userControl, mapEntry, iScannerPanel, logger ?? LoggingConfiguration.CreateLogger<UserControlCommon>())
+            base(userControl, mapEntry, iScannerPanel, logger ?? LogManager.GetLogger<UserControlCommon>())
         {
             _logger = logger;
             TextController = textController;

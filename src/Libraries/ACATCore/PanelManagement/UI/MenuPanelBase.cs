@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -28,7 +28,7 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public partial class MenuPanelBase : Form, IScannerPanel
     {
-        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(MenuPanelBase).Name);
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(MenuPanelBase).Name);
 
         /// <summary>
         /// Title of the scanner

@@ -57,11 +57,15 @@
     <Compile Include="AbbreviationsManagement\Abbreviations.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationTTSEventArgs.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationsManager.cs" />
+    <Compile Include="AbbreviationsManagement\IAbbreviationsManager.cs" />
+    <Compile Include="AbbreviationsManagement\IAbbreviationsManagerFactory.cs" />
     <Compile Include="ActuatorManagement\ActuatorBase.cs" />
     <Compile Include="ActuatorManagement\ActuatorEx.cs" />
     <Compile Include="ActuatorManagement\ActuatorManager.cs" />
     <Compile Include="ActuatorManagement\Actuators.cs" />
     <Compile Include="ActuatorManagement\CalibrationNotifyEventArgs.cs" />
+    <Compile Include="ActuatorManagement\IActuatorManager.cs" />
+    <Compile Include="ActuatorManagement\IActuatorManagerFactory.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\SwitchInterfaceActuator.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorSetting.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorConfig.cs" />
@@ -126,6 +130,8 @@
     <Compile Include="AgentManagement\AgentCloseEventArgs.cs" />
     <Compile Include="AgentManagement\AgentContext.cs" />
     <Compile Include="AgentManagement\AgentManager.cs" />
+    <Compile Include="AgentManagement\IAgentManager.cs" />
+    <Compile Include="AgentManagement\IAgentManagerFactory.cs" />
     <Compile Include="AgentManagement\AgentProcessInfo.cs" />
     <Compile Include="AgentManagement\Agents\AgentsCache.cs" />
     <Compile Include="AgentManagement\Agents\PreferredAgents.cs" />
@@ -183,6 +189,8 @@
     <Compile Include="CommandManagement\CmdScopeMapEntry.cs" />
     <Compile Include="CommandManagement\CmdScopeTable.cs" />
     <Compile Include="CommandManagement\CommandManager.cs" />
+    <Compile Include="CommandManagement\ICommandManager.cs" />
+    <Compile Include="CommandManagement\ICommandManagerFactory.cs" />
     <Compile Include="Configuration\AbbreviationsJson.cs" />
     <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
     <Compile Include="Configuration\PronunciationsJson.cs" />
@@ -329,6 +337,8 @@
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMap.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMapEntry.cs" />
     <Compile Include="PanelManagement\PanelManager.cs" />
+    <Compile Include="PanelManagement\IPanelManager.cs" />
+    <Compile Include="PanelManagement\IPanelManagerFactory.cs" />
     <Compile Include="PanelManagement\Utils\AutoPositionScanner.cs" />
     <Compile Include="PanelManagement\Utils\Fonts.cs" />
     <Compile Include="PanelManagement\Utils\OutlineWindow.cs" />
@@ -340,10 +350,14 @@
     <Compile Include="SpellCheckManagement\PreferredSpellCheckers.cs" />
     <Compile Include="SpellCheckManagement\SpellCheckers.cs" />
     <Compile Include="SpellCheckManagement\SpellCheckManager.cs" />
+    <Compile Include="SpellCheckManagement\ISpellCheckManager.cs" />
+    <Compile Include="SpellCheckManagement\ISpellCheckManagerFactory.cs" />
     <Compile Include="ThemeManagement\ColorScheme.cs" />
     <Compile Include="ThemeManagement\ColorSchemes.cs" />
     <Compile Include="ThemeManagement\Theme.cs" />
     <Compile Include="ThemeManagement\ThemeManager.cs" />
+    <Compile Include="ThemeManagement\IThemeManager.cs" />
+    <Compile Include="ThemeManagement\IThemeManagerFactory.cs" />
     <Compile Include="TTSManagement\Interfaces\ITTSEngine.cs" />
     <Compile Include="TTSManagement\Interfaces\ITTSValue.cs" />
     <Compile Include="TTSManagement\PreferredTTSEngine.cs" />
@@ -354,6 +368,8 @@
     <Compile Include="TTSManagement\TTSEngines.cs" />
     <Compile Include="TTSManagement\NullTTSEngine.cs" />
     <Compile Include="TTSManagement\TTSManager.cs" />
+    <Compile Include="TTSManagement\ITTSManager.cs" />
+    <Compile Include="TTSManagement\ITTSManagerFactory.cs" />
     <Compile Include="TTSManagement\TTSStatusChangedEventArgs.cs" />
     <Compile Include="TTSManagement\TTSValue.cs" />
     <Compile Include="TTSManagement\TTSVoiceChangedEventArgs.cs" />
@@ -372,6 +388,8 @@
     <Compile Include="Utility\Attributions.cs" />
     <Compile Include="Utility\AudioController.cs" />
     <Compile Include="Utility\AutomationEventManager.cs" />
+    <Compile Include="Utility\IAutomationEventManager.cs" />
+    <Compile Include="Utility\IAutomationEventManagerFactory.cs" />
     <Compile Include="Utility\BlockingQueue.cs" />
     <Compile Include="PreferencesManagement\Interfaces\IPreferences.cs" />
     <Compile Include="PreferencesManagement\Interfaces\ISupportsPreferences.cs" />
@@ -423,6 +441,7 @@
     <Compile Include="PanelManagement\Common\PanelRequestEventArgs.cs" />
     <Compile Include="PreferencesManagement\PreferencesBase.cs" />
     <Compile Include="Utility\RoundedCornerControl.cs" />
+    <Compile Include="Utility\ServiceConfiguration.cs" />
     <Compile Include="Utility\SmartPath.cs" />
     <Compile Include="Utility\SyncLock.cs" />
     <Compile Include="Utility\TextUtils.cs" />
@@ -516,6 +535,8 @@
     <Compile Include="WordPredictorManagement\PreferredWordPredictors.cs" />
     <Compile Include="WordPredictorManagement\PreferredWordPredictorsConverter.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionManager.cs" />
+    <Compile Include="WordPredictorManagement\IWordPredictionManager.cs" />
+    <Compile Include="WordPredictorManagement\IWordPredictionManagerFactory.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionRequest.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionResponse.cs" />
     <Compile Include="WordPredictorManagement\WordPredictors.cs" />

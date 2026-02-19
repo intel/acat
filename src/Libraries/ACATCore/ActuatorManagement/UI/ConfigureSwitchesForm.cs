@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -201,7 +201,7 @@ namespace ACAT.Core.ActuatorManagement
                 Hide();
 
                 // var switchCommandMapForm = new SwitchCommandMapForm {Title = "Map Command to Switch " + switchName};
-                var switchCommandMapForm = new SwitchCommandMapForm(LoggingConfiguration.CreateLogger<SwitchCommandMapForm>()) { Title = "Map Command to Switch " + switchName };
+                var switchCommandMapForm = new SwitchCommandMapForm(LogManager.GetLogger<SwitchCommandMapForm>()) { Title = "Map Command to Switch " + switchName };
                 switchCommandMapForm.ShowDialog();
 
                 Show();

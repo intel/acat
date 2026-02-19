@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -33,7 +33,7 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
         public ScannerButtonToggle(Control uiControl)
-            : base(uiControl, LoggingConfiguration.CreateLogger<ScannerButtonBase>())
+            : base(uiControl, LogManager.GetLogger<ScannerButtonBase>())
         {
             if (ThemeManager.Instance.ActiveTheme.Colors.Exists("ScannerButton"))
             {

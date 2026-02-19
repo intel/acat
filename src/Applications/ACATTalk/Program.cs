@@ -230,19 +230,22 @@ namespace ACATTalk
 
         private static void InitializeDependencyInjection()
         {
-            // Set up dependency injection for extension instantiation
+            // Set up dependency injection using ACAT infrastructure
             var services = new ServiceCollection();
 
             // Add logging (reuse existing factory)
             services.AddSingleton<ILoggerFactory>(modernLoggingFactory);
             services.AddLogging();
 
+            // Add ACAT core services (managers, factories, etc.)
+            services.AddACATServices();
+
             _serviceProvider = services.BuildServiceProvider();
 
             // Make service provider available to Context for extension loading
             Context.ServiceProvider = _serviceProvider;
 
-            _logger.LogDebug("Dependency injection initialized");
+            _logger.LogDebug("Dependency injection initialized with ACAT services");
         }
 
         /// <summary>

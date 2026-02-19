@@ -1,4 +1,4 @@
-﻿// Copyright 2013-2019; 2023 Intel Corporation
+// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
 using ACAT.Core.AgentManagement;
@@ -29,7 +29,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
     /// </summary>
     public class PanelConfigMap
     {
-        private static readonly ILogger<PanelConfigMap> _logger = LoggingConfiguration.CreateLogger<PanelConfigMap>();
+        private static readonly ILogger<PanelConfigMap> _logger = LogManager.GetLogger<PanelConfigMap>();
 
         /// <summary>
         /// Name of the panel class config file. This file contains a

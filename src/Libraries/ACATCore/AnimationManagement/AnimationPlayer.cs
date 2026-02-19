@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -172,7 +172,7 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="variables">variables and their values</param>
         public AnimationPlayer(Widget rootWidget, Interpret interpreter, Variables variables)
         {
-            _logger = LoggingConfiguration.CreateLogger<AnimationPlayer>();
+            _logger = LogManager.GetLogger<AnimationPlayer>();
             _logger.LogTrace("CTOR(" + rootWidget.Name + ")");
             if (rootWidget.UIControl is IPanel)
             {

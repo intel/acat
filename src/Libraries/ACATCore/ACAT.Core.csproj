@@ -192,6 +192,11 @@
     <Compile Include="CommandManagement\ICommandManager.cs" />
     <Compile Include="CommandManagement\ICommandManagerFactory.cs" />
     <Compile Include="Configuration\AbbreviationsJson.cs" />
+    <Compile Include="Configuration\ConfigurationExamples.cs" />
+    <Compile Include="Configuration\ConfigurationReloadService.cs" />
+    <Compile Include="Configuration\ConfigurationVersioning.cs" />
+    <Compile Include="Configuration\EnvironmentConfiguration.cs" />
+    <Compile Include="Configuration\JsonSchemaValidator.cs" />
     <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
     <Compile Include="Configuration\PronunciationsJson.cs" />
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />

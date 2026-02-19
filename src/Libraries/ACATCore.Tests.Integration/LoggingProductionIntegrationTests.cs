@@ -112,38 +112,17 @@ namespace ACATCore.Tests.Integration
         }
 
         [TestMethod]
+        [Ignore("Performance test is environment-dependent and flaky. Use LoggingPerformanceTest instead.")]
         public void ContinuousLogging_PerformanceImpactMinimal()
         {
-            // Arrange
-            var loggerFactory = LoggingConfiguration.CreateLoggerFactory();
-            var logger = loggerFactory.CreateLogger("ContinuousTest");
-            
-            // Act - Simulate 10 minutes of logging (scaled down to seconds for test)
-            var stopwatch = Stopwatch.StartNew();
-            int messageCount = 1000; // Representing scaled-down continuous logging
-            
-            for (int i = 0; i < messageCount; i++)
-            {
-                logger.LogInformation("Continuous message {Index}", i);
-                if (i % 100 == 0)
-                {
-                    // Simulate some work between log messages
-                    System.Threading.Thread.Sleep(1);
-                }
-            }
-            
-            stopwatch.Stop();
-            
-            // Assert - Performance impact should be < 5% (generous threshold for test)
-            // For 1000 messages with 10ms of work (10 sleeps), logging overhead should be minimal
-            double expectedTime = 10; // ms of work time
-            double actualTime = stopwatch.ElapsedMilliseconds;
-            double overhead = ((actualTime - expectedTime) / expectedTime) * 100;
-            
-            Assert.IsTrue(overhead < 500, // Very generous for test environment
-                $"Logging overhead too high: {overhead:F2}%");
-            
-            loggerFactory?.Dispose();
+            // This test was removed because:
+            // 1. Thread.Sleep() timing is unreliable on Windows (can vary 15-20ms)
+            // 2. Async logging makes timing comparisons meaningless
+            // 3. Debug vs Release builds have vastly different performance characteristics
+            // 4. The test was measuring OS scheduling variance, not logging overhead
+            //
+            // Use LoggingPerformanceTest() instead which tests absolute throughput.
+            Assert.Inconclusive("Test disabled - use LoggingPerformanceTest instead");
         }
 
         [TestMethod]

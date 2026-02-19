@@ -417,7 +417,7 @@ namespace ACATCore.Tests.Configuration
             // Arrange
             string configPath = Path.Combine(_testDirectory, "config.json");
             var config = new TestConfiguration { Name = "Original", Port = 8080 };
-            string json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            string json = System.Text.Json.JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(configPath, json);
 
             var loader = new JsonConfigurationLoader<TestConfiguration>(
@@ -438,7 +438,7 @@ namespace ACATCore.Tests.Configuration
             
             // Modify file
             config.Name = "Modified";
-            json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            json = System.Text.Json.JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(configPath, json);
             
             Thread.Sleep(1000); // Wait for debounce and event
@@ -462,8 +462,8 @@ namespace ACATCore.Tests.Configuration
             var baseConfig = new TestConfiguration { Name = "Base", Port = 8080 };
             var devConfig = new TestConfiguration { Name = "Dev", Port = 9090 };
             
-            File.WriteAllText(baseConfigPath, JsonSerializer.Serialize(baseConfig));
-            File.WriteAllText(devConfigPath, JsonSerializer.Serialize(devConfig));
+            File.WriteAllText(baseConfigPath, System.Text.Json.JsonSerializer.Serialize(baseConfig));
+            File.WriteAllText(devConfigPath, System.Text.Json.JsonSerializer.Serialize(devConfig));
 
             var loader = new JsonConfigurationLoader<TestConfiguration>(
                 validator: null,

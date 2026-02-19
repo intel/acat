@@ -117,7 +117,7 @@ namespace ACAT.Core.Utility
                     return createDefaultOnError ? CreateDefault() : null;
                 }
 
-                T config = System.Text.Json.JsonSerializer.Deserialize<T>(json);
+                T config = System.Text.Json.JsonSerializer.Deserialize<T>(json, _jsonOptions);
 
                 if (config == null)
                 {

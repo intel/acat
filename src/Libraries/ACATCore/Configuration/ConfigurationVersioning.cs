@@ -57,7 +57,15 @@ namespace ACAT.Core.Configuration
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Major, Minor, Patch);
+            // .NET Framework 4.8.1 doesn't have HashCode.Combine
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + Major.GetHashCode();
+                hash = hash * 23 + Minor.GetHashCode();
+                hash = hash * 23 + Patch.GetHashCode();
+                return hash;
+            }
         }
 
         public static ConfigurationVersion Parse(string version)

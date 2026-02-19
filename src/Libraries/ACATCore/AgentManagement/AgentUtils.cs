@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -18,7 +18,7 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public class AgentUtils
     {
-        private static readonly ILogger<AgentUtils> _logger = LoggingConfiguration.CreateLogger<AgentUtils>();
+        private static readonly ILogger<AgentUtils> _logger = LogManager.GetLogger<AgentUtils>();
         /// <summary>
         /// Finds a descendent of the focused element that has the specified
         /// className, controlType and automationID

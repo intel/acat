@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -231,6 +231,43 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static IServiceProvider ServiceProvider { get; set; }
 
+        /// <summary>
+        /// Gets a manager from the service provider if available, otherwise falls back to singleton
+        /// This method provides a transition path to full dependency injection
+        /// </summary>
+        /// <typeparam name="T">The type of manager to resolve</typeparam>
+        /// <param name="fallback">Fallback function to get the singleton instance</param>
+        /// <returns>The manager instance from DI or singleton</returns>
+        private static T ResolveManager<T>(Func<T> fallback) where T : class
+        {
+            if (ServiceProvider != null)
+            {
+                var service = ServiceProvider.GetService(typeof(T)) as T;
+                if (service != null)
+                {
+                    return service;
+                }
+            }
+            return fallback();
+        }
+
+        /// <summary>
+        /// Resolves a manager by its interface type from the service provider
+        /// This is the preferred way to access managers when using dependency injection
+        /// </summary>
+        /// <typeparam name="TInterface">The interface type to resolve</typeparam>
+        /// <returns>The manager instance, or null if not registered</returns>
+        public static TInterface GetManager<TInterface>() where TInterface : class
+        {
+            if (ServiceProvider == null)
+            {
+                throw new InvalidOperationException(
+                    "ServiceProvider is not configured. Call Context.ServiceProvider = serviceProvider before accessing managers via DI.");
+            }
+
+            return ServiceProvider.GetService(typeof(TInterface)) as TInterface;
+        }
+
         ///// <summary>
         ///// Changes the culture to the specified culture
         ///// </summary>
@@ -380,7 +417,7 @@ namespace ACAT.Core.PanelManagement
                 retVal = false;
             }
 
-            LoggingConfiguration.CreateLogger<Context>().LogDebug("Returning {RetVal} from context init", retVal);
+            LogManager.GetLogger<Context>().LogDebug("Returning {RetVal} from context init", retVal);
             return retVal;
         }
 

@@ -17,6 +17,8 @@ using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACATExtension.CommandHandlers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -114,8 +116,11 @@ namespace ACATConfig
 
             AppCommon.CheckDisplayScalingAndResolution();
 
-            // Initialize modern logging infrastructure (ticket #3)  
-            var modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
+            // Initialize dependency injection with ACAT infrastructure
+            var services = new ServiceCollection();
+            services.AddACATInfrastructure();
+            var serviceProvider = services.BuildServiceProvider();
+            Context.ServiceProvider = serviceProvider;
 
             CommandDescriptors.Init();
 
@@ -131,7 +136,7 @@ namespace ACATConfig
             //form.EvtLanguageChanged += form_EvtLanguageChanged;
             Application.Run(form);
             
-            modernLoggingFactory?.Dispose();
+            (serviceProvider as IDisposable)?.Dispose();
         }
 
         /// <summary>

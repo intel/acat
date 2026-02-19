@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -65,7 +65,7 @@ namespace ACAT.Core.Utility
         
         public DirectoryWalker(String rootDir, String fileWildCard, ILogger<DirectoryWalker> logger = null)
         {
-            _logger = logger ?? LoggingConfiguration.CreateLogger<DirectoryWalker>();
+            _logger = logger ?? LogManager.GetLogger<DirectoryWalker>();
             _rootDir = rootDir;
             _wildCard = fileWildCard;
         }

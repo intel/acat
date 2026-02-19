@@ -1,4 +1,4 @@
-﻿using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.CommandManagement;
@@ -29,7 +29,7 @@ namespace ACAT.Core.AnimationManagement
 
         public UserControlAnimationManager() : base()
         {
-            _logger = LoggingConfiguration.CreateLogger<UserControlAnimationManager>();
+            _logger = LogManager.GetLogger<UserControlAnimationManager>();
         }
 
         public bool Init(UserControlConfigMapEntry mapentry)

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -23,7 +23,7 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public abstract class GenericAppAgentBase : AgentBase
     {
-        protected GenericAppAgentBase(ILogger<AgentBase> logger = null) : base(logger ?? LoggingConfiguration.CreateLogger<AgentBase>())
+        protected GenericAppAgentBase(ILogger<AgentBase> logger = null) : base(logger ?? LogManager.GetLogger<AgentBase>())
         {
         }
 

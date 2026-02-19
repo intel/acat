@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -67,7 +67,7 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         public AgentsCache(ILogger<AgentsCache> logger = null)
         {
-            _logger = logger ?? LoggingConfiguration.CreateLogger<AgentsCache>();
+            _logger = logger ?? LogManager.GetLogger<AgentsCache>();
             _logger?.LogTrace("AgentsCache created");
 
             _agentCache = new List<IApplicationAgent>();

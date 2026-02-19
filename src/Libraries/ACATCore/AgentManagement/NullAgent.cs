@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -22,7 +22,7 @@ namespace ACAT.Core.AgentManagement
                         "No-op agent")]
     public class NullAgent : AgentBase
     {
-        public NullAgent() : base(LoggingConfiguration.CreateLogger<AgentBase>())
+        public NullAgent() : base(LogManager.GetLogger<AgentBase>())
         {
         }
 

@@ -52,7 +52,7 @@ namespace ACAT.Core.PanelManagement
     /// the parent scanner is 'paused' (hidden). When the scanner is
     /// closed, the parent scanner is 'resumed' (displayed).
     /// </summary>
-    public class PanelManager : IDisposable
+    public class PanelManager : IPanelManager, IDisposable
     {
         /// <summary>
         /// The root directory under ACAT from where the scanners/dialog/menus

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -19,7 +19,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
     /// </summary>
     public class PanelConfigMapEntry
     {
-        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(PanelConfigMapEntry).Name);
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(PanelConfigMapEntry).Name);
 
         private readonly Dictionary<string, string> _userControlsDict = new();
 

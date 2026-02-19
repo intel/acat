@@ -1,4 +1,4 @@
-﻿using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AnimationManagement.Interfaces;
 using ACAT.Core.Interpreter;
@@ -87,7 +87,7 @@ namespace ACAT.Core.AnimationManagement
 {
     public partial class AnimationManager : IAnimationManager, IDisposable
     {
-        private static readonly ILogger<AnimationManager> _logger = LoggingConfiguration.CreateLogger<AnimationManager>();
+        private static readonly ILogger<AnimationManager> _logger = LogManager.GetLogger<AnimationManager>();
 
         /// <summary>
         /// Collection of animations for this panel

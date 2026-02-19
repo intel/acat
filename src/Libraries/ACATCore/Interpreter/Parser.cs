@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -20,7 +20,7 @@ namespace ACAT.Core.Interpreter
     /// </summary>
     public class Parser
     {
-        private static readonly ILogger<Parser> _logger = LoggingConfiguration.CreateLogger<Parser>();
+        private static readonly ILogger<Parser> _logger = LogManager.GetLogger<Parser>();
         /// <summary>
         /// State of parsing
         /// </summary>

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -24,7 +24,7 @@ namespace ACAT.Core.UserManagement
     /// </summary>
     public class UserManager
     {
-        private static readonly ILogger<UserManager> _logger = LoggingConfiguration.CreateLogger<UserManager>();
+        private static readonly ILogger<UserManager> _logger = LogManager.GetLogger<UserManager>();
 
         public const String BaseUserInstallDir = "Install\\Users";
 

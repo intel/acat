@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -22,7 +22,7 @@ namespace ACAT.Core.ThemeManagement
     /// </summary>
     public class ColorScheme : IDisposable
     {
-        private static readonly ILogger<ColorScheme> _logger = LoggingConfiguration.CreateLogger<ColorScheme>();
+        private static readonly ILogger<ColorScheme> _logger = LogManager.GetLogger<ColorScheme>();
         /// <summary>
         /// Default bg color to use if not defined in the config file
         /// </summary>

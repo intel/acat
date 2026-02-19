@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -30,7 +30,7 @@ namespace ACAT.Core.PanelManagement.Utils
         /// </summary>
         private static readonly Fonts _instance = new();
 
-        private static readonly ILogger<Fonts> _logger = LoggingConfiguration.CreateLogger<Fonts>();
+        private static readonly ILogger<Fonts> _logger = LogManager.GetLogger<Fonts>();
 
         /// <summary>
         /// Collection of installed fonts

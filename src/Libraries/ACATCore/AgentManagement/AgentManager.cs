@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -104,7 +104,7 @@ namespace ACAT.Core.AgentManagement
     /// Notifies subscribers if the text or caret position in the the
     /// active text window.
     /// </summary>
-    public class AgentManager : IDisposable
+    public class AgentManager : IAgentManager, IDisposable
     {
         /// <summary>
         /// Root directory from which application agents will be loaded
@@ -672,7 +672,7 @@ namespace ACAT.Core.AgentManagement
             if (_agentsCache == null)
             {
                 ILogger<AgentsCache> agentsCacheLogger = Context.ServiceProvider?.GetService(typeof(ILogger<AgentsCache>)) as ILogger<AgentsCache>
-                    ?? LoggingConfiguration.CreateLogger<AgentsCache>();
+                    ?? LogManager.GetLogger<AgentsCache>();
                 _agentsCache = new AgentsCache(agentsCacheLogger);
                 _agentsCache.EvtAgentAdded += _agentsCache_EvtAgentAdded;
                 return _agentsCache.Init(extensionDirs);

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -26,7 +26,7 @@ namespace ACAT.Core.WordPredictorManagement
     [Serializable]
     public class PreferredWordPredictors : PreferencesBase
     {
-        private static readonly ILogger<PreferredWordPredictors> _logger = LoggingConfiguration.CreateLogger<PreferredWordPredictors>();
+        private static readonly ILogger<PreferredWordPredictors> _logger = LogManager.GetLogger<PreferredWordPredictors>();
 
         /// <summary>
         /// Path to the file to serialize to

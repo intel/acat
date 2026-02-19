@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -28,7 +28,7 @@ namespace ACAT.Core.WordPredictorManagement
     /// app sets the preferred word predcitor to use.
     /// This is a singleton instance class
     /// </summary>
-    public class WordPredictionManager : IDisposable
+    public class WordPredictionManager : IWordPredictionManager, IDisposable
     {
         private readonly ILogger<WordPredictionManager> _logger;
 
@@ -277,7 +277,7 @@ namespace ACAT.Core.WordPredictorManagement
 
             if (_wordPredictors == null)
             {
-                _wordPredictors = new WordPredictors(LoggingConfiguration.CreateLogger<WordPredictors>());
+                _wordPredictors = new WordPredictors(LogManager.GetLogger<WordPredictors>());
 
                 retVal = _wordPredictors.Load(extensionDirs);
             }

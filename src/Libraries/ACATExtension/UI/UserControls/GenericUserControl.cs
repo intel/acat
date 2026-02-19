@@ -48,6 +48,9 @@ namespace ACAT.Extension.UI.UserControls
 
         public virtual bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
         {
+            // Initialize logger for this user control
+            _logger = LogManager.GetLogger(GetType());
+
             _userControlCommon = new UserControlCommon(this, mapEntry, scanner);
 
             bool retVal = _userControlCommon.Initialize();

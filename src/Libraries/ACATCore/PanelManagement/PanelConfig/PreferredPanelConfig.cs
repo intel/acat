@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // <copyright file="PreferredPanelConfig.cs" company="Intel Corporation">
 //
 // Copyright (c) 2013-2015 Intel Corporation 
@@ -70,7 +70,7 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     internal class PreferredPanelConfig
     {
-        private static readonly ILogger<PreferredPanelConfig> _logger = LoggingConfiguration.CreateLogger<PreferredPanelConfig>();
+        private static readonly ILogger<PreferredPanelConfig> _logger = LogManager.GetLogger<PreferredPanelConfig>();
 
         /// <summary>
         /// Name of the preferred config file

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -23,7 +23,7 @@ namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviation : IDisposable
     {
-        private static readonly ILogger<Abbreviation> _staticLogger = LoggingConfiguration.CreateLogger<Abbreviation>();
+        private static readonly ILogger<Abbreviation> _staticLogger = LogManager.GetLogger<Abbreviation>();
         private readonly ILogger<Abbreviation> _logger;
 
         /// <summary>

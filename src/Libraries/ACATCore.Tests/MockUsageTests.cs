@@ -17,181 +17,182 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.WordPredictorManagement;
 using ACATCore.Tests.Mocks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MockFactory = ACATCore.Tests.Mocks.MockFactory;
+using Xunit;
 using Moq;
 using System.Collections.Generic;
+using System;
 
 namespace ACATCore.Tests
 {
     /// <summary>
     /// Demonstrates patterns for using <see cref="ManagerMocks"/> and
-    /// <see cref="MockFactory"/> in MSTest unit tests.
+    /// <see cref="MockFactory"/> in xUnit unit tests.
     /// </summary>
-    [TestClass]
     public class MockUsageTests
     {
         // ----------------------------------------------------------------
         // ManagerMocks – individual mock creation
         // ----------------------------------------------------------------
 
-        [TestMethod]
+        [Fact]
         public void ManagerMocks_CreatePanelManager_ReturnsConfiguredMock()
         {
             var mock = ManagerMocks.CreatePanelManager();
 
-            Assert.IsNotNull(mock);
-            Assert.IsInstanceOfType(mock.Object, typeof(IPanelManager));
+            Assert.NotNull(mock);
+            Assert.IsAssignableFrom<IPanelManager>(mock.Object);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManagerMocks_CreateAgentManager_ReturnsConfiguredMock()
         {
             var mock = ManagerMocks.CreateAgentManager();
 
-            Assert.IsNotNull(mock);
-            Assert.IsInstanceOfType(mock.Object, typeof(IAgentManager));
+            Assert.NotNull(mock);
+            Assert.IsAssignableFrom<IAgentManager>(mock.Object);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManagerMocks_CreateActuatorManager_ReturnsConfiguredMock()
         {
             var mock = ManagerMocks.CreateActuatorManager();
 
-            Assert.IsNotNull(mock);
-            Assert.IsInstanceOfType(mock.Object, typeof(IActuatorManager));
+            Assert.NotNull(mock);
+            Assert.IsAssignableFrom<IActuatorManager>(mock.Object);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManagerMocks_CreateWordPredictionManager_ReturnsConfiguredMock()
         {
             var mock = ManagerMocks.CreateWordPredictionManager();
 
-            Assert.IsNotNull(mock);
-            Assert.IsInstanceOfType(mock.Object, typeof(IWordPredictionManager));
+            Assert.NotNull(mock);
+            Assert.IsAssignableFrom<IWordPredictionManager>(mock.Object);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManagerMocks_CreateTTSManager_ReturnsConfiguredMock()
         {
             var mock = ManagerMocks.CreateTTSManager();
 
-            Assert.IsNotNull(mock);
-            Assert.IsInstanceOfType(mock.Object, typeof(ITTSManager));
+            Assert.NotNull(mock);
+            Assert.IsAssignableFrom<ITTSManager>(mock.Object);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManagerMocks_CreateLogger_ReturnsConfiguredMock()
         {
             var mock = ManagerMocks.CreateLogger();
 
-            Assert.IsNotNull(mock);
+            Assert.NotNull(mock);
         }
 
         // ----------------------------------------------------------------
         // MockFactory – bundle creation
         // ----------------------------------------------------------------
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_CreateManagerBundle_AllMocksPopulated()
         {
             var bundle = MockFactory.CreateManagerBundle();
 
-            Assert.IsNotNull(bundle.PanelManager);
-            Assert.IsNotNull(bundle.AgentManager);
-            Assert.IsNotNull(bundle.ActuatorManager);
-            Assert.IsNotNull(bundle.WordPredictionManager);
-            Assert.IsNotNull(bundle.TTSManager);
-            Assert.IsNotNull(bundle.Logger);
+            Assert.NotNull(bundle.PanelManager);
+            Assert.NotNull(bundle.AgentManager);
+            Assert.NotNull(bundle.ActuatorManager);
+            Assert.NotNull(bundle.WordPredictionManager);
+            Assert.NotNull(bundle.TTSManager);
+            Assert.NotNull(bundle.Logger);
         }
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_CreateManagerBundle_EachCallReturnsDistinctInstances()
         {
             var bundle1 = MockFactory.CreateManagerBundle();
             var bundle2 = MockFactory.CreateManagerBundle();
 
-            Assert.AreNotSame(bundle1.PanelManager, bundle2.PanelManager);
-            Assert.AreNotSame(bundle1.AgentManager, bundle2.AgentManager);
-            Assert.AreNotSame(bundle1.ActuatorManager, bundle2.ActuatorManager);
-            Assert.AreNotSame(bundle1.WordPredictionManager, bundle2.WordPredictionManager);
-            Assert.AreNotSame(bundle1.TTSManager, bundle2.TTSManager);
+            Assert.NotSame(bundle1.PanelManager, bundle2.PanelManager);
+            Assert.NotSame(bundle1.AgentManager, bundle2.AgentManager);
+            Assert.NotSame(bundle1.ActuatorManager, bundle2.ActuatorManager);
+            Assert.NotSame(bundle1.WordPredictionManager, bundle2.WordPredictionManager);
+            Assert.NotSame(bundle1.TTSManager, bundle2.TTSManager);
         }
 
         // ----------------------------------------------------------------
         // Default return values
         // ----------------------------------------------------------------
 
-        [TestMethod]
+        [Fact]
         public void PanelManagerMock_Init_ReturnsTrueByDefault()
         {
             var mock = ManagerMocks.CreatePanelManager();
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void AgentManagerMock_Init_ReturnsTrueByDefault()
         {
             var mock = ManagerMocks.CreateAgentManager();
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ActuatorManagerMock_Init_ReturnsTrueByDefault()
         {
             var mock = ManagerMocks.CreateActuatorManager();
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void WordPredictionManagerMock_Init_ReturnsTrueByDefault()
         {
             var mock = ManagerMocks.CreateWordPredictionManager();
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void TTSManagerMock_Init_ReturnsTrueByDefault()
         {
             var mock = ManagerMocks.CreateTTSManager();
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ActuatorManagerMock_IsSwitchActive_ReturnsFalseByDefault()
         {
             var mock = ManagerMocks.CreateActuatorManager();
 
-            Assert.IsFalse(mock.Object.IsSwitchActive());
+            Assert.False(mock.Object.IsSwitchActive());
         }
 
-        [TestMethod]
+        [Fact]
         public void AgentManagerMock_CanActivateFunctionalAgent_ReturnsFalseByDefault()
         {
             var mock = ManagerMocks.CreateAgentManager();
 
-            Assert.IsFalse(mock.Object.CanActivateFunctionalAgent());
+            Assert.False(mock.Object.CanActivateFunctionalAgent());
         }
 
         // ----------------------------------------------------------------
         // Customising mocks in tests
         // ----------------------------------------------------------------
 
-        [TestMethod]
+        [Fact]
         public void PanelManagerMock_GetCurrentPanelName_CanBeOverridden()
         {
             var mock = ManagerMocks.CreatePanelManager();
@@ -199,20 +200,20 @@ namespace ACATCore.Tests
 
             string name = mock.Object.GetCurrentPanelName();
 
-            Assert.AreEqual("MyTestPanel", name);
+            Assert.Equal("MyTestPanel", name);
         }
 
-        [TestMethod]
+        [Fact]
         public void AgentManagerMock_IsCurrentAgent_CanBeOverridden()
         {
             var mock = ManagerMocks.CreateAgentManager();
             mock.Setup(m => m.IsCurrentAgent("NotepadAgent")).Returns(true);
 
-            Assert.IsTrue(mock.Object.IsCurrentAgent("NotepadAgent"));
-            Assert.IsFalse(mock.Object.IsCurrentAgent("OtherAgent"));
+            Assert.True(mock.Object.IsCurrentAgent("NotepadAgent"));
+            Assert.False(mock.Object.IsCurrentAgent("OtherAgent"));
         }
 
-        [TestMethod]
+        [Fact]
         public void TTSManagerMock_SetActiveEngine_CanBeOverridden()
         {
             var mock = ManagerMocks.CreateTTSManager();
@@ -220,68 +221,68 @@ namespace ACATCore.Tests
 
             bool result = mock.Object.SetActiveEngine(null);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
         // ----------------------------------------------------------------
         // WithInitResult extension methods
         // ----------------------------------------------------------------
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_WithInitResult_PanelManager_ConfiguresReturn()
         {
             var mock = MockFactory.CreatePanelManager().WithInitResult(false);
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_WithInitResult_AgentManager_ConfiguresReturn()
         {
             var mock = MockFactory.CreateAgentManager().WithInitResult(false);
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_WithInitResult_ActuatorManager_ConfiguresReturn()
         {
             var mock = MockFactory.CreateActuatorManager().WithInitResult(false);
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_WithInitResult_WordPredictionManager_ConfiguresReturn()
         {
             var mock = MockFactory.CreateWordPredictionManager().WithInitResult(false);
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_WithInitResult_TTSManager_ConfiguresReturn()
         {
             var mock = MockFactory.CreateTTSManager().WithInitResult(false);
 
             bool result = mock.Object.Init(new List<string>());
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
         // ----------------------------------------------------------------
         // Verification – asserting that methods were called
         // ----------------------------------------------------------------
 
-        [TestMethod]
+        [Fact]
         public void PanelManagerMock_CloseCurrentPanel_CanBeVerified()
         {
             var mock = ManagerMocks.CreatePanelManager();
@@ -291,7 +292,7 @@ namespace ACATCore.Tests
             mock.Verify(m => m.CloseCurrentPanel(), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void ActuatorManagerMock_Pause_Resume_CanBeVerified()
         {
             var mock = ManagerMocks.CreateActuatorManager();
@@ -303,7 +304,7 @@ namespace ACATCore.Tests
             mock.Verify(m => m.Resume(), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void AgentManagerMock_RunCommand_CanBeVerified()
         {
             var mock = ManagerMocks.CreateAgentManager();
@@ -314,7 +315,7 @@ namespace ACATCore.Tests
             mock.Verify(m => m.RunCommand(It.IsAny<string>(), ref It.Ref<bool>.IsAny), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void WordPredictionManagerMock_SaveSettings_CanBeVerified()
         {
             var mock = ManagerMocks.CreateWordPredictionManager();
@@ -328,7 +329,7 @@ namespace ACATCore.Tests
         // Strict mocks
         // ----------------------------------------------------------------
 
-        [TestMethod]
+        [Fact]
         public void MockFactory_CreateStrictPanelManager_ThrowsOnUnsetupCall()
         {
             var mock = MockFactory.CreateStrictPanelManager();
@@ -336,17 +337,16 @@ namespace ACATCore.Tests
 
             // Calling a set-up method should succeed
             string name = mock.Object.GetCurrentPanelName();
-            Assert.AreEqual("StrictPanel", name);
+            Assert.Equal("StrictPanel", name);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(MockException))]
+        [Fact]
         public void MockFactory_CreateStrictAgentManager_ThrowsOnUnsetupCall()
         {
             var mock = MockFactory.CreateStrictAgentManager();
 
             // No setup for Init – should throw MockException
-            mock.Object.Init(new List<string>());
+            Assert.Throws<MockException>(() => mock.Object.Init(new List<string>()));
         }
     }
 }

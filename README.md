@@ -1,5 +1,8 @@
 ## Official release of ACAT is available [here](https://github.com/intel/acat/releases)
 
+[![Build](https://github.com/intel/acat/actions/workflows/build.yml/badge.svg)](https://github.com/intel/acat/actions/workflows/build.yml)
+[![Tests](https://github.com/intel/acat/actions/workflows/test.yml/badge.svg)](https://github.com/intel/acat/actions/workflows/test.yml)
+
 ## Background
 The Assistive Context-Aware Toolkit (ACAT) is an open-source platform created at Intel Labs. It is designed to enhance communication for individuals with restricted speech and typing capabilities. It achieves this by providing functionalities like keyboard simulation, word/sentence prediction, and speech synthesis.
 

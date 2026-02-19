@@ -1,0 +1,77 @@
+name: Tests
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+
+  test:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        lfs: true
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Run ACATCore.Tests.Logging
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj
+        --configuration Debug
+        --logger "trx;LogFileName=logging-results.trx"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Run ACATCore.Tests.Configuration
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Configuration/ACATCore.Tests.Configuration.csproj
+        --configuration Debug
+        --logger "trx;LogFileName=config-results.trx"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Run ACATCore.Tests.Integration
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj
+        --configuration Debug
+        --logger "trx;LogFileName=integration-results.trx"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Run ACAT.ConfigMigrationTool.Tests
+      run: >
+        dotnet test Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj
+        --configuration Debug
+        --logger "trx;LogFileName=migration-results.trx"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: src/TestResults/
+
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results
+        path: src/TestResults/*.trx
+        reporter: dotnet-trx

@@ -70,8 +70,15 @@ namespace ACATCore.Tests.Configuration
             var extensionTypes = new List<Type>();
 
             // Act & Assert
-            Assert.ThrowsException<ArgumentNullException>(() =>
-                ExtensionInstantiator.CreateExtensionInstances(null, extensionTypes));
+            try
+            {
+                ExtensionInstantiator.CreateExtensionInstances(null, extensionTypes);
+                Assert.Fail("Expected ArgumentNullException was not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                // Expected exception
+            }
         }
 
         [TestMethod]

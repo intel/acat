@@ -49,7 +49,7 @@ namespace ACAT.Core.Configuration
         /// <param name="logger">Logger instance (optional)</param>
         public EnvironmentConfiguration(ILogger logger = null)
         {
-            _logger = logger ?? Utility.LoggingConfiguration.CreateLogger<EnvironmentConfiguration>();
+            _logger = logger ?? Utility.LogManager.GetLogger<EnvironmentConfiguration>();
             _environmentOverrides = new Dictionary<string, string>();
             _currentEnvironment = DetectEnvironment();
         }

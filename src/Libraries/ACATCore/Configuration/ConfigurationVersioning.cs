@@ -119,7 +119,7 @@ namespace ACAT.Core.Configuration
         /// <param name="logger">Logger instance (optional)</param>
         public ConfigurationVersionManager(ILogger logger = null)
         {
-            _logger = logger ?? Utility.LoggingConfiguration.CreateLogger<ConfigurationVersionManager>();
+            _logger = logger ?? Utility.LogManager.GetLogger<ConfigurationVersionManager>();
             _migrations = new Dictionary<string, List<IConfigurationMigration>>();
             _currentVersions = new Dictionary<string, ConfigurationVersion>();
         }

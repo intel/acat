@@ -56,7 +56,7 @@ namespace ACAT.Core.Configuration
         /// <param name="logger">Logger instance (optional)</param>
         public ConfigurationReloadService(ILogger logger = null)
         {
-            _logger = logger ?? Utility.LoggingConfiguration.CreateLogger<ConfigurationReloadService>();
+            _logger = logger ?? Utility.LogManager.GetLogger<ConfigurationReloadService>();
             _watchers = new Dictionary<string, FileSystemWatcher>();
             _debounceTimers = new Dictionary<string, Timer>();
         }

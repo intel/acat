@@ -33,7 +33,7 @@ namespace ACAT.Core.Configuration
         /// <param name="logger">Logger instance (optional)</param>
         public JsonSchemaValidator(ILogger logger = null)
         {
-            _logger = logger ?? Utility.LoggingConfiguration.CreateLogger<JsonSchemaValidator>();
+            _logger = logger ?? Utility.LogManager.GetLogger<JsonSchemaValidator>();
             _schemas = new Dictionary<string, JsonDocument>();
         }
 

@@ -1,23 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net481</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <!-- Override centralized build output for test project -->
+    <EnableMSTestRunner>false</EnableMSTestRunner>
+    <!-- Test projects use their own output directories to avoid test discovery scanning application executables -->
+    <!-- Override Directory.Build.props centralized output -->
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <BaseIntermediateOutputPath>obj\$(Configuration)\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <!-- Ensure only one AssemblyInfo.cs is generated per configuration -->
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.7.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.4" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.4" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
   </ItemGroup>
 
@@ -26,11 +25,6 @@
     <ProjectReference Include="..\ACATCore.Tests.Shared\ACATCore.Tests.Shared.csproj" />
   </ItemGroup>
 
-  <!-- Exclude auto-generated AssemblyInfo files from other configurations -->
-  <ItemGroup>
-    <Compile Remove="obj\**\*.cs" />
-    <Compile Include="$(IntermediateOutputPath)**\*.cs" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
   </ItemGroup>

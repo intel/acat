@@ -34,7 +34,6 @@ jobs:
         dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj
         --configuration Debug
         --logger "trx;LogFileName=logging-results.trx"
-        --collect:"XPlat Code Coverage"
         --results-directory TestResults/
       working-directory: src/
 
@@ -43,7 +42,6 @@ jobs:
         dotnet test Libraries/ACATCore.Tests.Configuration/ACATCore.Tests.Configuration.csproj
         --configuration Debug
         --logger "trx;LogFileName=config-results.trx"
-        --collect:"XPlat Code Coverage"
         --results-directory TestResults/
       working-directory: src/
 
@@ -52,7 +50,6 @@ jobs:
         dotnet test Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj
         --configuration Debug
         --logger "trx;LogFileName=integration-results.trx"
-        --collect:"XPlat Code Coverage"
         --results-directory TestResults/
       working-directory: src/
 
@@ -61,7 +58,6 @@ jobs:
         dotnet test Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj
         --configuration Debug
         --logger "trx;LogFileName=migration-results.trx"
-        --collect:"XPlat Code Coverage"
         --results-directory TestResults/
       working-directory: src/
 
@@ -79,10 +75,3 @@ jobs:
         name: Test Results
         path: src/TestResults/*.trx
         reporter: dotnet-trx
-
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: src/TestResults/**/coverage.cobertura.xml
-        fail_ci_if_error: false

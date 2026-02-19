@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using ACAT.Core.Utility;
 using System;
 using System.IO;
@@ -120,14 +121,14 @@ namespace ACATCore.Tests.Integration
             string logsDir = Path.Combine(_testWorkspace, "Logs");
             Directory.CreateDirectory(logsDir);
 
-            // Act - Initialize logging (using existing Log class)
-            Log.SetupListeners();
-            
+            // Act - Initialize logging using the new infrastructure
+            var logger = LoggingConfiguration.CreateLogger("FreshInstallTest");
+
             // Verify we can write logs
             Exception caughtException = null;
             try
             {
-                Log.Info("Fresh install test log entry");
+                logger.LogInformation("Fresh install test log entry");
             }
             catch (Exception ex)
             {

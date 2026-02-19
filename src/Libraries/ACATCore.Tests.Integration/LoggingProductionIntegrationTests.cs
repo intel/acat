@@ -27,7 +27,7 @@ namespace ACATCore.Tests.Integration
         public void Setup()
         {
             _testWorkspace = IntegrationTestHelper.CreateTestWorkspace("LoggingProduction");
-            Log.SetupListeners();
+            // Logging is automatically initialized via LoggingConfiguration
         }
 
         [TestCleanup]

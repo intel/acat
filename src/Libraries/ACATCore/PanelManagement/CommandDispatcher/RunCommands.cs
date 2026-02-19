@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -18,7 +18,7 @@ namespace ACAT.Core.PanelManagement.CommandDispatcher
     /// </summary>
     public class RunCommands
     {
-        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(RunCommands).Name);
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(RunCommands).Name);
 
         /// <summary>
         /// Command dispatcher object. Caller can set this and the dispatcher

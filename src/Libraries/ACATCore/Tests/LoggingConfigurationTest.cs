@@ -27,7 +27,7 @@ namespace ACAT.Core.Tests
             {
                 // Create a SINGLE shared logger factory (as should be done in real application)
                 Console.WriteLine("Creating shared logger factory...");
-                loggerFactory = LoggingConfiguration.CreateLoggerFactory();
+                loggerFactory = LoggingConfiguration.GetSharedLoggerFactory();
                 Console.WriteLine("✓ Logger factory created successfully\n");
 
                 // Test 1: Create logger using factory

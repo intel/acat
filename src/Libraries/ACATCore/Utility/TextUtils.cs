@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -22,7 +22,7 @@ namespace ACAT.Core.Utility
 
         static TextUtils()
         {
-            _logger = LoggingConfiguration.CreateLogger<TextUtils>();
+            _logger = LogManager.GetLogger<TextUtils>();
         }
 
         /// <summary>

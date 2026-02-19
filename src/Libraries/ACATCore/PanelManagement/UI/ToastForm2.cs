@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -21,7 +21,7 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public partial class ToastForm2 : Form
     {
-        private static readonly ILogger _logger = LoggingConfiguration.CreateLogger(typeof(ToastForm2).Name);
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(ToastForm2).Name);
 
         /// <summary>
         /// Thread proc for fading out

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -35,7 +35,7 @@ namespace ACAT.Core.ActuatorManagement.Settings
     [Serializable]
     public class ActuatorConfig : PreferencesBase
     {
-        private static readonly ILogger<ActuatorConfig> _logger = LoggingConfiguration.CreateLogger<ActuatorConfig>();
+        private static readonly ILogger<ActuatorConfig> _logger = LogManager.GetLogger<ActuatorConfig>();
 
         /// <summary>
         /// Name of the settings file

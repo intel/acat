@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -29,7 +29,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// Keyboard interface to send keystrokes to the target
         /// text window
         /// </summary>
-        private static readonly Keyboard _keyboard = new(LoggingConfiguration.CreateLogger<Keyboard>());
+        private static readonly Keyboard _keyboard = new(LogManager.GetLogger<Keyboard>());
 
         /// <summary>
         /// Logger for the class

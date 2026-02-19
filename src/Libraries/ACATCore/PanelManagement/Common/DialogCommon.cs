@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -426,7 +426,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private bool initAnimationManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _animationManager = new PanelAnimationManager(LoggingConfiguration.CreateLogger<PanelAnimationManager>());
+            _animationManager = new PanelAnimationManager(LogManager.GetLogger<PanelAnimationManager>());
 
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)
@@ -443,7 +443,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private bool initWidgetManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _widgetManager = new WidgetManager(_form, LoggingConfiguration.CreateLogger<WidgetManager>());
+            _widgetManager = new WidgetManager(_form, LogManager.GetLogger<WidgetManager>());
 
             _widgetManager.Layout.SetColorScheme(ColorSchemes.DialogSchemeName);
 

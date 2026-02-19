@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -57,7 +57,7 @@ namespace ACAT.Core.Utility
 
         static EnumWindows()
         {
-            _logger = LoggingConfiguration.CreateLogger(typeof(EnumWindows).Name);
+            _logger = LogManager.GetLogger(typeof(EnumWindows).Name);
         }
 
         /// <summary>

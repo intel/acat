@@ -62,7 +62,7 @@ namespace ACAT.Core.Audit
         /// </summary>
         static AuditLog()
         {
-            _logger = LoggingConfiguration.CreateLogger<AuditLog>();
+            _logger = LogManager.GetLogger<AuditLog>();
 
             string logFileFolder = FileUtils.GetLogsDir();
 

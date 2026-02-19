@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -417,7 +417,7 @@ namespace ACAT.Core.PanelManagement
                 retVal = false;
             }
 
-            LoggingConfiguration.CreateLogger<Context>().LogDebug("Returning {RetVal} from context init", retVal);
+            LogManager.GetLogger<Context>().LogDebug("Returning {RetVal} from context init", retVal);
             return retVal;
         }
 

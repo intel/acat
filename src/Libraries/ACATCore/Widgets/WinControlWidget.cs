@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -19,7 +19,7 @@ namespace ACAT.Core.Widgets
     public class WinControlWidget : Widget
     {
         public WinControlWidget(Control uiControl)
-            : base(uiControl, LoggingConfiguration.CreateLogger<Widget>())
+            : base(uiControl, LogManager.GetLogger<Widget>())
         {
         }
 

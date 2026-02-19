@@ -1,4 +1,4 @@
-﻿using ACAT.Core.Utility;
+using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows;
@@ -13,7 +13,7 @@ namespace ACAT.Core.PanelManagement.Utils
     /// </summary>
     public class WindowHighlight : IDisposable
     {
-        private static readonly ILogger<WindowHighlight> _logger = LoggingConfiguration.CreateLogger<WindowHighlight>();
+        private static readonly ILogger<WindowHighlight> _logger = LogManager.GetLogger<WindowHighlight>();
 
         /// <summary>
         /// Scanner form.

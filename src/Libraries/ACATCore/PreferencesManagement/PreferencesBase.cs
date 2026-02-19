@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -35,7 +35,7 @@ namespace ACAT.Core.PreferencesManagement
     [Serializable]
     public abstract class PreferencesBase : ObservableValidator, IPreferences, IDisposable
     {
-        private static readonly ILogger<PreferencesBase> _logger = LoggingConfiguration.CreateLogger<PreferencesBase>();
+        private static readonly ILogger<PreferencesBase> _logger = LogManager.GetLogger<PreferencesBase>();
 
         [XmlIgnore]
         public bool IsDirty { get; private set; } = false;

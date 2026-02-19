@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -297,7 +297,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
                     // Create a thread to handle communication with a connected client.
                     // The ClientConnHandler is an object that allows a way to pass data to a thread.  The TcpClient is passed to the
                     // object constructor and a thread is started with the objects worker method... allowing the thread access to the client.
-                    var connHandler = new ClientConnHandler(client, LoggingConfiguration.CreateLogger<ClientConnHandler>());
+                    var connHandler = new ClientConnHandler(client, LogManager.GetLogger<ClientConnHandler>());
                     connHandler.OnPacketReceived += connHandler_OnPacketReceived;
                     if (!string.IsNullOrEmpty(connHandler.ID))
                     {

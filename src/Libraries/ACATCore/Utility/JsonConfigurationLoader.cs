@@ -40,7 +40,7 @@ namespace ACAT.Core.Utility
         public JsonConfigurationLoader(IValidator<T> validator = null, ILogger logger = null)
         {
             _validator = validator;
-            _logger = logger ?? LoggingConfiguration.CreateLogger<JsonConfigurationLoader<T>>();
+            _logger = logger ?? LogManager.GetLogger<JsonConfigurationLoader<T>>();
             
             // Configure JSON serialization options
             _jsonOptions = new JsonSerializerOptions

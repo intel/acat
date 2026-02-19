@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -30,7 +30,7 @@ namespace ACAT.Core.UserControlManagement
 
         public UserControlCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, IScannerPanel iScannerPanel, ILogger<UserControlCommon> logger = null)
         {
-            _logger = logger ?? LoggingConfiguration.CreateLogger<UserControlCommon>();
+            _logger = logger ?? LogManager.GetLogger<UserControlCommon>();
             ScannerForm = iScannerPanel.Form;
             this.mapEntry = mapEntry;
             ScannerPanel = iScannerPanel;
@@ -287,7 +287,7 @@ namespace ACAT.Core.UserControlManagement
 
         private bool initWidgetManager(UserControlConfigMapEntry mapEntry)
         {
-            WidgetManager = new WidgetManager(UserControl as Control, LoggingConfiguration.CreateLogger<WidgetManager>());
+            WidgetManager = new WidgetManager(UserControl as Control, LogManager.GetLogger<WidgetManager>());
             WidgetManager.Layout.SetColorScheme(ColorSchemes.ScannerSchemeName);
             WidgetManager.Layout.SetDisabledButtonColorScheme(ColorSchemes.DisabledScannerButtonSchemeName);
 

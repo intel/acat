@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -123,7 +123,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         private ActuatorManager(ILogger<ActuatorManager> logger = null)
         {
-            _logger = logger ?? LoggingConfiguration.CreateLogger<ActuatorManager>();
+            _logger = logger ?? LogManager.GetLogger<ActuatorManager>();
             _activeSwitches = new Dictionary<String, IActuatorSwitch>();
             _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
             _syncObjectSwitches = new object();

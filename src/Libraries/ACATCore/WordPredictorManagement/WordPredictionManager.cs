@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -277,7 +277,7 @@ namespace ACAT.Core.WordPredictorManagement
 
             if (_wordPredictors == null)
             {
-                _wordPredictors = new WordPredictors(LoggingConfiguration.CreateLogger<WordPredictors>());
+                _wordPredictors = new WordPredictors(LogManager.GetLogger<WordPredictors>());
 
                 retVal = _wordPredictors.Load(extensionDirs);
             }

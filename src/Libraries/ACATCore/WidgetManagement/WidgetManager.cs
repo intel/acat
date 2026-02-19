@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -32,7 +32,7 @@ namespace ACAT.Core.WidgetManagement
     public class WidgetManager : IDisposable
     {
         private readonly ILogger<WidgetManager> _logger;
-        private static readonly ILogger<WidgetManager> _staticLogger = LoggingConfiguration.CreateLogger<WidgetManager>();
+        private static readonly ILogger<WidgetManager> _staticLogger = LogManager.GetLogger<WidgetManager>();
 
         /// <summary>
         /// Holds the types of all classes in the executing assembly that
@@ -69,8 +69,8 @@ namespace ACAT.Core.WidgetManagement
         {
             _logger = logger;
 
-            _widgetAttributes = new WidgetAttributes(LoggingConfiguration.CreateLogger<WidgetAttributes>());
-            _layout = new LayoutAttribute(LoggingConfiguration.CreateLogger<LayoutAttribute>());
+            _widgetAttributes = new WidgetAttributes(LogManager.GetLogger<WidgetAttributes>());
+            _layout = new LayoutAttribute(LogManager.GetLogger<LayoutAttribute>());
             _rootWidget = new Widget(control, null);
 
             _logger.LogDebug("control name is {Name}", control.Name);

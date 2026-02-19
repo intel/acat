@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -54,7 +54,7 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         public PreferredAgents()
         {
-            _logger = LoggingConfiguration.CreateLogger<PreferredAgents>();
+            _logger = LogManager.GetLogger<PreferredAgents>();
             _preferredAgents = new Hashtable();
         }
 

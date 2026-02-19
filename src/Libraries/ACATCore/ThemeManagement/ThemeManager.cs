@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
@@ -217,7 +217,7 @@ namespace ACAT.Core.ThemeManagement
 
             // create the Theme object. This parses the Theme json/xml file and
             // creates the Theme object
-            var theme = Theme.Create(name, themeDir, themeFile, LoggingConfiguration.CreateLogger<Theme>());
+            var theme = Theme.Create(name, themeDir, themeFile, LogManager.GetLogger<Theme>());
             if (theme != null)
             {
                 _activeTheme?.Dispose();

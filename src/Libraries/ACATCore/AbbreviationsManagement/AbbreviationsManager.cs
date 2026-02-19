@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -32,7 +32,7 @@ namespace ACAT.Core.AbbreviationsManagement
         {
             // Get logger from DI container if available, otherwise create standalone logger
             ILogger<AbbreviationsManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<AbbreviationsManager>)) as ILogger<AbbreviationsManager>
-                ?? LoggingConfiguration.CreateLogger<AbbreviationsManager>();
+                ?? LogManager.GetLogger<AbbreviationsManager>();
             return new AbbreviationsManager(logger);
         });
 

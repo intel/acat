@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -21,7 +21,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class WebSearch
     {
-        private static readonly ILogger<WebSearch> _logger = LoggingConfiguration.CreateLogger<WebSearch>();
+        private static readonly ILogger<WebSearch> _logger = LogManager.GetLogger<WebSearch>();
         /// <summary>
         /// URL to do a google search with "I'm feeling lucky"
         /// </summary>

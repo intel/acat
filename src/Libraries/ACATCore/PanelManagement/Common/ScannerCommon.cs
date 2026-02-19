@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -157,7 +157,7 @@ namespace ACAT.Core.PanelManagement.Common
             HideScannerOnIdle = CoreGlobals.AppPreferences.HideScannerOnIdle;
             _syncLock = new SyncLock();
 
-            _userControlManager = new UserControlManager(iScannerPanel, TextController, LoggingConfiguration.CreateLogger<UserControlManager>());
+            _userControlManager = new UserControlManager(iScannerPanel, TextController, LogManager.GetLogger<UserControlManager>());
         }
 
         /// <summary>
@@ -1233,7 +1233,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             bool retVal = true;
 
-            _animationManager = new PanelAnimationManager(LoggingConfiguration.CreateLogger<PanelAnimationManager>());
+            _animationManager = new PanelAnimationManager(LogManager.GetLogger<PanelAnimationManager>());
             if (_animationManager.Init(panelConfigMapEntry, _rootWidget))
             {
                 _animationManager.EvtPlayerStateChanged += animationManager_EvtPlayerStateChanged;
@@ -1256,7 +1256,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <returns>true on success</returns>
         private bool initWidgetManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _widgetManager = new WidgetManager(ScannerForm, LoggingConfiguration.CreateLogger<WidgetManager>());
+            _widgetManager = new WidgetManager(ScannerForm, LogManager.GetLogger<WidgetManager>());
             _widgetManager.Layout.SetColorScheme(ColorSchemes.ScannerSchemeName);
             _widgetManager.Layout.SetDisabledButtonColorScheme(ColorSchemes.DisabledScannerButtonSchemeName);
 

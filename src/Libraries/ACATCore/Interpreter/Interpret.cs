@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -30,7 +30,7 @@ namespace ACAT.Core.Interpreter
     /// </summary>
     public class Interpret
     {
-        private static readonly ILogger<Interpret> _logger = LoggingConfiguration.CreateLogger<Interpret>();
+        private static readonly ILogger<Interpret> _logger = LogManager.GetLogger<Interpret>();
 
 #pragma warning disable IDE0051
 

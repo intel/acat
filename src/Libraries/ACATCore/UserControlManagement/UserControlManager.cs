@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -29,7 +29,7 @@ namespace ACAT.Core.UserControlManagement
     /// </summary>
     public class UserControlManager
     {
-        private static readonly ILogger<UserControlManager> _staticLogger = LoggingConfiguration.CreateLogger<UserControlManager>();
+        private static readonly ILogger<UserControlManager> _staticLogger = LogManager.GetLogger<UserControlManager>();
         private readonly ILogger<UserControlManager> _logger;
         private int _iterationCount = 0;
         private int _iterations = 1;

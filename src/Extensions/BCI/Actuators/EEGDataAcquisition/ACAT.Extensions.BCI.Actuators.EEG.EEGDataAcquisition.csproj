@@ -16,9 +16,7 @@
     <ProjectReference Include="..\EEGUtilities\ACAT.Extensions.BCI.Actuators.EEG.EEGUtils.csproj" />
    </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageReference Include="UnicornDotNet" version="1.24.0" />
     <PackageReference Include="Accord" Version="3.8.0.0" />
@@ -41,5 +39,8 @@
     <Content Remove="**\runtimes\unix-*\**" />
     <Content Remove="**\runtimes\win-x86\**" />
     <Content Remove="**\runtimes\win-arm*\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
   </ItemGroup>
 </Project>

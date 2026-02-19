@@ -139,6 +139,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{B1C7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Configuration", "Libraries\ACATCore.Tests.Configuration\ACATCore.Tests.Configuration.csproj", "{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests", "Libraries\ACATCore.Tests\ACATCore.Tests.csproj", "{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATExtension.Tests", "Libraries\ACATExtension.Tests\ACATExtension.Tests.csproj", "{A1B2C3D4-E5F6-7890-ABCD-123456789012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Integration.Tests", "Tests\ACAT.Integration.Tests\ACAT.Integration.Tests.csproj", "{B2C3D4E5-F6A7-8901-BCDE-234567890123}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_signed|x64 = Debug_signed|x64
@@ -448,6 +454,36 @@ Global
 		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release_signed|x64.Build.0 = Release_signed|x64
 		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release|x64.ActiveCfg = Release|x64
 		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release|x64.Build.0 = Release|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.ActiveCfg = Debug|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.Build.0 = Debug|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release_signed|x64.Build.0 = Release_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release|x64.ActiveCfg = Release|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release|x64.Build.0 = Release|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug|x64.Build.0 = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release_signed|x64.Build.0 = Release_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release|x64.ActiveCfg = Release|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release|x64.Build.0 = Release|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Debug|x64.ActiveCfg = Debug|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Debug|x64.Build.0 = Debug|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Release_signed|x64.Build.0 = Release_signed|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Release|x64.ActiveCfg = Release|x64
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -496,6 +532,9 @@ Global
 		{489EAED8-55EB-C35C-59B7-6B862E57F816} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{07818F5B-4F27-1E9D-C94F-4D082D234906} = {7E0D614D-B425-44A5-BD39-277AC72EBA0B}
 		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{B2C3D4E5-F6A7-8901-BCDE-234567890123} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		RESX_AutoCreateNewLanguageFiles = True

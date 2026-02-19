@@ -42,43 +42,48 @@ jobs:
         msbuild acat.sln /t:Build /p:Configuration=${{ matrix.configuration }}
       working-directory: src/
     
-    # Execute all tests (Debug configuration only)
-    - name: Run ACATCore.Tests.Logging
-      if: matrix.configuration == 'Debug'
-      run: >
-        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj
-        --configuration Debug
-        --logger "console;verbosity=normal"
+    # Execute all test projects
+    - name: Run Unit Tests - Logging
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=logging-tests.trx" --logger "console;verbosity=normal" --no-build --results-directory TestResults
       working-directory: src/
       continue-on-error: false
 
-    - name: Run ACATCore.Tests.Configuration
-      if: matrix.configuration == 'Debug'
-      run: >
-        dotnet test Libraries/ACATCore.Tests.Configuration/ACATCore.Tests.Configuration.csproj
-        --configuration Debug
-        --no-build
-        --logger "console;verbosity=normal"
+    - name: Run Unit Tests - Configuration
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Configuration/ACATCore.Tests.Configuration.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=configuration-tests.trx" --logger "console;verbosity=normal" --no-build --results-directory TestResults
       working-directory: src/
       continue-on-error: false
 
-    - name: Run ACATCore.Tests.Integration
-      if: matrix.configuration == 'Debug'
-      run: >
-        dotnet test Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj
-        --configuration Debug
-        --logger "console;verbosity=normal"
+    - name: Run Integration Tests
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=integration-tests.trx" --logger "console;verbosity=normal" --no-build --results-directory TestResults
       working-directory: src/
       continue-on-error: false
 
-    - name: Run ACAT.ConfigMigrationTool.Tests
-      if: matrix.configuration == 'Debug'
-      run: >
-        dotnet test Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj
-        --configuration Debug
-        --logger "console;verbosity=normal"
+    - name: Run ConfigMigrationTool Tests
+      run: |
+        dotnet test Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=migration-tests.trx" --logger "console;verbosity=normal" --no-build --results-directory TestResults
       working-directory: src/
       continue-on-error: false
+
+    # Publish test results
+    - name: Publish Test Results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results (${{ matrix.configuration }})
+        path: 'src/TestResults/*.trx'
+        reporter: dotnet-trx
+        fail-on-error: true
+
+    # Upload test results as artifacts
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4.6.2
+      if: always()
+      with:
+        name: test-results-${{ matrix.configuration }}
+        path: src/TestResults/
       
     - name: Upload release build artifacts
       uses: actions/upload-artifact@v4.6.2

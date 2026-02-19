@@ -37,8 +37,15 @@ namespace ACATCore.Tests.Configuration
             Context.ServiceProvider = null;
 
             // Act & Assert
-            Assert.ThrowsException<InvalidOperationException>(() => 
-                Context.GetManager<IActuatorManager>());
+            try
+            {
+                Context.GetManager<IActuatorManager>();
+                Assert.Fail("Expected InvalidOperationException was not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                // Expected exception
+            }
         }
 
         [TestMethod]

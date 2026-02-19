@@ -73,8 +73,15 @@ namespace ACATCore.Tests.Configuration
             Context.ServiceProvider = services.BuildServiceProvider();
 
             // Act & Assert
-            Assert.ThrowsException<ArgumentNullException>(() =>
-                LogManager.GetLogger((Type)null));
+            try
+            {
+                LogManager.GetLogger((Type)null);
+                Assert.Fail("Expected ArgumentNullException was not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                // Expected exception
+            }
         }
 
         [TestMethod]
@@ -82,10 +89,7 @@ namespace ACATCore.Tests.Configuration
         {
             // Arrange
             var services = new ServiceCollection();
-            services.AddLogging(builder =>
-            {
-                builder.AddConsole();
-            });
+            services.AddLogging();
             services.AddACATServices();
             Context.ServiceProvider = services.BuildServiceProvider();
 
@@ -125,7 +129,6 @@ namespace ACATCore.Tests.Configuration
             var services = new ServiceCollection();
             services.AddLogging(builder =>
             {
-                builder.AddConsole();
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
             services.AddACATServices();
@@ -191,8 +194,15 @@ namespace ACATCore.Tests.Configuration
         public void LogManager_GetLogger_WithNullType_ThrowsArgumentNullException()
         {
             // Act & Assert
-            Assert.ThrowsException<ArgumentNullException>(() =>
-                LogManager.GetLogger((Type)null));
+            try
+            {
+                LogManager.GetLogger((Type)null);
+                Assert.Fail("Expected ArgumentNullException was not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                // Expected exception
+            }
         }
     }
 }

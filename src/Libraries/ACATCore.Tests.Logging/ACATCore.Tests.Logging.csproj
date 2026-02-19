@@ -7,14 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest" Version="3.7.0" />
-    <PackageReference Include="coverlet.collector" Version="6.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.1.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Testing.Platform" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="..\ACATCore.Tests.Shared\ACATCore.Tests.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
   </ItemGroup>
 </Project>

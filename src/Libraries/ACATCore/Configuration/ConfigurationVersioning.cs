@@ -311,7 +311,7 @@ namespace ACAT.Core.Configuration
                     }
 
                     // Save migrated configuration
-                    string migratedJson = JsonSerializer.Serialize(current, new JsonSerializerOptions { WriteIndented = true });
+                    string migratedJson = System.Text.Json.JsonSerializer.Serialize(current, new JsonSerializerOptions { WriteIndented = true });
                     File.WriteAllText(filePath, migratedJson);
                     
                     _logger?.LogInformation("Successfully migrated configuration: {FilePath} to version {ToVersion}",

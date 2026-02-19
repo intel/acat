@@ -181,7 +181,7 @@ namespace ACAT.Core.Configuration
 
                 // Load JSON
                 string jsonContent = File.ReadAllText(filePath);
-                T config = JsonSerializer.Deserialize<T>(jsonContent, new JsonSerializerOptions
+                T config = System.Text.Json.JsonSerializer.Deserialize<T>(jsonContent, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     ReadCommentHandling = JsonCommentHandling.Skip,

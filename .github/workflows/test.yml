@@ -1,0 +1,117 @@
+name: Tests
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+
+  test:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        lfs: true
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    # Add MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore dependencies
+      run: dotnet restore ACAT.sln
+      working-directory: src/
+
+    - name: Build solution
+      run: msbuild ACAT.sln /t:Build /p:Configuration=Debug
+      working-directory: src/
+
+    # Build test projects not included in ACAT.sln
+    - name: Build ACATCore.Tests.Logging
+      run: dotnet build Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj --configuration Debug
+      working-directory: src/
+
+    - name: Build ACATCore.Tests.Integration
+      run: dotnet build Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj --configuration Debug
+      working-directory: src/
+
+    - name: Build ACAT.ConfigMigrationTool.Tests
+      run: dotnet build Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj --configuration Debug
+      working-directory: src/
+
+    - name: Run ACATCore.Tests.Logging
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj
+        --configuration Debug
+        --no-build
+        --logger "trx;LogFileName=logging-results.trx"
+        --collect:"XPlat Code Coverage"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Run ACATCore.Tests.Configuration
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Configuration/ACATCore.Tests.Configuration.csproj
+        --configuration Debug
+        --no-build
+        --logger "trx;LogFileName=config-results.trx"
+        --collect:"XPlat Code Coverage"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Run ACATCore.Tests.Integration
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj
+        --configuration Debug
+        --no-build
+        --logger "trx;LogFileName=integration-results.trx"
+        --collect:"XPlat Code Coverage"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Run ACAT.ConfigMigrationTool.Tests
+      run: >
+        dotnet test Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj
+        --configuration Debug
+        --no-build
+        --logger "trx;LogFileName=migration-results.trx"
+        --collect:"XPlat Code Coverage"
+        --results-directory TestResults/
+      working-directory: src/
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: src/TestResults/
+
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results
+        path: src/TestResults/*.trx
+        reporter: dotnet-trx
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: src/TestResults/**/coverage.cobertura.xml
+        fail_ci_if_error: false

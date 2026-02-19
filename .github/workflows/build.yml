@@ -3,6 +3,8 @@ name: Build ACAT
 on:
   push:
     branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
   workflow_dispatch:
 
 permissions:
@@ -28,6 +30,11 @@ jobs:
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
+
+    # Restore NuGet packages before building
+    - name: Restore dependencies
+      run: dotnet restore ACAT.sln
+      working-directory: src/
           
     # Build the full application
     - name: Build the Solution
@@ -35,10 +42,41 @@ jobs:
         msbuild acat.sln /t:Build /p:Configuration=${{ matrix.configuration }}
       working-directory: src/
     
-    # Execute logging infrastructure tests
-    - name: Validate Logging Infrastructure
-      run: |
-        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj --configuration ${{ matrix.configuration }} --logger "console;verbosity=normal" --no-build
+    # Execute all tests (Debug configuration only)
+    - name: Run ACATCore.Tests.Logging
+      if: matrix.configuration == 'Debug'
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj
+        --configuration Debug
+        --logger "console;verbosity=normal"
+      working-directory: src/
+      continue-on-error: false
+
+    - name: Run ACATCore.Tests.Configuration
+      if: matrix.configuration == 'Debug'
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Configuration/ACATCore.Tests.Configuration.csproj
+        --configuration Debug
+        --no-build
+        --logger "console;verbosity=normal"
+      working-directory: src/
+      continue-on-error: false
+
+    - name: Run ACATCore.Tests.Integration
+      if: matrix.configuration == 'Debug'
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj
+        --configuration Debug
+        --logger "console;verbosity=normal"
+      working-directory: src/
+      continue-on-error: false
+
+    - name: Run ACAT.ConfigMigrationTool.Tests
+      if: matrix.configuration == 'Debug'
+      run: >
+        dotnet test Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj
+        --configuration Debug
+        --logger "console;verbosity=normal"
       working-directory: src/
       continue-on-error: false
       

@@ -60,6 +60,25 @@ namespace ACATTalk
             PerformanceMonitor.Initialize();
             PerformanceMonitor.StartTimer("TotalStartupTime");
             PerformanceMonitor.LogEvent("Application", "Main entry point");
+
+            // Wire up word prediction performance callbacks
+            UserControlWordPredictionCommon.OnPredictionLatencyMs = (latencyMs) =>
+            {
+                PerformanceMonitor.RecordMetric("WordPredictorCall", latencyMs, "ms", 
+                    PerformanceMonitor.MetricCategory.TextPrediction);
+            };
+
+            UserControlWordPredictionCommon.OnAutoCompleteLatencyMs = (latencyMs) =>
+            {
+                PerformanceMonitor.RecordMetric("AutoCompleteInsert", latencyMs, "ms", 
+                    PerformanceMonitor.MetricCategory.Interaction);
+            };
+
+            UserControlWordPredictionCommon.OnRefreshLatencyMs = (latencyMs) =>
+            {
+                PerformanceMonitor.RecordMetric("PredictionRefresh", latencyMs, "ms", 
+                    PerformanceMonitor.MetricCategory.TextPrediction);
+            };
 #endif
 
 #if DEBUG

@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -23,7 +24,7 @@ namespace ACATCore.Tests.Architecture
     public class CqrsTests
     {
         // -----------------------------------------------------------------------
-        // Command objects
+        // Panel command objects (defined in ACAT.Core.Patterns.CQRS)
         // -----------------------------------------------------------------------
 
         [TestMethod]
@@ -42,24 +43,8 @@ namespace ACATCore.Tests.Architecture
             Assert.AreEqual("TestPanel", cmd.PanelName);
         }
 
-        [TestMethod]
-        public void HandleActuatorSwitchCommand_IsICommand()
-        {
-            var cmd = new HandleActuatorSwitchCommand("LeftSwitch", "data");
-            Assert.IsInstanceOfType(cmd, typeof(ICommand));
-            Assert.AreEqual("LeftSwitch", cmd.SwitchName);
-            Assert.AreEqual("data", cmd.SwitchData);
-        }
-
-        [TestMethod]
-        public void HandleActuatorSwitchCommand_NullData_DefaultsToNull()
-        {
-            var cmd = new HandleActuatorSwitchCommand("Switch");
-            Assert.IsNull(cmd.SwitchData);
-        }
-
         // -----------------------------------------------------------------------
-        // Query objects
+        // Panel query objects (defined in ACAT.Core.Patterns.CQRS)
         // -----------------------------------------------------------------------
 
         [TestMethod]
@@ -76,20 +61,31 @@ namespace ACATCore.Tests.Architecture
             Assert.IsInstanceOfType(q, typeof(IQuery<IReadOnlyList<string>>));
         }
 
+        // -----------------------------------------------------------------------
+        // Sample command/query objects (defined in ACAT.Core.Patterns.CQRS.Samples)
+        // -----------------------------------------------------------------------
+
         [TestMethod]
-        public void GetConfigurationValueQuery_Properties_SetCorrectly()
+        public void HandleActuatorSwitchCommand_IsICommand()
         {
-            var q = new GetConfigurationValueQuery("theme", "default");
-            Assert.IsInstanceOfType(q, typeof(IQuery<string>));
-            Assert.AreEqual("theme", q.Key);
-            Assert.AreEqual("default", q.DefaultValue);
+            var cmd = new HandleActuatorSwitchCommand(ActuatorSwitchAction.Pause);
+            Assert.IsInstanceOfType(cmd, typeof(ICommand));
+            Assert.AreEqual(ActuatorSwitchAction.Pause, cmd.Action);
         }
 
         [TestMethod]
-        public void GetConfigurationValueQuery_DefaultValueIsNull_WhenNotProvided()
+        public void HandleActuatorSwitchCommand_Resume_StoresAction()
         {
-            var q = new GetConfigurationValueQuery("key");
-            Assert.IsNull(q.DefaultValue);
+            var cmd = new HandleActuatorSwitchCommand(ActuatorSwitchAction.Resume);
+            Assert.AreEqual(ActuatorSwitchAction.Resume, cmd.Action);
+        }
+
+        [TestMethod]
+        public void GetConfigurationValueQuery_IsIQuery()
+        {
+            var q = new GetConfigurationValueQuery("theme");
+            Assert.IsInstanceOfType(q, typeof(IQuery<string>));
+            Assert.AreEqual("theme", q.Key);
         }
 
         // -----------------------------------------------------------------------

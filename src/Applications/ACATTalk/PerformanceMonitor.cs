@@ -47,6 +47,16 @@ namespace ACATTalk
         private static readonly MemoryProfiler _memoryProfiler = new MemoryProfiler();
         private static PerformanceRegressionDetector _regressionDetector;
 
+        // Track which RuntimeMetricCategories are enabled for recording (all on by default)
+        private static readonly ConcurrentDictionary<RuntimeMetricCategory, bool> _enabledCategories =
+            new ConcurrentDictionary<RuntimeMetricCategory, bool>(
+                Enum.GetValues(typeof(RuntimeMetricCategory))
+                    .Cast<RuntimeMetricCategory>()
+                    .Select(c => new KeyValuePair<RuntimeMetricCategory, bool>(c, true)));
+
+        // Shared metric name constants to avoid silent drift between recording sites
+        private const string MetricNameWorkingSetMB = "WorkingSetMB";
+
         /// <summary>
         /// Metric categories for organizing performance data
         /// </summary>
@@ -61,6 +71,25 @@ namespace ACATTalk
             Memory,
             Shutdown
         }
+
+        /// <summary>
+        /// Returns <c>true</c> if recording for the specified category is currently enabled.
+        /// </summary>
+        public static bool IsCategoryEnabled(RuntimeMetricCategory category)
+            => _enabledCategories.GetOrAdd(category, true);
+
+        /// <summary>
+        /// Enables metric recording for the specified category.
+        /// </summary>
+        public static void EnableCategory(RuntimeMetricCategory category)
+            => _enabledCategories[category] = true;
+
+        /// <summary>
+        /// Disables metric recording for the specified category.
+        /// Calls to category-specific record methods become no-ops until re-enabled.
+        /// </summary>
+        public static void DisableCategory(RuntimeMetricCategory category)
+            => _enabledCategories[category] = false;
 
         /// <summary>
         /// Initialize the performance monitor
@@ -146,6 +175,110 @@ namespace ACATTalk
         }
 
         /// <summary>
+        /// Record a UI input lag measurement and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Measured input lag in milliseconds.</param>
+        public static void RecordUiInputLag(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Ui)) return;
+            RecordMetric("UiInputLag", milliseconds, "ms", MetricCategory.UI);
+            _runtimeCollector.Record("UiInputLag", milliseconds, RuntimeMetricCategory.Ui, "ms");
+        }
+
+        /// <summary>
+        /// Record a word-prediction latency measurement and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Measured latency in milliseconds.</param>
+        public static void RecordPredictionLatency(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
+            RecordMetric("PredictionLatency", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record("PredictionLatency", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
+        /// Record an autocomplete operation latency and forward to the runtime collector.
+        /// Covers word, letter, and sentence autocomplete insertions.
+        /// </summary>
+        /// <param name="milliseconds">Duration of the autocomplete operation in milliseconds.</param>
+        public static void RecordAutoCompleteLatency(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
+            RecordMetric("AutoCompleteInsert", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record("AutoCompleteInsert", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
+        /// Record a word-prediction refresh latency and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Duration of the prediction refresh in milliseconds.</param>
+        public static void RecordPredictionRefresh(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
+            RecordMetric("PredictionRefresh", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record("PredictionRefresh", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
+        /// Record a key actuation latency and forward to the runtime collector.
+        /// </summary>
+        /// <param name="keyType">"SingleKey" or "MultiChar".</param>
+        /// <param name="milliseconds">Elapsed time of the actuation in milliseconds.</param>
+        public static void RecordKeyActuationLatency(string keyType, double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Ui)) return;
+            RecordMetric($"KeyActuation_{keyType}", milliseconds, "ms", MetricCategory.Interaction);
+            _runtimeCollector.Record($"KeyActuation_{keyType}", milliseconds, RuntimeMetricCategory.Ui, "ms");
+        }
+
+        /// <summary>
+        /// Record a per-phase autocomplete latency and forward to the runtime collector.
+        /// Phase names: "GetPrevWord", "CheckInsertReplace", "Insert", "Replace", "PostCompletion".
+        /// </summary>
+        /// <param name="phase">Phase name.</param>
+        /// <param name="milliseconds">Elapsed time of the phase in milliseconds.</param>
+        public static void RecordAutoCompletePhaseLatency(string phase, double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
+            RecordMetric($"AutoComplete_{phase}", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record($"AutoComplete_{phase}", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
+        /// Record a text-change event latency and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Elapsed time of the text-change event handler in milliseconds.</param>
+        public static void RecordTextChangeEventLatency(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Ui)) return;
+            RecordMetric("TextChangeEvent", milliseconds, "ms", MetricCategory.Interaction);
+            _runtimeCollector.Record("TextChangeEvent", milliseconds, RuntimeMetricCategory.Ui, "ms");
+        }
+
+        /// <summary>
+        /// Record an I/O operation duration and forward to the runtime collector.
+        /// </summary>
+        /// <param name="operationName">Name of the I/O operation (e.g. "FileRead", "NetworkRequest").</param>
+        /// <param name="milliseconds">Duration of the operation in milliseconds.</param>
+        public static void RecordIoOperation(string operationName, double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Io)) return;
+            RecordMetric(operationName, milliseconds, "ms", MetricCategory.Interaction);
+            _runtimeCollector.Record(operationName, milliseconds, RuntimeMetricCategory.Io, "ms");
+        }
+
+        /// <summary>
+        /// Record a memory working-set measurement and forward to the runtime collector.
+        /// </summary>
+        /// <param name="workingSetMB">Current process working-set size in megabytes.</param>
+        public static void RecordMemoryUsage(double workingSetMB)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Memory)) return;
+            RecordMetric(MetricNameWorkingSetMB, workingSetMB, "MB", MetricCategory.Memory);
+            _runtimeCollector.Record(MetricNameWorkingSetMB, workingSetMB, RuntimeMetricCategory.Memory, "MB");
+        }
+
+        /// <summary>
         /// Log a performance event
         /// </summary>
         public static void LogEvent(string operation, string details = "")
@@ -174,7 +307,13 @@ namespace ACATTalk
                     _peakWorkingSet = currentWorkingSet;
                 }
 
-                RecordMetric("CurrentMemoryUsage", currentWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
+                double workingSetMB = currentWorkingSet / (1024.0 * 1024.0);
+                RecordMetric("CurrentMemoryUsage", workingSetMB, "MB", MetricCategory.Memory);
+
+                if (IsCategoryEnabled(RuntimeMetricCategory.Memory))
+                {
+                    _runtimeCollector.Record(MetricNameWorkingSetMB, workingSetMB, RuntimeMetricCategory.Memory, "MB");
+                }
             }
             catch (Exception ex)
             {
@@ -195,6 +334,12 @@ namespace ACATTalk
             long endWorkingSet = process.WorkingSet64;
 
             RecordMetric("TotalApplicationLifetime", _applicationLifetime.Elapsed.TotalSeconds, "s", MetricCategory.Shutdown);
+            if (IsCategoryEnabled(RuntimeMetricCategory.General))
+            {
+                _runtimeCollector.Record("StartupTime",
+                    _applicationLifetime.Elapsed.TotalMilliseconds, RuntimeMetricCategory.General, "ms");
+            }
+
             RecordMetric("StartMemoryUsage", _startWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
             RecordMetric("EndMemoryUsage", endWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
             RecordMetric("PeakMemoryUsage", _peakWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
@@ -210,6 +355,16 @@ namespace ACATTalk
                     ["PeakWorkingSetMB"] = _peakWorkingSet / (1024.0 * 1024.0),
                     ["ManagedHeapMB"] = shutdownSnap.ManagedHeapMB
                 };
+
+                // Include runtime-collector aggregates for regression checking
+                IReadOnlyDictionary<string, RuntimeMetricEntry> runtimeEntries = _runtimeCollector.GetEntries();
+                foreach (KeyValuePair<string, RuntimeMetricEntry> kv in runtimeEntries)
+                {
+                    if (!observations.ContainsKey(kv.Key))
+                    {
+                        observations[kv.Key] = kv.Value.Average;
+                    }
+                }
 
                 IReadOnlyList<RegressionResult> regressions = _regressionDetector.DetectRegressions(observations);
                 foreach (RegressionResult r in regressions)
@@ -288,6 +443,30 @@ namespace ACATTalk
                 sb.AppendLine();
             }
 
+            // Include runtime-collector entries (UI, Prediction, I/O, etc.)
+            IReadOnlyDictionary<string, RuntimeMetricEntry> runtimeEntries = _runtimeCollector.GetEntries();
+            if (runtimeEntries.Count > 0)
+            {
+                sb.AppendLine("[Runtime Metrics]");
+                sb.AppendLine("-".PadRight(80, '-'));
+
+                IOrderedEnumerable<RuntimeMetricEntry> runtimeSorted = runtimeEntries.Values
+                    .OrderBy(e => e.Category)
+                    .ThenBy(e => e.Name);
+                foreach (RuntimeMetricEntry entry in runtimeSorted)
+                {
+                    sb.AppendLine($"  {entry.Name,-40} {entry.LastValue,10:F2} {entry.Unit} [{entry.Category}]");
+                    if (entry.Count > 1)
+                    {
+                        sb.AppendLine($"    {"Count:",-38} {entry.Count,10}");
+                        sb.AppendLine($"    {"Min:",-38} {entry.Min,10:F2} {entry.Unit}");
+                        sb.AppendLine($"    {"Max:",-38} {entry.Max,10:F2} {entry.Unit}");
+                        sb.AppendLine($"    {"Avg:",-38} {entry.Average,10:F2} {entry.Unit}");
+                    }
+                }
+                sb.AppendLine();
+            }
+
             sb.AppendLine("=".PadRight(80, '='));
             sb.AppendLine("End of Report");
             sb.AppendLine("=".PadRight(80, '='));
@@ -309,6 +488,13 @@ namespace ACATTalk
                 sb.AppendLine($"{metric.Category},{metric.Name},{metric.Value:F2},{metric.Unit},{metric.Count},{metric.Min:F2},{metric.Max:F2},{metric.Timestamp:o}");
             }
 
+            // Append runtime-collector entries
+            IReadOnlyDictionary<string, RuntimeMetricEntry> runtimeEntries = _runtimeCollector.GetEntries();
+            foreach (RuntimeMetricEntry entry in runtimeEntries.Values.OrderBy(e => e.Category).ThenBy(e => e.Name))
+            {
+                sb.AppendLine($"Runtime.{entry.Category},{entry.Name},{entry.Average:F2},{entry.Unit},{entry.Count},{entry.Min:F2},{entry.Max:F2},{entry.LastUpdated:o}");
+            }
+
             File.WriteAllText(path, sb.ToString());
         }
 
@@ -318,6 +504,34 @@ namespace ACATTalk
         public static Dictionary<string, PerformanceMetric> GetMetrics()
         {
             return new Dictionary<string, PerformanceMetric>(_metrics);
+        }
+
+        /// <summary>
+        /// Get current runtime-collector entries snapshot (for debugging).
+        /// </summary>
+        public static IReadOnlyDictionary<string, RuntimeMetricEntry> GetRuntimeMetrics()
+        {
+            return _runtimeCollector.GetEntries();
+        }
+
+        /// <summary>
+        /// Returns the shared <see cref="RuntimeMetricsCollector"/> instance so that
+        /// external components (e.g. the debug dashboard) can observe the same data
+        /// that <see cref="PerformanceMonitor"/> records to.
+        /// </summary>
+        public static RuntimeMetricsCollector GetRuntimeCollector()
+        {
+            return _runtimeCollector;
+        }
+
+        /// <summary>
+        /// Returns the shared <see cref="MemoryProfiler"/> instance so that
+        /// external components (e.g. the debug dashboard) can observe the same
+        /// snapshot history that <see cref="PerformanceMonitor"/> captures.
+        /// </summary>
+        public static MemoryProfiler GetMemoryProfiler()
+        {
+            return _memoryProfiler;
         }
 
         /// <summary>

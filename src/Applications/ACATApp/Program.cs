@@ -23,6 +23,7 @@ using ACAT.Core.Utility.Diagnostics;
 using ACAT.Core.Utility.Metrics;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
 using ACAT.Extensions.UI.Diagnostics;
 using ACATResources;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,9 @@ namespace ACATApp
         private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
         private static IServiceProvider _serviceProvider;
+#if DEBUG
+        private static PerformanceDashboard _performanceDashboard = null;
+#endif
 
         /// <summary>
         /// The main entry point for the application.
@@ -72,9 +76,9 @@ namespace ACATApp
             var collector = new RuntimeMetricsCollector();
             var profiler = new MemoryProfiler();
             collector.Start(intervalMs: 5000);
-            
-            var dashboard = new PerformanceDashboard(collector, profiler);
-            dashboard.Show();
+
+            _performanceDashboard = new PerformanceDashboard(collector, profiler);
+            _performanceDashboard.Show();
 #endif
 
             ShowSplashScreen("Starting ACAT");
@@ -118,6 +122,31 @@ namespace ACATApp
             _logger = modernLoggingFactory.CreateLogger(typeof(Program));
 
             _logger.LogDebug("ACAT Dashboard Application Launch");
+
+            // Wire up word prediction performance callbacks for diagnostics
+            UserControlWordPredictionCommon.OnPredictionLatencyMs = (latencyMs) =>
+            {
+                if (latencyMs > 100)
+                {
+                    _logger.LogWarning("Slow word prediction: {LatencyMs:F2}ms", latencyMs);
+                }
+            };
+
+            UserControlWordPredictionCommon.OnAutoCompleteLatencyMs = (latencyMs) =>
+            {
+                if (latencyMs > 50)
+                {
+                    _logger.LogWarning("Slow autocomplete: {LatencyMs:F2}ms", latencyMs);
+                }
+            };
+
+            UserControlWordPredictionCommon.OnRefreshLatencyMs = (latencyMs) =>
+            {
+                if (latencyMs > 100)
+                {
+                    _logger.LogWarning("Slow prediction refresh: {LatencyMs:F2}ms", latencyMs);
+                }
+            };
         }
 
         private static void InitializeDependencyInjection()
@@ -241,6 +270,17 @@ namespace ACATApp
         private static void ShutdownApplication()
         {
             AuditLog.Audit(new AuditEvent("Application", "stop"));
+
+#if DEBUG
+            // Close PerformanceDashboard before disposing Context to prevent WPF dispatcher from keeping app alive
+            if (_performanceDashboard != null)
+            {
+                _performanceDashboard.Dispatcher.InvokeShutdown();
+                _performanceDashboard.Close();
+                _performanceDashboard = null;
+            }
+#endif
+
             Context.Dispose();
             Common.Uninit();
             CloseSplashScreen();

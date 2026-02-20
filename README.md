@@ -49,8 +49,8 @@ ACAT uses JSON configuration files for flexible customization. Key configuration
 ### Modernization Documentation
 
 - **[ACAT Modernization Plan](ACAT_MODERNIZATION_PLAN.md)** - Complete modernization roadmap
-- **[Phase 1 Completion Report](PHASE_1_COMPLETION_REPORT.md)** - Phase 1 results and metrics
-- **[Phase 1 Retrospective](PHASE_1_RETROSPECTIVE.md)** - Lessons learned from Phase 1
+- **[Dependency Injection Guide](DEPENDENCY_INJECTION_GUIDE.md)** - DI architecture and implementation guidance
+- **[Logging Migration Guide](LOGGING_MIGRATION_GUIDE.md)** - Logging migration strategy and implementation details
 - **[Documentation Index](INDEX.md)** - Complete documentation index
 
 ### Configuration Files

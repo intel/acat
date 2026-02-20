@@ -182,8 +182,8 @@ The ACAT Modernization Plan is a comprehensive initiative to modernize the ACAT 
 5. docs/JSON_CONFIGURATION_DEVELOPER_GUIDE.md
 6. docs/JSON_CONFIGURATION_QUICK_REFERENCE.md
 7. docs/JSON_CONFIGURATION_MIGRATION.md
-8. PHASE_1_COMPLETION_REPORT.md (11.6 KB)
-9. PHASE_1_RETROSPECTIVE.md (11.6 KB)
+8. TESTING_INFRASTRUCTURE.md
+9. TESTING_MIGRATION_GUIDE.md
 10. This modernization plan
 
 ### Success Criteria - All Met ✅
@@ -639,8 +639,7 @@ Phase 4: UI Modernization 📋
 ## Resources & References
 
 ### Documentation
-- [Phase 1 Completion Report](PHASE_1_COMPLETION_REPORT.md)
-- [Phase 1 Retrospective](PHASE_1_RETROSPECTIVE.md)
+- [Documentation Index](INDEX.md)
 - [Logging Migration Guide](LOGGING_MIGRATION_GUIDE.md)
 - [JSON Configuration Guide](docs/JSON_CONFIGURATION_GUIDE.md)
 - [Developer Guide](docs/JSON_CONFIGURATION_DEVELOPER_GUIDE.md)

@@ -9,7 +9,12 @@ namespace ACAT.Core.Utility
 {
     public static class TopMostManager
     {
+#if DISABLE_TOPMOST
+        // TopMost behavior disabled for testing
+        private static bool _enabled = false;
+#else
         private static bool _enabled = true;
+#endif
 
         private static readonly List<Form> _forms = new List<Form>();
         private static readonly object _lock = new object();

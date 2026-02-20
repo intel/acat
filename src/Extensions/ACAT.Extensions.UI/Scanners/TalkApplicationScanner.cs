@@ -15,6 +15,7 @@ using ACAT.Extension.UI.ScannerForms;
 using ACATResources;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -34,6 +35,13 @@ namespace ACAT.Extensions.UI.Scanners
         private TalkWindowTextBoxPhraseModeUserControl _textBoxPhraseModeUserControl;
         private TextBox _textBoxTalkWindow;
         private TalkWindowTextBoxUserControl _textBoxUserControl;
+
+        /// <summary>
+        /// Optional callback invoked with the elapsed key-press handling time in milliseconds
+        /// each time <see cref="TextBoxTalkWindowOnKeyPress"/> completes.
+        /// Set from the application layer (e.g. Program.cs) to forward data to PerformanceMonitor.
+        /// </summary>
+        public static Action<double> OnUiKeyPressLatencyMs;
         public TalkApplicationScanner() : base()
         {
             _logger = LoggingConfiguration.CreateLogger<TalkApplicationScanner>();
@@ -340,6 +348,7 @@ namespace ACAT.Extensions.UI.Scanners
         }
         private void TextBoxTalkWindowOnKeyPress(object sender, KeyPressEventArgs keyPressEventArgs)
         {
+            var swUi = Stopwatch.StartNew();
             try
             {
                 if (Common.AppPreferences.SpeakOnEnterKey && keyPressEventArgs.KeyChar == '\r')
@@ -372,6 +381,11 @@ namespace ACAT.Extensions.UI.Scanners
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in speak");
+            }
+            finally
+            {
+                swUi.Stop();
+                OnUiKeyPressLatencyMs?.Invoke(swUi.Elapsed.TotalMilliseconds);
             }
         }
 

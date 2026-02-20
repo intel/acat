@@ -86,7 +86,7 @@
     <Compile Include="ActuatorManagement\UI\CalibrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ActuatorManagement\UI\CalibrationForm.designer.cs">
+    <Compile Include="ActuatorManagement\UI\CalibrationForm.Designer.cs">
       <DependentUpon>CalibrationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ActuatorManagement\UI\ConfigureSwitchesForm.cs">
@@ -473,7 +473,7 @@
     <Compile Include="WidgetManagement\ScannerButtonControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WidgetManagement\ScannerButtonControl.designer.cs">
+    <Compile Include="WidgetManagement\ScannerButtonControl.Designer.cs">
       <DependentUpon>ScannerButtonControl.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetManagement\ScannerProgressBar.cs">

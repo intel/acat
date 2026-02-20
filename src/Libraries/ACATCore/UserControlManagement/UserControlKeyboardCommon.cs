@@ -22,6 +22,13 @@ namespace ACAT.Core.UserControlManagement
     {
         private readonly ILogger<UserControlKeyboardCommon> _logger;
 
+        /// <summary>
+        /// Optional callback invoked with the key type ("MultiChar" or "SingleKey") and
+        /// elapsed time in milliseconds each time a key actuation completes.
+        /// Set from the application layer to forward data into PerformanceMonitor.
+        /// </summary>
+        public static Action<string, double> OnKeyActuationLatencyMs;
+
         public UserControlKeyboardCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel iScannerPanel, ILogger<UserControlKeyboardCommon> logger = null) :
             base(userControl, mapEntry, iScannerPanel, logger ?? LogManager.GetLogger<UserControlCommon>())
         {
@@ -66,23 +73,21 @@ namespace ACAT.Core.UserControlManagement
             {
                 if (widget.Value.Length > 1)
                 {
-                    CoreGlobals.Stopwatch1.Reset();
-                    CoreGlobals.Stopwatch1.Start();
+                    var sw = System.Diagnostics.Stopwatch.StartNew();
                     Context.AppAgentMgr.TextChangedNotifications.Hold();
                     SendKeys.SendWait(widget.Value + " ");
                     Context.AppAgentMgr.TextChangedNotifications.Release();
-                    CoreGlobals.Stopwatch1.Stop();
-                    _logger?.LogDebug("TimeElapsed 1: {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    sw.Stop();
+                    OnKeyActuationLatencyMs?.Invoke("MultiChar", sw.Elapsed.TotalMilliseconds);
                 }
                 else
                 {
-                    CoreGlobals.Stopwatch1.Reset();
-                    CoreGlobals.Stopwatch1.Start();
+                    var sw = System.Diagnostics.Stopwatch.StartNew();
 
                     actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
 
-                    CoreGlobals.Stopwatch1.Stop();
-                    _logger?.LogDebug("TimeElapsed 2 : {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    sw.Stop();
+                    OnKeyActuationLatencyMs?.Invoke("SingleKey", sw.Elapsed.TotalMilliseconds);
                 }
             }
 

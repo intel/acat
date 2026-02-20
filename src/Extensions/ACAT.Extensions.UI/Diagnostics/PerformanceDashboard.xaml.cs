@@ -32,9 +32,10 @@ namespace ACAT.Extensions.UI.Diagnostics
     /// <para>
     /// The dashboard auto-refreshes every 2 seconds and displays four panels:
     /// <list type="bullet">
-    ///   <item><description><b>Memory</b> – working set, managed heap, GC collection count.</description></item>
+    ///   <item><description><b>Memory</b> – working set, managed heap, and total GC collection count.</description></item>
     ///   <item><description><b>Runtime</b> – process uptime, thread count, OS handle count.</description></item>
-    ///   <item><description><b>Baseline Status</b> – regression check against <see cref="PerformanceBaselineData"/> thresholds.</description></item>
+    ///   <item><description><b>Category Status</b> – one row per <see cref="RuntimeMetricCategory"/> with a toggle
+    ///     checkbox. Green ✓ = within baseline; orange ⚠ = threshold exceeded; grey = no data.</description></item>
     ///   <item><description><b>Sample History</b> – peak working-set and timestamp of the last refresh.</description></item>
     /// </list>
     /// </para>
@@ -163,51 +164,152 @@ namespace ACAT.Extensions.UI.Diagnostics
             try
             {
                 MemorySnapshot snap = _profiler.CaptureSnapshot("Dashboard");
-                IReadOnlyList<RuntimeMetricSample> samples = _collector.GetSamples();
+                IReadOnlyDictionary<string, RuntimeMetricEntry> entries = _collector.GetEntries();
 
-                // Memory section
-                WorkingSetValue.Text = $"{snap.WorkingSetMB:F1} MB";
-                ManagedHeapValue.Text = $"{snap.ManagedHeapMB:F1} MB";
-                int totalGc = snap.GcCollections?.Sum() ?? 0;
-                GcCollectionsValue.Text = totalGc.ToString();
+                // Memory section — prefer periodic collector entries, fall back to snapshot
+                WorkingSetValue.Text = entries.TryGetValue("WorkingSetMB", out RuntimeMetricEntry wsmEntry)
+                    ? $"{wsmEntry.LastValue:F1} MB"
+                    : $"{snap.WorkingSetMB:F1} MB";
+                ManagedHeapValue.Text = entries.TryGetValue("ManagedHeapMB", out RuntimeMetricEntry mhmEntry)
+                    ? $"{mhmEntry.LastValue:F1} MB"
+                    : $"{snap.ManagedHeapMB:F1} MB";
+                GcCollectionsValue.Text = entries.TryGetValue("GcCollectionCount", out RuntimeMetricEntry gcEntry)
+                    ? ((int)gcEntry.LastValue).ToString()
+                    : (snap.GcCollections?.Sum() ?? 0).ToString();
 
-                // Runtime section
+                // Runtime section — use live entry data if available, fall back to snapshot
                 UptimeValue.Text = FormatUptime(snap.Timestamp);
-                ThreadCountValue.Text = snap.ThreadCount.ToString();
+                ThreadCountValue.Text = entries.TryGetValue("ThreadCount", out RuntimeMetricEntry tcEntry)
+                    ? ((int)tcEntry.LastValue).ToString()
+                    : snap.ThreadCount.ToString();
                 HandleCountValue.Text = snap.HandleCount.ToString();
 
                 // Sample history
                 IReadOnlyList<MemorySnapshot> allSnaps = _profiler.GetSnapshots();
-                SampleCount.Text = $"{allSnaps.Count} sample(s)";
+                IReadOnlyList<RuntimeMetricSample> runtimeSamples = _collector.GetSamples();
+                SampleCount.Text = $"{allSnaps.Count} memory, {runtimeSamples.Count} runtime sample(s)";
                 double peak = allSnaps.Count > 0 ? allSnaps.Max(s => s.WorkingSetMB) : 0;
                 PeakWorkingSet.Text = $"Peak WS: {peak:F1} MB";
                 LastSampleTime.Text = $"Last: {snap.Timestamp.ToLocalTime():HH:mm:ss}";
 
-                // Regression check
+                // Build observations for regression detection
                 var observations = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
                 {
                     ["PeakWorkingSetMB"] = peak,
                     ["ManagedHeapMB"] = snap.ManagedHeapMB
                 };
+                foreach (KeyValuePair<string, RuntimeMetricEntry> kv in entries)
+                {
+                    if (!observations.ContainsKey(kv.Key))
+                    {
+                        observations[kv.Key] = kv.Value.Average;
+                    }
+                }
 
                 IReadOnlyList<RegressionResult> regressions = _detector.DetectRegressions(observations);
-                if (regressions.Count == 0)
-                {
-                    RegressionStatus.Text = "✓ All metrics within baseline";
-                    RegressionStatus.Foreground = System.Windows.Media.Brushes.LightGreen;
-                }
-                else
-                {
-                    RegressionStatus.Text = string.Join(Environment.NewLine,
-                        regressions.Select(r => $"⚠ {r.MetricName}: {r.ObservedValue:F1} > {r.ThresholdValue:F1} {r.Unit}"));
-                    RegressionStatus.Foreground = System.Windows.Media.Brushes.OrangeRed;
-                }
+
+                // Per-category status rows
+                UpdateCategoryStatus(CatUiToggle,         CatUiStatus,         RuntimeMetricCategory.Ui,         entries, regressions);
+                UpdateCategoryStatus(CatPredictionToggle, CatPredictionStatus, RuntimeMetricCategory.Prediction, entries, regressions);
+                UpdateCategoryStatus(CatIoToggle,         CatIoStatus,         RuntimeMetricCategory.Io,         entries, regressions);
+                UpdateCategoryStatus(CatCpuToggle,        CatCpuStatus,        RuntimeMetricCategory.Cpu,        entries, regressions);
+                UpdateCategoryStatus(CatGeneralToggle,    CatGeneralStatus,    RuntimeMetricCategory.General,    entries, regressions);
+
+                // Memory category uses snapshot values (PeakWorkingSetMB / ManagedHeapMB)
+                UpdateMemoryCategoryStatus(snap, peak, regressions);
 
                 StatusBar.Text = $"Updated {DateTime.Now:HH:mm:ss}";
             }
             catch (Exception ex)
             {
                 StatusBar.Text = $"Refresh error: {ex.Message}";
+            }
+        }
+
+        /// <summary>
+        /// Updates a single per-category status row based on the latest runtime entries
+        /// and any detected regressions. Greyed out when the toggle is unchecked.
+        /// </summary>
+        private void UpdateCategoryStatus(
+            System.Windows.Controls.CheckBox toggle,
+            System.Windows.Controls.TextBlock statusText,
+            RuntimeMetricCategory category,
+            IReadOnlyDictionary<string, RuntimeMetricEntry> entries,
+            IReadOnlyList<RegressionResult> regressions)
+        {
+            if (toggle.IsChecked != true)
+            {
+                statusText.Text = "--";
+                statusText.Foreground = System.Windows.Media.Brushes.Gray;
+                return;
+            }
+
+            var categoryEntries = entries.Values
+                .Where(e => e.Category == category)
+                .ToList();
+
+            if (categoryEntries.Count == 0)
+            {
+                statusText.Text = "No data";
+                statusText.Foreground = System.Windows.Media.Brushes.Gray;
+                return;
+            }
+
+            // Use a HashSet for O(1) regression lookup across category entry names
+            var entryNames = new HashSet<string>(
+                categoryEntries.Select(e => e.Name),
+                StringComparer.OrdinalIgnoreCase);
+
+            RegressionResult worst = regressions
+                .Where(r => entryNames.Contains(r.MetricName))
+                .OrderByDescending(r => r.ExceedancePercent)
+                .FirstOrDefault();
+
+            if (worst != null)
+            {
+                statusText.Text = $"⚠ {worst.ObservedValue:F1} {worst.Unit}";
+                statusText.Foreground = System.Windows.Media.Brushes.OrangeRed;
+            }
+            else
+            {
+                RuntimeMetricEntry primary = categoryEntries
+                    .OrderByDescending(e => e.LastUpdated)
+                    .First();
+                statusText.Text = $"✓ {primary.LastValue:F1} {primary.Unit}";
+                statusText.Foreground = System.Windows.Media.Brushes.LightGreen;
+            }
+        }
+
+        /// <summary>
+        /// Updates the Memory category row using snapshot values rather than named entries.
+        /// </summary>
+        private void UpdateMemoryCategoryStatus(
+            MemorySnapshot snap,
+            double peakWorkingSetMB,
+            IReadOnlyList<RegressionResult> regressions)
+        {
+            if (CatMemoryToggle.IsChecked != true)
+            {
+                CatMemoryStatus.Text = "--";
+                CatMemoryStatus.Foreground = System.Windows.Media.Brushes.Gray;
+                return;
+            }
+
+            RegressionResult worst = regressions
+                .Where(r => string.Equals(r.MetricName, "PeakWorkingSetMB", StringComparison.OrdinalIgnoreCase)
+                         || string.Equals(r.MetricName, "ManagedHeapMB", StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(r => r.ExceedancePercent)
+                .FirstOrDefault();
+
+            if (worst != null)
+            {
+                CatMemoryStatus.Text = $"⚠ {worst.ObservedValue:F1} {worst.Unit}";
+                CatMemoryStatus.Foreground = System.Windows.Media.Brushes.OrangeRed;
+            }
+            else
+            {
+                CatMemoryStatus.Text = $"✓ {snap.WorkingSetMB:F1} MB";
+                CatMemoryStatus.Foreground = System.Windows.Media.Brushes.LightGreen;
             }
         }
 

@@ -783,4 +783,4 @@ The ACAT testing infrastructure provides:
 - [ACATCore.Tests.Shared README](../src/Libraries/ACATCore.Tests.Shared/README.md)
 - [Testing Guide](../src/Libraries/ACATCore.Tests.Configuration/TESTING_GUIDE.md)
 - [Quick Start: Integration Tests](QUICK_START_INTEGRATION_TESTS.md)
-- [Phase 1 Integration Testing Summary](PHASE_1_INTEGRATION_TESTING_SUMMARY.md)
+- [Testing Migration Guide](TESTING_MIGRATION_GUIDE.md)

@@ -15,6 +15,7 @@ using ACAT.Core.Widgets;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using ACAT.Core.WordPredictorManagement;
@@ -35,6 +36,27 @@ namespace ACAT.Extension.UI
     public class UserControlWordPredictionCommon : IDisposable
     {
         private readonly ILogger<UserControlWordPredictionCommon> _logger;
+
+        /// <summary>
+        /// Optional callback invoked with the elapsed prediction latency in milliseconds
+        /// each time a synchronous <see cref="IWordPredictor.Predict"/> call completes.
+        /// Set from the application layer (e.g. Program.cs) to forward data to PerformanceMonitor.
+        /// </summary>
+        public static Action<double> OnPredictionLatencyMs;
+
+        /// <summary>
+        /// Optional callback invoked with the elapsed autocomplete latency in milliseconds
+        /// each time a word/letter/sentence autocomplete operation completes.
+        /// Set from the application layer (e.g. Program.cs) to forward data to PerformanceMonitor.
+        /// </summary>
+        public static Action<double> OnAutoCompleteLatencyMs;
+
+        /// <summary>
+        /// Optional callback invoked with the elapsed refresh latency in milliseconds
+        /// each time a word prediction refresh operation completes.
+        /// Set from the application layer (e.g. Program.cs) to forward data to PerformanceMonitor.
+        /// </summary>
+        public static Action<double> OnRefreshLatencyMs;
 
         /// <summary>
         /// Widget that represents the alphabet scanner
@@ -211,17 +233,15 @@ namespace ACAT.Extension.UI
         {
             if (e.SourceWidget is WordListItemWidget)
             {
-                CoreGlobals.Stopwatch1.Reset();
-                CoreGlobals.Stopwatch1.Start();
+                var sw = Stopwatch.StartNew();
 
                 _form.Invoke(new MethodInvoker(delegate
                 {
                     autoComplete(e.SourceWidget as WordListItemWidget);
                 }));
 
-                CoreGlobals.Stopwatch1.Stop();
-
-                _logger?.LogDebug("TimeElapsed 3 : {ElapsedMs}ms", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                sw.Stop();
+                OnAutoCompleteLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
 
                 handled = true;
             }
@@ -231,17 +251,15 @@ namespace ACAT.Extension.UI
             }
             if (e.SourceWidget is LetterListItemWidget)
             {
-                CoreGlobals.Stopwatch1.Reset();
-                CoreGlobals.Stopwatch1.Start();
+                var sw = Stopwatch.StartNew();
 
                 _form.Invoke(new MethodInvoker(delegate
                 {
                     autoComplete(e.SourceWidget as LetterListItemWidget);
                 }));
 
-                CoreGlobals.Stopwatch1.Stop();
-
-                _logger?.LogDebug("TimeElapsed 3 : {ElapsedMs}ms", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                sw.Stop();
+                OnAutoCompleteLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
 
                 handled = true;
             }
@@ -251,17 +269,15 @@ namespace ACAT.Extension.UI
             }
             if (e.SourceWidget is SentenceListItemWidget)
             {
-                CoreGlobals.Stopwatch1.Reset();
-                CoreGlobals.Stopwatch1.Start();
+                var sw = Stopwatch.StartNew();
 
                 _form.Invoke(new MethodInvoker(delegate
                 {
                     autoComplete(e.SourceWidget as SentenceListItemWidget);
                 }));
 
-                CoreGlobals.Stopwatch1.Stop();
-
-                _logger?.LogDebug("TimeElapsed 3 : {ElapsedMs}ms", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                sw.Stop();
+                OnAutoCompleteLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
 
                 handled = true;
             }
@@ -640,14 +656,12 @@ namespace ACAT.Extension.UI
         /// </summary>
         private void refreshWordPredictionsAndSetCurrentWord()
         {
-            CoreGlobals.Stopwatch3.Reset();
-            CoreGlobals.Stopwatch3.Start();
+            var sw = Stopwatch.StartNew();
 
             tryRefreshWordPredictionsAndSetCurrentWord();
 
-            CoreGlobals.Stopwatch3.Stop();
-
-            _logger.LogDebug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
+            sw.Stop();
+            OnRefreshLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
         }
 
         /// <summary>
@@ -750,7 +764,10 @@ namespace ACAT.Extension.UI
                     request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Words, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
+                        var swPred = Stopwatch.StartNew();
                         WordPredictionResponse response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                        swPred.Stop();
+                        OnPredictionLatencyMs?.Invoke(swPred.Elapsed.TotalMilliseconds);
                         processWordPredictionResponse(response);
                     }
                     else
@@ -764,7 +781,10 @@ namespace ACAT.Extension.UI
                     request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Sentences, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
+                        var swPred = Stopwatch.StartNew();
                         WordPredictionResponse response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                        swPred.Stop();
+                        OnPredictionLatencyMs?.Invoke(swPred.Elapsed.TotalMilliseconds);
                         processSentencePredictionResponse(response);
                     }
                     else

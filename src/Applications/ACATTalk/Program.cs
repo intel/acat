@@ -15,21 +15,26 @@
 
 using ACAT.Applications;
 using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.Diagnostics;
 using ACAT.Core.Utility.Metrics;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
 using ACAT.Extensions.UI.Diagnostics;
+using ACAT.Extensions.UI.Scanners;
 using ACATResources;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ACATTalk
@@ -43,6 +48,9 @@ namespace ACATTalk
         private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
         private static IServiceProvider _serviceProvider;
+#if DEBUG
+        private static PerformanceDashboard _performanceDashboard = null;
+#endif
 
         /// <summary>
         /// The main entry point for the application.
@@ -57,12 +65,10 @@ namespace ACATTalk
 #endif
 
 #if DEBUG
-            var collector = new RuntimeMetricsCollector();
-            var profiler = new MemoryProfiler();
-            collector.Start(intervalMs: 5000);
-
-            var dashboard = new PerformanceDashboard(collector, profiler);
-            dashboard.Show();
+            _performanceDashboard = new PerformanceDashboard(
+                PerformanceMonitor.GetRuntimeCollector(),
+                PerformanceMonitor.GetMemoryProfiler());
+            _performanceDashboard.Show();
 #endif
 
             if (AppCommon.OtherInstancesRunning())
@@ -85,7 +91,13 @@ namespace ACATTalk
             PerformanceMonitor.StopTimer("FileUtilsLogAssemblyInfo", PerformanceMonitor.MetricCategory.Startup);
 #endif
 
+#if PERFORMANCE
+            var swGS = Stopwatch.StartNew();
+#endif
             AppCommon.LoadGlobalSettings();
+#if PERFORMANCE
+            PerformanceMonitor.RecordIoOperation("LoadGlobalSettings", swGS.Elapsed.TotalMilliseconds);
+#endif
 
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
@@ -95,10 +107,16 @@ namespace ACATTalk
                 return;
             }
 
+#if PERFORMANCE
+            var swUP = Stopwatch.StartNew();
+#endif
             if (!AppCommon.LoadUserPreferences())
             {
                 return;
             }
+#if PERFORMANCE
+            PerformanceMonitor.RecordIoOperation("LoadUserPreferences", swUP.Elapsed.TotalMilliseconds);
+#endif
             if (!AppCommon.SetCulture())
             {
                 return;
@@ -140,6 +158,9 @@ namespace ACATTalk
             Common.PreInit();
             Context.AppAgentMgr.EnableAppAgentContextSwitch = false;
 
+#if PERFORMANCE
+            var swCtxInit = Stopwatch.StartNew();
+#endif
             if (!Context.Init(Context.StartupFlags.Minimal |
                                 Context.StartupFlags.TextToSpeech |
                                 Context.StartupFlags.WordPrediction |
@@ -163,6 +184,26 @@ namespace ACATTalk
             Context.AppAgentMgr.EnableContextualMenusForDialogs = false;
             Context.AppAgentMgr.EnableContextualMenusForMenus = false;
             Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
+
+#if PERFORMANCE
+            PerformanceMonitor.RecordIoOperation("ContextInit", swCtxInit.Elapsed.TotalMilliseconds);
+            // Wire prediction and UI callbacks so library code can feed data into PerformanceMonitor
+            UserControlWordPredictionCommon.OnPredictionLatencyMs =
+                ms => PerformanceMonitor.RecordPredictionLatency(ms);
+            UserControlWordPredictionCommon.OnAutoCompleteLatencyMs =
+                ms => PerformanceMonitor.RecordAutoCompleteLatency(ms);
+            UserControlWordPredictionCommon.OnRefreshLatencyMs =
+                ms => PerformanceMonitor.RecordPredictionRefresh(ms);
+            TalkApplicationScanner.OnUiKeyPressLatencyMs =
+                ms => PerformanceMonitor.RecordUiInputLag(ms);
+            // Wire text-input metrics converted from CoreGlobals.Stopwatch
+            UserControlKeyboardCommon.OnKeyActuationLatencyMs =
+                (type, ms) => PerformanceMonitor.RecordKeyActuationLatency(type, ms);
+            TextController.OnAutoCompletePhaseLatencyMs =
+                (phase, ms) => PerformanceMonitor.RecordAutoCompletePhaseLatency(phase, ms);
+            EditTextControlAgent.OnTextChangeEventLatencyMs =
+                ms => PerformanceMonitor.RecordTextChangeEventLatency(ms);
+#endif
 
             splash?.Close();
             splash = null;
@@ -213,6 +254,16 @@ namespace ACATTalk
                 splash = new Splash();
                 splash.Show(StringResources.ExitingACAT);
                 AuditLog.Audit(new AuditEvent("Application", "stop"));
+
+#if DEBUG
+                // Close PerformanceDashboard before disposing Context to prevent WPF dispatcher from keeping app alive
+                if (_performanceDashboard != null)
+                {
+                    _performanceDashboard.Dispatcher.InvokeShutdown();
+                    _performanceDashboard.Close();
+                    _performanceDashboard = null;
+                }
+#endif
 
                 Context.Dispose();
 

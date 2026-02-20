@@ -4,6 +4,7 @@
     <LangVersion>9.0</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <UseWindowsForms>true</UseWindowsForms>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <EnableMSTestRunner>false</EnableMSTestRunner>
     <!-- Test projects use their own output directories to avoid test discovery scanning application executables -->

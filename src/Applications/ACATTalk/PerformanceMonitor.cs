@@ -47,6 +47,9 @@ namespace ACATTalk
         private static readonly MemoryProfiler _memoryProfiler = new MemoryProfiler();
         private static PerformanceRegressionDetector _regressionDetector;
 
+        // Regression report generated at shutdown; included in the persisted text report.
+        private static string _lastRegressionReport;
+
         // Track which RuntimeMetricCategories are enabled for recording (all on by default)
         private static readonly ConcurrentDictionary<RuntimeMetricCategory, bool> _enabledCategories =
             new ConcurrentDictionary<RuntimeMetricCategory, bool>(
@@ -366,11 +369,9 @@ namespace ACATTalk
                     }
                 }
 
-                IReadOnlyList<RegressionResult> regressions = _regressionDetector.DetectRegressions(observations);
-                foreach (RegressionResult r in regressions)
-                {
-                    Debug.WriteLine($"[PerformanceMonitor] {r}");
-                }
+                // Generate the full regression report and persist it with the performance report.
+                _lastRegressionReport = _regressionDetector.GenerateReport(observations);
+                Debug.WriteLine($"[PerformanceMonitor] {_lastRegressionReport}");
             }
 
             GenerateReport();
@@ -468,6 +469,14 @@ namespace ACATTalk
             }
 
             sb.AppendLine("=".PadRight(80, '='));
+            // Append regression alert section when a regression report was generated at shutdown.
+            if (!string.IsNullOrEmpty(_lastRegressionReport))
+            {
+                sb.AppendLine("[Regression Alert]");
+                sb.AppendLine("-".PadRight(80, '-'));
+                sb.Append(_lastRegressionReport);
+                sb.AppendLine("=".PadRight(80, '='));
+            }
             sb.AppendLine("End of Report");
             sb.AppendLine("=".PadRight(80, '='));
 

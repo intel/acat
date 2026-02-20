@@ -15,6 +15,7 @@ using ACAT.Core.Widgets;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using ACAT.Core.WordPredictorManagement;
@@ -35,6 +36,13 @@ namespace ACAT.Extension.UI
     public class UserControlWordPredictionCommon : IDisposable
     {
         private readonly ILogger<UserControlWordPredictionCommon> _logger;
+
+        /// <summary>
+        /// Optional callback invoked with the elapsed prediction latency in milliseconds
+        /// each time a synchronous <see cref="IWordPredictor.Predict"/> call completes.
+        /// Set from the application layer (e.g. Program.cs) to forward data to PerformanceMonitor.
+        /// </summary>
+        public static Action<double> OnPredictionLatencyMs;
 
         /// <summary>
         /// Widget that represents the alphabet scanner
@@ -750,7 +758,10 @@ namespace ACAT.Extension.UI
                     request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Words, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
+                        var swPred = Stopwatch.StartNew();
                         WordPredictionResponse response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                        swPred.Stop();
+                        OnPredictionLatencyMs?.Invoke(swPred.Elapsed.TotalMilliseconds);
                         processWordPredictionResponse(response);
                     }
                     else
@@ -764,7 +775,10 @@ namespace ACAT.Extension.UI
                     request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Sentences, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
+                        var swPred = Stopwatch.StartNew();
                         WordPredictionResponse response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                        swPred.Stop();
+                        OnPredictionLatencyMs?.Invoke(swPred.Elapsed.TotalMilliseconds);
                         processSentencePredictionResponse(response);
                     }
                     else

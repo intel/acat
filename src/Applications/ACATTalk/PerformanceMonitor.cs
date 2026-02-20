@@ -275,6 +275,12 @@ namespace ACATTalk
             long endWorkingSet = process.WorkingSet64;
 
             RecordMetric("TotalApplicationLifetime", _applicationLifetime.Elapsed.TotalSeconds, "s", MetricCategory.Shutdown);
+            if (IsCategoryEnabled(RuntimeMetricCategory.General))
+            {
+                _runtimeCollector.Record("StartupTime",
+                    _applicationLifetime.Elapsed.TotalMilliseconds, RuntimeMetricCategory.General, "ms");
+            }
+
             RecordMetric("StartMemoryUsage", _startWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
             RecordMetric("EndMemoryUsage", endWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
             RecordMetric("PeakMemoryUsage", _peakWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
@@ -447,6 +453,26 @@ namespace ACATTalk
         public static IReadOnlyDictionary<string, RuntimeMetricEntry> GetRuntimeMetrics()
         {
             return _runtimeCollector.GetEntries();
+        }
+
+        /// <summary>
+        /// Returns the shared <see cref="RuntimeMetricsCollector"/> instance so that
+        /// external components (e.g. the debug dashboard) can observe the same data
+        /// that <see cref="PerformanceMonitor"/> records to.
+        /// </summary>
+        public static RuntimeMetricsCollector GetRuntimeCollector()
+        {
+            return _runtimeCollector;
+        }
+
+        /// <summary>
+        /// Returns the shared <see cref="MemoryProfiler"/> instance so that
+        /// external components (e.g. the debug dashboard) can observe the same
+        /// snapshot history that <see cref="PerformanceMonitor"/> captures.
+        /// </summary>
+        public static MemoryProfiler GetMemoryProfiler()
+        {
+            return _memoryProfiler;
         }
 
         /// <summary>

@@ -42,6 +42,9 @@ namespace ACATApp
         private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
         private static IServiceProvider _serviceProvider;
+#if DEBUG
+        private static PerformanceDashboard _performanceDashboard = null;
+#endif
 
         /// <summary>
         /// The main entry point for the application.
@@ -72,9 +75,9 @@ namespace ACATApp
             var collector = new RuntimeMetricsCollector();
             var profiler = new MemoryProfiler();
             collector.Start(intervalMs: 5000);
-            
-            var dashboard = new PerformanceDashboard(collector, profiler);
-            dashboard.Show();
+
+            _performanceDashboard = new PerformanceDashboard(collector, profiler);
+            _performanceDashboard.Show();
 #endif
 
             ShowSplashScreen("Starting ACAT");
@@ -241,6 +244,17 @@ namespace ACATApp
         private static void ShutdownApplication()
         {
             AuditLog.Audit(new AuditEvent("Application", "stop"));
+
+#if DEBUG
+            // Close PerformanceDashboard before disposing Context to prevent WPF dispatcher from keeping app alive
+            if (_performanceDashboard != null)
+            {
+                _performanceDashboard.Dispatcher.InvokeShutdown();
+                _performanceDashboard.Close();
+                _performanceDashboard = null;
+            }
+#endif
+
             Context.Dispose();
             Common.Uninit();
             CloseSplashScreen();

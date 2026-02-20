@@ -147,8 +147,14 @@ namespace ACAT.Extension
                 int command = m.WParam.ToInt32() & 0xfff0;
                 if (command == SC_MOVE)
                 {
+#if DISABLE_TOPMOST
+                    // Window movement enabled for testing - allow the move
                     base.WndProc(ref m);
                     return;
+#else
+                    base.WndProc(ref m);
+                    return;
+#endif
                 }
             }
 

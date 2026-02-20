@@ -114,10 +114,20 @@ namespace ACAT.Applications
         /// </summary>
         public static void OnExit()
         {
-            // let's kill the app, in case there are
-            // bad actors (mis-behaving plugins, lingering
-            // threads etc.
-            Process.GetCurrentProcess().Kill();
+            // Gracefully exit with success code
+            // Only kill the process if there are truly misbehaving components
+            // that prevent normal exit (rare case)
+            try
+            {
+                // Try graceful exit first with success code
+                Environment.Exit(0);
+            }
+            catch
+            {
+                // If graceful exit fails, force kill as last resort
+                // This will exit with -1, but only in exceptional cases
+                Process.GetCurrentProcess().Kill();
+            }
         }
 
         public static bool OtherInstancesRunning()

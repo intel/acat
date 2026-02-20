@@ -404,7 +404,12 @@ namespace ACAT.Core.PanelManagement.Common
                 int command = m.WParam.ToInt32() & 0xfff0;
                 if (command == SC_MOVE)
                 {
+#if DISABLE_TOPMOST
+                    // Window movement enabled for testing
+                    return false;
+#else
                     return true;
+#endif
                 }
             }
             else if (m.Msg == WM_MOUSEACTIVATE)

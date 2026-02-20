@@ -25,4 +25,10 @@
   <ItemGroup>
     <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="baselines\performance-baseline.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

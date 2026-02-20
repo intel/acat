@@ -215,5 +215,100 @@ namespace ACATCore.Tests.Performance
                 }
             }
         }
+
+        // ----------------------------------------------------------------
+        // Committed baseline file tests
+        // ----------------------------------------------------------------
+
+        [TestMethod]
+        public void CommittedBaselineFile_Exists()
+        {
+            string baselinePath = GetCommittedBaselinePath();
+
+            Assert.IsTrue(File.Exists(baselinePath),
+                $"Committed baseline file not found at: {baselinePath}");
+        }
+
+        [TestMethod]
+        public void CommittedBaselineFile_LoadsSuccessfully()
+        {
+            string baselinePath = GetCommittedBaselinePath();
+
+            PerformanceBaselineData data = PerformanceBaseline.Load(baselinePath);
+
+            Assert.IsNotNull(data, "Baseline data should not be null");
+            Assert.IsTrue(data.Thresholds.Count > 0, "Baseline should contain at least one threshold");
+        }
+
+        [TestMethod]
+        public void CommittedBaselineFile_ContainsAllRequiredThresholds()
+        {
+            string baselinePath = GetCommittedBaselinePath();
+            PerformanceBaselineData data = PerformanceBaseline.Load(baselinePath);
+
+            Assert.IsTrue(data.Thresholds.ContainsKey("StartupTime"),
+                "Baseline must define StartupTime threshold (target: < 3 s)");
+            Assert.IsTrue(data.Thresholds.ContainsKey("UiInputLag"),
+                "Baseline must define UiInputLag threshold (target: < 100 ms)");
+            Assert.IsTrue(data.Thresholds.ContainsKey("PredictionLatency"),
+                "Baseline must define PredictionLatency threshold (target: < 500 ms)");
+            Assert.IsTrue(data.Thresholds.ContainsKey("PeakWorkingSetMB"),
+                "Baseline must define PeakWorkingSetMB threshold (target: < 500 MB)");
+            Assert.IsTrue(data.Thresholds.ContainsKey("ManagedHeapMB"),
+                "Baseline must define ManagedHeapMB threshold (target: < 200 MB)");
+        }
+
+        [TestMethod]
+        public void CommittedBaselineFile_ThresholdValuesMatchTargets()
+        {
+            string baselinePath = GetCommittedBaselinePath();
+            PerformanceBaselineData data = PerformanceBaseline.Load(baselinePath);
+
+            Assert.AreEqual(3000.0, data.Thresholds["StartupTime"].MaxAcceptableValue, 0.001,
+                "StartupTime threshold must be 3000 ms");
+            Assert.AreEqual(100.0, data.Thresholds["UiInputLag"].MaxAcceptableValue, 0.001,
+                "UiInputLag threshold must be 100 ms");
+            Assert.AreEqual(500.0, data.Thresholds["PredictionLatency"].MaxAcceptableValue, 0.001,
+                "PredictionLatency threshold must be 500 ms");
+            Assert.AreEqual(500.0, data.Thresholds["PeakWorkingSetMB"].MaxAcceptableValue, 0.001,
+                "PeakWorkingSetMB threshold must be 500 MB");
+            Assert.AreEqual(200.0, data.Thresholds["ManagedHeapMB"].MaxAcceptableValue, 0.001,
+                "ManagedHeapMB threshold must be 200 MB");
+        }
+
+        [TestMethod]
+        public void CommittedBaselineFile_DetectorIdentifiesRegressions()
+        {
+            string baselinePath = GetCommittedBaselinePath();
+            PerformanceBaselineData data = PerformanceBaseline.Load(baselinePath);
+            var detector = new PerformanceRegressionDetector(data);
+
+            var observations = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["StartupTime"]      = 5000.0,  // exceeds 3000 ms → regression
+                ["UiInputLag"]       = 50.0,    // within 100 ms → OK
+                ["PredictionLatency"] = 300.0,  // within 500 ms → OK
+                ["PeakWorkingSetMB"] = 600.0,   // exceeds 500 MB → regression
+                ["ManagedHeapMB"]    = 150.0    // within 200 MB → OK
+            };
+
+            IReadOnlyList<RegressionResult> regressions = detector.DetectRegressions(observations);
+
+            Assert.AreEqual(2, regressions.Count,
+                "Should detect exactly 2 regressions (StartupTime and PeakWorkingSetMB)");
+        }
+
+        // ----------------------------------------------------------------
+        // Private helpers
+        // ----------------------------------------------------------------
+
+        private static string GetCommittedBaselinePath()
+        {
+            // The baseline file is copied to the output directory by the .csproj Content item.
+            string assemblyDir = Path.GetDirectoryName(
+                typeof(PerformanceRegressionDetectorTests).Assembly.Location)
+                ?? AppDomain.CurrentDomain.BaseDirectory;
+            return Path.Combine(assemblyDir, "baselines", "performance-baseline.json");
+        }
     }
 }

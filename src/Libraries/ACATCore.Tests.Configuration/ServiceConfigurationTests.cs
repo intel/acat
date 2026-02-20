@@ -15,6 +15,7 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.CommandManagement;
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.SpellCheckManagement;
 using ACAT.Core.ThemeManagement;
@@ -71,6 +72,7 @@ namespace ACATCore.Tests.Configuration
             Assert.IsNotNull(serviceProvider.GetService<AbbreviationsManager>());
             Assert.IsNotNull(serviceProvider.GetService<CommandManager>());
             Assert.IsNotNull(serviceProvider.GetService<AutomationEventManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IEventBus>());
         }
 
         [TestMethod]
@@ -95,6 +97,7 @@ namespace ACATCore.Tests.Configuration
             Assert.IsNotNull(serviceProvider.GetService<IAbbreviationsManager>());
             Assert.IsNotNull(serviceProvider.GetService<ICommandManager>());
             Assert.IsNotNull(serviceProvider.GetService<IAutomationEventManager>());
+            Assert.IsNotNull(serviceProvider.GetService<IEventBus>());
         }
 
         [TestMethod]

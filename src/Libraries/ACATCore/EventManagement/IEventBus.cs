@@ -6,7 +6,7 @@
 //
 // IEventBus.cs
 //
-// Interface for the event bus that provides publish/subscribe messaging.
+// Interface for the pub/sub event bus used throughout ACAT.
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -15,33 +15,35 @@ using System;
 namespace ACAT.Core.EventManagement
 {
     /// <summary>
-    /// Interface for the event bus that enables decoupled publish/subscribe messaging.
-    /// Subscribers register handlers for specific event types; publishers raise events
-    /// without needing a direct reference to their consumers.
+    /// Defines the contract for the pub/sub event bus.
+    /// Handlers are held via weak references so that subscribers that are
+    /// garbage-collected do not cause memory leaks.
     /// </summary>
     public interface IEventBus
     {
         /// <summary>
-        /// Publishes an event to all registered subscribers.
+        /// Subscribes <paramref name="handler"/> to receive events of type
+        /// <typeparamref name="TEvent"/>.
         /// </summary>
-        /// <typeparam name="TEvent">The type of event to publish.</typeparam>
-        /// <param name="eventData">The event data to send to subscribers.</param>
-        void Publish<TEvent>(TEvent eventData) where TEvent : IEvent;
+        /// <typeparam name="TEvent">The event type to subscribe to.</typeparam>
+        /// <param name="handler">The callback to invoke when the event is published.</param>
+        void Subscribe<TEvent>(Action<TEvent> handler) where TEvent : IEvent;
 
         /// <summary>
-        /// Subscribes a handler to receive events of the specified type.
-        /// The subscription is held with a weak reference to prevent memory leaks.
+        /// Removes a previously registered <paramref name="handler"/> for
+        /// <typeparamref name="TEvent"/>.  A no-op if the handler is not found.
         /// </summary>
-        /// <typeparam name="TEvent">The type of event to subscribe to.</typeparam>
-        /// <param name="handler">The handler delegate invoked when the event is published.</param>
-        /// <returns>A subscription token that can be passed to <see cref="Unsubscribe{TEvent}"/> to remove the subscription.</returns>
-        ISubscriptionToken Subscribe<TEvent>(Action<TEvent> handler) where TEvent : IEvent;
+        /// <typeparam name="TEvent">The event type to unsubscribe from.</typeparam>
+        /// <param name="handler">The callback to remove.</param>
+        void Unsubscribe<TEvent>(Action<TEvent> handler) where TEvent : IEvent;
 
         /// <summary>
-        /// Removes a subscription so the handler no longer receives events.
+        /// Publishes <paramref name="event"/> to all live subscribers registered
+        /// for <typeparamref name="TEvent"/>.  Dead (garbage-collected) subscriptions
+        /// are pruned during publishing.
         /// </summary>
-        /// <typeparam name="TEvent">The type of event to unsubscribe from.</typeparam>
-        /// <param name="token">The token returned by <see cref="Subscribe{TEvent}"/>.</param>
-        void Unsubscribe<TEvent>(ISubscriptionToken token) where TEvent : IEvent;
+        /// <typeparam name="TEvent">The event type to publish.</typeparam>
+        /// <param name="event">The event instance to dispatch.</param>
+        void Publish<TEvent>(TEvent @event) where TEvent : IEvent;
     }
 }

@@ -6,186 +6,166 @@
 //
 // EventBus.cs
 //
-// Thread-safe publish/subscribe event bus with weak-reference support.
+// Thread-safe pub/sub event bus with weak-reference subscriber support.
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ACAT.Core.EventManagement
 {
     /// <summary>
-    /// Thread-safe publish/subscribe event bus.
-    /// Subscriptions are stored as weak references so that subscribers that are
-    /// garbage-collected are automatically removed, preventing memory leaks.
+    /// Thread-safe implementation of <see cref="IEventBus"/>.
+    /// Each subscriber is stored as a weak reference to its target object so
+    /// that subscribers which are garbage-collected do not prevent the event
+    /// bus from being collected and do not receive further notifications.
+    /// Dead subscriptions are pruned lazily during <see cref="Publish{TEvent}"/>.
     /// </summary>
-    public class EventBus : IEventBus, IDisposable
+    public class EventBus : IEventBus
     {
-        private readonly ILogger<EventBus> _logger;
-        private readonly Dictionary<Type, List<WeakSubscription>> _subscriptions
-            = new Dictionary<Type, List<WeakSubscription>>();
+        private readonly Dictionary<Type, List<WeakHandlerBase>> _subscriptions =
+            new Dictionary<Type, List<WeakHandlerBase>>();
+
         private readonly object _lock = new object();
-        private bool _disposed;
 
-        /// <summary>
-        /// Initializes a new <see cref="EventBus"/> instance.
-        /// </summary>
-        /// <param name="logger">Logger for diagnostic output.</param>
-        public EventBus(ILogger<EventBus> logger = null)
+        /// <inheritdoc/>
+        public void Subscribe<TEvent>(Action<TEvent> handler) where TEvent : IEvent
         {
-            _logger = logger;
-        }
-
-        /// <inheritdoc />
-        public void Publish<TEvent>(TEvent eventData) where TEvent : IEvent
-        {
-            if (eventData == null) throw new ArgumentNullException(nameof(eventData));
-
-            List<WeakSubscription> snapshot;
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
 
             lock (_lock)
             {
-                if (!_subscriptions.TryGetValue(typeof(TEvent), out var subs))
+                Type eventType = typeof(TEvent);
+                if (!_subscriptions.TryGetValue(eventType, out List<WeakHandlerBase> handlers))
+                {
+                    handlers = new List<WeakHandlerBase>();
+                    _subscriptions[eventType] = handlers;
+                }
+                handlers.Add(new WeakHandler<TEvent>(handler));
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Unsubscribe<TEvent>(Action<TEvent> handler) where TEvent : IEvent
+        {
+            if (handler == null)
+                throw new ArgumentNullException(nameof(handler));
+
+            lock (_lock)
+            {
+                Type eventType = typeof(TEvent);
+                if (!_subscriptions.TryGetValue(eventType, out List<WeakHandlerBase> handlers))
                     return;
 
-                snapshot = new List<WeakSubscription>(subs);
+                handlers.RemoveAll(h =>
+                    h is WeakHandler<TEvent> wh && wh.Matches(handler));
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
+        {
+            if (@event == null)
+                throw new ArgumentNullException(nameof(@event));
+
+            List<WeakHandlerBase> snapshot;
+            lock (_lock)
+            {
+                Type eventType = typeof(TEvent);
+                if (!_subscriptions.TryGetValue(eventType, out List<WeakHandlerBase> handlers))
+                    return;
+
+                snapshot = new List<WeakHandlerBase>(handlers);
             }
 
-            var dead = new List<WeakSubscription>();
-            int invoked = 0;
-
-            foreach (var sub in snapshot)
+            var dead = new List<WeakHandlerBase>();
+            foreach (WeakHandlerBase handler in snapshot)
             {
-                try
-                {
-                    if (sub.TryInvoke(eventData))
-                        invoked++;
-                    else
-                        dead.Add(sub);
-                }
-                catch (Exception ex)
-                {
-                    _logger?.LogError(ex, "Unhandled exception in event handler for {EventType}", typeof(TEvent).Name);
-                }
+                if (!handler.TryInvoke(@event))
+                    dead.Add(handler);
             }
 
             if (dead.Count > 0)
             {
                 lock (_lock)
                 {
-                    if (_subscriptions.TryGetValue(typeof(TEvent), out var subs))
-                        foreach (var d in dead)
-                            subs.Remove(d);
+                    Type eventType = typeof(TEvent);
+                    if (_subscriptions.TryGetValue(eventType, out List<WeakHandlerBase> handlers))
+                    {
+                        foreach (WeakHandlerBase d in dead)
+                            handlers.Remove(d);
+                    }
                 }
             }
-
-            _logger?.LogDebug("Published {EventType} to {Count} subscriber(s)", typeof(TEvent).Name, invoked);
         }
 
-        /// <inheritdoc />
-        public ISubscriptionToken Subscribe<TEvent>(Action<TEvent> handler) where TEvent : IEvent
+        // ----------------------------------------------------------------
+        // Private helpers
+        // ----------------------------------------------------------------
+
+        /// <summary>
+        /// Non-generic base so heterogeneous handler lists can be stored.
+        /// </summary>
+        private abstract class WeakHandlerBase
         {
-            if (handler == null) throw new ArgumentNullException(nameof(handler));
-
-            var token = new SubscriptionToken<TEvent>(this);
-            var sub = new WeakSubscription<TEvent>(token.Id, handler);
-
-            lock (_lock)
-            {
-                if (!_subscriptions.TryGetValue(typeof(TEvent), out var subs))
-                {
-                    subs = new List<WeakSubscription>();
-                    _subscriptions[typeof(TEvent)] = subs;
-                }
-                subs.Add(sub);
-            }
-
-            _logger?.LogDebug("Subscribed to {EventType} (token {TokenId})", typeof(TEvent).Name, token.Id);
-            return token;
-        }
-
-        /// <inheritdoc />
-        public void Unsubscribe<TEvent>(ISubscriptionToken token) where TEvent : IEvent
-        {
-            if (token == null) throw new ArgumentNullException(nameof(token));
-
-            lock (_lock)
-            {
-                if (!_subscriptions.TryGetValue(typeof(TEvent), out var subs))
-                    return;
-
-                subs.RemoveAll(s => s.TokenId == token.Id);
-            }
-
-            _logger?.LogDebug("Unsubscribed from {EventType} (token {TokenId})", typeof(TEvent).Name, token.Id);
+            /// <summary>
+            /// Attempts to invoke the handler with the given event.
+            /// Returns <c>false</c> when the target has been garbage-collected.
+            /// </summary>
+            public abstract bool TryInvoke(object @event);
         }
 
         /// <summary>
-        /// Disposes the event bus and removes all subscriptions.
+        /// Holds a weak reference to the delegate's target object so that the
+        /// subscriber is not kept alive solely by the event bus registration.
+        /// For static handlers (no target) the subscription is always live.
         /// </summary>
-        public void Dispose()
+        private class WeakHandler<TEvent> : WeakHandlerBase where TEvent : IEvent
         {
-            if (_disposed) return;
-            _disposed = true;
-            lock (_lock)
+            private readonly WeakReference _targetRef;
+            private readonly MethodInfo _method;
+
+            public WeakHandler(Action<TEvent> handler)
             {
-                _subscriptions.Clear();
-            }
-        }
-
-        // -----------------------------------------------------------------------
-        // Private helpers
-        // -----------------------------------------------------------------------
-
-        private abstract class WeakSubscription
-        {
-            public Guid TokenId { get; protected set; }
-
-            /// <summary>
-            /// Attempts to invoke the stored handler with the given event data.
-            /// Returns <c>false</c> if the target has been garbage-collected.
-            /// </summary>
-            public abstract bool TryInvoke(IEvent eventData);
-        }
-
-        private sealed class WeakSubscription<TEvent> : WeakSubscription where TEvent : IEvent
-        {
-            private readonly WeakReference<Action<TEvent>> _weakHandler;
-
-            public WeakSubscription(Guid tokenId, Action<TEvent> handler)
-            {
-                TokenId = tokenId;
-                _weakHandler = new WeakReference<Action<TEvent>>(handler);
+                _targetRef = handler.Target != null
+                    ? new WeakReference(handler.Target)
+                    : null;
+                _method = handler.Method;
             }
 
-            public override bool TryInvoke(IEvent eventData)
+            public override bool TryInvoke(object @event)
             {
-                if (!_weakHandler.TryGetTarget(out var handler))
+                if (_targetRef == null)
+                {
+                    // Static method — always alive.
+                    _method.Invoke(null, new object[] { @event });
+                    return true;
+                }
+
+                object target = _targetRef.Target;
+                if (target == null)
                     return false;
-                handler((TEvent)eventData);
+
+                _method.Invoke(target, new object[] { @event });
                 return true;
             }
-        }
 
-        private sealed class SubscriptionToken<TEvent> : ISubscriptionToken where TEvent : IEvent
-        {
-            private readonly EventBus _bus;
-            private bool _disposed;
-
-            public Guid Id { get; } = Guid.NewGuid();
-
-            public SubscriptionToken(EventBus bus)
+            /// <summary>
+            /// Returns <c>true</c> when this handler wraps the same
+            /// target/method pair as <paramref name="handler"/>.
+            /// </summary>
+            public bool Matches(Action<TEvent> handler)
             {
-                _bus = bus;
-            }
+                if (_targetRef == null)
+                    return handler.Target == null && handler.Method == _method;
 
-            public void Dispose()
-            {
-                if (_disposed) return;
-                _disposed = true;
-                _bus.Unsubscribe<TEvent>(this);
+                object target = _targetRef.Target;
+                return target != null
+                    && ReferenceEquals(target, handler.Target)
+                    && handler.Method == _method;
             }
         }
     }

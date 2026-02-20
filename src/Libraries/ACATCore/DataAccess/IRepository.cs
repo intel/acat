@@ -6,52 +6,38 @@
 //
 // IRepository.cs
 //
-// Generic repository interface for data access abstraction.
+// Generic repository interface for data access.
+// Defines load and save operations for a single entity type.
 //
 ////////////////////////////////////////////////////////////////////////////
-
-using System.Collections.Generic;
 
 namespace ACAT.Core.DataAccess
 {
     /// <summary>
-    /// Generic repository interface that abstracts data access for a given entity type.
-    /// Implementations provide the concrete storage strategy (XML file, JSON file,
-    /// database, in-memory, etc.) while callers depend only on this interface.
+    /// Generic repository interface for loading and saving a single data entity
+    /// identified by a string key (typically a file path).
     /// </summary>
-    /// <typeparam name="TEntity">The entity type managed by this repository.</typeparam>
-    /// <typeparam name="TKey">The type of the entity's unique identifier.</typeparam>
-    public interface IRepository<TEntity, TKey> where TEntity : class
+    /// <typeparam name="T">The type of the data entity.</typeparam>
+    public interface IRepository<T> where T : class
     {
         /// <summary>
-        /// Returns the entity with the specified identifier, or <c>null</c> if not found.
+        /// Loads the entity from the specified location.
         /// </summary>
-        TEntity GetById(TKey id);
+        /// <param name="key">Location identifier (e.g. file path).</param>
+        /// <returns>The loaded entity, or null on failure.</returns>
+        T Load(string key);
 
         /// <summary>
-        /// Returns all entities managed by this repository.
+        /// Saves the entity to the specified location.
         /// </summary>
-        IReadOnlyList<TEntity> GetAll();
+        /// <param name="entity">The entity to save.</param>
+        /// <param name="key">Location identifier (e.g. file path).</param>
+        /// <returns>true on success; false otherwise.</returns>
+        bool Save(T entity, string key);
 
         /// <summary>
-        /// Adds a new entity to the repository.
+        /// Returns the default (factory-reset) entity.
         /// </summary>
-        void Add(TEntity entity);
-
-        /// <summary>
-        /// Updates an existing entity in the repository.
-        /// </summary>
-        void Update(TEntity entity);
-
-        /// <summary>
-        /// Removes the entity with the specified identifier from the repository.
-        /// </summary>
-        void Remove(TKey id);
-
-        /// <summary>
-        /// Persists all pending changes to the underlying storage.
-        /// </summary>
-        /// <returns><c>true</c> if the save succeeded; otherwise <c>false</c>.</returns>
-        bool Save();
+        T GetDefault();
     }
 }

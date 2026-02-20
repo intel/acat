@@ -6,21 +6,24 @@
 //
 // ICommand.cs
 //
-// Marker interface for command objects in the CQRS pattern.
+// Marker interface for all CQRS commands.  A command represents an intent
+// to change system state and carries all data required to perform that
+// change.  Commands do not return a result value; use IQuery<TResult> for
+// operations that need to return data.
 //
 ////////////////////////////////////////////////////////////////////////////
 
 namespace ACAT.Core.Patterns.CQRS
 {
     /// <summary>
-    /// Marker interface for command objects.
-    /// A command represents an intent to change state and does not return a value.
+    /// Marker interface for CQRS commands.
     /// </summary>
-    public interface ICommand { }
-
-    /// <summary>
-    /// Marker interface for commands that return a result.
-    /// </summary>
-    /// <typeparam name="TResult">The type of result produced by the command.</typeparam>
-    public interface ICommand<out TResult> { }
+    /// <remarks>
+    /// Implement this interface on plain data-transfer objects (DTOs) that
+    /// describe a state-changing operation.  The corresponding handler is
+    /// declared as <see cref="ICommandHandler{TCommand}"/>.
+    /// </remarks>
+    public interface ICommand
+    {
+    }
 }

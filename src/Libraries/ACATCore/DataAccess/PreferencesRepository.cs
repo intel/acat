@@ -6,79 +6,84 @@
 //
 // PreferencesRepository.cs
 //
-// Repository for loading and saving ACAT user preferences.
+// Repository for XML-serializable preferences objects.
+// Delegates to the existing XmlUtils helper for file I/O.
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace ACAT.Core.DataAccess
 {
     /// <summary>
-    /// Represents a keyed preferences entry managed by the repository.
+    /// Repository for XML-based preferences entities.
+    /// Uses <see cref="XmlUtils"/> for serialization, consistent with the
+    /// rest of the codebase.
     /// </summary>
-    public class PreferencesEntry
+    /// <typeparam name="T">
+    /// Preferences type – must be a reference type with a public
+    /// parameterless constructor.
+    /// </typeparam>
+    public class PreferencesRepository<T> : RepositoryBase<T> where T : class, new()
     {
-        /// <summary>Gets the unique key identifying this preferences entry.</summary>
-        public string Key { get; set; }
-
-        /// <summary>Gets the preferences object for this entry.</summary>
-        public PreferencesBase Value { get; set; }
-    }
-
-    /// <summary>
-    /// Repository that loads and persists <see cref="PreferencesBase"/> objects from XML files.
-    /// Each preferences entry is identified by a string key (typically the file path).
-    /// </summary>
-    public class PreferencesRepository : RepositoryBase<PreferencesEntry, string>
-    {
-        private readonly string _preferencesFilePath;
-
         /// <summary>
-        /// Initializes a new <see cref="PreferencesRepository"/>.
+        /// Initializes a new instance of <see cref="PreferencesRepository{T}"/>.
         /// </summary>
-        /// <param name="preferencesFilePath">Path to the XML preferences file.</param>
         /// <param name="logger">Optional logger.</param>
-        public PreferencesRepository(string preferencesFilePath, ILogger logger = null)
-            : base(logger)
-        {
-            if (string.IsNullOrWhiteSpace(preferencesFilePath))
-                throw new ArgumentException("Preferences file path must not be empty.", nameof(preferencesFilePath));
-            _preferencesFilePath = preferencesFilePath;
-        }
+        public PreferencesRepository(ILogger logger = null) : base(logger) { }
 
-        /// <inheritdoc />
-        protected override string GetKey(PreferencesEntry entity) => entity.Key;
-
-        /// <inheritdoc />
-        protected override IEnumerable<PreferencesEntry> LoadFromStorage()
+        /// <summary>
+        /// Loads preferences from an XML file at <paramref name="filePath"/>.
+        /// Returns a default instance when the file is absent or unreadable.
+        /// </summary>
+        public override T Load(string filePath)
         {
-            // The preferences file path serves as the repository's single entry key.
-            // Concrete preference types are loaded by callers via PreferencesBase.Load<T>().
-            // This base implementation simply signals that the storage location is available.
-            Logger?.LogDebug("PreferencesRepository: storage path is {Path}", _preferencesFilePath);
-            return Array.Empty<PreferencesEntry>();
-        }
-
-        /// <inheritdoc />
-        protected override void SaveToStorage(IEnumerable<PreferencesEntry> entities)
-        {
-            foreach (var entry in entities)
+            if (string.IsNullOrEmpty(filePath))
             {
-                if (entry?.Value == null) continue;
-                var saved = entry.Value.Save();
-                if (!saved)
-                    Logger?.LogWarning("PreferencesRepository: failed to save entry '{Key}'", entry.Key);
+                Logger.LogWarning("PreferencesRepository.Load called with null/empty path");
+                return null;
             }
+
+            T result = XmlUtils.XmlFileLoad<T>(filePath);
+
+            if (result == null)
+            {
+                Logger.LogWarning("Could not load preferences from {FilePath} – returning defaults", filePath);
+                result = new T();
+            }
+
+            return result;
         }
 
         /// <summary>
-        /// Gets the file path used as the backing store for this repository.
+        /// Saves <paramref name="entity"/> to an XML file at <paramref name="filePath"/>.
         /// </summary>
-        public string FilePath => _preferencesFilePath;
+        public override bool Save(T entity, string filePath)
+        {
+            if (entity == null)
+            {
+                Logger.LogError("PreferencesRepository.Save: entity is null");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                Logger.LogError("PreferencesRepository.Save: filePath is null/empty");
+                return false;
+            }
+
+            bool success = XmlUtils.XmlFileSave(entity, filePath);
+
+            if (!success)
+            {
+                Logger.LogError("PreferencesRepository failed to save preferences to {FilePath}", filePath);
+            }
+
+            return success;
+        }
+
+        /// <inheritdoc/>
+        public override T GetDefault() => new T();
     }
 }

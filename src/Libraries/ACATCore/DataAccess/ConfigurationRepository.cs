@@ -6,91 +6,122 @@
 //
 // ConfigurationRepository.cs
 //
-// Repository for key/value configuration data backed by XML or JSON files.
+// Repository for JSON-based configuration objects.
+// Uses System.Text.Json for serialization.
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace ACAT.Core.DataAccess
 {
     /// <summary>
-    /// Represents a single configuration key/value entry.
+    /// Repository for JSON-based configuration entities.
+    /// Uses <see cref="System.Text.Json.JsonSerializer"/> for serialization,
+    /// consistent with the JSON configuration classes in ACAT.Core.Configuration.
     /// </summary>
-    public class ConfigurationEntry
+    /// <typeparam name="T">
+    /// Configuration type – must be a reference type with a public
+    /// parameterless constructor.
+    /// </typeparam>
+    public class ConfigurationRepository<T> : RepositoryBase<T> where T : class, new()
     {
-        /// <summary>Gets or sets the configuration key.</summary>
-        public string Key { get; set; }
+        private static readonly JsonSerializerOptions _readOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true
+        };
 
-        /// <summary>Gets or sets the configuration value.</summary>
-        public string Value { get; set; }
-    }
-
-    /// <summary>
-    /// In-memory repository for key/value configuration data.
-    /// Entries can be loaded from and saved to a configuration file using the
-    /// <see cref="Save"/> method after modifications.
-    /// </summary>
-    public class ConfigurationRepository : RepositoryBase<ConfigurationEntry, string>
-    {
-        private readonly string _configFilePath;
+        private static readonly JsonSerializerOptions _writeOptions = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
 
         /// <summary>
-        /// Initializes a new <see cref="ConfigurationRepository"/>.
+        /// Initializes a new instance of <see cref="ConfigurationRepository{T}"/>.
         /// </summary>
-        /// <param name="configFilePath">Path to the backing configuration file.</param>
         /// <param name="logger">Optional logger.</param>
-        public ConfigurationRepository(string configFilePath, ILogger logger = null)
-            : base(logger)
-        {
-            if (string.IsNullOrWhiteSpace(configFilePath))
-                throw new ArgumentException("Config file path must not be empty.", nameof(configFilePath));
-            _configFilePath = configFilePath;
-        }
+        public ConfigurationRepository(ILogger logger = null) : base(logger) { }
 
-        /// <inheritdoc />
-        protected override string GetKey(ConfigurationEntry entity) => entity.Key;
-
-        /// <inheritdoc />
-        protected override IEnumerable<ConfigurationEntry> LoadFromStorage()
+        /// <summary>
+        /// Loads a configuration entity from the JSON file at <paramref name="filePath"/>.
+        /// Returns a default instance when the file is absent or unreadable.
+        /// </summary>
+        public override T Load(string filePath)
         {
-            Logger?.LogDebug("ConfigurationRepository: loading from {Path}", _configFilePath);
-            return Array.Empty<ConfigurationEntry>();
-        }
+            if (string.IsNullOrEmpty(filePath))
+            {
+                Logger.LogWarning("ConfigurationRepository.Load called with null/empty path");
+                return null;
+            }
 
-        /// <inheritdoc />
-        protected override void SaveToStorage(IEnumerable<ConfigurationEntry> entities)
-        {
-            Logger?.LogDebug("ConfigurationRepository: saving to {Path}", _configFilePath);
+            if (!File.Exists(filePath))
+            {
+                Logger.LogWarning("Configuration file not found: {FilePath} – returning defaults", filePath);
+                return new T();
+            }
+
+            try
+            {
+                string json = File.ReadAllText(filePath);
+                T result = JsonSerializer.Deserialize<T>(json, _readOptions);
+
+                if (result == null)
+                {
+                    Logger.LogWarning("Deserialization returned null for {FilePath} – returning defaults", filePath);
+                    return new T();
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "ConfigurationRepository failed to load {FilePath} – returning defaults", filePath);
+                return new T();
+            }
         }
 
         /// <summary>
-        /// Returns the value for the given key, or <paramref name="defaultValue"/> if not found.
+        /// Saves <paramref name="entity"/> as JSON to the file at <paramref name="filePath"/>.
         /// </summary>
-        public string GetValue(string key, string defaultValue = null)
+        public override bool Save(T entity, string filePath)
         {
-            var entry = GetById(key);
-            return entry != null ? entry.Value : defaultValue;
+            if (entity == null)
+            {
+                Logger.LogError("ConfigurationRepository.Save: entity is null");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                Logger.LogError("ConfigurationRepository.Save: filePath is null/empty");
+                return false;
+            }
+
+            try
+            {
+                string directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                string json = JsonSerializer.Serialize(entity, _writeOptions);
+                File.WriteAllText(filePath, json);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "ConfigurationRepository failed to save to {FilePath}", filePath);
+                return false;
+            }
         }
 
-        /// <summary>
-        /// Sets a key/value pair, adding or updating as appropriate.
-        /// </summary>
-        public void SetValue(string key, string value)
-        {
-            var existing = GetById(key);
-            if (existing != null)
-                Update(new ConfigurationEntry { Key = key, Value = value });
-            else
-                Add(new ConfigurationEntry { Key = key, Value = value });
-        }
-
-        /// <summary>
-        /// Gets the file path used as the backing store for this repository.
-        /// </summary>
-        public string FilePath => _configFilePath;
+        /// <inheritdoc/>
+        public override T GetDefault() => new T();
     }
 }

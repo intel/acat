@@ -29,6 +29,7 @@
     <Compile Include="Diagnostics\PerformanceDashboard.xaml.cs">
       <DependentUpon>PerformanceDashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Diagnostics\PerformanceDashboardViewModel.cs" />
     <Compile Include="Dialogs\WindowMoveResizeScannerForm.cs" />
     <Compile Include="Dialogs\WindowMoveResizeScannerForm.Designer.cs" />
     <Compile Include="FontUtility.cs" />

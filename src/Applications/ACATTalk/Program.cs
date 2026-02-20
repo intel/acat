@@ -60,25 +60,6 @@ namespace ACATTalk
             PerformanceMonitor.Initialize();
             PerformanceMonitor.StartTimer("TotalStartupTime");
             PerformanceMonitor.LogEvent("Application", "Main entry point");
-
-            // Wire up word prediction performance callbacks
-            UserControlWordPredictionCommon.OnPredictionLatencyMs = (latencyMs) =>
-            {
-                PerformanceMonitor.RecordMetric("WordPredictorCall", latencyMs, "ms", 
-                    PerformanceMonitor.MetricCategory.TextPrediction);
-            };
-
-            UserControlWordPredictionCommon.OnAutoCompleteLatencyMs = (latencyMs) =>
-            {
-                PerformanceMonitor.RecordMetric("AutoCompleteInsert", latencyMs, "ms", 
-                    PerformanceMonitor.MetricCategory.Interaction);
-            };
-
-            UserControlWordPredictionCommon.OnRefreshLatencyMs = (latencyMs) =>
-            {
-                PerformanceMonitor.RecordMetric("PredictionRefresh", latencyMs, "ms", 
-                    PerformanceMonitor.MetricCategory.TextPrediction);
-            };
 #endif
 
 #if DEBUG
@@ -207,6 +188,10 @@ namespace ACATTalk
             // Wire prediction and UI callbacks so library code can feed data into PerformanceMonitor
             UserControlWordPredictionCommon.OnPredictionLatencyMs =
                 ms => PerformanceMonitor.RecordPredictionLatency(ms);
+            UserControlWordPredictionCommon.OnAutoCompleteLatencyMs =
+                ms => PerformanceMonitor.RecordAutoCompleteLatency(ms);
+            UserControlWordPredictionCommon.OnRefreshLatencyMs =
+                ms => PerformanceMonitor.RecordPredictionRefresh(ms);
             TalkApplicationScanner.OnUiKeyPressLatencyMs =
                 ms => PerformanceMonitor.RecordUiInputLag(ms);
 #endif

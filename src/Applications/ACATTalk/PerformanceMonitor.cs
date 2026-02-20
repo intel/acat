@@ -197,6 +197,29 @@ namespace ACATTalk
         }
 
         /// <summary>
+        /// Record an autocomplete operation latency and forward to the runtime collector.
+        /// Covers word, letter, and sentence autocomplete insertions.
+        /// </summary>
+        /// <param name="milliseconds">Duration of the autocomplete operation in milliseconds.</param>
+        public static void RecordAutoCompleteLatency(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
+            RecordMetric("AutoCompleteInsert", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record("AutoCompleteInsert", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
+        /// Record a word-prediction refresh latency and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Duration of the prediction refresh in milliseconds.</param>
+        public static void RecordPredictionRefresh(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
+            RecordMetric("PredictionRefresh", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record("PredictionRefresh", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
         /// Record an I/O operation duration and forward to the runtime collector.
         /// </summary>
         /// <param name="operationName">Name of the I/O operation (e.g. "FileRead", "NetworkRequest").</param>

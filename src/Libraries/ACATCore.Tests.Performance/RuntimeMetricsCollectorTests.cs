@@ -125,5 +125,35 @@ namespace ACATCore.Tests.Performance
             Assert.AreEqual(RuntimeMetricCategory.Prediction, entry.Category);
             Assert.AreEqual("ms", entry.Unit);
         }
+
+        [TestMethod]
+        public void Start_PeriodicSamplesPopulateNamedEntries()
+        {
+            // Verify that the periodic timer forwards WorkingSetMB, ManagedHeapMB,
+            // GcCollections, ThreadCount, and UptimeSeconds into the named entries
+            // dictionary so they appear in the dashboard grid.
+            var collector = new RuntimeMetricsCollector();
+            collector.Start(intervalMs: 150);
+            Thread.Sleep(400);
+            collector.Stop();
+
+            IReadOnlyDictionary<string, RuntimeMetricEntry> entries = collector.GetEntries();
+
+            Assert.IsTrue(entries.ContainsKey("WorkingSetMB"),      "WorkingSetMB should be in entries");
+            Assert.IsTrue(entries.ContainsKey("ManagedHeapMB"),     "ManagedHeapMB should be in entries");
+            Assert.IsTrue(entries.ContainsKey("GcCollectionCount"), "GcCollectionCount should be in entries");
+            Assert.IsTrue(entries.ContainsKey("ThreadCount"),       "ThreadCount should be in entries");
+            Assert.IsTrue(entries.ContainsKey("UptimeSeconds"),     "UptimeSeconds should be in entries");
+
+            Assert.AreEqual(RuntimeMetricCategory.Memory,  entries["WorkingSetMB"].Category);
+            Assert.AreEqual(RuntimeMetricCategory.Memory,  entries["ManagedHeapMB"].Category);
+            Assert.AreEqual(RuntimeMetricCategory.Memory,  entries["GcCollectionCount"].Category);
+            Assert.AreEqual(RuntimeMetricCategory.Cpu,     entries["ThreadCount"].Category);
+            Assert.AreEqual(RuntimeMetricCategory.General, entries["UptimeSeconds"].Category);
+
+            Assert.IsTrue(entries["WorkingSetMB"].LastValue > 0,  "WorkingSetMB must be positive");
+            Assert.IsTrue(entries["ThreadCount"].LastValue > 0,   "ThreadCount must be positive");
+            Assert.IsTrue(entries["UptimeSeconds"].LastValue >= 0, "UptimeSeconds must be non-negative");
+        }
     }
 }

@@ -185,6 +185,14 @@ namespace ACAT.Core.Utility.Metrics
                     _samples.Add(sample);
                 }
 
+                // Forward each sample field as a named entry so they surface in GetEntries()
+                // and appear in the dashboard category grid.
+                Record("WorkingSetMB",     sample.WorkingSetMB,     RuntimeMetricCategory.Memory,  "MB");
+                Record("ManagedHeapMB",    sample.ManagedHeapMB,    RuntimeMetricCategory.Memory,  "MB");
+                Record("GcCollectionCount", sample.GcCollectionCount, RuntimeMetricCategory.Memory, "");
+                Record("ThreadCount",      sample.ThreadCount,      RuntimeMetricCategory.Cpu,     "");
+                Record("UptimeSeconds",    sample.UptimeSeconds,    RuntimeMetricCategory.General, "s");
+
                 SampleCaptured?.Invoke(this, sample);
             }
             catch (Exception ex)

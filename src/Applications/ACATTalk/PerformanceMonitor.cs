@@ -47,6 +47,16 @@ namespace ACATTalk
         private static readonly MemoryProfiler _memoryProfiler = new MemoryProfiler();
         private static PerformanceRegressionDetector _regressionDetector;
 
+        // Track which RuntimeMetricCategories are enabled for recording (all on by default)
+        private static readonly ConcurrentDictionary<RuntimeMetricCategory, bool> _enabledCategories =
+            new ConcurrentDictionary<RuntimeMetricCategory, bool>(
+                Enum.GetValues(typeof(RuntimeMetricCategory))
+                    .Cast<RuntimeMetricCategory>()
+                    .Select(c => new KeyValuePair<RuntimeMetricCategory, bool>(c, true)));
+
+        // Shared metric name constants to avoid silent drift between recording sites
+        private const string MetricNameWorkingSetMB = "WorkingSetMB";
+
         /// <summary>
         /// Metric categories for organizing performance data
         /// </summary>
@@ -61,6 +71,25 @@ namespace ACATTalk
             Memory,
             Shutdown
         }
+
+        /// <summary>
+        /// Returns <c>true</c> if recording for the specified category is currently enabled.
+        /// </summary>
+        public static bool IsCategoryEnabled(RuntimeMetricCategory category)
+            => _enabledCategories.GetOrAdd(category, true);
+
+        /// <summary>
+        /// Enables metric recording for the specified category.
+        /// </summary>
+        public static void EnableCategory(RuntimeMetricCategory category)
+            => _enabledCategories[category] = true;
+
+        /// <summary>
+        /// Disables metric recording for the specified category.
+        /// Calls to category-specific record methods become no-ops until re-enabled.
+        /// </summary>
+        public static void DisableCategory(RuntimeMetricCategory category)
+            => _enabledCategories[category] = false;
 
         /// <summary>
         /// Initialize the performance monitor
@@ -151,6 +180,7 @@ namespace ACATTalk
         /// <param name="milliseconds">Measured input lag in milliseconds.</param>
         public static void RecordUiInputLag(double milliseconds)
         {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Ui)) return;
             RecordMetric("UiInputLag", milliseconds, "ms", MetricCategory.UI);
             _runtimeCollector.Record("UiInputLag", milliseconds, RuntimeMetricCategory.Ui, "ms");
         }
@@ -161,6 +191,7 @@ namespace ACATTalk
         /// <param name="milliseconds">Measured latency in milliseconds.</param>
         public static void RecordPredictionLatency(double milliseconds)
         {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
             RecordMetric("PredictionLatency", milliseconds, "ms", MetricCategory.TextPrediction);
             _runtimeCollector.Record("PredictionLatency", milliseconds, RuntimeMetricCategory.Prediction, "ms");
         }
@@ -172,8 +203,20 @@ namespace ACATTalk
         /// <param name="milliseconds">Duration of the operation in milliseconds.</param>
         public static void RecordIoOperation(string operationName, double milliseconds)
         {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Io)) return;
             RecordMetric(operationName, milliseconds, "ms", MetricCategory.Interaction);
             _runtimeCollector.Record(operationName, milliseconds, RuntimeMetricCategory.Io, "ms");
+        }
+
+        /// <summary>
+        /// Record a memory working-set measurement and forward to the runtime collector.
+        /// </summary>
+        /// <param name="workingSetMB">Current process working-set size in megabytes.</param>
+        public static void RecordMemoryUsage(double workingSetMB)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Memory)) return;
+            RecordMetric(MetricNameWorkingSetMB, workingSetMB, "MB", MetricCategory.Memory);
+            _runtimeCollector.Record(MetricNameWorkingSetMB, workingSetMB, RuntimeMetricCategory.Memory, "MB");
         }
 
         /// <summary>
@@ -205,7 +248,13 @@ namespace ACATTalk
                     _peakWorkingSet = currentWorkingSet;
                 }
 
-                RecordMetric("CurrentMemoryUsage", currentWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
+                double workingSetMB = currentWorkingSet / (1024.0 * 1024.0);
+                RecordMetric("CurrentMemoryUsage", workingSetMB, "MB", MetricCategory.Memory);
+
+                if (IsCategoryEnabled(RuntimeMetricCategory.Memory))
+                {
+                    _runtimeCollector.Record(MetricNameWorkingSetMB, workingSetMB, RuntimeMetricCategory.Memory, "MB");
+                }
             }
             catch (Exception ex)
             {

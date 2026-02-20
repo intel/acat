@@ -64,8 +64,12 @@
 
     Memory         Working set, managed heap, and total GC collection count.
     Runtime        Process uptime, active thread count, OS handle count.
-    Baseline Status  Green ✓ = all tracked metrics within thresholds;
-                     Orange ⚠ = one or more thresholds exceeded.
+    Category Status  One row per RuntimeMetricCategory (UI, Prediction, I/O,
+                     Memory, CPU, General).  Each row has a toggle checkbox to
+                     show or hide that category.  Status is green ✓ when the
+                     last recorded value is within baseline, orange ⚠ when it
+                     exceeds the threshold, or grey when no data has been
+                     collected yet.  Unchecking the box greys out the row.
     Sample History Peak working-set observed across all snapshots and the
                    timestamp of the most recent refresh.
 
@@ -113,6 +117,11 @@
             <Setter Property="Padding" Value="12,6"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="CategoryCheckBox" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#FF9399B2"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,1,4,1"/>
         </Style>
     </Window.Resources>
 
@@ -193,15 +202,67 @@
                 </StackPanel>
             </Border>
 
-            <!-- Regression status section -->
+            <!-- Category Status section (one row per RuntimeMetricCategory with toggle) -->
             <Border Grid.Column="0" Grid.Row="1" Style="{StaticResource SectionBorder}">
                 <StackPanel>
-                    <TextBlock Text="Baseline Status" Style="{StaticResource HeaderText}"/>
-                    <TextBlock x:Name="RegressionStatus"
-                               Text="Checking..."
-                               Foreground="#FFFAB387"
-                               FontSize="12"
-                               TextWrapping="Wrap"/>
+                    <TextBlock Text="Category Status" Style="{StaticResource HeaderText}"/>
+                    <Grid Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="22"/>
+                            <RowDefinition Height="22"/>
+                            <RowDefinition Height="22"/>
+                            <RowDefinition Height="22"/>
+                            <RowDefinition Height="22"/>
+                            <RowDefinition Height="22"/>
+                        </Grid.RowDefinitions>
+                        <!-- UI Responsiveness -->
+                        <CheckBox Grid.Row="0" Grid.Column="0" x:Name="CatUiToggle" IsChecked="True"
+                                  Style="{StaticResource CategoryCheckBox}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="UI Responsiveness"
+                                   Style="{StaticResource LabelText}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" x:Name="CatUiStatus" Text="--"
+                                   Style="{StaticResource ValueText}" VerticalAlignment="Center"/>
+                        <!-- Prediction Performance -->
+                        <CheckBox Grid.Row="1" Grid.Column="0" x:Name="CatPredictionToggle" IsChecked="True"
+                                  Style="{StaticResource CategoryCheckBox}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Prediction"
+                                   Style="{StaticResource LabelText}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" x:Name="CatPredictionStatus" Text="--"
+                                   Style="{StaticResource ValueText}" VerticalAlignment="Center"/>
+                        <!-- I/O Operations -->
+                        <CheckBox Grid.Row="2" Grid.Column="0" x:Name="CatIoToggle" IsChecked="True"
+                                  Style="{StaticResource CategoryCheckBox}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="I/O Operations"
+                                   Style="{StaticResource LabelText}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" x:Name="CatIoStatus" Text="--"
+                                   Style="{StaticResource ValueText}" VerticalAlignment="Center"/>
+                        <!-- Memory Usage -->
+                        <CheckBox Grid.Row="3" Grid.Column="0" x:Name="CatMemoryToggle" IsChecked="True"
+                                  Style="{StaticResource CategoryCheckBox}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="Memory"
+                                   Style="{StaticResource LabelText}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" x:Name="CatMemoryStatus" Text="--"
+                                   Style="{StaticResource ValueText}" VerticalAlignment="Center"/>
+                        <!-- CPU -->
+                        <CheckBox Grid.Row="4" Grid.Column="0" x:Name="CatCpuToggle" IsChecked="True"
+                                  Style="{StaticResource CategoryCheckBox}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="CPU"
+                                   Style="{StaticResource LabelText}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="4" Grid.Column="2" x:Name="CatCpuStatus" Text="--"
+                                   Style="{StaticResource ValueText}" VerticalAlignment="Center"/>
+                        <!-- General -->
+                        <CheckBox Grid.Row="5" Grid.Column="0" x:Name="CatGeneralToggle" IsChecked="True"
+                                  Style="{StaticResource CategoryCheckBox}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="General"
+                                   Style="{StaticResource LabelText}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="5" Grid.Column="2" x:Name="CatGeneralStatus" Text="--"
+                                   Style="{StaticResource ValueText}" VerticalAlignment="Center"/>
+                    </Grid>
                 </StackPanel>
             </Border>
 

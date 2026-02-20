@@ -97,7 +97,7 @@ namespace ACAT.Core.Utility.Diagnostics
                 Directory.CreateDirectory(directory);
             }
 
-            string json = JsonSerializer.Serialize(data, _jsonOptions);
+            string json = System.Text.Json.JsonSerializer.Serialize(data, _jsonOptions);
             File.WriteAllText(filePath, json);
         }
 
@@ -117,7 +117,7 @@ namespace ACAT.Core.Utility.Diagnostics
             try
             {
                 string json = File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<PerformanceBaselineData>(json, _jsonOptions)
+                return System.Text.Json.JsonSerializer.Deserialize<PerformanceBaselineData>(json, _jsonOptions)
                     ?? CreateDefault();
             }
             catch (Exception ex)

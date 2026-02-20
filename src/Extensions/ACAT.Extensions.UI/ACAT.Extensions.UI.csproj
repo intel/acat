@@ -26,6 +26,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
     <ItemGroup>
+    <Compile Include="Diagnostics\PerformanceDashboard.xaml.cs">
+      <DependentUpon>PerformanceDashboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\WindowMoveResizeScannerForm.cs" />
     <Compile Include="Dialogs\WindowMoveResizeScannerForm.Designer.cs" />
     <Compile Include="FontUtility.cs" />
@@ -141,6 +144,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+    <PackageReference Include="System.Text.Json" Version="10.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Diagnostics\PerformanceDashboard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />

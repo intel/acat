@@ -420,6 +420,10 @@
     <Compile Include="Utility\NamedPipe\PipeClientState.cs" />
     <Compile Include="Utility\NamedPipe\PipeSererState.cs" />
     <Compile Include="Utility\NamedPipe\PipeServer.cs" />
+    <Compile Include="Utility\Diagnostics\MemoryProfiler.cs" />
+    <Compile Include="Utility\Diagnostics\PerformanceBaseline.cs" />
+    <Compile Include="Utility\Diagnostics\PerformanceRegressionDetector.cs" />
+    <Compile Include="Utility\Metrics\RuntimeMetricsCollector.cs" />
     <Compile Include="Utility\PerfMon.cs" />
     <Compile Include="Utility\PerfMonData.cs" />
     <Compile Include="Utility\SystemPreferences.cs" />

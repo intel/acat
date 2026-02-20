@@ -149,6 +149,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Logging", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Integration", "Libraries\ACATCore.Tests.Integration\ACATCore.Tests.Integration.csproj", "{55D58F6D-68E0-52D6-5909-E5772FA29551}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Performance", "Libraries\ACATCore.Tests.Performance\ACATCore.Tests.Performance.csproj", "{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_signed|Any CPU = Debug_signed|Any CPU
@@ -1218,6 +1220,23 @@ Global
 		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Release|x64.Build.0 = Release|x64
 		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Release|x86.ActiveCfg = Release|x64
 		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Release|x86.Build.0 = Release|x64
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug_signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug_signed|x64.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug_signed|x86.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug_TestGTEC|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug_TestGTEC|x64.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug_TestGTEC|x86.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Release_signed|Any CPU.ActiveCfg = Release|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Release_signed|x64.ActiveCfg = Release|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Release_signed|x86.ActiveCfg = Release|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Release|x64.ActiveCfg = Release|Any CPU
+		{8B3C1A2D-4E5F-6789-ABCD-EF0123456789}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

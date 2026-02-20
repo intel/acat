@@ -61,6 +61,14 @@ jobs:
         --results-directory TestResults/
       working-directory: src/
 
+    - name: Run ACATCore.Tests.Performance
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Performance/ACATCore.Tests.Performance.csproj
+        --configuration Debug
+        --logger "trx;LogFileName=performance-results.trx"
+        --results-directory TestResults/
+      working-directory: src/
+
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()

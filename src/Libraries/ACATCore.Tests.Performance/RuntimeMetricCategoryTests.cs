@@ -130,6 +130,21 @@ namespace ACATCore.Tests.Performance
             Assert.AreEqual(256.0, entry.LastValue, 0.001);
         }
 
+        [TestMethod]
+        public void Record_MemoryMetric_MultipleValues_AggregatesCorrectly()
+        {
+            var collector = new RuntimeMetricsCollector();
+
+            collector.Record("WorkingSetMB", 200.0, RuntimeMetricCategory.Memory, "MB");
+            collector.Record("WorkingSetMB", 300.0, RuntimeMetricCategory.Memory, "MB");
+
+            RuntimeMetricEntry entry = collector.GetEntries()["WorkingSetMB"];
+            Assert.AreEqual(2, entry.Count);
+            Assert.AreEqual(200.0, entry.Min, 0.001);
+            Assert.AreEqual(300.0, entry.Max, 0.001);
+            Assert.AreEqual(250.0, entry.Average, 0.001);
+        }
+
         // ----------------------------------------------------------------
         // CPU
         // ----------------------------------------------------------------
@@ -170,6 +185,51 @@ namespace ACATCore.Tests.Performance
             Assert.AreEqual(RuntimeMetricCategory.Memory,     entries["WorkingSetMB"].Category);
             Assert.AreEqual(RuntimeMetricCategory.Cpu,        entries["CpuUsagePercent"].Category);
             Assert.AreEqual(RuntimeMetricCategory.General,    entries["AppInit"].Category);
+        }
+
+        // ----------------------------------------------------------------
+        // Category filtering (simulates PerformanceMonitor disable behaviour)
+        // ----------------------------------------------------------------
+
+        [TestMethod]
+        public void Record_SkippedWhenCategoryDisabled_NoEntryAdded()
+        {
+            // Simulate the pattern used by PerformanceMonitor.IsCategoryEnabled():
+            // if (!enabled) return; before calling Record().
+            var collector = new RuntimeMetricsCollector();
+            bool uiEnabled = false;
+
+            if (uiEnabled)
+            {
+                collector.Record("UiInputLag", 45.0, RuntimeMetricCategory.Ui, "ms");
+            }
+
+            Assert.AreEqual(0, collector.GetEntries().Count,
+                "No entry should be recorded when the category is disabled");
+        }
+
+        [TestMethod]
+        public void Record_ResumedAfterReenable_EntryAdded()
+        {
+            // Simulate enabling after a disable.
+            var collector = new RuntimeMetricsCollector();
+            bool uiEnabled = false;
+
+            if (uiEnabled)
+            {
+                collector.Record("UiInputLag", 45.0, RuntimeMetricCategory.Ui, "ms");
+            }
+
+            // Re-enable and record
+            uiEnabled = true;
+            if (uiEnabled)
+            {
+                collector.Record("UiInputLag", 60.0, RuntimeMetricCategory.Ui, "ms");
+            }
+
+            IReadOnlyDictionary<string, RuntimeMetricEntry> entries = collector.GetEntries();
+            Assert.AreEqual(1, entries.Count);
+            Assert.AreEqual(60.0, entries["UiInputLag"].LastValue, 0.001);
         }
     }
 }

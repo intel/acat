@@ -553,6 +553,14 @@
     <Compile Include="Validation\ActuatorSettingsValidator.cs" />
     <Compile Include="Validation\ThemeValidator.cs" />
     <Compile Include="Validation\PanelConfigValidator.cs" />
+    <Compile Include="EventManagement\IEvent.cs" />
+    <Compile Include="EventManagement\EventBase.cs" />
+    <Compile Include="EventManagement\IEventBus.cs" />
+    <Compile Include="EventManagement\EventBus.cs" />
+    <Compile Include="EventManagement\PanelEvents.cs" />
+    <Compile Include="EventManagement\AgentEvents.cs" />
+    <Compile Include="EventManagement\ActuatorEvents.cs" />
+    <Compile Include="EventManagement\ConfigurationEvents.cs" />
     <Compile Include="Patterns\CQRS\ICommand.cs" />
     <Compile Include="Patterns\CQRS\IQuery.cs" />
     <Compile Include="Patterns\CQRS\ICommandHandler.cs" />

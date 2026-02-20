@@ -7,7 +7,8 @@
 // PerformanceDashboard.xaml.cs
 //
 // Code-behind for the WPF performance monitoring dashboard.
-// Refreshes live metrics every 2 seconds and supports CSV/JSON export.
+// Refreshes live metrics every 2 seconds, renders a working-set trend
+// sparkline, and supports CSV/JSON export.
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -22,6 +23,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ACAT.Extensions.UI.Diagnostics
 {
@@ -69,6 +72,7 @@ namespace ACAT.Extensions.UI.Diagnostics
         private readonly RuntimeMetricsCollector _collector;
         private readonly MemoryProfiler _profiler;
         private readonly PerformanceRegressionDetector _detector;
+        private readonly PerformanceDashboardViewModel _viewModel;
         private Timer _refreshTimer;
 
         /// <summary>
@@ -88,6 +92,8 @@ namespace ACAT.Extensions.UI.Diagnostics
             _collector = collector ?? new RuntimeMetricsCollector();
             _profiler = profiler ?? new MemoryProfiler();
             _detector = new PerformanceRegressionDetector(baseline);
+            _viewModel = new PerformanceDashboardViewModel();
+            DataContext = _viewModel;
         }
 
         // ----------------------------------------------------------------
@@ -105,6 +111,28 @@ namespace ACAT.Extensions.UI.Diagnostics
             _refreshTimer?.Dispose();
         }
 
+        /// <summary>
+        /// Handles keyboard shortcuts: F5 = Refresh, Ctrl+E = Export CSV, Ctrl+J = Export JSON.
+        /// </summary>
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F5)
+            {
+                RefreshMetrics();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.E && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                OnExportCsvClick(sender, e);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.J && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                OnExportJsonClick(sender, e);
+                e.Handled = true;
+            }
+        }
+
         // ----------------------------------------------------------------
         // Button handlers
         // ----------------------------------------------------------------
@@ -117,6 +145,8 @@ namespace ACAT.Extensions.UI.Diagnostics
         private void OnClearHistoryClick(object sender, RoutedEventArgs e)
         {
             _profiler.ClearSnapshots();
+            _viewModel.ClearHistory();
+            UpdateSparkline();
             StatusBar.Text = "Sample history cleared.";
         }
 
@@ -184,13 +214,16 @@ namespace ACAT.Extensions.UI.Diagnostics
                     : snap.ThreadCount.ToString();
                 HandleCountValue.Text = snap.HandleCount.ToString();
 
-                // Sample history
+                // Sample history counts and peak — used by ViewModel and regression detection
                 IReadOnlyList<MemorySnapshot> allSnaps = _profiler.GetSnapshots();
                 IReadOnlyList<RuntimeMetricSample> runtimeSamples = _collector.GetSamples();
-                SampleCount.Text = $"{allSnaps.Count} memory, {runtimeSamples.Count} runtime sample(s)";
                 double peak = allSnaps.Count > 0 ? allSnaps.Max(s => s.WorkingSetMB) : 0;
-                PeakWorkingSet.Text = $"Peak WS: {peak:F1} MB";
-                LastSampleTime.Text = $"Last: {snap.Timestamp.ToLocalTime():HH:mm:ss}";
+
+                // Update view model with latest snapshot data (updates SampleCount, PeakWorkingSet,
+                // LastSampleTime text via data binding and keeps WorkingSetHistory for sparkline)
+                _viewModel.UpdateFromSnapshot(snap, entries,
+                    allSnaps.Count, runtimeSamples.Count, peak);
+                UpdateSparkline();
 
                 // Build observations for regression detection
                 var observations = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
@@ -224,6 +257,51 @@ namespace ACAT.Extensions.UI.Diagnostics
             {
                 StatusBar.Text = $"Refresh error: {ex.Message}";
             }
+        }
+
+        /// <summary>
+        /// Renders the working-set trend sparkline on <see cref="SparklineCanvas"/>.
+        /// Points are scaled to fill the canvas dimensions.
+        /// </summary>
+        private void UpdateSparkline()
+        {
+            System.Collections.ObjectModel.ObservableCollection<double> history =
+                _viewModel.WorkingSetHistory;
+
+            SparklinePolyline.Points.Clear();
+
+            if (history.Count < 2)
+            {
+                SparklineMaxLabel.Text = string.Empty;
+                SparklineMinLabel.Text = string.Empty;
+                return;
+            }
+
+            double canvasWidth = SparklineCanvas.ActualWidth;
+            double canvasHeight = SparklineCanvas.ActualHeight;
+
+            // Guard against layout not yet performed (ActualWidth/Height = 0)
+            if (canvasWidth < 1 || canvasHeight < 1)
+            {
+                return;
+            }
+
+            double max = _viewModel.SparklineMax;
+            double min = _viewModel.SparklineMin;
+            double range = Math.Max(1.0, max - min);
+
+            int count = history.Count;
+            for (int i = 0; i < count; i++)
+            {
+                double x = (i / (double)(count - 1)) * canvasWidth;
+                double y = canvasHeight - ((history[i] - min) / range) * (canvasHeight - 4) - 2;
+                SparklinePolyline.Points.Add(new System.Windows.Point(x, y));
+            }
+
+            // Update axis labels
+            SparklineMaxLabel.Text = $"{max:F0} MB";
+            Canvas.SetTop(SparklineMinLabel, canvasHeight - 12);
+            SparklineMinLabel.Text = $"{min:F0} MB";
         }
 
         /// <summary>

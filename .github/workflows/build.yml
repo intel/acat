@@ -67,6 +67,12 @@ jobs:
       working-directory: src/
       continue-on-error: false
 
+    - name: Run Performance Tests
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Performance/ACATCore.Tests.Performance.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=performance-tests.trx" --logger "console;verbosity=normal" --results-directory TestResults
+      working-directory: src/
+      continue-on-error: false
+
     # Publish test results
     - name: Publish Test Results
       uses: dorny/test-reporter@v1

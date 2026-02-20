@@ -21,8 +21,11 @@ using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.Diagnostics;
+using ACAT.Core.Utility.Metrics;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extensions.UI.Diagnostics;
 using ACATResources;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -51,6 +54,15 @@ namespace ACATTalk
             PerformanceMonitor.Initialize();
             PerformanceMonitor.StartTimer("TotalStartupTime");
             PerformanceMonitor.LogEvent("Application", "Main entry point");
+#endif
+
+#if DEBUG
+            var collector = new RuntimeMetricsCollector();
+            var profiler = new MemoryProfiler();
+            collector.Start(intervalMs: 5000);
+
+            var dashboard = new PerformanceDashboard(collector, profiler);
+            dashboard.Show();
 #endif
 
             if (AppCommon.OtherInstancesRunning())

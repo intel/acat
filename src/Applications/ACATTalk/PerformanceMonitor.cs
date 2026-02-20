@@ -13,6 +13,8 @@
 
 #if PERFORMANCE
 
+using ACAT.Core.Utility.Diagnostics;
+using ACAT.Core.Utility.Metrics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -27,6 +29,8 @@ namespace ACATTalk
     /// <summary>
     /// Provides performance monitoring and baseline metrics collection
     /// for ACATTalk application. Only compiled when PERFORMANCE symbol is defined.
+    /// Integrates <see cref="RuntimeMetricsCollector"/>, <see cref="MemoryProfiler"/>,
+    /// and <see cref="PerformanceRegressionDetector"/> from the ACATCore library.
     /// </summary>
     public static class PerformanceMonitor
     {
@@ -37,6 +41,11 @@ namespace ACATTalk
         private static long _startWorkingSet = 0;
         private static Timer _memoryMonitor;
         private static readonly object _reportLock = new object();
+
+        // ---- ACATCore performance infrastructure ----
+        private static readonly RuntimeMetricsCollector _runtimeCollector = new RuntimeMetricsCollector();
+        private static readonly MemoryProfiler _memoryProfiler = new MemoryProfiler();
+        private static PerformanceRegressionDetector _regressionDetector;
 
         /// <summary>
         /// Metric categories for organizing performance data
@@ -64,6 +73,19 @@ namespace ACATTalk
 
             // Monitor memory every 5 seconds
             _memoryMonitor = new Timer(MonitorMemory, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+
+            // Start the ACATCore runtime metrics collector (5-second interval)
+            _runtimeCollector.Start(5000);
+
+            // Capture startup memory snapshot
+            _memoryProfiler.CaptureSnapshot("Startup");
+
+            // Load baseline (if present) or use defaults
+            string baselinePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "ACAT", "performance_baseline.json");
+            PerformanceBaselineData baseline = PerformanceBaseline.Load(baselinePath);
+            _regressionDetector = new PerformanceRegressionDetector(baseline);
 
             LogEvent("PerformanceMonitor", "Performance monitoring initialized");
         }
@@ -167,6 +189,7 @@ namespace ACATTalk
         {
             _applicationLifetime.Stop();
             _memoryMonitor?.Dispose();
+            _runtimeCollector.Stop();
 
             var process = Process.GetCurrentProcess();
             long endWorkingSet = process.WorkingSet64;
@@ -176,6 +199,24 @@ namespace ACATTalk
             RecordMetric("EndMemoryUsage", endWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
             RecordMetric("PeakMemoryUsage", _peakWorkingSet / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
             RecordMetric("MemoryGrowth", (endWorkingSet - _startWorkingSet) / (1024.0 * 1024.0), "MB", MetricCategory.Memory);
+
+            // Capture shutdown memory snapshot and check for regressions
+            MemorySnapshot shutdownSnap = _memoryProfiler.CaptureSnapshot("Shutdown");
+            if (_regressionDetector != null)
+            {
+                var observations = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["TotalApplicationLifetime"] = _applicationLifetime.Elapsed.TotalSeconds * 1000,
+                    ["PeakWorkingSetMB"] = _peakWorkingSet / (1024.0 * 1024.0),
+                    ["ManagedHeapMB"] = shutdownSnap.ManagedHeapMB
+                };
+
+                IReadOnlyList<RegressionResult> regressions = _regressionDetector.DetectRegressions(observations);
+                foreach (RegressionResult r in regressions)
+                {
+                    Debug.WriteLine($"[PerformanceMonitor] {r}");
+                }
+            }
 
             GenerateReport();
         }

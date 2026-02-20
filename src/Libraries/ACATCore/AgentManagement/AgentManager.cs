@@ -11,6 +11,7 @@ using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement.Agents;
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.AgentManagement.TextControlAgents;
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
@@ -143,16 +144,23 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         private static readonly Lazy<AgentManager> _instance = new Lazy<AgentManager>(() =>
         {
-            // Get logger from DI container if available, otherwise use LogManager
+            // Get logger and eventBus from DI container if available
             ILogger<AgentManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<AgentManager>)) as ILogger<AgentManager>
                 ?? LogManager.GetLogger<AgentManager>();
-            return new AgentManager(logger);
+            IEventBus eventBus = Context.ServiceProvider?.GetService(typeof(IEventBus)) as IEventBus;
+
+            return new AgentManager(logger, eventBus);
         });
 
         /// <summary>
         /// Logger instance
         /// </summary>
         private readonly ILogger<AgentManager> _logger;
+
+        /// <summary>
+        /// Event bus for publishing agent events (optional, may be null)
+        /// </summary>
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// Name of the executing assembly
@@ -248,9 +256,12 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private AgentManager(ILogger<AgentManager> logger)
+        /// <param name="logger">Logger instance (required)</param>
+        /// <param name="eventBus">Event bus for publishing events (optional)</param>
+        private AgentManager(ILogger<AgentManager> logger, IEventBus eventBus = null)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus; // May be null - event publishing is optional
 
             _currentProcessName = Process.GetCurrentProcess().ProcessName.ToLower();
 
@@ -1570,6 +1581,13 @@ namespace ACAT.Core.AgentManagement
         {
             _logger?.LogDebug("Setting agent to " + ((agent != null) ? agent.Name : "null"));
             _currentAgent = agent;
+
+            // Publish to EventBus when agent changes (gradual migration path)
+            if (_eventBus != null && agent != null)
+            {
+                _eventBus.Publish(new AgentContextChangedEvent(agent.Name, null));
+                _logger?.LogTrace($"Published AgentContextChangedEvent for {agent.Name}");
+            }
         }
 
         /// <summary>

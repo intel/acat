@@ -226,6 +226,9 @@ namespace ACATApp
 
         private static bool PostInitialization()
         {
+            // Start EventBus activity monitoring (demonstrates new EventBus pattern)
+            ActivatePanelActivityMonitor();
+
             Context.ShowTalkWindowOnStartup = false;
             Context.AppAgentMgr.EnableContextualMenusForDialogs = false;
             Context.AppAgentMgr.EnableContextualMenusForMenus = false;
@@ -265,6 +268,31 @@ namespace ACATApp
             Context.AppAgentMgr.AddAgent(form.Handle, agent);
             Context.AppPanelManager.ShowDialog(form as IPanel);
             //Application.Run(form as Form);
+        }
+
+        /// <summary>
+        /// Activates the PanelActivityMonitor to demonstrate EventBus pattern
+        /// This shows real-time panel and actuator activity via EventBus subscriptions
+        /// </summary>
+        private static void ActivatePanelActivityMonitor()
+        {
+            try
+            {
+                if (_serviceProvider != null)
+                {
+                    var monitor = _serviceProvider.GetRequiredService<ACAT.Core.Diagnostics.PanelActivityMonitor>();
+                    _logger.LogInformation("✅ PanelActivityMonitor activated - EventBus subscriptions active");
+                    _logger.LogInformation("📊 You will now see real-time panel and actuator activity logs!");
+                }
+                else
+                {
+                    _logger.LogWarning("ServiceProvider not available - PanelActivityMonitor not activated");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to activate PanelActivityMonitor");
+            }
         }
 
         private static void ShutdownApplication()

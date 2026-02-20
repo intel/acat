@@ -200,6 +200,7 @@
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
     <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />
+    <Compile Include="Diagnostics\PanelActivityMonitor.cs" />
     <Compile Include="PanelManagement\PanelConfig\AppPanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelClassConfigMap.cs" />

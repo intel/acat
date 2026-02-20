@@ -21,6 +21,7 @@ using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Audit;
+using ACAT.Core.EventManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PreferencesManagement;
@@ -47,6 +48,11 @@ namespace ACAT.Core.ActuatorManagement
     public class ActuatorManager : IActuatorManager, IDisposable
     {
         private readonly ILogger<ActuatorManager> _logger;
+
+        /// <summary>
+        /// Event bus for publishing actuator events (optional, may be null)
+        /// </summary>
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// The base directory under which all the actuator Dll's are
@@ -121,9 +127,12 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Prevents a default instance of ActuatorManager class from being created
         /// </summary>
-        private ActuatorManager(ILogger<ActuatorManager> logger = null)
+        /// <param name="logger">Logger instance (optional)</param>
+        /// <param name="eventBus">Event bus for publishing events (optional)</param>
+        private ActuatorManager(ILogger<ActuatorManager> logger = null, IEventBus eventBus = null)
         {
             _logger = logger ?? LogManager.GetLogger<ActuatorManager>();
+            _eventBus = eventBus; // May be null - event publishing is optional
             _activeSwitches = new Dictionary<String, IActuatorSwitch>();
             _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
             _syncObjectSwitches = new object();
@@ -194,7 +203,19 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         public static ActuatorManager Instance
         {
-            get { return _instance ??= new ActuatorManager(); }
+            get
+            {
+                if (_instance == null)
+                {
+                    // Get logger and eventBus from DI container if available
+                    ILogger<ActuatorManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<ActuatorManager>)) as ILogger<ActuatorManager>;
+                    IEventBus eventBus = Context.ServiceProvider?.GetService(typeof(IEventBus)) as IEventBus;
+
+                    _instance = new ActuatorManager(logger, eventBus);
+                }
+
+                return _instance;
+            }
         }
 
         /// <summary>
@@ -1180,6 +1201,13 @@ namespace ACAT.Core.ActuatorManagement
         private void notifySwitchActivated(IActuatorSwitch switchObj)
         {
             AuditLog.Audit(new AuditEventSwitchActuate(switchObj.Name, "Actuate", switchObj.Actuator.Name, switchObj.Tag, 0));
+
+            // Publish to EventBus (gradual migration path)
+            if (_eventBus != null)
+            {
+                _eventBus.Publish(new ActuatorSwitchActivatedEvent(switchObj.Name));
+                _logger.LogTrace($"Published ActuatorSwitchActivatedEvent for {switchObj.Name}");
+            }
 
             if (EvtSwitchActivated == null)
             {

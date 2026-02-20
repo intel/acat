@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.DataAccess;
 using System;
 using Microsoft.Extensions.Logging;
 
@@ -51,7 +52,9 @@ namespace ACAT.Core.Utility
         {
             saveFactoryDefaultSettings();
 
-            GlobalPreferences retVal = XmlUtils.XmlFileLoad<GlobalPreferences>(prefFile);
+            // Use PreferencesRepository instead of direct XmlUtils calls
+            var repo = new PreferencesRepository<GlobalPreferences>(_logger);
+            GlobalPreferences retVal = repo.Load(prefFile);
 
             if (retVal == null)
             {
@@ -66,7 +69,8 @@ namespace ACAT.Core.Utility
                 }
             }
 
-            if (!XmlUtils.XmlFileSave(retVal, prefFile))
+            // Save to ensure file exists with current settings
+            if (!repo.Save(retVal, prefFile))
             {
                 _logger?.LogError("Unable to save global preferences!");
                 retVal = null;
@@ -104,8 +108,9 @@ namespace ACAT.Core.Utility
         /// <returns>true on success</returns>
         public static bool Save(GlobalPreferences prefs, String preferencesFile)
         {
-            // save current settings into current file and preset file
-            var retVal = XmlUtils.XmlFileSave(prefs, preferencesFile);
+            // Use PreferencesRepository instead of direct XmlUtils calls
+            var repo = new PreferencesRepository<GlobalPreferences>(_logger);
+            var retVal = repo.Save(prefs, preferencesFile);
 
             if (retVal == false)
             {

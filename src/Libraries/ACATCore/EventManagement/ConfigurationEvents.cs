@@ -63,4 +63,31 @@ namespace ACAT.Core.EventManagement
         /// </summary>
         public object NewValue { get; }
     }
+
+    /// <summary>
+    /// Published when configuration reload fails.
+    /// </summary>
+    public class ConfigurationReloadFailedEvent : EventBase
+    {
+        /// <summary>
+        /// Initializes a new instance of <see cref="ConfigurationReloadFailedEvent"/>.
+        /// </summary>
+        /// <param name="configPath">The file-system path of the configuration file that failed to reload.</param>
+        /// <param name="errorMessage">The error message describing why the reload failed.</param>
+        public ConfigurationReloadFailedEvent(string configPath, string errorMessage)
+        {
+            ConfigPath = configPath;
+            ErrorMessage = errorMessage;
+        }
+
+        /// <summary>
+        /// Gets the file-system path of the configuration file that failed to reload.
+        /// </summary>
+        public string ConfigPath { get; }
+
+        /// <summary>
+        /// Gets the error message describing why the reload failed.
+        /// </summary>
+        public string ErrorMessage { get; }
+    }
 }

@@ -9,8 +9,12 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.CommandManagement;
+using ACAT.Core.DataAccess;
+using ACAT.Core.Diagnostics;
 using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.SpellCheckManagement;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.TTSManagement;
@@ -95,6 +99,23 @@ namespace ACAT.Core.Utility
 
             // EventBus
             services.AddSingleton<IEventBus, EventBus>();
+
+            // CQRS command handlers (transient — stateless, created per request)
+            services.AddTransient<ICommandHandler<CreatePanelCommand>, CreatePanelCommandHandler>();
+            services.AddTransient<ICommandHandler<HandleActuatorSwitchCommand>, HandleActuatorSwitchCommandHandler>();
+
+            // CQRS query handlers (transient — stateless, created per request)
+            services.AddTransient<IQueryHandler<GetActiveAgentNameQuery, string>, GetActiveAgentNameQueryHandler>();
+            services.AddTransient<IQueryHandler<GetConfigurationValueQuery, string>, GetConfigurationValueQueryHandler>();
+
+            // Repositories (singleton — stateless file-access helpers)
+            // Note: generic open registration requires a ServiceCollection extension; 
+            // use closed registrations for now:
+            services.AddSingleton<IRepository<Theme>, ThemeRepository>();
+            // For generic preferences/config, callers can resolve: serviceProvider.GetRequiredService<PreferencesRepository<MyPrefs>>()
+
+            // Diagnostics and monitoring (singleton — live throughout application lifetime)
+            services.AddSingleton<PanelActivityMonitor>();
 
             return services;
         }

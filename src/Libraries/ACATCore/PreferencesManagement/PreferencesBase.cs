@@ -13,6 +13,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.DataAccess;
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -92,8 +93,9 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         /// <param name="preferencesFile">Name of the preferences file</param>
         /// <param name="loadDefaultsOnFail">true: If the file doesn't exist, use defaults, false: return null</param>
+        /// <param name="saveAfterLoad">true: Save preferences after loading to ensure file exists</param>
         /// <returns>Preferences read or null</returns>
-        public static T Load<T>(String preferencesFile, bool loadDefaultsOnFail = true, bool saveAfterLoad = true) where T : new()
+        public static T Load<T>(String preferencesFile, bool loadDefaultsOnFail = true, bool saveAfterLoad = true) where T : class, new()
         {
             T preferences = default;
 
@@ -102,7 +104,9 @@ namespace ACAT.Core.PreferencesManagement
                 return preferences;
             }
 
-            preferences = XmlUtils.XmlFileLoad<T>(preferencesFile);
+            // Use PreferencesRepository instead of direct XmlUtils calls
+            var repo = new PreferencesRepository<T>(_logger);
+            preferences = repo.Load(preferencesFile);
 
             if (preferences == null)
             {
@@ -115,7 +119,7 @@ namespace ACAT.Core.PreferencesManagement
 
             if (preferences != null && saveAfterLoad)
             {
-                if (!XmlUtils.XmlFileSave(preferences, preferencesFile))
+                if (!repo.Save(preferences, preferencesFile))
                 {
                     _logger.LogError("Unable to save default preferences");
                     preferences = default;
@@ -140,11 +144,12 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         /// <param name="prefs">Preferences</param>
         /// <param name="preferencesFile">full path to the file</param>
-        /// <returns></returns>
-        public static bool Save<T>(T prefs, String preferencesFile)
+        /// <returns>true on success</returns>
+        public static bool Save<T>(T prefs, String preferencesFile) where T : class, new()
         {
-            // save current settings into current file and preset file
-            var retVal = XmlUtils.XmlFileSave(prefs, preferencesFile);
+            // Use PreferencesRepository instead of direct XmlUtils calls
+            var repo = new PreferencesRepository<T>(_logger);
+            var retVal = repo.Save(prefs, preferencesFile);
 
             if (retVal == false)
             {
@@ -159,7 +164,7 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         /// <typeparam name="T">Preferences object</typeparam>
         /// <param name="fileName">name of the file to save to</param>
-        public static void SaveDefaults<T>(String fileName) where T : new()
+        public static void SaveDefaults<T>(String fileName) where T : class, new()
         {
             T prefs = new();
             Save(prefs, fileName);

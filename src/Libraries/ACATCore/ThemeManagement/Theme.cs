@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Configuration;
+using ACAT.Core.DataAccess;
 using ACAT.Core.Utility;
 using ACAT.Core.Validation;
 using Microsoft.Extensions.Logging;

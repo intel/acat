@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.PanelConfig;
@@ -68,13 +69,22 @@ namespace ACAT.Core.PanelManagement
             // Get logger from DI container if available, otherwise use LogManager
             ILogger<PanelManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<PanelManager>)) as ILogger<PanelManager>
                 ?? LogManager.GetLogger<PanelManager>();
-            return new PanelManager(logger);
+
+            // Get IEventBus from DI container if available (may be null if not registered)
+            IEventBus eventBus = Context.ServiceProvider?.GetService(typeof(IEventBus)) as IEventBus;
+
+            return new PanelManager(logger, eventBus);
         });
 
         /// <summary>
         /// Logger instance
         /// </summary>
         private readonly ILogger<PanelManager> _logger;
+
+        /// <summary>
+        /// Event bus for publishing panel lifecycle events (optional, may be null)
+        /// </summary>
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// Represents the stack of panels
@@ -94,9 +104,12 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Initializes an instance of the PanelManager
         /// </summary>
-        public PanelManager(ILogger<PanelManager> logger)
+        /// <param name="logger">Logger instance (required)</param>
+        /// <param name="eventBus">Event bus for publishing events (optional)</param>
+        public PanelManager(ILogger<PanelManager> logger, IEventBus eventBus = null)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus; // May be null - event publishing is optional
             Context.AppAgentMgr.EvtPanelRequest += AppAgent_EvtPanelRequest;
             Context.AppAgentMgr.EvtFocusChanged += AppAgent_EvtFocusChanged;
             Context.EvtCultureChanged += Context_EvtCultureChanged;
@@ -556,7 +569,16 @@ namespace ACAT.Core.PanelManagement
         /// <param name="arg"></param>
         internal void NotifyPanelPreShow(PanelPreShowEventArg arg)
         {
+            // Fire legacy event for backward compatibility
             EvtPanelPreShow?.Invoke(this, arg);
+
+            // Publish to EventBus (gradual migration path)
+            if (_eventBus != null && arg.Panel is IScannerPanel scanner)
+            {
+                var panelClass = scanner.PanelClass ?? arg.Panel.GetType().Name;
+                _eventBus.Publish(new PanelShowEvent(panelClass));
+                _logger?.LogTrace($"Published PanelShowEvent for {panelClass}");
+            }
         }
 
         /// <summary>
@@ -680,7 +702,11 @@ namespace ACAT.Core.PanelManagement
         /// <returns>created object</returns>
         private PanelStack createPanelStack()
         {
-            var panelStack = new PanelStack();
+            // Get logger from DI if available
+            ILogger<PanelStack> stackLogger = Context.ServiceProvider?.GetService(typeof(ILogger<PanelStack>)) as ILogger<PanelStack>
+                ?? LogManager.GetLogger<PanelStack>();
+
+            var panelStack = new PanelStack(stackLogger, _eventBus);
             panelStack.EvtScannerClosed += panelStack_EvtScannerClosed;
             return panelStack;
         }

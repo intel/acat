@@ -214,6 +214,9 @@ namespace ACATTalk
                 return;
             }
 
+            // Start EventBus activity monitoring (demonstrates new EventBus pattern)
+            ActivatePanelActivityMonitor();
+
             Common.Init();
 
             Context.AppWindowPosition = Windows.WindowPosition.CenterScreen;
@@ -334,6 +337,31 @@ namespace ACATTalk
             Application.ExitThread();
 
             Environment.FailFast(reason);
+        }
+
+        /// <summary>
+        /// Activates the PanelActivityMonitor to demonstrate EventBus pattern
+        /// This shows real-time panel and actuator activity via EventBus subscriptions
+        /// </summary>
+        private static void ActivatePanelActivityMonitor()
+        {
+            try
+            {
+                if (_serviceProvider != null)
+                {
+                    var monitor = _serviceProvider.GetRequiredService<ACAT.Core.Diagnostics.PanelActivityMonitor>();
+                    _logger.LogInformation("✅ PanelActivityMonitor activated - EventBus subscriptions active");
+                    _logger.LogInformation("📊 You will now see real-time panel and actuator activity logs!");
+                }
+                else
+                {
+                    _logger.LogWarning("ServiceProvider not available - PanelActivityMonitor not activated");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to activate PanelActivityMonitor");
+            }
         }
 
         private static void showTalkInterfaceDescription()

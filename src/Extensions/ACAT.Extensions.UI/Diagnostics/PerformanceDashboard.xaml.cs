@@ -38,7 +38,7 @@ namespace ACAT.Extensions.UI.Diagnostics
         private Timer _refreshTimer;
 
         /// <summary>
-        /// Initialises the dashboard with optional pre-existing components.
+        /// Initializes the dashboard with optional pre-existing components.
         /// When parameters are omitted, new instances are created.
         /// </summary>
         /// <param name="collector">Shared runtime-metrics collector (optional).</param>

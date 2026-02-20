@@ -59,7 +59,7 @@ namespace ACAT.Core.Utility.Diagnostics
         private readonly PerformanceBaselineData _baseline;
 
         /// <summary>
-        /// Initialises the detector with the supplied baseline.
+        /// Initializes the detector with the supplied baseline.
         /// </summary>
         /// <param name="baseline">Baseline thresholds to compare against.
         /// If <c>null</c>, <see cref="PerformanceBaseline.CreateDefault"/> is used.</param>

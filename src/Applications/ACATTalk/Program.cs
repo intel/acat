@@ -15,10 +15,12 @@
 
 using ACAT.Applications;
 using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.Diagnostics;
@@ -194,6 +196,13 @@ namespace ACATTalk
                 ms => PerformanceMonitor.RecordPredictionRefresh(ms);
             TalkApplicationScanner.OnUiKeyPressLatencyMs =
                 ms => PerformanceMonitor.RecordUiInputLag(ms);
+            // Wire text-input metrics converted from CoreGlobals.Stopwatch
+            UserControlKeyboardCommon.OnKeyActuationLatencyMs =
+                (type, ms) => PerformanceMonitor.RecordKeyActuationLatency(type, ms);
+            TextController.OnAutoCompletePhaseLatencyMs =
+                (phase, ms) => PerformanceMonitor.RecordAutoCompletePhaseLatency(phase, ms);
+            EditTextControlAgent.OnTextChangeEventLatencyMs =
+                ms => PerformanceMonitor.RecordTextChangeEventLatency(ms);
 #endif
 
             splash?.Close();

@@ -361,17 +361,15 @@ namespace ACAT.Extension.UI
         {
             if (e.SourceWidget is WordListItemWidget)
             {
-                CoreGlobals.Stopwatch1.Reset();
-                CoreGlobals.Stopwatch1.Start();
+                var sw = System.Diagnostics.Stopwatch.StartNew();
 
                 _form.Invoke(new MethodInvoker(delegate
                 {
                     autoComplete(e.SourceWidget as WordListItemWidget);
                 }));
 
-                CoreGlobals.Stopwatch1.Stop();
-
-                _logger.LogDebug("TimeElapsed 3 : {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                sw.Stop();
+                UserControlWordPredictionCommon.OnAutoCompleteLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
 
                 handled = true;
             }
@@ -381,17 +379,15 @@ namespace ACAT.Extension.UI
             }
             if (e.SourceWidget is LetterListItemWidget)
             {
-                CoreGlobals.Stopwatch1.Reset();
-                CoreGlobals.Stopwatch1.Start();
+                var sw = System.Diagnostics.Stopwatch.StartNew();
 
                 _form.Invoke(new MethodInvoker(delegate
                 {
                     autoComplete(e.SourceWidget as LetterListItemWidget);
                 }));
 
-                CoreGlobals.Stopwatch1.Stop();
-
-                _logger.LogDebug("TimeElapsed 3 : {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                sw.Stop();
+                UserControlWordPredictionCommon.OnAutoCompleteLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
 
                 handled = true;
             }
@@ -585,8 +581,7 @@ namespace ACAT.Extension.UI
             // we try it twice in case there is an AgentContext exception
             // the first time around
 
-            CoreGlobals.Stopwatch3.Reset();
-            CoreGlobals.Stopwatch3.Start();
+            var sw = System.Diagnostics.Stopwatch.StartNew();
 
             if (!tryRefreshWordPredictionsAndSetCurrentWord())
             {
@@ -594,9 +589,8 @@ namespace ACAT.Extension.UI
                 tryRefreshWordPredictionsAndSetCurrentWord();
             }
 
-            CoreGlobals.Stopwatch3.Stop();
-
-            _logger.LogDebug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
+            sw.Stop();
+            UserControlWordPredictionCommon.OnRefreshLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
         }
 
         /// <summary>

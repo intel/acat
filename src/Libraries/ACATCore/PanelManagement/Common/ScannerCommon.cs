@@ -875,23 +875,21 @@ namespace ACAT.Core.PanelManagement.Common
             {
                 if (widget.Value.Length > 1)
                 {
-                    CoreGlobals.Stopwatch1.Reset();
-                    CoreGlobals.Stopwatch1.Start();
+                    var sw = System.Diagnostics.Stopwatch.StartNew();
                     Context.AppAgentMgr.TextChangedNotifications.Hold();
                     SendKeys.SendWait(widget.Value + " ");
                     Context.AppAgentMgr.TextChangedNotifications.Release();
-                    CoreGlobals.Stopwatch1.Stop();
-                    _logger?.LogTrace("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    sw.Stop();
+                    UserControlKeyboardCommon.OnKeyActuationLatencyMs?.Invoke("MultiChar", sw.Elapsed.TotalMilliseconds);
                 }
                 else
                 {
-                    CoreGlobals.Stopwatch1.Reset();
-                    CoreGlobals.Stopwatch1.Start();
+                    var sw = System.Diagnostics.Stopwatch.StartNew();
 
                     actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
 
-                    CoreGlobals.Stopwatch1.Stop();
-                    _logger?.LogTrace("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    sw.Stop();
+                    UserControlKeyboardCommon.OnKeyActuationLatencyMs?.Invoke("SingleKey", sw.Elapsed.TotalMilliseconds);
                 }
             }
 

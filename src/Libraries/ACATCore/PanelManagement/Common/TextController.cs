@@ -25,6 +25,13 @@ namespace ACAT.Core.PanelManagement.Common
     public class TextController : ITextController
     {
         /// <summary>
+        /// Optional callback invoked with a phase name and elapsed time in milliseconds
+        /// for each measured phase of <see cref="AutoCompleteWord"/>.
+        /// Phase names: "GetPrevWord", "CheckInsertReplace", "Insert", "Replace", "PostCompletion".
+        /// Set from the application layer to forward data into PerformanceMonitor.
+        /// </summary>
+        public static Action<string, double> OnAutoCompletePhaseLatencyMs;
+        /// <summary>
         /// The caret position after a partially entered word was
         /// autocompleted
         /// </summary>
@@ -114,8 +121,7 @@ namespace ACAT.Core.PanelManagement.Common
                 using AgentContext context = Context.AppAgentMgr.ActiveContext();
                 Context.AppAgentMgr.TextChangedNotifications.Hold();
 
-                CoreGlobals.Stopwatch4.Reset();
-                CoreGlobals.Stopwatch4.Start();
+                var swAC = System.Diagnostics.Stopwatch.StartNew();
 
                 int caretPos = context.TextAgent().GetCaretPos();
 
@@ -125,11 +131,10 @@ namespace ACAT.Core.PanelManagement.Common
                 context.TextAgent().GetPrevWordOffsetAutoComplete(out int offset, out int count);
                 _logger?.LogDebug("PrevWord offset: {Offset}, count: {Count}", offset, count);
 
-                CoreGlobals.Stopwatch4.Stop();
-                _logger?.LogDebug("AutoComplete TimeElapsed 1: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                swAC.Stop();
+                OnAutoCompletePhaseLatencyMs?.Invoke("GetPrevWord", swAC.Elapsed.TotalMilliseconds);
 
-                CoreGlobals.Stopwatch4.Reset();
-                CoreGlobals.Stopwatch4.Start();
+                swAC = System.Diagnostics.Stopwatch.StartNew();
 
                 // check if we are just completing the current word or inserting a new word
                 bool checkInsert = context.TextAgent().CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out string wordToReplace);
@@ -145,10 +150,10 @@ namespace ACAT.Core.PanelManagement.Common
                     isCapitalizedWordToReplace = char.IsUpper(wordToReplace[0]);
                 }
 
-                CoreGlobals.Stopwatch4.Stop();
-                _logger?.LogDebug("AutoComplete TimeElapsed 2: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
-                CoreGlobals.Stopwatch4.Reset();
-                CoreGlobals.Stopwatch4.Start();
+                swAC.Stop();
+                OnAutoCompletePhaseLatencyMs?.Invoke("CheckInsertReplace", swAC.Elapsed.TotalMilliseconds);
+
+                swAC = System.Diagnostics.Stopwatch.StartNew();
 
                 _logger?.LogDebug("checkInsert: {CheckInsert}. inserRepOff: {Offset}. wordTORep: {Word}",
                           checkInsert, insertOrReplaceOffset, wordToReplace);
@@ -167,13 +172,12 @@ namespace ACAT.Core.PanelManagement.Common
                 {
                     _logger?.LogDebug("Inserting [{WordSelected}] at offset {Offset}", wordSelected, insertOrReplaceOffset);
 
-                    CoreGlobals.Stopwatch5.Reset();
-                    CoreGlobals.Stopwatch5.Start();
+                    var swInsert = System.Diagnostics.Stopwatch.StartNew();
 
                     context.TextAgent().Insert(insertOrReplaceOffset, wordSelected);
 
-                    CoreGlobals.Stopwatch5.Stop();
-                    _logger?.LogDebug("AutoComplete Insert operation TimeElapsed: {ElapsedMilliseconds}", CoreGlobals.Stopwatch5.ElapsedMilliseconds);
+                    swInsert.Stop();
+                    OnAutoCompletePhaseLatencyMs?.Invoke("Insert", swInsert.Elapsed.TotalMilliseconds);
                 }
                 else
                 {
@@ -196,10 +200,10 @@ namespace ACAT.Core.PanelManagement.Common
                     context.TextAgent().Replace(insertOrReplaceOffset, wordToReplaceLength, wordSelected);
                 }
 
-                CoreGlobals.Stopwatch4.Stop();
-                _logger?.LogDebug("AutoComplete TimeElapsed 3: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
-                CoreGlobals.Stopwatch4.Reset();
-                CoreGlobals.Stopwatch4.Start();
+                swAC.Stop();
+                OnAutoCompletePhaseLatencyMs?.Invoke("Replace", swAC.Elapsed.TotalMilliseconds);
+
+                swAC = System.Diagnostics.Stopwatch.StartNew();
 
                 _autocompleteStartOffset = insertOrReplaceOffset;
 
@@ -210,8 +214,8 @@ namespace ACAT.Core.PanelManagement.Common
                 _autoCompleteCaretPos = context.TextAgent().GetCaretPos();
                 _logger?.LogDebug("_autocompleteCursorPos is {CaretPos}", _autoCompleteCaretPos);
 
-                CoreGlobals.Stopwatch4.Stop();
-                _logger?.LogDebug("AutoComplete TimeElapsed 4: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                swAC.Stop();
+                OnAutoCompletePhaseLatencyMs?.Invoke("PostCompletion", swAC.Elapsed.TotalMilliseconds);
             }
             catch (InvalidAgentContextException iace)
             {

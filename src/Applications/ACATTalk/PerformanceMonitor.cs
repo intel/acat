@@ -220,6 +220,42 @@ namespace ACATTalk
         }
 
         /// <summary>
+        /// Record a key actuation latency and forward to the runtime collector.
+        /// </summary>
+        /// <param name="keyType">"SingleKey" or "MultiChar".</param>
+        /// <param name="milliseconds">Elapsed time of the actuation in milliseconds.</param>
+        public static void RecordKeyActuationLatency(string keyType, double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Ui)) return;
+            RecordMetric($"KeyActuation_{keyType}", milliseconds, "ms", MetricCategory.Interaction);
+            _runtimeCollector.Record($"KeyActuation_{keyType}", milliseconds, RuntimeMetricCategory.Ui, "ms");
+        }
+
+        /// <summary>
+        /// Record a per-phase autocomplete latency and forward to the runtime collector.
+        /// Phase names: "GetPrevWord", "CheckInsertReplace", "Insert", "Replace", "PostCompletion".
+        /// </summary>
+        /// <param name="phase">Phase name.</param>
+        /// <param name="milliseconds">Elapsed time of the phase in milliseconds.</param>
+        public static void RecordAutoCompletePhaseLatency(string phase, double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Prediction)) return;
+            RecordMetric($"AutoComplete_{phase}", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record($"AutoComplete_{phase}", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
+        /// Record a text-change event latency and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Elapsed time of the text-change event handler in milliseconds.</param>
+        public static void RecordTextChangeEventLatency(double milliseconds)
+        {
+            if (!IsCategoryEnabled(RuntimeMetricCategory.Ui)) return;
+            RecordMetric("TextChangeEvent", milliseconds, "ms", MetricCategory.Interaction);
+            _runtimeCollector.Record("TextChangeEvent", milliseconds, RuntimeMetricCategory.Ui, "ms");
+        }
+
+        /// <summary>
         /// Record an I/O operation duration and forward to the runtime collector.
         /// </summary>
         /// <param name="operationName">Name of the I/O operation (e.g. "FileRead", "NetworkRequest").</param>

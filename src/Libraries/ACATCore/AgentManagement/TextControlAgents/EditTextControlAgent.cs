@@ -26,6 +26,13 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         private static ILogger<EditTextControlAgent> _logger => LogManager.GetLogger<EditTextControlAgent>();
 
         /// <summary>
+        /// Optional callback invoked with the elapsed time in milliseconds each time
+        /// a Windows Automation text-change event is handled.
+        /// Set from the application layer to forward data into PerformanceMonitor.
+        /// </summary>
+        public static Action<double> OnTextChangeEventLatencyMs;
+
+        /// <summary>
         /// Handle of the active target window (eg the Notepad window)
         /// </summary>
         private readonly IntPtr _handle = IntPtr.Zero;
@@ -206,13 +213,12 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// <param name="e">event args</param>
         private void onTextChanged(object sender, AutomationEventArgs e)
         {
-            CoreGlobals.Stopwatch2.Reset();
-            CoreGlobals.Stopwatch2.Start();
+            var sw = System.Diagnostics.Stopwatch.StartNew();
 
             triggerTextChanged(this);
-            CoreGlobals.Stopwatch2.Stop();
 
-            _logger?.LogDebug("onTextChanged() TimeElapsed: {ElapsedMs}ms", CoreGlobals.Stopwatch2.ElapsedMilliseconds);
+            sw.Stop();
+            OnTextChangeEventLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
         }
 
         /// <summary>

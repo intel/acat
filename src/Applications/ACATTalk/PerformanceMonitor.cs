@@ -146,6 +146,37 @@ namespace ACATTalk
         }
 
         /// <summary>
+        /// Record a UI input lag measurement and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Measured input lag in milliseconds.</param>
+        public static void RecordUiInputLag(double milliseconds)
+        {
+            RecordMetric("UiInputLag", milliseconds, "ms", MetricCategory.UI);
+            _runtimeCollector.Record("UiInputLag", milliseconds, RuntimeMetricCategory.Ui, "ms");
+        }
+
+        /// <summary>
+        /// Record a word-prediction latency measurement and forward to the runtime collector.
+        /// </summary>
+        /// <param name="milliseconds">Measured latency in milliseconds.</param>
+        public static void RecordPredictionLatency(double milliseconds)
+        {
+            RecordMetric("PredictionLatency", milliseconds, "ms", MetricCategory.TextPrediction);
+            _runtimeCollector.Record("PredictionLatency", milliseconds, RuntimeMetricCategory.Prediction, "ms");
+        }
+
+        /// <summary>
+        /// Record an I/O operation duration and forward to the runtime collector.
+        /// </summary>
+        /// <param name="operationName">Name of the I/O operation (e.g. "FileRead", "NetworkRequest").</param>
+        /// <param name="milliseconds">Duration of the operation in milliseconds.</param>
+        public static void RecordIoOperation(string operationName, double milliseconds)
+        {
+            RecordMetric(operationName, milliseconds, "ms", MetricCategory.Interaction);
+            _runtimeCollector.Record(operationName, milliseconds, RuntimeMetricCategory.Io, "ms");
+        }
+
+        /// <summary>
         /// Log a performance event
         /// </summary>
         public static void LogEvent(string operation, string details = "")
@@ -210,6 +241,16 @@ namespace ACATTalk
                     ["PeakWorkingSetMB"] = _peakWorkingSet / (1024.0 * 1024.0),
                     ["ManagedHeapMB"] = shutdownSnap.ManagedHeapMB
                 };
+
+                // Include runtime-collector aggregates for regression checking
+                IReadOnlyDictionary<string, RuntimeMetricEntry> runtimeEntries = _runtimeCollector.GetEntries();
+                foreach (KeyValuePair<string, RuntimeMetricEntry> kv in runtimeEntries)
+                {
+                    if (!observations.ContainsKey(kv.Key))
+                    {
+                        observations[kv.Key] = kv.Value.Average;
+                    }
+                }
 
                 IReadOnlyList<RegressionResult> regressions = _regressionDetector.DetectRegressions(observations);
                 foreach (RegressionResult r in regressions)
@@ -288,6 +329,30 @@ namespace ACATTalk
                 sb.AppendLine();
             }
 
+            // Include runtime-collector entries (UI, Prediction, I/O, etc.)
+            IReadOnlyDictionary<string, RuntimeMetricEntry> runtimeEntries = _runtimeCollector.GetEntries();
+            if (runtimeEntries.Count > 0)
+            {
+                sb.AppendLine("[Runtime Metrics]");
+                sb.AppendLine("-".PadRight(80, '-'));
+
+                IOrderedEnumerable<RuntimeMetricEntry> runtimeSorted = runtimeEntries.Values
+                    .OrderBy(e => e.Category)
+                    .ThenBy(e => e.Name);
+                foreach (RuntimeMetricEntry entry in runtimeSorted)
+                {
+                    sb.AppendLine($"  {entry.Name,-40} {entry.LastValue,10:F2} {entry.Unit} [{entry.Category}]");
+                    if (entry.Count > 1)
+                    {
+                        sb.AppendLine($"    {"Count:",-38} {entry.Count,10}");
+                        sb.AppendLine($"    {"Min:",-38} {entry.Min,10:F2} {entry.Unit}");
+                        sb.AppendLine($"    {"Max:",-38} {entry.Max,10:F2} {entry.Unit}");
+                        sb.AppendLine($"    {"Avg:",-38} {entry.Average,10:F2} {entry.Unit}");
+                    }
+                }
+                sb.AppendLine();
+            }
+
             sb.AppendLine("=".PadRight(80, '='));
             sb.AppendLine("End of Report");
             sb.AppendLine("=".PadRight(80, '='));
@@ -309,6 +374,13 @@ namespace ACATTalk
                 sb.AppendLine($"{metric.Category},{metric.Name},{metric.Value:F2},{metric.Unit},{metric.Count},{metric.Min:F2},{metric.Max:F2},{metric.Timestamp:o}");
             }
 
+            // Append runtime-collector entries
+            IReadOnlyDictionary<string, RuntimeMetricEntry> runtimeEntries = _runtimeCollector.GetEntries();
+            foreach (RuntimeMetricEntry entry in runtimeEntries.Values.OrderBy(e => e.Category).ThenBy(e => e.Name))
+            {
+                sb.AppendLine($"Runtime.{entry.Category},{entry.Name},{entry.Average:F2},{entry.Unit},{entry.Count},{entry.Min:F2},{entry.Max:F2},{entry.LastUpdated:o}");
+            }
+
             File.WriteAllText(path, sb.ToString());
         }
 
@@ -318,6 +390,14 @@ namespace ACATTalk
         public static Dictionary<string, PerformanceMetric> GetMetrics()
         {
             return new Dictionary<string, PerformanceMetric>(_metrics);
+        }
+
+        /// <summary>
+        /// Get current runtime-collector entries snapshot (for debugging).
+        /// </summary>
+        public static IReadOnlyDictionary<string, RuntimeMetricEntry> GetRuntimeMetrics()
+        {
+            return _runtimeCollector.GetEntries();
         }
 
         /// <summary>

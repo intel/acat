@@ -177,6 +177,38 @@ namespace ACATCore.Tests.Performance
         }
 
         [TestMethod]
+        public void GenerateReport_AlertContent_IncludesExceedanceAndUnit()
+        {
+            // Verifies the "Alert on significant regressions" acceptance criterion:
+            // the report must include the observed value, the threshold, the unit,
+            // and a non-zero exceedance percentage so the alert is actionable.
+            var detector = new PerformanceRegressionDetector();
+            var observations = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["UiInputLag"]        = 250.0,  // 150 % over 100 ms threshold
+                ["PredictionLatency"] = 200.0   // within 500 ms – should NOT appear
+            };
+
+            string report = detector.GenerateReport(observations);
+
+            // Alert must name the regressing metric
+            Assert.IsTrue(report.Contains("UiInputLag"),
+                "Alert must include the regressing metric name");
+            // Alert must include the observed value
+            Assert.IsTrue(report.Contains("250"),
+                "Alert must include the observed value");
+            // Alert must include the threshold value
+            Assert.IsTrue(report.Contains("100"),
+                "Alert must include the threshold value");
+            // Alert must include the unit
+            Assert.IsTrue(report.Contains("ms"),
+                "Alert must include the unit");
+            // Passing metric must NOT be reported as a regression
+            Assert.IsFalse(report.Contains("PredictionLatency"),
+                "Alert must not flag metrics that are within threshold");
+        }
+
+        [TestMethod]
         public void RegressionResult_ToString_ContainsKeyInfo()
         {
             var result = new RegressionResult

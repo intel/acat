@@ -26,10 +26,43 @@ using System.Windows;
 namespace ACAT.Extensions.UI.Diagnostics
 {
     /// <summary>
-    /// Interaction logic for PerformanceDashboard.xaml.
-    /// Displays live runtime metrics, memory snapshots, and baseline
-    /// regression status in an accessible WPF window.
+    /// Interaction logic for PerformanceDashboard.xaml — live performance monitoring window.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The dashboard auto-refreshes every 2 seconds and displays four panels:
+    /// <list type="bullet">
+    ///   <item><description><b>Memory</b> – working set, managed heap, GC collection count.</description></item>
+    ///   <item><description><b>Runtime</b> – process uptime, thread count, OS handle count.</description></item>
+    ///   <item><description><b>Baseline Status</b> – regression check against <see cref="PerformanceBaselineData"/> thresholds.</description></item>
+    ///   <item><description><b>Sample History</b> – peak working-set and timestamp of the last refresh.</description></item>
+    /// </list>
+    /// </para>
+    /// <para><b>Minimal usage</b> (self-contained, creates its own collectors):</para>
+    /// <code>
+    /// var dashboard = new PerformanceDashboard();
+    /// dashboard.Show();
+    /// </code>
+    /// <para><b>Shared collectors</b> (display data already gathered by the application):</para>
+    /// <code>
+    /// var collector = new RuntimeMetricsCollector();
+    /// var profiler  = new MemoryProfiler();
+    /// collector.Start(intervalMs: 5000);
+    ///
+    /// var dashboard = new PerformanceDashboard(collector, profiler);
+    /// dashboard.Show();
+    /// </code>
+    /// <para><b>Custom baseline</b> (change regression thresholds):</para>
+    /// <code>
+    /// PerformanceBaselineData baseline = PerformanceBaseline.Load(baselinePath);
+    /// var dashboard = new PerformanceDashboard(collector, profiler, baseline);
+    /// dashboard.Show();
+    /// </code>
+    /// <para>
+    /// Toolbar buttons let the user export all captured data to <b>CSV</b> or <b>JSON</b>
+    /// via a standard SaveFileDialog, or clear the accumulated snapshot history.
+    /// </para>
+    /// </remarks>
     public partial class PerformanceDashboard : Window
     {
         private readonly RuntimeMetricsCollector _collector;

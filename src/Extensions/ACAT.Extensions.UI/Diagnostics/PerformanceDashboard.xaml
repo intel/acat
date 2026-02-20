@@ -1,3 +1,77 @@
+<!--
+    PerformanceDashboard.xaml
+    Copyright 2013-2019; 2023 Intel Corporation
+    SPDX-License-Identifier: Apache-2.0
+
+    ═══════════════════════════════════════════════════════════════════════════
+    ACAT PERFORMANCE DASHBOARD - USAGE GUIDE
+    ═══════════════════════════════════════════════════════════════════════════
+
+    The PerformanceDashboard is a standalone WPF window that shows live memory
+    and runtime metrics, baseline regression status, sample history, and lets
+    you export data to CSV or JSON.
+
+    ─── QUICK START ────────────────────────────────────────────────────────────
+
+    Minimal usage – open a self-contained dashboard (creates its own collectors):
+
+        var dashboard = new PerformanceDashboard();
+        dashboard.Show();
+
+    ─── SHARED COLLECTORS ──────────────────────────────────────────────────────
+
+    To display metrics already gathered by your application, pass the existing
+    RuntimeMetricsCollector and MemoryProfiler instances.  The dashboard then
+    shows their accumulated data instead of starting fresh:
+
+        // In your application startup:
+        var collector = new RuntimeMetricsCollector();
+        var profiler  = new MemoryProfiler();
+        collector.Start(intervalMs: 5000);
+        profiler.CaptureSnapshot("Startup");
+
+        // Later, open the dashboard and share the same instances:
+        var dashboard = new PerformanceDashboard(
+            collector: collector,
+            profiler:  profiler);
+        dashboard.Show();
+
+    ─── CUSTOM BASELINE ────────────────────────────────────────────────────────
+
+    Supply a custom PerformanceBaselineData to change the regression thresholds
+    shown in the "Baseline Status" panel.  If omitted, the built-in ACAT
+    defaults are used (startup < 3 s, input lag < 100 ms, etc.):
+
+        string baselinePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "ACAT", "performance_baseline.json");
+
+        PerformanceBaselineData baseline = PerformanceBaseline.Load(baselinePath);
+
+        var dashboard = new PerformanceDashboard(
+            collector: collector,
+            profiler:  profiler,
+            baseline:  baseline);
+        dashboard.Show();
+
+    ─── EXPORT ─────────────────────────────────────────────────────────────────
+
+    Use the toolbar buttons to export captured data:
+      • Export CSV  – all memory snapshots as a comma-separated file
+      • Export JSON – memory snapshots + aggregated runtime metric entries
+
+    ─── PANELS ─────────────────────────────────────────────────────────────────
+
+    Memory         Working set, managed heap, and total GC collection count.
+    Runtime        Process uptime, active thread count, OS handle count.
+    Baseline Status  Green ✓ = all tracked metrics within thresholds;
+                     Orange ⚠ = one or more thresholds exceeded.
+    Sample History Peak working-set observed across all snapshots and the
+                   timestamp of the most recent refresh.
+
+    Metrics refresh automatically every 2 seconds while the window is open.
+    ═══════════════════════════════════════════════════════════════════════════
+-->
 <Window x:Class="ACAT.Extensions.UI.Diagnostics.PerformanceDashboard"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

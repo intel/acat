@@ -79,8 +79,8 @@ Total tests: 31
 ## More Information
 
 - Full documentation: `src/Libraries/ACATCore.Tests.Integration/README.md`
-- Phase 1 report: `PHASE_1_COMPLETION_REPORT.md`
-- Retrospective: `PHASE_1_RETROSPECTIVE.md`
+- Testing infrastructure guide: `TESTING_INFRASTRUCTURE.md`
+- Consolidated docs index: `INDEX.md`
 
 ---
 

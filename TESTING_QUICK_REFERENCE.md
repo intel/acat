@@ -388,7 +388,7 @@ public void LoadConfig_ValidFile_ReturnsConfiguration()
 
 **Project Docs**:
 - [QUICK_START_INTEGRATION_TESTS.md](QUICK_START_INTEGRATION_TESTS.md) - Quick start
-- [Phase 1 Integration Testing](PHASE_1_INTEGRATION_TESTING_SUMMARY.md) - Phase 1 report
+- [INDEX.md](INDEX.md) - Consolidated documentation index
 
 ---
 

@@ -197,6 +197,11 @@
     <Compile Include="Configuration\JsonSchemaValidator.cs" />
     <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
     <Compile Include="Configuration\PronunciationsJson.cs" />
+    <Compile Include="DataAccess\IRepository.cs" />
+    <Compile Include="DataAccess\RepositoryBase.cs" />
+    <Compile Include="DataAccess\PreferencesRepository.cs" />
+    <Compile Include="DataAccess\ConfigurationRepository.cs" />
+    <Compile Include="DataAccess\ThemeRepository.cs" />
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
     <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />

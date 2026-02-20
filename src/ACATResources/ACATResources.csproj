@@ -28,7 +28,7 @@
     </Assets>
   </ItemGroup>
   
-  <Target Name="CopyAssetFiles" AfterTargets="Build">
+  <Target Name="CopyAssetFiles" AfterTargets="Build" Condition="'$(SkipCopyingResourceFiles)' != 'true'">
     <Message Text="Copy Asssets Files" Importance="high" />
     <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
     <Copy SourceFiles="@(Assets)" DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
@@ -41,7 +41,7 @@
     </DefaultUserFiles>
   </ItemGroup>
   
-  <Target Name="CopyInstallFiles" AfterTargets="Build">
+  <Target Name="CopyInstallFiles" AfterTargets="Build" Condition="'$(SkipCopyingResourceFiles)' != 'true'">
     <Message Text="Copy Install Files" Importance="high" />
     <Copy SourceFiles="@(DefaultUserFiles)" DestinationFiles="$(OutputPath)Install\Users\%(DefaultUserFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
@@ -53,7 +53,7 @@
     </PanelConfigs>
   </ItemGroup>
   
-  <Target Name="CopyPanelConfigs" AfterTargets="Build">
+  <Target Name="CopyPanelConfigs" AfterTargets="Build" Condition="'$(SkipCopyingResourceFiles)' != 'true'">
     <Message Text="Copy Panel Config Files" Importance="high" />
     <Copy SourceFiles="@(PanelConfigs)" DestinationFiles="$(OutputPath)\panelconfigs\%(PanelConfigs.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
     </Target>
@@ -76,31 +76,53 @@
   <ItemGroup>
     <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
   </ItemGroup>
-  <Target Name="CopyStaticConvAssist" AfterTargets="Build">
+  <Target Name="CopyStaticConvAssist" AfterTargets="Build" Condition="'$(SkipCopyingResourceFiles)' != 'true'">
     <Message Text="Copy Static ConvAssist Files" Importance="high" />
     <!-- Copy files while preserving subfolders -->
     <Copy SourceFiles="@(ConvAssistStatic)" DestinationFiles="$(OutputPath)%(ConvAssistStatic.Lang)\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
   <!-- Copy ConvAssist Application -->
-  <Target Name="UnzipDependency" AfterTargets="Build">
+  <Target Name="UnzipDependency" AfterTargets="Build" Condition="'$(SkipResourceUnzip)' != 'true'">
     <!-- Define paths -->
     <PropertyGroup>
       <ZipFile>$(SolutionRoot)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
       <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
       <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
     </PropertyGroup>
+
     <!-- Only unzip if the flag file doesn't exist -->
     <Message Text="Unzipping dependency files from $(ZipFile) to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
-    <Exec Condition="!Exists('$(UnzipFlagFile)')" Command="powershell -Command &quot;Expand-Archive -Path '$(ZipFile)' -DestinationPath '$(ExtractedDir)' -Force&quot;" />
+
+    <!-- Try MSBuild Unzip first (faster, no PowerShell dependency) -->
+    <Unzip Condition="!Exists('$(UnzipFlagFile)')" 
+           SourceFiles="$(ZipFile)" 
+           DestinationFolder="$(ExtractedDir)" 
+           OverwriteReadOnlyFiles="true" 
+           SkipUnchangedFiles="true"
+           ContinueOnError="WarnAndContinue" />
+
+    <!-- Fallback to PowerShell if MSBuild Unzip fails (older MSBuild versions) -->
+    <Exec Condition="!Exists('$(UnzipFlagFile)') AND !Exists('$(ExtractedDir)')" 
+          Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Expand-Archive -Path '$(ZipFile)' -DestinationPath '$(ExtractedDir)' -Force&quot;" 
+          ContinueOnError="false" />
+
     <Message Text="Unzipped dependency files to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+
     <!-- Create a flag file to avoid re-extraction -->
-    <WriteLinesToFile Condition="!Exists('$(UnzipFlagFile)')" File="$(UnzipFlagFile)" Lines="Unzipped on $(MSBuildThisFileFullPath)" Overwrite="true" />
+    <WriteLinesToFile Condition="!Exists('$(UnzipFlagFile)')" 
+                      File="$(UnzipFlagFile)" 
+                      Lines="Unzipped on $(MSBuildThisFileFullPath)" 
+                      Overwrite="true" />
+
     <Message Text="Copy ConvAssist App" Importance="high" />
+
     <!-- Copy contents to OutputPath -->
     <ItemGroup>
       <DependencyFiles Include="$(ExtractedDir)**\*" />
     </ItemGroup>
     <Message Text="Copying dependency files to output directory: $(OutDir)" Importance="high" />
-    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)\ConvAssistApp\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DependencyFiles)" 
+          DestinationFolder="$(OutDir)\ConvAssistApp\%(RecursiveDir)" 
+          SkipUnchangedFiles="true" />
   </Target>
 </Project>

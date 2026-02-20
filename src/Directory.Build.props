@@ -62,8 +62,20 @@
   
   <!-- Configurations -->
   <PropertyGroup>
-    <Configurations>Debug;Release;Debug_TestGTEC;Debug_signed;Release_signed</Configurations>
+    <Configurations>Debug;Release;Debug_TestGTEC;Debug_signed;Release_signed;TestOnly</Configurations>
     <UsePreviewSdk>false</UsePreviewSdk>
+  </PropertyGroup>
+
+  <!-- TestOnly configuration for fast unit test builds -->
+  <PropertyGroup Condition="'$(Configuration)' == 'TestOnly'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <!-- Skip resource extraction for faster builds -->
+    <SkipResourceUnzip>true</SkipResourceUnzip>
+    <!-- Skip non-essential targets -->
+    <SkipCopyingResourceFiles>true</SkipCopyingResourceFiles>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug_TestGTEC'">

@@ -17,6 +17,8 @@ using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.Diagnostics;
@@ -244,7 +246,12 @@ namespace ACATApp
                 QuitAppOnFormClose = false
             };
 
-            Form form = PanelManager.Instance.CreatePanel("DashboardAppScanner", startupArg);
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
+            var command = new CreatePanelCommand("DashboardAppScanner", null, startupArg);
+            createPanelHandler.Handle(command);
+
+            Form form = command.CreatedPanel as Form;
             if (form == null)
             {
                 MessageBox.Show(string.Format(StringResources.InvalidFormName, startupArg.ToString()));
@@ -350,10 +357,14 @@ namespace ACATApp
                 return;
             }
 
-            Form form = PanelManager.Instance.CreatePanel("DefaultInterfaceScanner", "ACAT Talk Description");
-            if (form != null)
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
+            var command = new CreatePanelCommand("DefaultInterfaceScanner", "ACAT Talk Description");
+            createPanelHandler.Handle(command);
+
+            if (command.CreatedPanel != null)
             {
-                Context.AppPanelManager.ShowDialog(form as IPanel);
+                Context.AppPanelManager.ShowDialog(command.CreatedPanel);
             }
         }
     }

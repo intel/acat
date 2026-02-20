@@ -166,20 +166,28 @@ namespace ACAT.Extensions.UI.Diagnostics
                 MemorySnapshot snap = _profiler.CaptureSnapshot("Dashboard");
                 IReadOnlyDictionary<string, RuntimeMetricEntry> entries = _collector.GetEntries();
 
-                // Memory section
-                WorkingSetValue.Text = $"{snap.WorkingSetMB:F1} MB";
-                ManagedHeapValue.Text = $"{snap.ManagedHeapMB:F1} MB";
-                int totalGc = snap.GcCollections?.Sum() ?? 0;
-                GcCollectionsValue.Text = totalGc.ToString();
+                // Memory section — prefer periodic collector entries, fall back to snapshot
+                WorkingSetValue.Text = entries.TryGetValue("WorkingSetMB", out RuntimeMetricEntry wsmEntry)
+                    ? $"{wsmEntry.LastValue:F1} MB"
+                    : $"{snap.WorkingSetMB:F1} MB";
+                ManagedHeapValue.Text = entries.TryGetValue("ManagedHeapMB", out RuntimeMetricEntry mhmEntry)
+                    ? $"{mhmEntry.LastValue:F1} MB"
+                    : $"{snap.ManagedHeapMB:F1} MB";
+                GcCollectionsValue.Text = entries.TryGetValue("GcCollectionCount", out RuntimeMetricEntry gcEntry)
+                    ? ((int)gcEntry.LastValue).ToString()
+                    : (snap.GcCollections?.Sum() ?? 0).ToString();
 
-                // Runtime section
+                // Runtime section — use live entry data if available, fall back to snapshot
                 UptimeValue.Text = FormatUptime(snap.Timestamp);
-                ThreadCountValue.Text = snap.ThreadCount.ToString();
+                ThreadCountValue.Text = entries.TryGetValue("ThreadCount", out RuntimeMetricEntry tcEntry)
+                    ? ((int)tcEntry.LastValue).ToString()
+                    : snap.ThreadCount.ToString();
                 HandleCountValue.Text = snap.HandleCount.ToString();
 
                 // Sample history
                 IReadOnlyList<MemorySnapshot> allSnaps = _profiler.GetSnapshots();
-                SampleCount.Text = $"{allSnaps.Count} sample(s)";
+                IReadOnlyList<RuntimeMetricSample> runtimeSamples = _collector.GetSamples();
+                SampleCount.Text = $"{allSnaps.Count} memory, {runtimeSamples.Count} runtime sample(s)";
                 double peak = allSnaps.Count > 0 ? allSnaps.Max(s => s.WorkingSetMB) : 0;
                 PeakWorkingSet.Text = $"Peak WS: {peak:F1} MB";
                 LastSampleTime.Text = $"Last: {snap.Timestamp.ToLocalTime():HH:mm:ss}";

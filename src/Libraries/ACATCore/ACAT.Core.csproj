@@ -558,6 +558,26 @@
     <Compile Include="Validation\ActuatorSettingsValidator.cs" />
     <Compile Include="Validation\ThemeValidator.cs" />
     <Compile Include="Validation\PanelConfigValidator.cs" />
+    <Compile Include="EventManagement\IEvent.cs" />
+    <Compile Include="EventManagement\EventBase.cs" />
+    <Compile Include="EventManagement\IEventBus.cs" />
+    <Compile Include="EventManagement\EventBus.cs" />
+    <Compile Include="EventManagement\PanelEvents.cs" />
+    <Compile Include="EventManagement\AgentEvents.cs" />
+    <Compile Include="EventManagement\ActuatorEvents.cs" />
+    <Compile Include="EventManagement\ConfigurationEvents.cs" />
+    <Compile Include="Patterns\CQRS\ICommand.cs" />
+    <Compile Include="Patterns\CQRS\IQuery.cs" />
+    <Compile Include="Patterns\CQRS\ICommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\IQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\CreatePanelCommand.cs" />
+    <Compile Include="Patterns\CQRS\Samples\CreatePanelCommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\HandleActuatorSwitchCommand.cs" />
+    <Compile Include="Patterns\CQRS\Samples\HandleActuatorSwitchCommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetConfigurationValueQuery.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetConfigurationValueQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQuery.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQueryHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ActuatorManagement\UI\ActuatorErrorForm.resx">

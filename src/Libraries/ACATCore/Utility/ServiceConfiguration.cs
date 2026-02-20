@@ -9,6 +9,7 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.CommandManagement;
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.SpellCheckManagement;
 using ACAT.Core.ThemeManagement;
@@ -91,6 +92,9 @@ namespace ACAT.Core.Utility
             services.AddSingleton<AutomationEventManager>(provider => AutomationEventManager.Instance);
             services.AddSingleton<IAutomationEventManager>(provider => provider.GetRequiredService<AutomationEventManager>());
             services.AddSingleton<IAutomationEventManagerFactory, AutomationEventManagerFactory>();
+
+            // EventBus
+            services.AddSingleton<IEventBus, EventBus>();
 
             return services;
         }

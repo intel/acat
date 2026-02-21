@@ -85,21 +85,41 @@ var manager = factory.Create();
 
 **Location:** `src/Libraries/ACATCore/PanelManagement/Context.cs`
 
-The `Context` class has been enhanced with DI-aware methods while maintaining full backward compatibility:
+The `Context` class has been redesigned to use DI while maintaining full backward compatibility. All static manager properties now resolve through the DI container when `ServiceProvider` is configured, and fall back to the static singleton instances when it is not.
 
-#### New Methods:
+#### Static Manager Properties (DI-Aware)
+
+Every `AppXxx` property uses `ResolveManager<T>()` internally:
 
 ```csharp
-// Get manager by interface type (preferred for new code)
-var actuatorManager = Context.GetManager<IActuatorManager>();
+// All properties transparently resolve from DI when ServiceProvider is set:
+Context.AppActuatorManager      // resolves ActuatorManager from DI or singleton
+Context.AppAgentMgr             // resolves AgentManager from DI or singleton
+Context.AppPanelManager         // resolves PanelManager from DI or singleton
+Context.AppTTSManager           // resolves TTSManager from DI or singleton
+Context.AppWordPredictionManager // resolves WordPredictionManager from DI or singleton
+// ...and all other manager properties
+```
 
-// Private helper for gradual migration (backward compatibility)
+#### Interface-Based Resolution (Preferred for New Code)
+
+```csharp
+// Resolve by interface type (throws if ServiceProvider is null)
+var actuatorManager = Context.GetManager<IActuatorManager>();
+```
+
+#### Internal Adapter (Backward Compatibility)
+
+```csharp
+// Private helper – resolves from DI first, falls back to singleton
 private static T ResolveManager<T>(Func<T> fallback) where T : class
 ```
 
+This adapter pattern means **existing code that uses `Context.AppXxx` properties does not need to be changed** – once `Context.ServiceProvider` is configured, DI instances are automatically used.
+
 #### Existing Functionality Preserved:
 
-- Static `ServiceProvider` property remains for extension loading
+- Static `ServiceProvider` property remains for setting up DI
 - All existing static manager properties (`AppActuatorManager`, etc.) continue to work
 - Three-phase initialization (`PreInit()`, `Init()`, `PostInit()`) unchanged
 

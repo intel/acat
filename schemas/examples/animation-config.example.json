@@ -1,0 +1,39 @@
+{
+  "$schema": "../json/animation-config.schema.json",
+  "panelName": "MainMenu",
+  "scanStrategy": "auto",
+  "sequences": [
+    {
+      "name": "TopLevelRotation",
+      "isFirst": true,
+      "autoStart": true,
+      "iterations": "@GridScanIterations",
+      "scanTime": "@MenuDialogScanTime",
+      "firstPauseTime": "@FirstPauseTime",
+      "onEnter": "",
+      "onEnd": "transition(TopLevelRotation);",
+      "widgets": [
+        {
+          "name": "Row1",
+          "playBeep": false,
+          "onSelected": "actuate(ItemText1);transition(TopLevelRotation)"
+        },
+        {
+          "name": "Row2",
+          "playBeep": false,
+          "onSelected": "actuate(ItemText2);transition(TopLevelRotation)"
+        },
+        {
+          "name": "Row3",
+          "playBeep": false,
+          "onSelected": "actuate(ItemText3);transition(TopLevelRotation)"
+        },
+        {
+          "name": "Row4",
+          "playBeep": false,
+          "onSelected": "actuate(ItemText4);transition(TopLevelRotation)"
+        }
+      ]
+    }
+  ]
+}

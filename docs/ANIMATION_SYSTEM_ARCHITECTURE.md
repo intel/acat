@@ -1,21 +1,20 @@
 # Animation System Architecture Specification
 
-**Document Status**: Phase 3 Planning — Issue #206 Analysis Complete  
-**Version**: 1.1  
+**Document Status**: Phase 3 Planning — Issue #207 Design Complete  
+**Version**: 1.2  
 **Last Updated**: February 2026  
 **Epic**: Phase 2 – Core Infrastructure Modernization (Investigation)  
 **Tracked By**: intel/acat#195
 
-> **Agent/Developer Note (intel/acat#195):** Issue #206 (Current Animation System Analysis) is **complete**.
-> The full evidence-based analysis — with verified line counts, exact pain-point locations, event subscriber map,
-> XML config audit, and BCI extension breakdown — is in [`docs/ANIMATION_SYSTEM_ANALYSIS.md`](ANIMATION_SYSTEM_ANALYSIS.md).
-> Two important corrections from that analysis:
-> - `AnimationPlayer.cs` is **1,835 lines** (not ~800 as estimated here in §3.1).
-> - `AnimationSharpManagerV2.cs` is **2,885 lines** with significant duplication.
+> **Agent/Developer Note (intel/acat#195):** Issues #206 and #207 are **complete**.
+> - Issue #206 analysis: [`docs/ANIMATION_SYSTEM_ANALYSIS.md`](ANIMATION_SYSTEM_ANALYSIS.md)
+> - Issue #207 design: [`docs/ANIMATION_SYSTEM_DESIGN.md`](ANIMATION_SYSTEM_DESIGN.md)
+> - Architecture decisions: [`docs/adr/ADR-001-animation-system-architecture.md`](adr/ADR-001-animation-system-architecture.md)
+> - JSON schema: [`schemas/json/animation-config.schema.json`](../schemas/json/animation-config.schema.json)
 >
-> **Next step**: Issue #207 – Animation Architecture Design.
-> Start by reviewing `ANIMATION_SYSTEM_ANALYSIS.md §11` (Prioritized Recommendations for Issue #207)
-> before finalizing the interface definitions in §4.2 of this document.  
+> **Next step**: Issue #208 – Animation System POC.
+> Read `ANIMATION_SYSTEM_DESIGN.md §8` (POC Implementation Guide) first.
+> The step-by-step implementation order, test cases, and scope boundaries are defined there.  
 
 ---
 
@@ -481,26 +480,23 @@ services.AddSingleton<IAnimationConfigProvider, JsonXmlAnimationConfigProvider>(
 
 ### Issue #207 – Animation Architecture Design
 
+> **STATUS: COMPLETE** — See [`docs/ANIMATION_SYSTEM_DESIGN.md`](ANIMATION_SYSTEM_DESIGN.md) for the full deliverable.
+
 **Goal**: Finalize and validate the target architecture described in §4 before any implementation begins.
 
 **Acceptance Criteria**:
 
-- [ ] Review §4.2 interface definitions with the architecture team; adjust based on feedback.
-- [ ] Confirm EventBus event schema (§4.3) with all known consumers (panels, agents, BCI extension).
-- [ ] Finalize the `AnimationConfig` JSON model (§4.4) and author `schemas/json/animation-config.schema.json`.
-  - Schema must validate against all existing XML panel configs when converted.
-  - Use `schemas/json/` as the target directory, consistent with Phase 1 schemas.
-- [ ] Define the `IScanModeStrategy` contract in detail (§4.5); write pseudo-code for `AutoScanStrategy.SelectNext()` that covers the current row-column logic.
-- [ ] Confirm the DI registration plan (§4.7) with the DI service setup owner.
-- [ ] Identify all callers of `AnimationManager`, `PanelAnimationManager`, and `UserControlAnimationManager` in the solution – these are the "blast radius" of the migration.
-- [ ] Draft an ADR (Architecture Decision Record) covering:
-  - Rationale for keeping `AnimationPlayer` as a legacy adapter vs. deleting it
-  - Rationale for `IScanModeStrategy` vs. an enum-based scan-mode switch
-  - Decision on PCode interpreter: retain, replace with expression library, or expose as config-side scripting?
-- [ ] Update this document's §4 with any changes from the review.
+- [x] Review §4.2 interface definitions with the architecture team; adjust based on feedback. — Full interface specifications with method semantics and thread-safety rules in `ANIMATION_SYSTEM_DESIGN.md §5`. Added `IHighlightRenderer`, `IScanContext`, `IAnimationPreferenceResolver`, `IScriptInterpreter` (ADR-001 §D3).
+- [x] Confirm EventBus event schema (§4.3) with all known consumers (panels, agents, BCI extension). — Event definitions finalized in `ANIMATION_SYSTEM_DESIGN.md §13`; Phase A publishing strategy documented.
+- [x] Finalize the `AnimationConfig` JSON model (§4.4) and author `schemas/json/animation-config.schema.json`. — C# model in `ANIMATION_SYSTEM_DESIGN.md §6.1`; all five constraints resolved (§6.2); schema at [`schemas/json/animation-config.schema.json`](../schemas/json/animation-config.schema.json); example at [`schemas/examples/animation-config.example.json`](../schemas/examples/animation-config.example.json).
+- [x] Define the `IScanModeStrategy` contract in detail (§4.5); write pseudo-code for `AutoScanStrategy.SelectNext()` that covers the current row-column logic. — Full contract in `ANIMATION_SYSTEM_DESIGN.md §4.1`; `AutoScanStrategy` and `ManualScanStrategy` pseudo-code in §4.2–§4.3.
+- [x] Confirm the DI registration plan (§4.7) with the DI service setup owner. — Updated plan in `ANIMATION_SYSTEM_DESIGN.md §12`; includes keyed-transient strategy registration and fallback named-factory pattern.
+- [x] Identify all callers of `AnimationManager`, `PanelAnimationManager`, and `UserControlAnimationManager` in the solution. — Full caller blast radius table in `ANIMATION_SYSTEM_DESIGN.md §11`.
+- [x] Draft an ADR covering: AnimationPlayer fate, IScanModeStrategy vs. enum switch, PCode interpreter decision. — [`docs/adr/ADR-001-animation-system-architecture.md`](adr/ADR-001-animation-system-architecture.md).
+- [x] Update this document's §4 with any changes from the review. — This document updated to v1.2; `ANIMATION_SYSTEM_DESIGN.md` is the canonical §4 expansion.
 
 **Estimated Effort**: 3–4 days  
-**Output**: Updated §4, `schemas/animation-config.schema.json`, ADR document in `docs/adr/`.
+**Output**: [`docs/ANIMATION_SYSTEM_DESIGN.md`](ANIMATION_SYSTEM_DESIGN.md), [`schemas/json/animation-config.schema.json`](../schemas/json/animation-config.schema.json), [`docs/adr/ADR-001-animation-system-architecture.md`](adr/ADR-001-animation-system-architecture.md).
 
 ---
 

@@ -282,5 +282,100 @@ namespace ACATCore.Tests.Configuration
             Assert.AreEqual(1, config.ActuatorSettings.Count);
             Assert.AreEqual("Test", config.ActuatorSettings[0].Name);
         }
+
+        [TestMethod]
+        public void LoadWithSchemaValidator_ValidJson_LoadsSuccessfully()
+        {
+            // Arrange
+            string schemaPath = Path.Combine(_testDirectory, "test.schema.json");
+            string schema = @"{
+  ""type"": ""object"",
+  ""required"": [""actuatorSettings""],
+  ""properties"": {
+    ""actuatorSettings"": { ""type"": ""array"" }
+  }
+}";
+            File.WriteAllText(schemaPath, schema);
+
+            var schemaValidator = new JsonSchemaValidator();
+            schemaValidator.LoadSchema("actuator", schemaPath);
+
+            var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(
+                schemaValidator: schemaValidator, schemaName: "actuator");
+
+            var originalConfig = ActuatorSettingsJson.CreateDefault();
+            var json = System.Text.Json.JsonSerializer.Serialize(originalConfig);
+            File.WriteAllText(_testFilePath, json);
+
+            // Act
+            ActuatorSettingsJson config = loader.Load(_testFilePath, createDefaultOnError: false);
+
+            // Assert
+            Assert.IsNotNull(config);
+            Assert.AreEqual(1, config.ActuatorSettings.Count);
+        }
+
+        [TestMethod]
+        public void LoadWithSchemaValidator_StrictMode_InvalidJson_ReturnsDefault()
+        {
+            // Arrange
+            string schemaPath = Path.Combine(_testDirectory, "test.schema.json");
+            string schema = @"{
+  ""type"": ""object"",
+  ""required"": [""actuatorSettings""],
+  ""properties"": {
+    ""actuatorSettings"": { ""type"": ""array"" }
+  }
+}";
+            File.WriteAllText(schemaPath, schema);
+
+            var schemaValidator = new JsonSchemaValidator();
+            schemaValidator.LoadSchema("actuator", schemaPath);
+
+            // Create a JSON file missing the required 'actuatorSettings' property
+            var invalidJson = @"{ ""otherProperty"": ""value"" }";
+            File.WriteAllText(_testFilePath, invalidJson);
+
+            var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(
+                schemaValidator: schemaValidator, schemaName: "actuator", strictMode: true);
+
+            // Act
+            ActuatorSettingsJson config = loader.Load(_testFilePath, createDefaultOnError: true);
+
+            // Assert - strict mode should return default due to schema failure
+            Assert.IsNotNull(config);
+            Assert.IsNotNull(config.ActuatorSettings);
+        }
+
+        [TestMethod]
+        public void LoadWithSchemaValidator_NonStrictMode_InvalidJson_StillDeserializes()
+        {
+            // Arrange
+            string schemaPath = Path.Combine(_testDirectory, "test.schema.json");
+            string schema = @"{
+  ""type"": ""object"",
+  ""required"": [""actuatorSettings""],
+  ""properties"": {
+    ""actuatorSettings"": { ""type"": ""array"" }
+  }
+}";
+            File.WriteAllText(schemaPath, schema);
+
+            var schemaValidator = new JsonSchemaValidator();
+            schemaValidator.LoadSchema("actuator", schemaPath);
+
+            // Create JSON missing required 'actuatorSettings' property, but still deserializable
+            var missingRequiredJson = @"{ ""otherProperty"": ""value"" }";
+            File.WriteAllText(_testFilePath, missingRequiredJson);
+
+            var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(
+                schemaValidator: schemaValidator, schemaName: "actuator", strictMode: false);
+
+            // Act - non-strict mode: schema failure should be a warning, not a failure
+            ActuatorSettingsJson config = loader.Load(_testFilePath, createDefaultOnError: false);
+
+            // Assert - non-strict mode still deserializes despite schema warning
+            Assert.IsNotNull(config);
+        }
     }
 }

@@ -1,10 +1,21 @@
 # Animation System Architecture Specification
 
-**Document Status**: Phase 3 Planning  
-**Version**: 1.0  
+**Document Status**: Phase 3 Planning — Issue #206 Analysis Complete  
+**Version**: 1.1  
 **Last Updated**: February 2026  
 **Epic**: Phase 2 – Core Infrastructure Modernization (Investigation)  
-**Tracked By**: intel/acat#195  
+**Tracked By**: intel/acat#195
+
+> **Agent/Developer Note (intel/acat#195):** Issue #206 (Current Animation System Analysis) is **complete**.
+> The full evidence-based analysis — with verified line counts, exact pain-point locations, event subscriber map,
+> XML config audit, and BCI extension breakdown — is in [`docs/ANIMATION_SYSTEM_ANALYSIS.md`](ANIMATION_SYSTEM_ANALYSIS.md).
+> Two important corrections from that analysis:
+> - `AnimationPlayer.cs` is **1,835 lines** (not ~800 as estimated here in §3.1).
+> - `AnimationSharpManagerV2.cs` is **2,885 lines** with significant duplication.
+>
+> **Next step**: Issue #207 – Animation Architecture Design.
+> Start by reviewing `ANIMATION_SYSTEM_ANALYSIS.md §11` (Prioritized Recommendations for Issue #207)
+> before finalizing the interface definitions in §4.2 of this document.  
 
 ---
 
@@ -73,22 +84,25 @@ The rewrite is **deferred to Phase 3** but this specification is the single auth
 
 ### 3.1 Component Inventory
 
+> **Note**: Line counts below are verified actual values from `ANIMATION_SYSTEM_ANALYSIS.md §2`.
+> The original estimates for `AnimationPlayer.cs` (~800) and `AnimationSharpManagerV2.cs` were significantly understated.
+
 | File | Role | Lines |
 |------|------|-------|
-| `AnimationPlayer.cs` | Timer loop, widget highlight, state machine | ~800 |
-| `AnimationManager.cs` | Actuator event routing, player lifecycle | ~600 |
-| `PanelAnimationManager.cs` | Per-panel player management, config loading | ~400 |
-| `UserControlAnimationManager.cs` | UserControl variant of panel manager | ~300 |
-| `Animation.cs` | Single scan sequence (widget list + PCode hooks) | ~480 |
-| `AnimationsCollection.cs` | Collection of `Animations` keyed by panel name | ~150 |
-| `Animations.cs` | Collection of `Animation` objects for one panel | ~120 |
-| `AnimationWidget.cs` | Per-widget highlight settings (color, sound, etc.) | ~200 |
-| `Variables.cs` | Key/value store for animation-scoped variables | ~100 |
-| `Interfaces/IAnimationManager.cs` | Public interface for `AnimationManager` | ~30 |
-| `Interfaces/IPanelAnimationManager.cs` | Public interface for `PanelAnimationManager` | ~30 |
-| `Interfaces/IUserControlAnimationManager.cs` | Public interface for `UserControlAnimationManager` | ~30 |
+| `AnimationPlayer.cs` | Timer loop, widget highlight, state machine | **1,835** |
+| `AnimationManager.cs` | Actuator event routing, player lifecycle | **976** |
+| `PanelAnimationManager.cs` | Per-panel player management, config loading | **395** |
+| `UserControlAnimationManager.cs` | UserControl variant of panel manager | **402** |
+| `Animation.cs` | Single scan sequence (widget list + PCode hooks) | **485** |
+| `AnimationsCollection.cs` | Collection of `Animations` keyed by panel name | **164** |
+| `Animations.cs` | Collection of `Animation` objects for one panel | **156** |
+| `AnimationWidget.cs` | Per-widget highlight settings (color, sound, etc.) | **148** |
+| `Variables.cs` | Key/value store for animation-scoped variables | **155** |
+| `Interfaces/IAnimationManager.cs` | Public interface for `AnimationManager` | **27** |
+| `Interfaces/IPanelAnimationManager.cs` | Public interface for `PanelAnimationManager` | **13** |
+| `Interfaces/IUserControlAnimationManager.cs` | Public interface for `UserControlAnimationManager` | **15** |
 
-**BCI extension:** `AnimationSharpManagerV2.cs` in `src/Extensions/BCI/` provides an alternate `AnimationManager` implementation for Brain-Computer Interface devices and inherits the same base contracts.
+**BCI extension:** `AnimationSharpManagerV2.cs` in `src/Extensions/BCI/Common/AnimationSharp/` is **2,885 lines** — larger than all 12 core animation files combined. It provides an alternate `AnimationManager` implementation for Brain-Computer Interface devices. See `ANIMATION_SYSTEM_ANALYSIS.md §8` for the BCI-specific vs. duplicated behavior breakdown.
 
 ### 3.2 Data Flow
 
@@ -445,21 +459,23 @@ services.AddSingleton<IAnimationConfigProvider, JsonXmlAnimationConfigProvider>(
 
 ### Issue #206 – Current Animation System Analysis
 
+> **STATUS: COMPLETE** — See [`docs/ANIMATION_SYSTEM_ANALYSIS.md`](ANIMATION_SYSTEM_ANALYSIS.md) for the full deliverable.
+
 **Goal**: Produce a written, evidence-based analysis of the current animation system that identifies what must change, what must be preserved, and what risks exist.
 
 **Acceptance Criteria**:
 
-- [ ] Complete the component inventory in §3.1 (verify line counts, add any missed files).
-- [ ] Walk the full data flow (§3.2) and confirm it matches code reality; update if diverged.
-- [ ] Produce a state machine diagram (§3.3) validated against `AnimationPlayer.cs` transitions.
-- [ ] For each pain point in §3.4 (P1–P10): confirm it still exists in the current code, note its exact location (file + method), and assign a severity (High/Medium/Low).
-- [ ] Document all outbound event consumers – which classes subscribe to `EvtPlayerStateChanged` and `EvtPlayerAnimationTransition` – to understand migration scope.
-- [ ] Review `AnimationSharpManagerV2.cs` and document which behaviors are BCI-specific vs. duplicated from the base manager.
-- [ ] Review all panel XML config files under `src/ACATResources/` that contain `<Animation>` elements; count them and note any unusual patterns.
-- [ ] Write findings in a short analysis report appended to this document (§3) or in a linked `docs/ANIMATION_ANALYSIS_REPORT.md`.
+- [x] Complete the component inventory in §3.1 (verify line counts, add any missed files). — `AnimationPlayer.cs` is 1,835 lines (not ~800); `AnimationSharpManagerV2.cs` is 2,885 lines. See `ANIMATION_SYSTEM_ANALYSIS.md §2`.
+- [x] Walk the full data flow (§3.2) and confirm it matches code reality; update if diverged. — Confirmed correct; method references added. See `ANIMATION_SYSTEM_ANALYSIS.md §3`.
+- [x] Produce a state machine diagram (§3.3) validated against `AnimationPlayer.cs` transitions. — Confirmed; `Timeout` transience clarified. See `ANIMATION_SYSTEM_ANALYSIS.md §4`.
+- [x] For each pain point in §3.4 (P1–P10): confirm it still exists in the current code, note its exact location (file + method), and assign a severity (High/Medium/Low). — All 10 confirmed with exact file:line references. See `ANIMATION_SYSTEM_ANALYSIS.md §5`.
+- [x] Document all outbound event consumers – which classes subscribe to `EvtPlayerStateChanged` and `EvtPlayerAnimationTransition` – to understand migration scope. — 5 external subscribers for `EvtPlayerStateChanged`; 1 for `EvtPlayerAnimationTransition`. See `ANIMATION_SYSTEM_ANALYSIS.md §6`.
+- [x] Review `AnimationSharpManagerV2.cs` and document which behaviors are BCI-specific vs. duplicated from the base manager. — BCI-specific vs. duplicated table provided. See `ANIMATION_SYSTEM_ANALYSIS.md §8`.
+- [x] Review all panel XML config files under `src/ACATResources/` that contain `<Animation>` elements; count them and note any unusual patterns. — 69 files; 5 schema migration constraints identified. See `ANIMATION_SYSTEM_ANALYSIS.md §7`.
+- [x] Write findings in a short analysis report appended to this document (§3) or in a linked `docs/ANIMATION_ANALYSIS_REPORT.md`. — Delivered as [`docs/ANIMATION_SYSTEM_ANALYSIS.md`](ANIMATION_SYSTEM_ANALYSIS.md).
 
 **Estimated Effort**: 3–4 days  
-**Output**: Updated §3 of this document + optionally a separate analysis report.
+**Output**: [`docs/ANIMATION_SYSTEM_ANALYSIS.md`](ANIMATION_SYSTEM_ANALYSIS.md) — full analysis report with verified metrics, subscriber map, XML audit, BCI analysis, and prioritized recommendations.
 
 ---
 

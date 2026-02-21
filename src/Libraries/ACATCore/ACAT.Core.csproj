@@ -197,6 +197,7 @@
     <Compile Include="Configuration\JsonSchemaValidator.cs" />
     <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
     <Compile Include="Configuration\PronunciationsJson.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionExtensions.cs" />
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
     <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />

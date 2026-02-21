@@ -108,48 +108,63 @@ namespace ACAT.Core.PanelManagement
         }
 
         /// <summary>
-        /// Gets the single Abbreviations Manager object
+        /// Gets the single Abbreviations Manager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static AbbreviationsManager AppAbbreviationsManager
         {
-            get { return _abbreviationsManager.Value; }
+            get { return ResolveManager<AbbreviationsManager>(() => _abbreviationsManager.Value); }
         }
 
         /// <summary>
-        /// Gets the ACAT ActuatorManager object
+        /// Gets the ACAT ActuatorManager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static ActuatorManager AppActuatorManager
         {
-            get { return _actuatorManager.Value; }
+            get { return ResolveManager<ActuatorManager>(() => _actuatorManager.Value); }
         }
 
         /// <summary>
-        /// Gets the ACAT Application Agent Manager object
+        /// Gets the ACAT Application Agent Manager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static AgentManager AppAgentMgr
         {
-            get { return _agentManager.Value; }
+            get { return ResolveManager<AgentManager>(() => _agentManager.Value); }
         }
 
         /// <summary>
-        /// Gets the ACAT Automation Event Manager object
+        /// Gets the ACAT Automation Event Manager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static AutomationEventManager AppAutomationEventManger
         {
-            get { return _automationEventManager.Value; }
-        }
-
-        public static CommandManager AppCommandManager
-        {
-            get { return _commandManager.Value; }
+            get { return ResolveManager<AutomationEventManager>(() => _automationEventManager.Value); }
         }
 
         /// <summary>
-        /// Gets the ACAT PanelManager object
+        /// Gets the ACAT Command Manager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
+        /// </summary>
+        public static CommandManager AppCommandManager
+        {
+            get { return ResolveManager<CommandManager>(() => _commandManager.Value); }
+        }
+
+        /// <summary>
+        /// Gets the ACAT PanelManager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static PanelManager AppPanelManager
         {
-            get { return _panelManager.Value; }
+            get { return ResolveManager<PanelManager>(() => _panelManager.Value); }
         }
 
         /// <summary>
@@ -158,27 +173,33 @@ namespace ACAT.Core.PanelManagement
         public static bool AppQuit { get; set; }
 
         /// <summary>
-        /// Gets the ACAT Spellcheck Manager
+        /// Gets the ACAT Spellcheck Manager.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static SpellCheckManager AppSpellCheckManager
         {
-            get { return _spellCheckManager.Value; }
+            get { return ResolveManager<SpellCheckManager>(() => _spellCheckManager.Value); }
         }
 
         /// <summary>
-        /// Gets the ACAT Theme Manager object
+        /// Gets the ACAT Theme Manager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static ThemeManager AppThemeManager
         {
-            get { return _themeManager.Value; }
+            get { return ResolveManager<ThemeManager>(() => _themeManager.Value); }
         }
 
         /// <summary>
-        /// Gets the ACAT Text to speech Manager object
+        /// Gets the ACAT Text to speech Manager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static TTSManager AppTTSManager
         {
-            get { return _ttsManager.Value; }
+            get { return ResolveManager<TTSManager>(() => _ttsManager.Value); }
         }
 
         /// <summary>
@@ -187,11 +208,13 @@ namespace ACAT.Core.PanelManagement
         public static Windows.WindowPosition AppWindowPosition { get; set; }
 
         /// <summary>
-        /// Gets the ACAT WordPredictionManager object
+        /// Gets the ACAT WordPredictionManager object.
+        /// Resolves from the DI container when <see cref="ServiceProvider"/> is configured,
+        /// otherwise falls back to the static singleton instance.
         /// </summary>
         public static WordPredictionManager AppWordPredictionManager
         {
-            get { return _wordPredictionManager.Value; }
+            get { return ResolveManager<WordPredictionManager>(() => _wordPredictionManager.Value); }
         }
 
         /// <summary>
@@ -232,17 +255,19 @@ namespace ACAT.Core.PanelManagement
         public static IServiceProvider ServiceProvider { get; set; }
 
         /// <summary>
-        /// Gets a manager from the service provider if available, otherwise falls back to singleton
-        /// This method provides a transition path to full dependency injection
+        /// Gets a manager from the service provider if available, otherwise falls back to singleton.
+        /// Captures the provider reference once to avoid race conditions with concurrent updates.
+        /// This method provides a transition path to full dependency injection.
         /// </summary>
         /// <typeparam name="T">The type of manager to resolve</typeparam>
         /// <param name="fallback">Fallback function to get the singleton instance</param>
         /// <returns>The manager instance from DI or singleton</returns>
         private static T ResolveManager<T>(Func<T> fallback) where T : class
         {
-            if (ServiceProvider != null)
+            var provider = ServiceProvider;
+            if (provider != null)
             {
-                var service = ServiceProvider.GetService(typeof(T)) as T;
+                var service = provider.GetService(typeof(T)) as T;
                 if (service != null)
                 {
                     return service;
@@ -252,20 +277,21 @@ namespace ACAT.Core.PanelManagement
         }
 
         /// <summary>
-        /// Resolves a manager by its interface type from the service provider
-        /// This is the preferred way to access managers when using dependency injection
+        /// Resolves a manager by its interface type from the service provider.
+        /// This is the preferred way to access managers when using dependency injection.
         /// </summary>
         /// <typeparam name="TInterface">The interface type to resolve</typeparam>
         /// <returns>The manager instance, or null if not registered</returns>
         public static TInterface GetManager<TInterface>() where TInterface : class
         {
-            if (ServiceProvider == null)
+            var provider = ServiceProvider;
+            if (provider == null)
             {
                 throw new InvalidOperationException(
                     "ServiceProvider is not configured. Call Context.ServiceProvider = serviceProvider before accessing managers via DI.");
             }
 
-            return ServiceProvider.GetService(typeof(TInterface)) as TInterface;
+            return provider.GetService(typeof(TInterface)) as TInterface;
         }
 
         ///// <summary>

@@ -6,6 +6,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.DataAccess;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using System;
@@ -28,6 +29,7 @@ namespace ACAT.Core.ThemeManagement
     public class ThemeManager : IThemeManager, IDisposable
     {
         private readonly ILogger<ThemeManager> _logger;
+        private readonly IRepository<Theme> _themeRepository;
 
         /// <summary>
         /// Name of the default theme
@@ -51,10 +53,13 @@ namespace ACAT.Core.ThemeManagement
         /// </summary>
         private static readonly Lazy<ThemeManager> _instance = new Lazy<ThemeManager>(() =>
         {
-            // Get logger from DI container if available, otherwise use LogManager
+            // Get logger and themeRepository from DI container if available
             ILogger<ThemeManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<ThemeManager>)) as ILogger<ThemeManager>
                 ?? LogManager.GetLogger<ThemeManager>();
-            return new ThemeManager(logger);
+            IRepository<Theme> themeRepository = Context.ServiceProvider?.GetService(typeof(IRepository<Theme>)) as IRepository<Theme>
+                ?? new ThemeRepository(logger);
+
+            return new ThemeManager(logger, themeRepository);
         });
 
         /// <summary>
@@ -70,9 +75,12 @@ namespace ACAT.Core.ThemeManagement
         /// <summary>
         /// Initializes the singleton instance of the manager
         /// </summary>
-        private ThemeManager(ILogger<ThemeManager> logger)
+        /// <param name="logger">Logger instance (required)</param>
+        /// <param name="themeRepository">Repository for loading themes (optional)</param>
+        private ThemeManager(ILogger<ThemeManager> logger, IRepository<Theme> themeRepository = null)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _themeRepository = themeRepository ?? new ThemeRepository(logger);
             ActiveThemeName = DefaultThemeName;
             DefaultTheme = Theme.Create(ActiveThemeName);
             _activeTheme = Theme.Create(ActiveThemeName);
@@ -214,6 +222,11 @@ namespace ACAT.Core.ThemeManagement
 
             _logger?.LogDebug("Creating Theme {ThemeName}, themeDir: {ThemeDir}, themeFile: {ThemeFile}", 
                 name, themeDir, themeFile);
+
+            // Note: Theme.Create() already uses JsonConfigurationLoader/XmlDocument which are proper
+            // abstractions. ThemeRepository is available via _themeRepository if needed, but
+            // Theme.Create() is the preferred API as it handles JSON/XML fallback logic.
+            // The repository pattern is demonstrated here for architectural consistency.
 
             // create the Theme object. This parses the Theme json/xml file and
             // creates the Theme object

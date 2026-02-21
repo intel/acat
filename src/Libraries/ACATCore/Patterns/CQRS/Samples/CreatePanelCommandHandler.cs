@@ -56,10 +56,8 @@ namespace ACAT.Core.Patterns.CQRS.Samples
                 panel = _panelManager.CreatePanel(command.PanelClass);
             }
 
-            if (panel is IPanel scannerPanel)
-            {
-                _panelManager.Show(scannerPanel);
-            }
+            // Set the created panel on the command for callers to use
+            command.CreatedPanel = panel as IPanel;
         }
     }
 }

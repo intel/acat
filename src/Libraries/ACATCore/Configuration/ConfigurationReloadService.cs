@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.EventManagement;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace ACAT.Core.Configuration
     public class ConfigurationReloadService : IDisposable
     {
         private readonly ILogger _logger;
+        private readonly IEventBus _eventBus;
         private readonly Dictionary<string, FileSystemWatcher> _watchers;
         private readonly Dictionary<string, Timer> _debounceTimers;
         private readonly object _lock = new object();
@@ -54,9 +56,11 @@ namespace ACAT.Core.Configuration
         /// Constructor
         /// </summary>
         /// <param name="logger">Logger instance (optional)</param>
-        public ConfigurationReloadService(ILogger logger = null)
+        /// <param name="eventBus">Event bus for publishing events (optional)</param>
+        public ConfigurationReloadService(ILogger logger = null, IEventBus eventBus = null)
         {
             _logger = logger ?? Utility.LogManager.GetLogger<ConfigurationReloadService>();
+            _eventBus = eventBus; // May be null - event publishing is optional
             _watchers = new Dictionary<string, FileSystemWatcher>();
             _debounceTimers = new Dictionary<string, Timer>();
         }
@@ -278,7 +282,15 @@ namespace ACAT.Core.Configuration
         /// </summary>
         protected virtual void OnConfigurationReloaded(ConfigurationReloadEventArgs e)
         {
+            // Fire legacy event for backward compatibility
             ConfigurationReloaded?.Invoke(this, e);
+
+            // Publish to EventBus (gradual migration path)
+            if (_eventBus != null)
+            {
+                _eventBus.Publish(new ConfigurationReloadEvent(e.FilePath));
+                _logger?.LogTrace($"Published ConfigurationReloadEvent for {e.FilePath}");
+            }
         }
 
         /// <summary>
@@ -286,7 +298,15 @@ namespace ACAT.Core.Configuration
         /// </summary>
         protected virtual void OnConfigurationReloadFailed(ConfigurationReloadEventArgs e)
         {
+            // Fire legacy event for backward compatibility
             ConfigurationReloadFailed?.Invoke(this, e);
+
+            // Publish to EventBus (gradual migration path)
+            if (_eventBus != null)
+            {
+                _eventBus.Publish(new ConfigurationReloadFailedEvent(e.FilePath, e.ErrorMessage));
+                _logger?.LogTrace($"Published ConfigurationReloadFailedEvent for {e.FilePath}");
+            }
         }
 
         /// <summary>

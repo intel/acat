@@ -69,6 +69,14 @@ jobs:
         --results-directory TestResults/
       working-directory: src/
 
+    - name: Run ACATCore.Tests.Architecture
+      run: >
+        dotnet test Libraries/ACATCore.Tests.Architecture/ACATCore.Tests.Architecture.csproj
+        --configuration TestOnly
+        --logger "trx;LogFileName=architecture-results.trx"
+        --results-directory TestResults/
+      working-directory: src/
+
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()

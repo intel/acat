@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Audit;
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.PanelConfig;
@@ -36,6 +37,11 @@ namespace ACAT.Core.PanelManagement
         private readonly ILogger<PanelStack> _logger;
 
         /// <summary>
+        /// Event bus for publishing panel lifecycle events (optional, may be null)
+        /// </summary>
+        private readonly IEventBus _eventBus;
+
+        /// <summary>
         /// The currently active and visible scanner form.
         /// </summary>
         private Form _currentForm;
@@ -52,9 +58,12 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
-        public PanelStack(ILogger<PanelStack> logger = null)
+        /// <param name="logger">Logger instance (optional)</param>
+        /// <param name="eventBus">Event bus for publishing events (optional)</param>
+        public PanelStack(ILogger<PanelStack> logger = null, IEventBus eventBus = null)
         {
             _logger = logger;
+            _eventBus = eventBus; // May be null - event publishing is optional
             PreShowPanel = null;
             PreShowPanelDisplayMode = DisplayModeTypes.None;
         }
@@ -835,6 +844,9 @@ namespace ACAT.Core.PanelManagement
 
             auditLogScannerEvent(form, "close");
 
+            // Publish to EventBus when panel is closed/hidden
+            publishPanelHideEvent(panel);
+
             _logger?.LogDebug("number of owned forms: " + array.Length);
 
             // close all the forms this panel owns
@@ -962,6 +974,9 @@ namespace ACAT.Core.PanelManagement
                     auditLogScannerEvent(panelForm, "show");
                     Context.AppPanelManager.NotifyPanelPreShow(new PanelPreShowEventArg(panel, displayMode));
                     Windows.ShowDialog(parentForm, panelForm);
+
+                    // Publish to EventBus after panel is shown
+                    publishPanelShowEvent(panel);
                 }
                 else
                 {
@@ -975,6 +990,9 @@ namespace ACAT.Core.PanelManagement
                     Context.AppPanelManager.NotifyPanelPreShow(new PanelPreShowEventArg(panel, displayMode));
 
                     Windows.Show(parentForm, panelForm);
+
+                    // Publish to EventBus after panel is shown
+                    publishPanelShowEvent(panel);
                 }
             }
             else
@@ -991,12 +1009,18 @@ namespace ACAT.Core.PanelManagement
                     Context.AppPanelManager.NotifyPanelPreShow(new PanelPreShowEventArg(panel, displayMode));
 
                     panelForm.ShowDialog();
+
+                    // Publish to EventBus after panel is shown
+                    publishPanelShowEvent(panel);
                 }
                 else
                 {
                     Context.AppPanelManager.NotifyPanelPreShow(new PanelPreShowEventArg(panel, displayMode));
 
                     Windows.ShowForm(panelForm);
+
+                    // Publish to EventBus after panel is shown
+                    publishPanelShowEvent(panel);
                 }
             }
 
@@ -1054,6 +1078,34 @@ namespace ACAT.Core.PanelManagement
         internal Form CreatePanelFromConfig(PanelConfigMapEntry panelConfig, string title)
         {
             return CreatePanel(panelConfig.PanelClass, title, new StartupArg(panelConfig.PanelClass, panelConfig.ConfigName));
+        }
+
+        /// <summary>
+        /// Publishes PanelShowEvent to the EventBus if available
+        /// </summary>
+        /// <param name="panel">The panel that was shown</param>
+        private void publishPanelShowEvent(IPanel panel)
+        {
+            if (_eventBus != null && panel is IScannerPanel scanner)
+            {
+                var panelClass = scanner.PanelClass ?? panel.GetType().Name;
+                _eventBus.Publish(new PanelShowEvent(panelClass));
+                _logger?.LogTrace($"Published PanelShowEvent for {panelClass}");
+            }
+        }
+
+        /// <summary>
+        /// Publishes PanelHideEvent to the EventBus if available
+        /// </summary>
+        /// <param name="panel">The panel that was hidden/closed</param>
+        private void publishPanelHideEvent(IPanel panel)
+        {
+            if (_eventBus != null && panel is IScannerPanel scanner)
+            {
+                var panelClass = scanner.PanelClass ?? panel.GetType().Name;
+                _eventBus.Publish(new PanelHideEvent(panelClass));
+                _logger?.LogTrace($"Published PanelHideEvent for {panelClass}");
+            }
         }
     }
 }

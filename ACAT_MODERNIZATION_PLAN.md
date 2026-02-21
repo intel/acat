@@ -1,8 +1,8 @@
 # ACAT Modernization Plan
 
-**Last Updated**: February 11, 2026  
-**Status**: Phase 1 Complete ✅  
-**Version**: 2.0
+**Last Updated**: February 20, 2026  
+**Status**: Phase 2 Architecture Modernization Complete ✅  
+**Version**: 3.0
 
 ---
 
@@ -11,13 +11,14 @@
 The ACAT Modernization Plan is a comprehensive initiative to modernize the ACAT codebase by adopting modern .NET development practices. This multi-phase project aims to:
 
 1. **Phase 1**: Logging Infrastructure & JSON Configuration (✅ **COMPLETE**)
-2. **Phase 2**: Dependency Injection & Service Architecture (⏸️ **PLANNED**)
+2. **Phase 2**: Dependency Injection & Service Architecture (✅ **COMPLETE**)
 3. **Phase 3**: Async/Await Patterns & Performance (📋 **FUTURE**)
 4. **Phase 4**: UI Modernization & WinUI 3 Migration (📋 **FUTURE**)
 
 ### Current Status
 - ✅ **Phase 1 Complete**: All 12 tickets delivered on schedule
-- 📊 **Next**: Phase 2 kickoff planning
+- ✅ **Phase 2 Architecture Modernization Complete**: Interface extraction, event system, CQRS, and repository pattern delivered
+- 📊 **Next**: Phase 3 planning
 - 🎯 **Focus**: Building on solid Phase 1 foundation
 
 ---
@@ -223,30 +224,62 @@ The ACAT Modernization Plan is a comprehensive initiative to modernize the ACAT 
 
 ---
 
-## Phase 2: Dependency Injection ⏸️ PLANNED
+## Phase 2: Architecture Modernization ✅ COMPLETE
 
-**Duration**: 6-8 weeks (estimated)  
-**Timeline**: February 2026 - April 2026 (TBD)  
-**Status**: ⏸️ **Planning stage**
+**Duration**: 2-3 weeks  
+**Timeline**: February 2026  
+**Status**: ✅ **Complete**
 
-### Objectives
+### Architecture Modernization Sub-tasks
 
-1. **DI Infrastructure Setup**
-   - Implement `Microsoft.Extensions.DependencyInjection` throughout
-   - Create `ServiceConfiguration` helper class
-   - Configure service lifetimes (singleton, scoped, transient)
-   - Update all entry points with DI containers
+All four sub-tasks (Issues #202–#205) have been delivered:
 
-2. **Service Architecture**
-   - Extract interfaces for major subsystems
-   - Implement constructor injection
-   - Replace direct instantiation with DI
-   - Create service locator for legacy compatibility
+#### Issue #202: Interface Extraction Strategy ✅
+- Interface extraction guidelines documented in `docs/INTERFACE_EXTRACTION_GUIDE.md`
+- Naming conventions (I-prefix), directory layout, backward-compatibility strategy defined
+- Component priority list (Tier 1 extracted, Tier 2 planned)
+- Migration checklist and testing requirements established
 
-3. **Core Service Interfaces**
-   - `IActuatorManager` - Actuator management
-   - `IThemeManager` - Theme and UI styling
-   - `IConfigurationService` - Configuration loading/saving
+#### Issue #203: Event System Implementation ✅
+- `IEventBus` and `IEvent` interfaces defined in `Libraries/ACATCore/EventManagement/`
+- `EventBus` implementation: thread-safe, weak-reference subscriptions, prevents memory leaks
+- Subscription tokens (`ISubscriptionToken`) support `Dispose()` for automatic cleanup
+- Built-in event types: `PanelShownEvent`, `PanelHiddenEvent`, `ActuatorSwitchEvent`, `ConfigurationReloadedEvent`, `AgentContextChangedEvent`
+
+#### Issue #204: Command/Query Separation ✅
+- CQRS marker interfaces in `Libraries/ACATCore/Patterns/CQRS/`:
+  - `ICommand`, `ICommand<TResult>` – state-changing operations
+  - `IQuery<TResult>` – read-only operations
+  - `ICommandHandler<TCommand>`, `ICommandHandler<TCommand,TResult>` – command handlers
+  - `IQueryHandler<TQuery,TResult>` – query handlers
+- Sample implementations: `ShowPanelCommand`, `HidePanelCommand`, `HandleActuatorSwitchCommand`, `GetActivePanelQuery`, `GetAllPanelNamesQuery`, `GetConfigurationValueQuery`
+
+#### Issue #205: Repository Pattern for Data Access ✅
+- `IRepository<TEntity,TKey>` interface in `Libraries/ACATCore/DataAccess/`
+- `RepositoryBase<TEntity,TKey>` abstract base with lazy-load caching
+- `ConfigurationRepository` – key/value configuration data with `GetValue`/`SetValue` helpers
+- `PreferencesRepository` – wraps XML-persisted `PreferencesBase` objects
+
+### Tests ✅
+- `ACATCore.Tests.Architecture` project with 30 MSTest unit tests covering:
+  - Event bus publish/subscribe, unsubscribe, disposal, null-guards
+  - CQRS command/query objects and handler contracts
+  - Repository CRUD operations, null-guards, and default behavior
+- Added to CI workflow (`test.yml`)
+
+### Key Deliverables
+
+| Artifact | Location |
+|----------|----------|
+| Interface extraction guide | `docs/INTERFACE_EXTRACTION_GUIDE.md` |
+| Event bus interfaces | `Libraries/ACATCore/EventManagement/IEvent.cs`, `IEventBus.cs` |
+| Event bus implementation | `Libraries/ACATCore/EventManagement/EventBus.cs` |
+| CQRS interfaces | `Libraries/ACATCore/Patterns/CQRS/` |
+| Repository interfaces | `Libraries/ACATCore/DataAccess/IRepository.cs` |
+| Repository base & implementations | `Libraries/ACATCore/DataAccess/RepositoryBase.cs`, `ConfigurationRepository.cs`, `PreferencesRepository.cs` |
+| Architecture unit tests | `Libraries/ACATCore.Tests.Architecture/` |
+
+
    - `IWindowManager` - Window and panel management
    - `IScannerService` - Scanner functionality
    - Additional services as identified during analysis

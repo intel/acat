@@ -13,11 +13,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 
 namespace ACAT.Core.Patterns.CQRS.Samples
 {
     /// <summary>
     /// Command that requests creation of an ACAT panel.
+    /// Returns the created panel for immediate use.
     /// </summary>
     public class CreatePanelCommand : ICommand
     {
@@ -35,6 +37,11 @@ namespace ACAT.Core.Patterns.CQRS.Samples
         /// Gets optional startup arguments for the panel (may be null).
         /// </summary>
         public StartupArg StartupArg { get; }
+
+        /// <summary>
+        /// Gets or sets the created panel (set by handler).
+        /// </summary>
+        public IPanel CreatedPanel { get; set; }
 
         /// <summary>
         /// Initialises a new <see cref="CreatePanelCommand"/>.

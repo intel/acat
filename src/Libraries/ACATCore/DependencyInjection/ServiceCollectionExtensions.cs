@@ -246,6 +246,9 @@ namespace ACAT.Core.DependencyInjection
             services.AddSingleton<JsonSchemaValidator>();
             services.AddSingleton<ConfigurationReloadService>();
             services.AddSingleton<EnvironmentConfiguration>();
+            services.AddSingleton<IConfigurationManager>(provider => provider.GetRequiredService<EnvironmentConfiguration>());
+            services.AddSingleton<IConfigurationManagerFactory>(provider =>
+                new ConfigurationManagerFactory(provider.GetRequiredService<IConfigurationManager>()));
             return services;
         }
 

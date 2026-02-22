@@ -32,7 +32,7 @@ namespace ACAT.Core.Configuration
     /// <summary>
     /// Service for loading environment-specific configurations
     /// </summary>
-    public class EnvironmentConfiguration
+    public class EnvironmentConfiguration : IConfigurationManager
     {
         private readonly ILogger _logger;
         private ConfigurationEnvironment _currentEnvironment;

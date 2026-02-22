@@ -55,6 +55,21 @@ namespace ACAT.Core.DependencyInjection
     /// </remarks>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Registers the <see cref="Context"/> as a singleton and exposes it through
+        /// <see cref="IContext"/>. The factory sets <see cref="Context.ServiceProvider"/>
+        /// from the DI container so that all static <c>Context.AppXXX</c> accessor
+        /// properties resolve managers through the DI container automatically.
+        /// </summary>
+        public static IServiceCollection AddContextService(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddSingleton<IContext>(provider => new Context(provider));
+            services.AddSingleton<Context>(provider => (Context)provider.GetRequiredService<IContext>());
+            return services;
+        }
+
         // ---------------------------------------------------------------
         // Individual module registration methods
         // ---------------------------------------------------------------
@@ -284,6 +299,7 @@ namespace ACAT.Core.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services
+                .AddContextService()
                 .AddACATConfiguration()
                 .AddActuatorManagement()
                 .AddAgentManagement()

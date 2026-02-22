@@ -64,6 +64,7 @@
     <Compile Include="ActuatorManagement\CalibrationNotifyEventArgs.cs" />
     <Compile Include="ActuatorManagement\IActuatorManager.cs" />
     <Compile Include="ActuatorManagement\IActuatorManagerFactory.cs" />
+    <Compile Include="ActuatorManagement\IActuatorFactory.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\SwitchInterfaceActuator.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorSetting.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorConfig.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="AgentManagement\AgentManager.cs" />
     <Compile Include="AgentManagement\IAgentManager.cs" />
     <Compile Include="AgentManagement\IAgentManagerFactory.cs" />
+    <Compile Include="AgentManagement\IAgentFactory.cs" />
     <Compile Include="AgentManagement\AgentProcessInfo.cs" />
     <Compile Include="AgentManagement\Agents\AgentsCache.cs" />
     <Compile Include="AgentManagement\Agents\PreferredAgents.cs" />
@@ -346,6 +348,7 @@
     <Compile Include="PanelManagement\PanelManager.cs" />
     <Compile Include="PanelManagement\IPanelManager.cs" />
     <Compile Include="PanelManagement\IPanelManagerFactory.cs" />
+    <Compile Include="PanelManagement\IScannerFactory.cs" />
     <Compile Include="PanelManagement\Utils\AutoPositionScanner.cs" />
     <Compile Include="PanelManagement\Utils\Fonts.cs" />
     <Compile Include="PanelManagement\Utils\OutlineWindow.cs" />
@@ -509,6 +512,7 @@
     <Compile Include="WidgetManagement\WidgetEventArg.cs" />
     <Compile Include="WidgetManagement\WidgetFinder.cs" />
     <Compile Include="WidgetManagement\WidgetManager.cs" />
+    <Compile Include="WidgetManagement\IWidgetFactory.cs" />
     <Compile Include="Widgets\ACATFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>

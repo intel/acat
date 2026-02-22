@@ -28,6 +28,7 @@ using ACAT.Core.Patterns.CQRS;
 using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.SpellCheckManagement;
 using ACAT.Core.ThemeManagement;
+using ACAT.Core.WidgetManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WordPredictorManagement;
@@ -59,7 +60,7 @@ namespace ACAT.Core.DependencyInjection
         // ---------------------------------------------------------------
 
         /// <summary>
-        /// Registers the <see cref="ActuatorManager"/> and its related factory.
+        /// Registers the <see cref="ActuatorManager"/> and its related factories.
         /// </summary>
         public static IServiceCollection AddActuatorManagement(this IServiceCollection services)
         {
@@ -68,11 +69,12 @@ namespace ACAT.Core.DependencyInjection
             services.AddSingleton<ActuatorManager>(provider => ActuatorManager.Instance);
             services.AddSingleton<IActuatorManager>(provider => provider.GetRequiredService<ActuatorManager>());
             services.AddSingleton<IActuatorManagerFactory, ActuatorManagerFactory>();
+            services.AddSingleton<IActuatorFactory, ActuatorFactory>();
             return services;
         }
 
         /// <summary>
-        /// Registers the <see cref="AgentManager"/> and its related factory.
+        /// Registers the <see cref="AgentManager"/> and its related factories.
         /// </summary>
         public static IServiceCollection AddAgentManagement(this IServiceCollection services)
         {
@@ -81,6 +83,7 @@ namespace ACAT.Core.DependencyInjection
             services.AddSingleton<AgentManager>(provider => AgentManager.Instance);
             services.AddSingleton<IAgentManager>(provider => provider.GetRequiredService<AgentManager>());
             services.AddSingleton<IAgentManagerFactory, AgentManagerFactory>();
+            services.AddSingleton<IAgentFactory, AgentFactory>();
             return services;
         }
 
@@ -98,7 +101,8 @@ namespace ACAT.Core.DependencyInjection
         }
 
         /// <summary>
-        /// Registers the <see cref="PanelManager"/> and its related factory.
+        /// Registers the <see cref="PanelManager"/> and its related factories,
+        /// including <see cref="IScannerFactory"/> for creating individual scanner panels.
         /// </summary>
         public static IServiceCollection AddPanelManagement(this IServiceCollection services)
         {
@@ -107,6 +111,7 @@ namespace ACAT.Core.DependencyInjection
             services.AddSingleton<PanelManager>(provider => PanelManager.Instance);
             services.AddSingleton<IPanelManager>(provider => provider.GetRequiredService<PanelManager>());
             services.AddSingleton<IPanelManagerFactory, PanelManagerFactory>();
+            services.AddSingleton<IScannerFactory, ScannerFactory>();
             return services;
         }
 
@@ -228,6 +233,17 @@ namespace ACAT.Core.DependencyInjection
         }
 
         /// <summary>
+        /// Registers the <see cref="IWidgetFactory"/> for creating individual widget instances.
+        /// </summary>
+        public static IServiceCollection AddWidgetManagement(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddSingleton<IWidgetFactory, WidgetFactory>();
+            return services;
+        }
+
+        /// <summary>
         /// Registers ACAT configuration services including JSON schema validation,
         /// hot-reload support, and environment-specific configuration.
         /// </summary>
@@ -281,7 +297,8 @@ namespace ACAT.Core.DependencyInjection
                 .AddEventManagement()
                 .AddCQRSHandlers()
                 .AddRepositories()
-                .AddDiagnostics();
+                .AddDiagnostics()
+                .AddWidgetManagement();
 
             return services;
         }

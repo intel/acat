@@ -146,5 +146,57 @@ namespace ACATCore.Tests.Configuration
             // Assert
             Assert.IsNull(Context.ServiceProvider);
         }
+
+        [TestMethod]
+        public void IContext_ResolvedFromServiceProvider_IsNotNull()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddACATServices();
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Act
+            var context = serviceProvider.GetService<IContext>();
+
+            // Assert
+            Assert.IsNotNull(context);
+            Assert.IsInstanceOfType(context, typeof(IContext));
+        }
+
+        [TestMethod]
+        public void IContext_ResolvingSetsStaticServiceProvider()
+        {
+            // Arrange
+            Context.ServiceProvider = null;
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddACATServices();
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Act – resolving IContext should configure Context.ServiceProvider
+            serviceProvider.GetRequiredService<IContext>();
+
+            // Assert
+            Assert.IsNotNull(Context.ServiceProvider);
+            Assert.AreSame(serviceProvider, Context.ServiceProvider);
+        }
+
+        [TestMethod]
+        public void Context_AndIContext_ResolveSameSingletonInstance()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddACATServices();
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Act
+            var iContext = serviceProvider.GetRequiredService<IContext>();
+            var context  = serviceProvider.GetRequiredService<Context>();
+
+            // Assert – both registrations return the same singleton
+            Assert.AreSame(iContext, context);
+        }
     }
 }

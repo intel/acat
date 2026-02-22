@@ -19,6 +19,7 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.CommandManagement;
+using ACAT.Core.Configuration;
 using ACAT.Core.DataAccess;
 using ACAT.Core.Diagnostics;
 using ACAT.Core.EventManagement;
@@ -27,6 +28,7 @@ using ACAT.Core.Patterns.CQRS;
 using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.SpellCheckManagement;
 using ACAT.Core.ThemeManagement;
+using ACAT.Core.WidgetManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WordPredictorManagement;
@@ -47,16 +49,33 @@ namespace ACAT.Core.DependencyInjection
     ///         so that callers can resolve either.</item>
     ///   <item>Factory helpers are registered as Singletons for advanced / test scenarios.</item>
     ///   <item>CQRS command / query handlers are Transient because they are stateless.</item>
+    ///   <item>Configuration services (JsonSchemaValidator, ConfigurationReloadService,
+    ///         EnvironmentConfiguration) are Singletons – shared across the application.</item>
     /// </list>
     /// </remarks>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Registers the <see cref="Context"/> as a singleton and exposes it through
+        /// <see cref="IContext"/>. The factory sets <see cref="Context.ServiceProvider"/>
+        /// from the DI container so that all static <c>Context.AppXXX</c> accessor
+        /// properties resolve managers through the DI container automatically.
+        /// </summary>
+        public static IServiceCollection AddContextService(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddSingleton<IContext>(provider => new Context(provider));
+            services.AddSingleton<Context>(provider => (Context)provider.GetRequiredService<IContext>());
+            return services;
+        }
+
         // ---------------------------------------------------------------
         // Individual module registration methods
         // ---------------------------------------------------------------
 
         /// <summary>
-        /// Registers the <see cref="ActuatorManager"/> and its related factory.
+        /// Registers the <see cref="ActuatorManager"/> and its related factories.
         /// </summary>
         public static IServiceCollection AddActuatorManagement(this IServiceCollection services)
         {
@@ -65,11 +84,12 @@ namespace ACAT.Core.DependencyInjection
             services.AddSingleton<ActuatorManager>(provider => ActuatorManager.Instance);
             services.AddSingleton<IActuatorManager>(provider => provider.GetRequiredService<ActuatorManager>());
             services.AddSingleton<IActuatorManagerFactory, ActuatorManagerFactory>();
+            services.AddSingleton<IActuatorFactory, ActuatorFactory>();
             return services;
         }
 
         /// <summary>
-        /// Registers the <see cref="AgentManager"/> and its related factory.
+        /// Registers the <see cref="AgentManager"/> and its related factories.
         /// </summary>
         public static IServiceCollection AddAgentManagement(this IServiceCollection services)
         {
@@ -78,6 +98,7 @@ namespace ACAT.Core.DependencyInjection
             services.AddSingleton<AgentManager>(provider => AgentManager.Instance);
             services.AddSingleton<IAgentManager>(provider => provider.GetRequiredService<AgentManager>());
             services.AddSingleton<IAgentManagerFactory, AgentManagerFactory>();
+            services.AddSingleton<IAgentFactory, AgentFactory>();
             return services;
         }
 
@@ -95,7 +116,8 @@ namespace ACAT.Core.DependencyInjection
         }
 
         /// <summary>
-        /// Registers the <see cref="PanelManager"/> and its related factory.
+        /// Registers the <see cref="PanelManager"/> and its related factories,
+        /// including <see cref="IScannerFactory"/> for creating individual scanner panels.
         /// </summary>
         public static IServiceCollection AddPanelManagement(this IServiceCollection services)
         {
@@ -104,6 +126,7 @@ namespace ACAT.Core.DependencyInjection
             services.AddSingleton<PanelManager>(provider => PanelManager.Instance);
             services.AddSingleton<IPanelManager>(provider => provider.GetRequiredService<PanelManager>());
             services.AddSingleton<IPanelManagerFactory, PanelManagerFactory>();
+            services.AddSingleton<IScannerFactory, ScannerFactory>();
             return services;
         }
 
@@ -224,6 +247,42 @@ namespace ACAT.Core.DependencyInjection
             return services;
         }
 
+        /// <summary>
+        /// Registers the <see cref="IWidgetFactory"/> for creating individual widget instances.
+        /// </summary>
+        public static IServiceCollection AddWidgetManagement(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddSingleton<IWidgetFactory, WidgetFactory>();
+            return services;
+        }
+
+        /// <summary>
+        /// Registers ACAT configuration services including JSON schema validation,
+        /// hot-reload support, and environment-specific configuration.
+        /// </summary>
+        /// <remarks>
+        /// Service lifetimes:
+        /// <list type="bullet">
+        ///   <item><see cref="JsonSchemaValidator"/> is Singleton – schemas are loaded once and reused.</item>
+        ///   <item><see cref="ConfigurationReloadService"/> is Singleton – a single watcher per application.</item>
+        ///   <item><see cref="EnvironmentConfiguration"/> is Singleton – environment is fixed at startup.</item>
+        /// </list>
+        /// </remarks>
+        public static IServiceCollection AddACATConfiguration(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddSingleton<JsonSchemaValidator>();
+            services.AddSingleton<ConfigurationReloadService>();
+            services.AddSingleton<EnvironmentConfiguration>();
+            services.AddSingleton<IConfigurationManager>(provider => provider.GetRequiredService<EnvironmentConfiguration>());
+            services.AddSingleton<IConfigurationManagerFactory>(provider =>
+                new ConfigurationManagerFactory(provider.GetRequiredService<IConfigurationManager>()));
+            return services;
+        }
+
         // ---------------------------------------------------------------
         // Convenience aggregate method
         // ---------------------------------------------------------------
@@ -240,6 +299,8 @@ namespace ACAT.Core.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services
+                .AddContextService()
+                .AddACATConfiguration()
                 .AddActuatorManagement()
                 .AddAgentManagement()
                 .AddTTSManagement()
@@ -252,7 +313,8 @@ namespace ACAT.Core.DependencyInjection
                 .AddEventManagement()
                 .AddCQRSHandlers()
                 .AddRepositories()
-                .AddDiagnostics();
+                .AddDiagnostics()
+                .AddWidgetManagement();
 
             return services;
         }

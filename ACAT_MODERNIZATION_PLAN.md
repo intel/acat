@@ -1,8 +1,8 @@
 # ACAT Modernization Plan
 
-**Last Updated**: February 21, 2026  
-**Status**: Phase 2 DI Infrastructure In Progress 🔄  
-**Version**: 3.1
+**Last Updated**: February 22, 2026  
+**Status**: Phase 2 DI Infrastructure Complete ✅  
+**Version**: 3.2
 
 ---
 
@@ -18,9 +18,9 @@ The ACAT Modernization Plan is a comprehensive initiative to modernize the ACAT 
 ### Current Status
 - ✅ **Phase 1 Complete**: All 12 tickets delivered on schedule
 - ✅ **Phase 2 Architecture Modernization Complete**: Interface extraction, event system, CQRS, and repository pattern delivered
-- 🔄 **Phase 2 DI Infrastructure In Progress**: Service container, Context class refactor, interface extraction (Issues #209–#216)
-- 📊 **Next**: Complete remaining DI infrastructure tasks, then Phase 3 planning
-- 🎯 **Focus**: Dependency injection throughout ACAT core
+- ✅ **Phase 2 DI Infrastructure Complete**: Service container, Context class refactor, interface extraction, factory patterns, configuration services (Issues #209–#216, #211)
+- 📊 **Next**: Phase 3 planning – Async/Await Patterns & Performance
+- 🎯 **Focus**: Incremental modernization, maintaining backward compatibility
 
 ---
 
@@ -282,11 +282,11 @@ All four sub-tasks (Issues #202–#205) have been delivered:
 
 ---
 
-## Phase 2: DI Infrastructure 🔄 IN PROGRESS
+## Phase 2: DI Infrastructure ✅ COMPLETE
 
 **Duration**: 3 weeks  
 **Timeline**: February 2026  
-**Status**: 🔄 **In Progress**  
+**Status**: ✅ **Complete**  
 **Issues**: #209 (Setup Service Container), #210 (Refactor Context Class), #212–#216
 
 ### DI Infrastructure Sub-tasks
@@ -294,6 +294,7 @@ All four sub-tasks (Issues #202–#205) have been delivered:
 #### Issue #209 / #212: Setup Service Container ✅
 - `Microsoft.Extensions.DependencyInjection` integrated into all core projects
 - `ServiceCollectionExtensions.cs` created with per-module registration methods (`AddActuatorManagement()`, `AddAgentManagement()`, etc.)
+- `AddACATConfiguration()` method registers configuration services (`JsonSchemaValidator`, `ConfigurationReloadService`, `EnvironmentConfiguration`)
 - `ServiceConfiguration.cs` provides convenience methods: `AddACATServices()`, `AddACATInfrastructure()`, `CreateServiceProvider()`
 - All five application entry points (`ACATApp`, `ACATTalk`, `ACATConfig`, `ACATConfigNext`, `ACATWatch`) updated to call `InitializeDependencyInjection()`
 
@@ -311,9 +312,16 @@ All manager interfaces created and registered in DI:
 - `IThemeManager`, `IWordPredictionManager`, `ISpellCheckManager`
 - `IAbbreviationsManager`, `ICommandManager`, `IAutomationEventManager`
 
-#### Issues #214, #216: Factory Patterns & Extension Loading 🔄
+#### Issues #214, #216: Factory Patterns & Extension Loading ✅
 - Factory interfaces and implementations completed for all managers
-- Extension loading with DI: planned
+- Extension loading integrated with `IServiceProvider` via `ExtensionInstantiator`
+
+#### Issue #211 / #218: Schema Validation Implementation ✅
+- `JsonSchemaValidator` created in `Libraries/ACATCore/Configuration/JsonSchemaValidator.cs`
+- Validates JSON files against JSON Schema definitions before deserialization
+- Integrated into `JsonConfigurationLoader<T>` as optional pre-deserialization validation
+- Supports optional strict mode: warn (default) or fail on schema violations
+- Registered as Singleton in DI via `AddACATConfiguration()`
 
 ### Tests for DI Infrastructure
 - `ACATCore.Tests.Configuration` project with tests covering:
@@ -332,6 +340,7 @@ All manager interfaces created and registered in DI:
 | Service configuration | `Libraries/ACATCore/Utility/ServiceConfiguration.cs` |
 | Context DI bridge | `Libraries/ACATCore/PanelManagement/Context.cs` |
 | Manager interfaces | Each manager's `Interfaces/` subdirectory |
+| Configuration services | `Libraries/ACATCore/Configuration/JsonSchemaValidator.cs` |
 | DI guide | `DEPENDENCY_INJECTION_GUIDE.md` |
 | DI tests | `Libraries/ACATCore.Tests.Configuration/` |
 
@@ -341,6 +350,7 @@ All manager interfaces created and registered in DI:
 |-----------|--------|--------|
 | Service container configured | Yes | ✅ Complete |
 | All managers registered in DI | Yes | ✅ Complete |
+| Configuration services registered in DI | Yes | ✅ Complete |
 | Context properties use DI | Yes | ✅ Complete |
 | Manager interfaces defined | All major managers | ✅ Complete |
 | Factory pattern implemented | All managers | ✅ Complete |
@@ -424,12 +434,12 @@ Phase 1: Foundation
 └─ Week 4: Configuration Implementation (Issues #9-12)
 Status: ✅ Complete (February 11, 2026)
 
-Phase 2: Dependency Injection ⏸️
-├─ Week 1-2: Analysis & Infrastructure (Issues #13-14)
-├─ Week 3-4: Core Services (Issues #15-17)
-├─ Week 5-6: Service Implementation (Issues #18-20)
-└─ Week 7-8: Testing & Documentation (Issues #21-24)
-Status: ⏸️ Planned (Start TBD)
+Phase 2: Dependency Injection & Service Architecture ✅
+├─ Architecture Modernization: Interface extraction, EventBus, CQRS, Repository (Issues #202-#205)
+├─ DI Infrastructure: Service container, Context DI bridge, manager interfaces (Issues #209-#215)
+├─ Factory Patterns & Extension Loading (Issues #214, #216)
+└─ Schema Validation & Configuration Services (Issues #211, #218)
+Status: ✅ Complete (February 22, 2026)
 
 Phase 3: Async/Await Patterns 📋
 └─ TBD (4-6 weeks after Phase 2)

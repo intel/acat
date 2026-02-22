@@ -69,11 +69,25 @@ This directory contains the enhanced configuration system components for ACAT Ph
 var schemaValidator = new JsonSchemaValidator(logger);
 schemaValidator.LoadSchema("my-config", "schemas/json/my-config.schema.json");
 
-if (schemaValidator.Validate("my-config", "config/settings.json", out var errors))
-{
-    var loader = new JsonConfigurationLoader<MyConfig>(logger: logger);
-    var config = loader.Load("config/settings.json");
-}
+// Pass schemaValidator to loader for automatic pre-deserialization validation
+var loader = new JsonConfigurationLoader<MyConfig>(
+    logger: logger,
+    schemaValidator: schemaValidator,
+    schemaName: "my-config"
+);
+var config = loader.Load("config/settings.json");
+```
+
+Use **strict mode** to treat schema validation failures as errors (returns default/null instead of deserializing):
+
+```csharp
+var loader = new JsonConfigurationLoader<MyConfig>(
+    logger: logger,
+    schemaValidator: schemaValidator,
+    schemaName: "my-config",
+    strictMode: true  // Fail on schema violations
+);
+var config = loader.Load("config/settings.json");
 ```
 
 ### 2. Configuration with Hot-Reload
@@ -213,8 +227,11 @@ var config = loader.Load(configPath);
 var loaderWithFeatures = new JsonConfigurationLoader<MyConfig>(
     validator: validator,
     logger: logger,
-    enableHotReload: true,      // Opt-in
-    useEnvironmentConfig: true  // Opt-in
+    enableHotReload: true,          // Opt-in
+    useEnvironmentConfig: true,     // Opt-in
+    schemaValidator: schemaValidator, // Opt-in: pre-deserialization JSON schema validation
+    schemaName: "my-config",        // Required when schemaValidator is provided
+    strictMode: true                // Opt-in: fail on schema violations (default: warn)
 );
 ```
 

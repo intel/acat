@@ -19,6 +19,7 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.CommandManagement;
+using ACAT.Core.Configuration;
 using ACAT.Core.DataAccess;
 using ACAT.Core.Diagnostics;
 using ACAT.Core.EventManagement;
@@ -47,6 +48,8 @@ namespace ACAT.Core.DependencyInjection
     ///         so that callers can resolve either.</item>
     ///   <item>Factory helpers are registered as Singletons for advanced / test scenarios.</item>
     ///   <item>CQRS command / query handlers are Transient because they are stateless.</item>
+    ///   <item>Configuration services (JsonSchemaValidator, ConfigurationReloadService,
+    ///         EnvironmentConfiguration) are Singletons – shared across the application.</item>
     /// </list>
     /// </remarks>
     public static class ServiceCollectionExtensions
@@ -224,6 +227,28 @@ namespace ACAT.Core.DependencyInjection
             return services;
         }
 
+        /// <summary>
+        /// Registers ACAT configuration services including JSON schema validation,
+        /// hot-reload support, and environment-specific configuration.
+        /// </summary>
+        /// <remarks>
+        /// Service lifetimes:
+        /// <list type="bullet">
+        ///   <item><see cref="JsonSchemaValidator"/> is Singleton – schemas are loaded once and reused.</item>
+        ///   <item><see cref="ConfigurationReloadService"/> is Singleton – a single watcher per application.</item>
+        ///   <item><see cref="EnvironmentConfiguration"/> is Singleton – environment is fixed at startup.</item>
+        /// </list>
+        /// </remarks>
+        public static IServiceCollection AddACATConfiguration(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddSingleton<JsonSchemaValidator>();
+            services.AddSingleton<ConfigurationReloadService>();
+            services.AddSingleton<EnvironmentConfiguration>();
+            return services;
+        }
+
         // ---------------------------------------------------------------
         // Convenience aggregate method
         // ---------------------------------------------------------------
@@ -240,6 +265,7 @@ namespace ACAT.Core.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services
+                .AddACATConfiguration()
                 .AddActuatorManagement()
                 .AddAgentManagement()
                 .AddTTSManagement()

@@ -13,6 +13,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
+using ACAT.Core.Configuration;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.WordPredictorManagement;
@@ -44,6 +45,9 @@ namespace ACATCore.Tests.Mocks
         /// <summary>Gets the mock for <see cref="ITTSManager"/>.</summary>
         public Mock<ITTSManager> TTSManager { get; }
 
+        /// <summary>Gets the mock for <see cref="IConfigurationManager"/>.</summary>
+        public Mock<IConfigurationManager> ConfigurationManager { get; }
+
         /// <summary>Gets the mock for <see cref="ILogger"/>.</summary>
         public Mock<ILogger> Logger { get; }
 
@@ -53,6 +57,7 @@ namespace ACATCore.Tests.Mocks
             Mock<IActuatorManager> actuatorManager,
             Mock<IWordPredictionManager> wordPredictionManager,
             Mock<ITTSManager> ttsManager,
+            Mock<IConfigurationManager> configurationManager,
             Mock<ILogger> logger)
         {
             PanelManager = panelManager;
@@ -60,6 +65,7 @@ namespace ACATCore.Tests.Mocks
             ActuatorManager = actuatorManager;
             WordPredictionManager = wordPredictionManager;
             TTSManager = ttsManager;
+            ConfigurationManager = configurationManager;
             Logger = logger;
         }
     }
@@ -95,6 +101,7 @@ namespace ACATCore.Tests.Mocks
                 ManagerMocks.CreateActuatorManager(),
                 ManagerMocks.CreateWordPredictionManager(),
                 ManagerMocks.CreateTTSManager(),
+                ManagerMocks.CreateConfigurationManager(),
                 ManagerMocks.CreateLogger());
         }
 
@@ -127,6 +134,12 @@ namespace ACATCore.Tests.Mocks
         /// </summary>
         public static Mock<ITTSManager> CreateTTSManager() =>
             ManagerMocks.CreateTTSManager();
+
+        /// <summary>
+        /// Creates a <see cref="Mock{IConfigurationManager}"/> with default setups.
+        /// </summary>
+        public static Mock<IConfigurationManager> CreateConfigurationManager() =>
+            ManagerMocks.CreateConfigurationManager();
 
         /// <summary>
         /// Creates a <see cref="Mock{ILogger}"/> for verifying log output.
@@ -170,6 +183,12 @@ namespace ACATCore.Tests.Mocks
         /// </summary>
         public static Mock<ITTSManager> CreateStrictTTSManager() =>
             new Mock<ITTSManager>(MockBehavior.Strict);
+
+        /// <summary>
+        /// Creates a strict <see cref="Mock{IConfigurationManager}"/> (all un-setup calls throw).
+        /// </summary>
+        public static Mock<IConfigurationManager> CreateStrictConfigurationManager() =>
+            new Mock<IConfigurationManager>(MockBehavior.Strict);
 
         /// <summary>
         /// Configures <paramref name="mock"/> so that

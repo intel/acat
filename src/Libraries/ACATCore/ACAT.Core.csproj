@@ -194,6 +194,8 @@
     <Compile Include="Configuration\ConfigurationReloadService.cs" />
     <Compile Include="Configuration\ConfigurationVersioning.cs" />
     <Compile Include="Configuration\EnvironmentConfiguration.cs" />
+    <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\IConfigurationManagerFactory.cs" />
     <Compile Include="Configuration\JsonSchemaValidator.cs" />
     <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
     <Compile Include="Configuration\PronunciationsJson.cs" />

@@ -13,6 +13,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
+using ACAT.Core.Configuration;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.WordPredictorManagement;
@@ -81,6 +82,15 @@ namespace ACATCore.Tests
         }
 
         [Fact]
+        public void ManagerMocks_CreateConfigurationManager_ReturnsConfiguredMock()
+        {
+            var mock = ManagerMocks.CreateConfigurationManager();
+
+            Assert.NotNull(mock);
+            Assert.IsAssignableFrom<IConfigurationManager>(mock.Object);
+        }
+
+        [Fact]
         public void ManagerMocks_CreateLogger_ReturnsConfiguredMock()
         {
             var mock = ManagerMocks.CreateLogger();
@@ -102,6 +112,7 @@ namespace ACATCore.Tests
             Assert.NotNull(bundle.ActuatorManager);
             Assert.NotNull(bundle.WordPredictionManager);
             Assert.NotNull(bundle.TTSManager);
+            Assert.NotNull(bundle.ConfigurationManager);
             Assert.NotNull(bundle.Logger);
         }
 
@@ -116,6 +127,7 @@ namespace ACATCore.Tests
             Assert.NotSame(bundle1.ActuatorManager, bundle2.ActuatorManager);
             Assert.NotSame(bundle1.WordPredictionManager, bundle2.WordPredictionManager);
             Assert.NotSame(bundle1.TTSManager, bundle2.TTSManager);
+            Assert.NotSame(bundle1.ConfigurationManager, bundle2.ConfigurationManager);
         }
 
         // ----------------------------------------------------------------
@@ -347,6 +359,53 @@ namespace ACATCore.Tests
 
             // No setup for Init – should throw MockException
             Assert.Throws<MockException>(() => mock.Object.Init(new List<string>()));
+        }
+
+        // ----------------------------------------------------------------
+        // IConfigurationManager – default return values
+        // ----------------------------------------------------------------
+
+        [Fact]
+        public void ConfigurationManagerMock_CurrentEnvironment_ReturnsProductionByDefault()
+        {
+            var mock = ManagerMocks.CreateConfigurationManager();
+
+            Assert.Equal(ConfigurationEnvironment.Production, mock.Object.CurrentEnvironment);
+        }
+
+        [Fact]
+        public void ConfigurationManagerMock_GetOverride_ReturnsNullByDefault()
+        {
+            var mock = ManagerMocks.CreateConfigurationManager();
+
+            Assert.Null(mock.Object.GetOverride("anyKey"));
+        }
+
+        [Fact]
+        public void ConfigurationManagerMock_GetEnvironmentFilePath_ReturnsSamePathByDefault()
+        {
+            var mock = ManagerMocks.CreateConfigurationManager();
+
+            Assert.Equal("config.json", mock.Object.GetEnvironmentFilePath("config.json"));
+        }
+
+        [Fact]
+        public void ConfigurationManagerMock_SetOverride_CanBeVerified()
+        {
+            var mock = ManagerMocks.CreateConfigurationManager();
+
+            mock.Object.SetOverride("myKey", "myValue");
+
+            mock.Verify(m => m.SetOverride("myKey", "myValue"), Times.Once);
+        }
+
+        [Fact]
+        public void ConfigurationManagerMock_GetOverride_CanBeOverridden()
+        {
+            var mock = ManagerMocks.CreateConfigurationManager();
+            mock.Setup(m => m.GetOverride("theme")).Returns("dark");
+
+            Assert.Equal("dark", mock.Object.GetOverride("theme"));
         }
     }
 }

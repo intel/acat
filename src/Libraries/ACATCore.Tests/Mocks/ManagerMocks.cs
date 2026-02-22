@@ -16,6 +16,7 @@ using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.Configuration;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Interfaces;
@@ -150,6 +151,22 @@ namespace ACATCore.Tests.Mocks
             mock.Setup(m => m.ActiveEngine).Returns((ITTSEngine)null);
             mock.Setup(m => m.TTSEnginesList).Returns(new List<ACAT.Core.Extensions.IExtension>());
             mock.Setup(m => m.GetExtensions()).Returns(new List<System.Type>());
+
+            return mock;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Mock{IConfigurationManager}"/> with commonly used
+        /// members configured to return safe default values.
+        /// </summary>
+        public static Mock<IConfigurationManager> CreateConfigurationManager()
+        {
+            var mock = new Mock<IConfigurationManager>();
+
+            mock.Setup(m => m.CurrentEnvironment).Returns(ConfigurationEnvironment.Production);
+            mock.Setup(m => m.GetEnvironmentFilePath(It.IsAny<string>())).Returns((string path) => path);
+            mock.Setup(m => m.GetOverride(It.IsAny<string>())).Returns((string)null);
+            mock.Setup(m => m.GetAllOverrides()).Returns(new Dictionary<string, string>());
 
             return mock;
         }

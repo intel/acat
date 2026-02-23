@@ -25,6 +25,12 @@ namespace ACAT.Core.Configuration
     public class PreferredWordPredictorsJson
     {
         /// <summary>
+        /// Configuration file version for migration support
+        /// </summary>
+        [JsonPropertyName("version")]
+        public string Version { get; set; } = "1.0.0";
+
+        /// <summary>
         /// List of preferred word predictors for different languages
         /// </summary>
         [JsonPropertyName("wordPredictors")]

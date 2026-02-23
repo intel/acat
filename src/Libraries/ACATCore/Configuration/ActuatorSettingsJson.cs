@@ -25,6 +25,12 @@ namespace ACAT.Core.Configuration
     public class ActuatorSettingsJson
     {
         /// <summary>
+        /// Configuration file version for migration support
+        /// </summary>
+        [JsonPropertyName("version")]
+        public string Version { get; set; } = "1.0.0";
+
+        /// <summary>
         /// List of actuator configurations
         /// </summary>
         [JsonPropertyName("actuatorSettings")]

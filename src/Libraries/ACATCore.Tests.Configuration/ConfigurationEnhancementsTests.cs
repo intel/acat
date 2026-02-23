@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
@@ -165,6 +166,51 @@ namespace ACATCore.Tests.Configuration
             // Assert
             Assert.IsFalse(result, "Validation should fail");
             Assert.IsTrue(errors.Count > 0, "Should have validation errors");
+        }
+
+        [TestMethod]
+        public void JsonSchemaValidator_Validate_Performance_CompletesWithin100ms()
+        {
+            const int MaxValidationTimeMs = 100;
+
+            // Arrange
+            var validator = new JsonSchemaValidator(_logger);
+            string schemaPath = Path.Combine(_testDirectory, "perf.schema.json");
+            string configPath = Path.Combine(_testDirectory, "perf.json");
+
+            string schema = @"{
+  ""type"": ""object"",
+  ""required"": [""name"", ""port"", ""enabled""],
+  ""properties"": {
+    ""name"":    { ""type"": ""string""  },
+    ""port"":    { ""type"": ""number""  },
+    ""enabled"": { ""type"": ""boolean"" }
+  }
+}";
+            File.WriteAllText(schemaPath, schema);
+
+            string config = @"{
+  ""name"": ""TestConfig"",
+  ""port"": 8080,
+  ""enabled"": true
+}";
+            File.WriteAllText(configPath, config);
+
+            validator.LoadSchema("perf", schemaPath);
+
+            // Warm up (excludes JIT from measurement)
+            validator.Validate("perf", configPath, out _);
+
+            // Act
+            var stopwatch = Stopwatch.StartNew();
+            bool result = validator.Validate("perf", configPath, out List<string> errors);
+            stopwatch.Stop();
+
+            // Assert
+            Assert.IsTrue(result, "Validation should pass");
+            Assert.AreEqual(0, errors.Count, "Should have no validation errors");
+            Assert.IsTrue(stopwatch.ElapsedMilliseconds < MaxValidationTimeMs,
+                $"Schema validation must complete in under {MaxValidationTimeMs}ms; took {stopwatch.ElapsedMilliseconds}ms");
         }
 
         #endregion

@@ -65,9 +65,52 @@ namespace ACAT.Core.DependencyInjection
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddSingleton<IContext>(provider => new Context(provider));
+            services.AddSingleton<IContext>(provider => 
+            {
+                // The provider parameter might be a scope (ServiceProviderEngineScope).
+                // We need to ensure Context.ServiceProvider is set to the root provider
+                // so that static accessors always use the root, not a transient scope.
+                var rootProvider = GetRootProvider(provider);
+                return new Context(rootProvider);
+            });
             services.AddSingleton<Context>(provider => (Context)provider.GetRequiredService<IContext>());
             return services;
+        }
+
+        /// <summary>
+        /// Gets the root service provider from a potentially scoped provider.
+        /// </summary>
+        private static IServiceProvider GetRootProvider(IServiceProvider provider)
+        {
+            // Navigate through scopes to find the root provider
+            var current = provider;
+            var scopeType = Type.GetType("Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope, Microsoft.Extensions.DependencyInjection");
+
+            if (scopeType != null)
+            {
+                while (scopeType.IsInstanceOfType(current))
+                {
+                    var rootProviderProperty = scopeType.GetProperty("RootProvider", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (rootProviderProperty != null)
+                    {
+                        var root = rootProviderProperty.GetValue(current) as IServiceProvider;
+                        if (root != null && root != current)
+                        {
+                            current = root;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return current;
         }
 
         // ---------------------------------------------------------------
@@ -317,6 +360,17 @@ namespace ACAT.Core.DependencyInjection
                 .AddWidgetManagement();
 
             return services;
+        }
+
+        /// <summary>
+        /// Registers all ACAT services with the service container.
+        /// This is an alias for <see cref="AddACATCoreModules"/>.
+        /// </summary>
+        /// <param name="services">The service collection to configure.</param>
+        /// <returns>The service collection, for chaining.</returns>
+        public static IServiceCollection AddACATServices(this IServiceCollection services)
+        {
+            return AddACATCoreModules(services);
         }
     }
 }

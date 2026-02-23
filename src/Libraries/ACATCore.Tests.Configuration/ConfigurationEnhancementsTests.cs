@@ -539,5 +539,286 @@ namespace ACATCore.Tests.Configuration
         }
 
         #endregion
+
+        #region Environment Detection Tests
+
+        [TestMethod]
+        public void EnvironmentConfiguration_DetectEnvironment_FromACATEnvironmentVar_Development()
+        {
+            // Arrange
+            string previousValue = Environment.GetEnvironmentVariable("ACAT_ENVIRONMENT");
+            Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", "Development");
+
+            try
+            {
+                // Act
+                var envConfig = new EnvironmentConfiguration(_logger);
+
+                // Assert
+                Assert.AreEqual(ConfigurationEnvironment.Development, envConfig.CurrentEnvironment,
+                    "Should detect Development from ACAT_ENVIRONMENT");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", previousValue);
+            }
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_DetectEnvironment_FromACATEnvironmentVar_Testing()
+        {
+            // Arrange
+            string previousValue = Environment.GetEnvironmentVariable("ACAT_ENVIRONMENT");
+            Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", "Testing");
+
+            try
+            {
+                // Act
+                var envConfig = new EnvironmentConfiguration(_logger);
+
+                // Assert
+                Assert.AreEqual(ConfigurationEnvironment.Testing, envConfig.CurrentEnvironment,
+                    "Should detect Testing from ACAT_ENVIRONMENT");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", previousValue);
+            }
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_DetectEnvironment_FromACATEnvironmentVar_Staging()
+        {
+            // Arrange
+            string previousValue = Environment.GetEnvironmentVariable("ACAT_ENVIRONMENT");
+            Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", "Staging");
+
+            try
+            {
+                // Act
+                var envConfig = new EnvironmentConfiguration(_logger);
+
+                // Assert
+                Assert.AreEqual(ConfigurationEnvironment.Staging, envConfig.CurrentEnvironment,
+                    "Should detect Staging from ACAT_ENVIRONMENT");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", previousValue);
+            }
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_DetectEnvironment_FromACATEnvironmentVar_Production()
+        {
+            // Arrange
+            string previousValue = Environment.GetEnvironmentVariable("ACAT_ENVIRONMENT");
+            Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", "Production");
+
+            try
+            {
+                // Act
+                var envConfig = new EnvironmentConfiguration(_logger);
+
+                // Assert
+                Assert.AreEqual(ConfigurationEnvironment.Production, envConfig.CurrentEnvironment,
+                    "Should detect Production from ACAT_ENVIRONMENT");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", previousValue);
+            }
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_DetectEnvironment_CaseInsensitive()
+        {
+            // Arrange
+            string previousValue = Environment.GetEnvironmentVariable("ACAT_ENVIRONMENT");
+            Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", "development");
+
+            try
+            {
+                // Act
+                var envConfig = new EnvironmentConfiguration(_logger);
+
+                // Assert
+                Assert.AreEqual(ConfigurationEnvironment.Development, envConfig.CurrentEnvironment,
+                    "Environment detection should be case-insensitive");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", previousValue);
+            }
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_DetectEnvironment_FallsBackToDotnetEnvironment()
+        {
+            // Arrange
+            string previousAcat = Environment.GetEnvironmentVariable("ACAT_ENVIRONMENT");
+            string previousDotnet = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+            Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", null);
+            Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", "Testing");
+
+            try
+            {
+                // Act
+                var envConfig = new EnvironmentConfiguration(_logger);
+
+                // Assert
+                Assert.AreEqual(ConfigurationEnvironment.Testing, envConfig.CurrentEnvironment,
+                    "Should fall back to DOTNET_ENVIRONMENT when ACAT_ENVIRONMENT is not set");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", previousAcat);
+                Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", previousDotnet);
+            }
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_DetectEnvironment_FallsBackToAspNetCoreEnvironment()
+        {
+            // Arrange
+            string previousAcat = Environment.GetEnvironmentVariable("ACAT_ENVIRONMENT");
+            string previousDotnet = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+            string previousAspNet = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", null);
+            Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", null);
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Staging");
+
+            try
+            {
+                // Act
+                var envConfig = new EnvironmentConfiguration(_logger);
+
+                // Assert
+                Assert.AreEqual(ConfigurationEnvironment.Staging, envConfig.CurrentEnvironment,
+                    "Should fall back to ASPNETCORE_ENVIRONMENT when neither ACAT_ENVIRONMENT nor DOTNET_ENVIRONMENT is set");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ACAT_ENVIRONMENT", previousAcat);
+                Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", previousDotnet);
+                Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", previousAspNet);
+            }
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_GetLocalOverrideFilePath_ReturnsLocalJson()
+        {
+            // Arrange
+            var envConfig = new EnvironmentConfiguration(_logger);
+            string basePath = Path.Combine(_testDirectory, "config.json");
+
+            // Act
+            string localPath = envConfig.GetLocalOverrideFilePath(basePath);
+
+            // Assert
+            string expectedLocalPath = Path.Combine(_testDirectory, "config.local.json");
+            Assert.AreEqual(expectedLocalPath, localPath,
+                "Local override path should insert '.local' before the extension");
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_GetLocalOverrideFilePath_NullInput_ReturnsNull()
+        {
+            // Arrange
+            var envConfig = new EnvironmentConfiguration(_logger);
+
+            // Act
+            string localPath = envConfig.GetLocalOverrideFilePath(null);
+
+            // Assert
+            Assert.IsNull(localPath, "Should return null for null input");
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_GetConfigurationFiles_BaseOnly_ReturnsBase()
+        {
+            // Arrange
+            var envConfig = new EnvironmentConfiguration(_logger);
+            envConfig.SetEnvironment(ConfigurationEnvironment.Development);
+            string basePath = Path.Combine(_testDirectory, "config.json");
+
+            // Only base file exists
+            File.WriteAllText(basePath, @"{""name"": ""base""}");
+
+            // Act
+            IReadOnlyList<string> files = envConfig.GetConfigurationFiles(basePath);
+
+            // Assert
+            Assert.AreEqual(1, files.Count, "Should return only base file when no env or local files exist");
+            Assert.AreEqual(basePath, files[0]);
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_GetConfigurationFiles_BaseAndEnv_ReturnsBoth()
+        {
+            // Arrange
+            var envConfig = new EnvironmentConfiguration(_logger);
+            envConfig.SetEnvironment(ConfigurationEnvironment.Development);
+            string basePath = Path.Combine(_testDirectory, "config.json");
+            string devPath = Path.Combine(_testDirectory, "config.Development.json");
+
+            File.WriteAllText(basePath, @"{""name"": ""base""}");
+            File.WriteAllText(devPath, @"{""name"": ""dev""}");
+
+            // Act
+            IReadOnlyList<string> files = envConfig.GetConfigurationFiles(basePath);
+
+            // Assert
+            Assert.AreEqual(2, files.Count, "Should return base and env-specific files");
+            Assert.AreEqual(basePath, files[0], "Base file should be first");
+            Assert.AreEqual(devPath, files[1], "Dev-specific file should be second");
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_GetConfigurationFiles_AllThreeLayers_ReturnsAll()
+        {
+            // Arrange
+            var envConfig = new EnvironmentConfiguration(_logger);
+            envConfig.SetEnvironment(ConfigurationEnvironment.Development);
+            string basePath = Path.Combine(_testDirectory, "config.json");
+            string devPath = Path.Combine(_testDirectory, "config.Development.json");
+            string localPath = Path.Combine(_testDirectory, "config.local.json");
+
+            File.WriteAllText(basePath, @"{""name"": ""base""}");
+            File.WriteAllText(devPath, @"{""name"": ""dev""}");
+            File.WriteAllText(localPath, @"{""name"": ""local""}");
+
+            // Act
+            IReadOnlyList<string> files = envConfig.GetConfigurationFiles(basePath);
+
+            // Assert
+            Assert.AreEqual(3, files.Count, "Should return all three layers");
+            Assert.AreEqual(basePath, files[0], "Base file should be first");
+            Assert.AreEqual(devPath, files[1], "Env-specific file should be second");
+            Assert.AreEqual(localPath, files[2], "Local override should be third (loaded last, highest priority)");
+        }
+
+        [TestMethod]
+        public void EnvironmentConfiguration_GetConfigurationFiles_LocalOverrideOnly_ReturnsBaseAndLocal()
+        {
+            // Arrange
+            var envConfig = new EnvironmentConfiguration(_logger);
+            envConfig.SetEnvironment(ConfigurationEnvironment.Production);
+            string basePath = Path.Combine(_testDirectory, "config.json");
+            string localPath = Path.Combine(_testDirectory, "config.local.json");
+
+            File.WriteAllText(basePath, @"{""name"": ""base""}");
+            File.WriteAllText(localPath, @"{""name"": ""local""}");
+
+            // Act
+            IReadOnlyList<string> files = envConfig.GetConfigurationFiles(basePath);
+
+            // Assert
+            Assert.AreEqual(2, files.Count, "Should return base and local override files");
+            Assert.AreEqual(basePath, files[0]);
+            Assert.AreEqual(localPath, files[1]);
+        }
+
+        #endregion
     }
 }

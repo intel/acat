@@ -136,6 +136,18 @@ loader.Dispose();
 
 The `EnvironmentConfiguration` class supports loading different configuration files based on the environment (Development, Testing, Staging, Production).
 
+### Configuration Hierarchy
+
+Configuration is loaded and merged in the following priority order (lowest to highest):
+
+1. **Base configuration** – `config.json` — shared defaults for all environments
+2. **Environment-specific** – `config.{Environment}.json` — overrides for the active environment
+3. **Local override** – `config.local.json` — developer-specific overrides (**gitignored**)
+4. **Environment variables** – `ACAT_<PropertyName>` — runtime overrides
+
+Use `GetConfigurationFiles(baseFilePath)` to retrieve the ordered list of existing files
+that should be loaded and merged for the active environment.
+
 ### Supported Environments
 
 ```csharp
@@ -186,6 +198,7 @@ Examples:
 - Testing: `config.Testing.json`
 - Staging: `config.Staging.json`
 - Production: `config.Production.json`
+- Local override: `config.local.json` (gitignored — never commit this file)
 
 ### Usage
 
@@ -201,9 +214,29 @@ string envPath = envConfig.GetEnvironmentFilePath(basePath);
 // Returns: "config/settings.Development.json" if in Development and file exists
 //          "config/settings.json" otherwise
 
+// Get the local override file path (e.g. for developer-specific settings)
+string localPath = envConfig.GetLocalOverrideFilePath(basePath);
+// Returns: "config/settings.local.json" (regardless of whether the file exists)
+
+// Get all files in the configuration hierarchy (only existing files, lowest to highest priority)
+IReadOnlyList<string> files = envConfig.GetConfigurationFiles(basePath);
+// Returns e.g.: ["config/settings.json", "config/settings.Development.json", "config/settings.local.json"]
+
 // Load configuration with environment overrides
 var config = envConfig.LoadWithEnvironmentOverrides<MyConfig>(basePath);
 ```
+
+### Local Override Files
+
+`config.local.json` files allow individual developers to maintain machine-specific settings
+without affecting shared configuration or polluting source control.
+
+**Setup:**
+1. Copy the relevant base file: `cp config.json config.local.json`
+2. Edit `config.local.json` with your local overrides
+3. The file is automatically ignored by `.gitignore` (`*.local.json`)
+
+**Important:** Never commit `*.local.json` files to source control.
 
 ### Environment Variable Overrides
 

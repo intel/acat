@@ -71,5 +71,27 @@ namespace ACAT.Core.Configuration
         /// </summary>
         /// <returns>Dictionary of key/value override pairs</returns>
         Dictionary<string, string> GetAllOverrides();
+
+        /// <summary>
+        /// Gets the local override configuration file path (e.g., config.local.json).
+        /// Local override files are intended for developer-specific settings and should
+        /// be excluded from source control.
+        /// </summary>
+        /// <param name="baseFilePath">Base configuration file path (e.g., "config.json")</param>
+        /// <returns>Local override file path (e.g., "config.local.json"), regardless of whether it exists</returns>
+        string GetLocalOverrideFilePath(string baseFilePath);
+
+        /// <summary>
+        /// Returns the ordered list of configuration files that should be loaded
+        /// and merged for the current environment.  Files appear in priority order
+        /// (lowest to highest): base, environment-specific, local override.
+        /// Only files that actually exist on disk are included.
+        /// </summary>
+        /// <param name="baseFilePath">Base configuration file path (e.g., "config.json")</param>
+        /// <returns>
+        /// Ordered list of existing file paths from which configuration should be
+        /// loaded and merged, starting from the base file.
+        /// </returns>
+        IReadOnlyList<string> GetConfigurationFiles(string baseFilePath);
     }
 }

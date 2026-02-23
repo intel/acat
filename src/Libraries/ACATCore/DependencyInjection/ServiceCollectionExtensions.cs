@@ -31,6 +31,7 @@ using ACAT.Core.ThemeManagement;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using ACAT.Core.WordPredictorManagement;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -298,6 +299,25 @@ namespace ACAT.Core.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services.AddSingleton<IWidgetFactory, WidgetFactory>();
+            return services;
+        }
+
+        /// <summary>
+        /// Registers <see cref="ExtensionLoader{TExtension}"/> as a singleton
+        /// <see cref="IExtensionLoader{TExtension}"/> for the specified extension type.
+        /// </summary>
+        /// <typeparam name="TExtension">
+        /// The plugin-extension interface type (must implement <see cref="IPluginExtension"/>).
+        /// </typeparam>
+        /// <param name="services">The service collection to configure.</param>
+        /// <returns>The service collection, for chaining.</returns>
+        public static IServiceCollection AddExtensionLoader<TExtension>(this IServiceCollection services)
+            where TExtension : class, IPluginExtension
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddSingleton<IExtensionLoader<TExtension>>(
+                provider => new ExtensionLoader<TExtension>(provider));
             return services;
         }
 

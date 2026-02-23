@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/Config/Schemas/TTSEngineSettings.schema.json",
+  "title": "ACAT TTS Engine Settings",
+  "description": "Configuration for text-to-speech (TTS) engines in ACAT - maps languages to their preferred TTS engine",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["ttsEngines"],
+  "properties": {
+    "ttsEngines": {
+      "type": "array",
+      "description": "List of preferred TTS engine mappings per language",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/definitions/ttsEngineEntry"
+      }
+    },
+    "globalSettings": {
+      "type": "object",
+      "description": "Global TTS engine behavior settings",
+      "$ref": "#/definitions/ttsGlobalSettings"
+    }
+  },
+  "definitions": {
+    "ttsEngineEntry": {
+      "type": "object",
+      "description": "Mapping of a language to its preferred TTS engine",
+      "required": ["language", "id"],
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "Language code (ISO 639-1 two-letter code, optionally with region)",
+          "minLength": 2,
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "examples": ["en", "es", "fr", "de", "zh-CN"]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (GUID) of the preferred TTS engine for this language. Use '00000000-0000-0000-0000-000000000000' for the default/null engine.",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "examples": ["00000000-0000-0000-0000-000000000000"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ttsGlobalSettings": {
+      "type": "object",
+      "description": "Global settings controlling TTS engine behavior",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether text-to-speech is enabled globally",
+          "default": true
+        },
+        "volume": {
+          "type": "integer",
+          "description": "Speech volume level (0-100)",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 100
+        },
+        "rate": {
+          "type": "integer",
+          "description": "Speech rate. Typical range depends on the TTS engine; SAPI uses -10 to 10.",
+          "minimum": -10,
+          "maximum": 10,
+          "default": 0
+        },
+        "pitch": {
+          "type": "integer",
+          "description": "Speech pitch. Typical range depends on the TTS engine; SAPI uses -10 to 10.",
+          "minimum": -10,
+          "maximum": 10,
+          "default": 0
+        },
+        "voiceName": {
+          "type": "string",
+          "description": "Name of the preferred voice to use (engine-specific). Empty string uses the engine default.",
+          "default": "",
+          "examples": ["Microsoft David Desktop", "Microsoft Zira Desktop"]
+        },
+        "speakOnFocusChange": {
+          "type": "boolean",
+          "description": "Automatically speak the focused element text when focus changes",
+          "default": false
+        },
+        "speakOnHighlight": {
+          "type": "boolean",
+          "description": "Speak the widget text when it is highlighted during scanning",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

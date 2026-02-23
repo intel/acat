@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/Config/Schemas/AgentConfigurations.schema.json",
+  "title": "ACAT Agent Configurations",
+  "description": "Configuration for application agents and functional agents in ACAT. Agents handle interactions with specific applications (e.g., Chrome, Outlook, Windows Explorer) and provide context-aware scanner panels.",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["agents"],
+  "properties": {
+    "agents": {
+      "type": "array",
+      "description": "List of agent configurations",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/definitions/agentConfiguration"
+      }
+    },
+    "defaultAgentSettings": {
+      "type": "object",
+      "description": "Default settings applied to all agents unless overridden",
+      "$ref": "#/definitions/agentSettings"
+    }
+  },
+  "definitions": {
+    "agentConfiguration": {
+      "type": "object",
+      "description": "Configuration for a single application or functional agent",
+      "required": ["name", "id"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable name of the agent",
+          "minLength": 1,
+          "examples": [
+            "Chrome Browser Agent",
+            "Edge Browser Agent",
+            "Outlook Agent",
+            "Windows Explorer Agent",
+            "ACAT Agent"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (GUID) for the agent. Must match the ClassDescriptor attribute on the agent class.",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "examples": ["30FBF5BF-358B-4D88-97CE-5B40A8F2728F"]
+        },
+        "description": {
+          "type": "string",
+          "description": "User-friendly description of what the agent does",
+          "default": ""
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the agent is enabled and will be loaded",
+          "default": true
+        },
+        "agentType": {
+          "type": "string",
+          "description": "Type of the agent",
+          "enum": ["Application", "Functional", "TextControl"],
+          "default": "Application"
+        },
+        "processNames": {
+          "type": "array",
+          "description": "List of process names (executable names without extension) that this agent handles",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "examples": [["chrome"], ["msedge"], ["OUTLOOK"], ["explorer"]]
+        },
+        "settings": {
+          "description": "Agent-specific settings",
+          "$ref": "#/definitions/agentSettings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "agentSettings": {
+      "type": "object",
+      "description": "Behavioral settings for an agent",
+      "properties": {
+        "autoSwitchScannerEnable": {
+          "type": "boolean",
+          "description": "Track focus changes in the foreground window and display the appropriate scanner. If false, always displays the Alphabet scanner.",
+          "default": true
+        },
+        "scannerPanelName": {
+          "type": "string",
+          "description": "Name of the default scanner panel to display for this agent",
+          "default": "",
+          "examples": ["AlphabetScanner", "TalkApplicationScanner"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -17,6 +17,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
@@ -34,6 +35,9 @@ namespace ACAT.Core.Utility
         private readonly JsonSerializerOptions _jsonOptions;
         private readonly EnvironmentConfiguration _environmentConfig;
         private readonly ConfigurationReloadService _reloadService;
+        private readonly JsonSchemaValidator _schemaValidator;
+        private readonly string _schemaName;
+        private readonly bool _strictMode;
 
         /// <summary>
         /// Event raised when configuration is reloaded
@@ -47,11 +51,18 @@ namespace ACAT.Core.Utility
         /// <param name="logger">Logger instance (optional)</param>
         /// <param name="enableHotReload">Enable automatic configuration hot-reload (default: false)</param>
         /// <param name="useEnvironmentConfig">Enable environment-specific configuration (default: false)</param>
+        /// <param name="schemaValidator">JSON schema validator for pre-deserialization validation (optional)</param>
+        /// <param name="schemaName">Name of the schema to validate against (required when schemaValidator is provided)</param>
+        /// <param name="strictMode">If true, schema validation failures cause load to fail; if false, failures are logged as warnings (default: false)</param>
         public JsonConfigurationLoader(IValidator<T> validator = null, ILogger logger = null, 
-            bool enableHotReload = false, bool useEnvironmentConfig = false)
+            bool enableHotReload = false, bool useEnvironmentConfig = false,
+            JsonSchemaValidator schemaValidator = null, string schemaName = null, bool strictMode = false)
         {
             _validator = validator;
             _logger = logger ?? LogManager.GetLogger<JsonConfigurationLoader<T>>();
+            _schemaValidator = schemaValidator;
+            _schemaName = schemaName;
+            _strictMode = strictMode;
             
             // Configure JSON serialization options
             _jsonOptions = new JsonSerializerOptions
@@ -117,8 +128,36 @@ namespace ACAT.Core.Utility
                     return createDefaultOnError ? CreateDefault() : null;
                 }
 
-                T config = System.Text.Json.JsonSerializer.Deserialize<T>(json, _jsonOptions);
+                // Validate JSON against schema before deserialization
+                if (_schemaValidator != null && !string.IsNullOrEmpty(_schemaName))
+                {
+                    bool schemaValid = _schemaValidator.ValidateContent(_schemaName, json, out List<string> schemaErrors);
 
+                    if (!schemaValid)
+                    {
+                        foreach (string error in schemaErrors ?? new List<string>())
+                        {
+                            if (_strictMode)
+                                _logger?.LogError("Schema validation error in {FilePath}: {Error}", filePath, error);
+                            else
+                                _logger?.LogWarning("Schema validation warning in {FilePath}: {Error}", filePath, error);
+                        }
+
+                        if (_strictMode)
+                        {
+                            _logger?.LogError("Schema validation failed (strict mode) for: {FilePath}", filePath);
+                            return createDefaultOnError ? CreateDefault() : null;
+                        }
+
+                        _logger?.LogWarning("Schema validation failed (non-strict mode), continuing with deserialization: {FilePath}", filePath);
+                    }
+                }
+                else if (_schemaValidator != null && string.IsNullOrEmpty(_schemaName))
+                {
+                    _logger?.LogWarning("JsonSchemaValidator provided but schemaName is null or empty; schema validation will be skipped for: {FilePath}", filePath);
+                }
+
+                T config = System.Text.Json.JsonSerializer.Deserialize<T>(json, _jsonOptions);
                 if (config == null)
                 {
                     _logger?.LogError("Failed to deserialize configuration from: {FilePath}", filePath);

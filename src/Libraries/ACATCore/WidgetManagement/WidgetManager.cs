@@ -144,6 +144,11 @@ namespace ACAT.Core.WidgetManagement
         /// <returns>Full type name, empty string if invalid</returns>
         public static String GetWidgetTypeFullName(String widgetTypeName)
         {
+            if (_widgetTypeCollection == null)
+            {
+                return String.Empty;
+            }
+
             foreach (String s in _widgetTypeCollection)
             {
                 if (s.EndsWith("." + widgetTypeName, StringComparison.InvariantCultureIgnoreCase))

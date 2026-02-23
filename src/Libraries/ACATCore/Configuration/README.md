@@ -30,6 +30,8 @@ This directory contains the enhanced configuration system components for ACAT Ph
 - **Key Features**:
   - Automatic environment detection from environment variables
   - Environment-specific file path resolution
+  - Local override file support (`config.local.json`) — gitignored for developer-specific settings
+  - Full configuration hierarchy: base → environment-specific → local override → env vars
   - Environment variable overrides (ACAT_*)
   - Configuration override management
 
@@ -69,11 +71,25 @@ This directory contains the enhanced configuration system components for ACAT Ph
 var schemaValidator = new JsonSchemaValidator(logger);
 schemaValidator.LoadSchema("my-config", "schemas/json/my-config.schema.json");
 
-if (schemaValidator.Validate("my-config", "config/settings.json", out var errors))
-{
-    var loader = new JsonConfigurationLoader<MyConfig>(logger: logger);
-    var config = loader.Load("config/settings.json");
-}
+// Pass schemaValidator to loader for automatic pre-deserialization validation
+var loader = new JsonConfigurationLoader<MyConfig>(
+    logger: logger,
+    schemaValidator: schemaValidator,
+    schemaName: "my-config"
+);
+var config = loader.Load("config/settings.json");
+```
+
+Use **strict mode** to treat schema validation failures as errors (returns default/null instead of deserializing):
+
+```csharp
+var loader = new JsonConfigurationLoader<MyConfig>(
+    logger: logger,
+    schemaValidator: schemaValidator,
+    schemaName: "my-config",
+    strictMode: true  // Fail on schema violations
+);
+var config = loader.Load("config/settings.json");
 ```
 
 ### 2. Configuration with Hot-Reload
@@ -151,12 +167,27 @@ export ACAT_ENABLED=true
 
 ## File Naming Conventions
 
+### Configuration Hierarchy (lowest to highest priority)
+
+Files are loaded and merged in the following order:
+1. **Base**: `config.json` — shared defaults
+2. **Environment-specific**: `config.{Environment}.json` — environment overrides
+3. **Local override**: `config.local.json` — developer-specific overrides (**gitignored**)
+4. **Environment variables**: `ACAT_*` — runtime overrides
+
 ### Environment-Specific Files
 - Base: `config.json`
 - Development: `config.Development.json`
 - Testing: `config.Testing.json`
 - Staging: `config.Staging.json`
 - Production: `config.Production.json`
+
+### Local Override Files (gitignored)
+- `config.local.json`
+
+Local override files allow individual developers to maintain machine-specific settings
+without polluting the repository.  They are automatically excluded from source control
+via `.gitignore` (`*.local.json`).
 
 ### Backup Files
 Migration creates automatic backups: `config.json.backup.20260218123456`
@@ -213,8 +244,11 @@ var config = loader.Load(configPath);
 var loaderWithFeatures = new JsonConfigurationLoader<MyConfig>(
     validator: validator,
     logger: logger,
-    enableHotReload: true,      // Opt-in
-    useEnvironmentConfig: true  // Opt-in
+    enableHotReload: true,          // Opt-in
+    useEnvironmentConfig: true,     // Opt-in
+    schemaValidator: schemaValidator, // Opt-in: pre-deserialization JSON schema validation
+    schemaName: "my-config",        // Required when schemaValidator is provided
+    strictMode: true                // Opt-in: fail on schema violations (default: warn)
 );
 ```
 

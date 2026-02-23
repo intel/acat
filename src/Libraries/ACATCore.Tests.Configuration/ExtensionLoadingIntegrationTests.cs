@@ -12,7 +12,9 @@
 
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.DependencyInjection;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,6 +44,16 @@ namespace ACATCore.Tests.Configuration
         {
             Context.ServiceProvider = null;
         }
+
+        // ---------------------------------------------------------------
+        // Minimal fake extension used only in ExtensionLoader tests
+        // ---------------------------------------------------------------
+
+        private interface IFakeExtension : IPluginExtension { }
+
+        // ---------------------------------------------------------------
+        // Existing ExtensionInstantiator tests (unchanged)
+        // ---------------------------------------------------------------
 
         [TestMethod]
         public void ExtensionInstantiator_WithServiceProvider_CanCreateExtensions()
@@ -143,6 +155,121 @@ namespace ACATCore.Tests.Configuration
 
             // Assert
             Assert.IsNotNull(logger);
+        }
+
+        // ---------------------------------------------------------------
+        // ExtensionLoader tests
+        // ---------------------------------------------------------------
+
+        [TestMethod]
+        public void ExtensionLoader_Constructor_WithNullServiceProvider_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            Assert.ThrowsException<ArgumentNullException>(
+                () => new ExtensionLoader<IFakeExtension>(null));
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_Constructor_WithServiceProvider_Succeeds()
+        {
+            // Act
+            var loader = new ExtensionLoader<IFakeExtension>(_serviceProvider);
+
+            // Assert
+            Assert.IsNotNull(loader);
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_LoadedTypes_IsEmptyBeforeLoadingAssemblies()
+        {
+            // Arrange
+            var loader = new ExtensionLoader<IFakeExtension>(_serviceProvider);
+
+            // Assert
+            Assert.IsNotNull(loader.LoadedTypes);
+            Assert.AreEqual(0, loader.LoadedTypes.Count);
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_CreateInstance_WithUnknownGuid_ReturnsNull()
+        {
+            // Arrange
+            var loader = new ExtensionLoader<IFakeExtension>(_serviceProvider);
+            var unknownId = Guid.NewGuid();
+
+            // Act
+            var instance = loader.CreateInstance(unknownId);
+
+            // Assert
+            Assert.IsNull(instance);
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_CreateAllInstances_WithNoTypesLoaded_ReturnsEmptyCollection()
+        {
+            // Arrange
+            var loader = new ExtensionLoader<IFakeExtension>(_serviceProvider);
+
+            // Act
+            var instances = loader.CreateAllInstances();
+
+            // Assert
+            Assert.IsNotNull(instances);
+            Assert.IsFalse(instances.Any());
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_RegisterExtensions_WithNullServices_ThrowsArgumentNullException()
+        {
+            // Arrange
+            var loader = new ExtensionLoader<IFakeExtension>(_serviceProvider);
+
+            // Act & Assert
+            Assert.ThrowsException<ArgumentNullException>(
+                () => loader.RegisterExtensions(null));
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_RegisterExtensions_WithNoLoadedTypes_LeavesServicesUnchanged()
+        {
+            // Arrange
+            var loader = new ExtensionLoader<IFakeExtension>(_serviceProvider);
+            var services = new ServiceCollection();
+            var initialCount = services.Count;
+
+            // Act
+            loader.RegisterExtensions(services);
+
+            // Assert – no new registrations because no types were loaded
+            Assert.AreEqual(initialCount, services.Count);
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_AddExtensionLoader_RegistersIExtensionLoaderAsSingleton()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddExtensionLoader<IFakeExtension>();
+            var provider = services.BuildServiceProvider();
+
+            // Act
+            var loader1 = provider.GetService<IExtensionLoader<IFakeExtension>>();
+            var loader2 = provider.GetService<IExtensionLoader<IFakeExtension>>();
+
+            // Assert – resolved as singleton (same reference both times)
+            Assert.IsNotNull(loader1);
+            Assert.AreSame(loader1, loader2);
+        }
+
+        [TestMethod]
+        public void ExtensionLoader_ImplementsIExtensionLoader()
+        {
+            // Act
+            var loader = new ExtensionLoader<IFakeExtension>(_serviceProvider);
+
+            // Assert
+            Assert.IsInstanceOfType(loader, typeof(IExtensionLoader<IFakeExtension>));
         }
     }
 }

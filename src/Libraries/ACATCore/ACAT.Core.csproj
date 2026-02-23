@@ -64,6 +64,7 @@
     <Compile Include="ActuatorManagement\CalibrationNotifyEventArgs.cs" />
     <Compile Include="ActuatorManagement\IActuatorManager.cs" />
     <Compile Include="ActuatorManagement\IActuatorManagerFactory.cs" />
+    <Compile Include="ActuatorManagement\IActuatorFactory.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\SwitchInterfaceActuator.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorSetting.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorConfig.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="AgentManagement\AgentManager.cs" />
     <Compile Include="AgentManagement\IAgentManager.cs" />
     <Compile Include="AgentManagement\IAgentManagerFactory.cs" />
+    <Compile Include="AgentManagement\IAgentFactory.cs" />
     <Compile Include="AgentManagement\AgentProcessInfo.cs" />
     <Compile Include="AgentManagement\Agents\AgentsCache.cs" />
     <Compile Include="AgentManagement\Agents\PreferredAgents.cs" />
@@ -194,9 +196,12 @@
     <Compile Include="Configuration\ConfigurationReloadService.cs" />
     <Compile Include="Configuration\ConfigurationVersioning.cs" />
     <Compile Include="Configuration\EnvironmentConfiguration.cs" />
+    <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\IConfigurationManagerFactory.cs" />
     <Compile Include="Configuration\JsonSchemaValidator.cs" />
     <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
     <Compile Include="Configuration\PronunciationsJson.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionExtensions.cs" />
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
     <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />
@@ -265,6 +270,9 @@
     <Compile Include="Utility\ControlExtensions.cs" />
     <Compile Include="Utility\ExtensionInstantiator.cs" />
     <Compile Include="Utility\HotkeyManager.cs" />
+    <Compile Include="Utility\ConfigurationWatcher.cs" />
+    <Compile Include="Utility\ConfigurationMigration.cs" />
+    <Compile Include="Utility\Migrations\MigrationBase.cs" />
     <Compile Include="Utility\JsonConfigurationLoader.cs" />
     <Compile Include="Utility\LogManager.cs" />
     <Compile Include="Utility\TopMostManager.cs" />
@@ -341,8 +349,10 @@
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMap.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMapEntry.cs" />
     <Compile Include="PanelManagement\PanelManager.cs" />
+    <Compile Include="PanelManagement\IContext.cs" />
     <Compile Include="PanelManagement\IPanelManager.cs" />
     <Compile Include="PanelManagement\IPanelManagerFactory.cs" />
+    <Compile Include="PanelManagement\IScannerFactory.cs" />
     <Compile Include="PanelManagement\Utils\AutoPositionScanner.cs" />
     <Compile Include="PanelManagement\Utils\Fonts.cs" />
     <Compile Include="PanelManagement\Utils\OutlineWindow.cs" />
@@ -387,6 +397,8 @@
     <Compile Include="UserManagement\ProfileManager.cs" />
     <Compile Include="UserManagement\UserManager.cs" />
     <Compile Include="Utility\AppInfo.cs" />
+    <Compile Include="Utility\TypeLoader\ExtensionLoader.cs" />
+    <Compile Include="Utility\TypeLoader\IExtensionLoader.cs" />
     <Compile Include="Utility\TypeLoader\ITypeLoader.cs" />
     <Compile Include="Utility\Disclaimers.cs" />
     <Compile Include="Utility\Attributions.cs" />
@@ -506,6 +518,7 @@
     <Compile Include="WidgetManagement\WidgetEventArg.cs" />
     <Compile Include="WidgetManagement\WidgetFinder.cs" />
     <Compile Include="WidgetManagement\WidgetManager.cs" />
+    <Compile Include="WidgetManagement\IWidgetFactory.cs" />
     <Compile Include="Widgets\ACATFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>

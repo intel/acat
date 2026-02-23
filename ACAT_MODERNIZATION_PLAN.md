@@ -1,8 +1,8 @@
 # ACAT Modernization Plan
 
-**Last Updated**: February 20, 2026  
-**Status**: Phase 2 Architecture Modernization Complete ✅  
-**Version**: 3.0
+**Last Updated**: February 22, 2026  
+**Status**: Phase 2 DI Infrastructure Complete ✅  
+**Version**: 3.2
 
 ---
 
@@ -18,8 +18,9 @@ The ACAT Modernization Plan is a comprehensive initiative to modernize the ACAT 
 ### Current Status
 - ✅ **Phase 1 Complete**: All 12 tickets delivered on schedule
 - ✅ **Phase 2 Architecture Modernization Complete**: Interface extraction, event system, CQRS, and repository pattern delivered
-- 📊 **Next**: Phase 3 planning
-- 🎯 **Focus**: Building on solid Phase 1 foundation
+- ✅ **Phase 2 DI Infrastructure Complete**: Service container, Context class refactor, interface extraction, factory patterns, configuration services (Issues #209–#216, #211)
+- 📊 **Next**: Phase 3 planning – Async/Await Patterns & Performance
+- 🎯 **Focus**: Incremental modernization, maintaining backward compatibility
 
 ---
 
@@ -279,143 +280,85 @@ All four sub-tasks (Issues #202–#205) have been delivered:
 | Repository base & implementations | `Libraries/ACATCore/DataAccess/RepositoryBase.cs`, `ConfigurationRepository.cs`, `PreferencesRepository.cs` |
 | Architecture unit tests | `Libraries/ACATCore.Tests.Architecture/` |
 
+---
 
-   - `IWindowManager` - Window and panel management
-   - `IScannerService` - Scanner functionality
-   - Additional services as identified during analysis
+## Phase 2: DI Infrastructure ✅ COMPLETE
 
-4. **Testing Infrastructure**
-   - Mock frameworks (Moq, NSubstitute)
-   - Test containers with test doubles
-   - Unit tests with dependency injection
-   - Integration tests for DI scenarios
+**Duration**: 3 weeks  
+**Timeline**: February 2026  
+**Status**: ✅ **Complete**  
+**Issues**: #209 (Setup Service Container), #210 (Refactor Context Class), #212–#216
 
-### Preliminary Task Breakdown
+### DI Infrastructure Sub-tasks
 
-#### Week 1-2: Analysis & Infrastructure
-- **Issue #13**: DI analysis and planning
-  - Audit all dependencies in codebase
-  - Identify service interfaces needed
-  - Plan service lifetimes
-  - Document architecture decisions
+#### Issue #209 / #212: Setup Service Container ✅
+- `Microsoft.Extensions.DependencyInjection` integrated into all core projects
+- `ServiceCollectionExtensions.cs` created with per-module registration methods (`AddActuatorManagement()`, `AddAgentManagement()`, etc.)
+- `AddACATConfiguration()` method registers configuration services (`JsonSchemaValidator`, `ConfigurationReloadService`, `EnvironmentConfiguration`)
+- `ServiceConfiguration.cs` provides convenience methods: `AddACATServices()`, `AddACATInfrastructure()`, `CreateServiceProvider()`
+- All five application entry points (`ACATApp`, `ACATTalk`, `ACATConfig`, `ACATConfigNext`, `ACATWatch`) updated to call `InitializeDependencyInjection()`
 
-- **Issue #14**: DI infrastructure setup
-  - Add DI packages to all projects
-  - Create `ServiceConfiguration` helper
-  - Define base service interfaces
-  - Update entry points
+#### Issue #210 / #215: Refactor Context Class ✅
+- All `AppXxx` static manager properties now resolve from the DI container when `Context.ServiceProvider` is set, with automatic fallback to singleton instances
+- `Context.GetManager<TInterface>()` public method for interface-based resolution
+- Thread-safe `ResolveManager<T>()` private helper captures provider reference once to prevent TOCTOU races
+- Gradual migration adapter: **no changes required in the 383+ existing `Context.App*` call sites** – DI takes effect automatically
+- `ServiceProvider` is effectively Context's scoped lifetime bridge to the DI container
+- Tests: `ContextDependencyInjectionTests.cs` (6 tests), `ContextThreadSafetyTests.cs` (6 tests)
 
-#### Week 3-4: Core Services
-- **Issue #15**: Configuration service interface
-  - Extract `IConfigurationService`
-  - Implement with constructor injection
-  - Update consumers to use interface
+#### Issue #213: Extract Core Interfaces ✅
+All manager interfaces created and registered in DI:
+- `IActuatorManager`, `IAgentManager`, `ITTSManager`, `IPanelManager`
+- `IThemeManager`, `IWordPredictionManager`, `ISpellCheckManager`
+- `IAbbreviationsManager`, `ICommandManager`, `IAutomationEventManager`
 
-- **Issue #16**: Actuator service interfaces
-  - Extract `IActuatorManager`
-  - Define actuator-related services
-  - Implement DI integration
+#### Issues #214, #216: Factory Patterns & Extension Loading ✅
+- Factory interfaces and implementations completed for all managers
+- Extension loading integrated with `IServiceProvider` via `ExtensionInstantiator`
 
-- **Issue #17**: Theme service interfaces
-  - Extract `IThemeManager`
-  - Define UI-related services
-  - Implement DI integration
+#### Issue #211 / #218: Schema Validation Implementation ✅
+- `JsonSchemaValidator` created in `Libraries/ACATCore/Configuration/JsonSchemaValidator.cs`
+- Validates JSON files against JSON Schema definitions before deserialization
+- Integrated into `JsonConfigurationLoader<T>` as optional pre-deserialization validation
+- Supports optional strict mode: warn (default) or fail on schema violations
+- Registered as Singleton in DI via `AddACATConfiguration()`
 
-#### Week 5-6: Service Implementation
-- **Issue #18**: Scanner service interfaces
-  - Extract `IScannerService`
-  - Define scanner-related services
-  - Implement DI integration
+### Tests for DI Infrastructure
+- `ACATCore.Tests.Configuration` project with tests covering:
+  - `ServiceConfigurationTests.cs` – service registration and lifetime
+  - `ManagerFactoryTests.cs` – factory pattern resolution
+  - `ContextDependencyInjectionTests.cs` – Context DI integration
+  - `ContextThreadSafetyTests.cs` – concurrent access safety
+  - `FactoryRegistrationTests.cs` – factory singleton behavior
+  - `ServiceLifetimeTests.cs` – singleton lifetime verification
 
-- **Issue #19**: Window management services
-  - Extract `IWindowManager`
-  - Define window/panel services
-  - Implement DI integration
+### Key Deliverables
 
-- **Issue #20**: Additional services
-  - Identify and implement remaining services
-  - Complete service registration
-  - Validate all integrations
-
-#### Week 7-8: Testing & Documentation
-- **Issue #21**: DI unit tests
-  - Create mock-based unit tests
-  - Test service registration
-  - Test dependency resolution
-  - Test service lifetimes
-
-- **Issue #22**: DI integration tests
-  - End-to-end scenarios with DI
-  - Test multiple DI containers
-  - Test service isolation
-  - Performance validation
-
-- **Issue #23**: DI documentation
-  - Service architecture guide
-  - DI patterns documentation
-  - Migration guide for consumers
-  - Best practices
-
-- **Issue #24**: Phase 2 completion & handoff
-  - Completion report
-  - Retrospective
-  - Phase 3 planning
-  - Knowledge transfer
-
-### Dependencies
-
-#### Technical Prerequisites
-- ✅ Phase 1 complete (logging and configuration)
-- ⏸️ `Microsoft.Extensions.DependencyInjection` packages
-- ⏸️ Mock framework selection (Moq vs NSubstitute)
-- ⏸️ Stakeholder approval for API changes
-
-#### Resource Requirements
-- 2-3 developers (full-time)
-- Architecture review and approval
-- QA resources for testing
-- Documentation resources
-
-### Risk Factors
-
-1. **Scope larger than Phase 1**
-   - DI touches more files than logging
-   - More complex refactoring required
-   - **Mitigation**: Break into sub-phases, use same incremental approach
-
-2. **Breaking changes may be required**
-   - Interfaces need to be extracted
-   - Constructor signatures will change
-   - **Mitigation**: Use adapter pattern for backward compatibility
-
-3. **Testing complexity increases**
-   - Mocking required for unit tests
-   - More complex test setup
-   - **Mitigation**: Invest in test infrastructure early
-
-4. **Team bandwidth**
-   - Phase 2 is larger scope
-   - Other priorities may compete
-   - **Mitigation**: Secure dedicated time commitments
+| Artifact | Location |
+|----------|----------|
+| Service container setup | `Libraries/ACATCore/DependencyInjection/ServiceCollectionExtensions.cs` |
+| Service configuration | `Libraries/ACATCore/Utility/ServiceConfiguration.cs` |
+| Context DI bridge | `Libraries/ACATCore/PanelManagement/Context.cs` |
+| Manager interfaces | Each manager's `Interfaces/` subdirectory |
+| Configuration services | `Libraries/ACATCore/Configuration/JsonSchemaValidator.cs` |
+| DI guide | `DEPENDENCY_INJECTION_GUIDE.md` |
+| DI tests | `Libraries/ACATCore.Tests.Configuration/` |
 
 ### Success Criteria
 
 | Criterion | Target | Status |
 |-----------|--------|--------|
-| All managers use DI | 100% | ⏸️ Pending |
-| Service interfaces defined | All major services | ⏸️ Pending |
-| Constructor injection used | >90% | ⏸️ Pending |
-| Test coverage | >80% | ⏸️ Pending |
-| Performance impact | <5% | ⏸️ Pending |
-| No breaking changes | Yes | ⏸️ Pending |
-| Documentation complete | Yes | ⏸️ Pending |
-
-### Estimated Metrics
-
-- **Estimated effort**: 240-320 hours
-- **Estimated files modified**: 300+ files
-- **Estimated tests added**: 100+ tests
-- **Timeline**: 6-8 weeks
+| Service container configured | Yes | ✅ Complete |
+| All managers registered in DI | Yes | ✅ Complete |
+| Configuration services registered in DI | Yes | ✅ Complete |
+| Context properties use DI | Yes | ✅ Complete |
+| Manager interfaces defined | All major managers | ✅ Complete |
+| Factory pattern implemented | All managers | ✅ Complete |
+| Context.GetManager<T>() | Yes | ✅ Complete |
+| Backward compatibility | Yes | ✅ Complete |
+| Tests for DI | Yes | ✅ Complete |
+| No breaking changes | Yes | ✅ Complete |
+| Documentation complete | Yes | ✅ Complete |
 
 ---
 
@@ -491,12 +434,12 @@ Phase 1: Foundation
 └─ Week 4: Configuration Implementation (Issues #9-12)
 Status: ✅ Complete (February 11, 2026)
 
-Phase 2: Dependency Injection ⏸️
-├─ Week 1-2: Analysis & Infrastructure (Issues #13-14)
-├─ Week 3-4: Core Services (Issues #15-17)
-├─ Week 5-6: Service Implementation (Issues #18-20)
-└─ Week 7-8: Testing & Documentation (Issues #21-24)
-Status: ⏸️ Planned (Start TBD)
+Phase 2: Dependency Injection & Service Architecture ✅
+├─ Architecture Modernization: Interface extraction, EventBus, CQRS, Repository (Issues #202-#205)
+├─ DI Infrastructure: Service container, Context DI bridge, manager interfaces (Issues #209-#215)
+├─ Factory Patterns & Extension Loading (Issues #214, #216)
+└─ Schema Validation & Configuration Services (Issues #211, #218)
+Status: ✅ Complete (February 22, 2026)
 
 Phase 3: Async/Await Patterns 📋
 └─ TBD (4-6 weeks after Phase 2)

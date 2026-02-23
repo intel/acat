@@ -140,6 +140,35 @@ namespace ACAT.Core.PreferencesManagement
         }
 
         /// <summary>
+        /// Attempts to reload preferences from the specified file. If loading or saving
+        /// fails the method returns null and the caller retains the existing instance
+        /// (rollback). On success the newly loaded instance is returned.
+        /// </summary>
+        /// <typeparam name="T">Preferences type.</typeparam>
+        /// <param name="preferencesFile">Full path to the preferences file.</param>
+        /// <returns>The reloaded preferences, or null if reload failed (caller should keep existing instance).</returns>
+        public static T Reload<T>(String preferencesFile) where T : class, new()
+        {
+            if (String.IsNullOrEmpty(preferencesFile))
+            {
+                _logger.LogError("Reload failed: preferences file path is null or empty");
+                return null;
+            }
+
+            var repo = new PreferencesRepository<T>(_logger);
+            T reloaded = repo.Load(preferencesFile);
+
+            if (reloaded == null)
+            {
+                _logger.LogError("Reload failed: could not load preferences from {PreferencesFile}", preferencesFile);
+                return null;
+            }
+
+            _logger.LogInformation("Preferences reloaded successfully from {PreferencesFile}", preferencesFile);
+            return reloaded;
+        }
+
+        /// <summary>
         /// Saves preferences to the specificed file
         /// </summary>
         /// <param name="prefs">Preferences</param>

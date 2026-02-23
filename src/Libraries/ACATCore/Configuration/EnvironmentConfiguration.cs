@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Collections.ObjectModel;
 
 namespace ACAT.Core.Configuration
 {
@@ -32,7 +33,7 @@ namespace ACAT.Core.Configuration
     /// <summary>
     /// Service for loading environment-specific configurations
     /// </summary>
-    public class EnvironmentConfiguration
+    public class EnvironmentConfiguration : IConfigurationManager
     {
         private readonly ILogger _logger;
         private ConfigurationEnvironment _currentEnvironment;
@@ -304,6 +305,97 @@ namespace ACAT.Core.Configuration
         public Dictionary<string, string> GetAllOverrides()
         {
             return new Dictionary<string, string>(_environmentOverrides);
+        }
+
+        /// <summary>
+        /// Get the local override configuration file path (e.g., config.local.json).
+        /// Local override files are intended for developer-specific settings and should
+        /// be excluded from source control via .gitignore.
+        /// </summary>
+        /// <param name="baseFilePath">Base configuration file path (e.g., "config.json")</param>
+        /// <returns>Local override file path, regardless of whether the file exists</returns>
+        public string GetLocalOverrideFilePath(string baseFilePath)
+        {
+            if (string.IsNullOrEmpty(baseFilePath))
+            {
+                return baseFilePath;
+            }
+
+            try
+            {
+                string directory = Path.GetDirectoryName(baseFilePath);
+                string fileName = Path.GetFileNameWithoutExtension(baseFilePath);
+                string extension = Path.GetExtension(baseFilePath);
+
+                string localFileName = $"{fileName}.local{extension}";
+                return string.IsNullOrEmpty(directory)
+                    ? localFileName
+                    : Path.Combine(directory, localFileName);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error determining local override file path for: {FilePath}", baseFilePath);
+                return baseFilePath;
+            }
+        }
+
+        /// <summary>
+        /// Returns the ordered list of configuration files that should be loaded
+        /// and merged for the current environment. Files appear in priority order
+        /// (lowest to highest): base, environment-specific, local override.
+        /// Only files that actually exist on disk are included.
+        /// </summary>
+        /// <param name="baseFilePath">Base configuration file path (e.g., "config.json")</param>
+        /// <returns>Ordered list of existing file paths starting from the base file</returns>
+        public IReadOnlyList<string> GetConfigurationFiles(string baseFilePath)
+        {
+            var files = new List<string>();
+
+            if (string.IsNullOrEmpty(baseFilePath))
+            {
+                return files.AsReadOnly();
+            }
+
+            try
+            {
+                // 1. Base configuration
+                if (File.Exists(baseFilePath))
+                {
+                    files.Add(baseFilePath);
+                }
+
+                // 2. Environment-specific configuration (e.g., config.Development.json)
+                string directory = Path.GetDirectoryName(baseFilePath);
+                string fileName = Path.GetFileNameWithoutExtension(baseFilePath);
+                string extension = Path.GetExtension(baseFilePath);
+
+                string envFileName = $"{fileName}.{_currentEnvironment}{extension}";
+                string envFilePath = string.IsNullOrEmpty(directory)
+                    ? envFileName
+                    : Path.Combine(directory, envFileName);
+
+                if (File.Exists(envFilePath) && 
+                    !string.Equals(Path.GetFullPath(envFilePath), Path.GetFullPath(baseFilePath), StringComparison.OrdinalIgnoreCase))
+                {
+                    files.Add(envFilePath);
+                }
+
+                // 3. Local overrides (e.g., config.local.json)
+                string localFilePath = GetLocalOverrideFilePath(baseFilePath);
+                if (File.Exists(localFilePath))
+                {
+                    files.Add(localFilePath);
+                }
+
+                _logger?.LogDebug("Configuration file hierarchy for {BaseFilePath}: [{Files}]",
+                    baseFilePath, string.Join(", ", files));
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error building configuration file hierarchy for: {FilePath}", baseFilePath);
+            }
+
+            return files.AsReadOnly();
         }
     }
 }

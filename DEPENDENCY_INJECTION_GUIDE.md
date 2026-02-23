@@ -81,25 +81,115 @@ var factory = serviceProvider.GetService<IActuatorManagerFactory>();
 var manager = factory.Create();
 ```
 
-### 4. Context Class Enhancements
+### 4. Configuration Services Registration
+
+**Location:** `src/Libraries/ACATCore/DependencyInjection/ServiceCollectionExtensions.cs`
+
+The `AddACATConfiguration()` extension method registers all configuration infrastructure services with the DI container:
+
+| Service | Lifetime | Purpose |
+|---------|----------|---------|
+| `JsonSchemaValidator` | Singleton | Validates JSON files against JSON Schema definitions before deserialization |
+| `ConfigurationReloadService` | Singleton | Monitors configuration files and fires reload events on changes |
+| `EnvironmentConfiguration` | Singleton | Resolves environment-specific configuration files (Development/Production/etc.) |
+
+#### Usage Example:
+
+```csharp
+// Register configuration services explicitly
+services.AddACATConfiguration();
+
+// Or use the all-in-one method (includes configuration services)
+services.AddACATServices();
+```
+
+#### Using JsonSchemaValidator via DI:
+
+```csharp
+// Constructor injection
+public class MyConfigConsumer
+{
+    private readonly JsonSchemaValidator _schemaValidator;
+
+    public MyConfigConsumer(JsonSchemaValidator schemaValidator)
+    {
+        _schemaValidator = schemaValidator;
+        _schemaValidator.LoadSchema("my-config", "schemas/json/my-config.schema.json");
+    }
+
+    public MyConfig LoadConfig(string filePath)
+    {
+        var loader = new JsonConfigurationLoader<MyConfig>(
+            schemaValidator: _schemaValidator,
+            schemaName: "my-config",
+            strictMode: true  // Fail on schema violations
+        );
+        return loader.Load(filePath);
+    }
+}
+
+// Or resolve from service provider
+var schemaValidator = serviceProvider.GetRequiredService<JsonSchemaValidator>();
+```
+
+#### JsonSchemaValidator Integration with JsonConfigurationLoader (Task #211):
+
+`JsonSchemaValidator` was integrated into `JsonConfigurationLoader<T>` as an optional pre-deserialization validation step. This means schema validation runs *before* JSON deserialization, providing early failure for structurally invalid files.
+
+```csharp
+// Create loader with schema validation
+var loader = new JsonConfigurationLoader<ActuatorConfig>(
+    validator: new ActuatorSettingsValidator(),  // FluentValidation (post-deserialization)
+    schemaValidator: schemaValidator,            // JSON Schema (pre-deserialization)
+    schemaName: "actuator-settings",
+    strictMode: false  // Warn on schema failure; true = fail on schema failure
+);
+var config = loader.Load("ActuatorSettings.json");
+```
+
+The two-layer validation approach:
+1. **JSON Schema validation** (pre-deserialization) – structural checks via `JsonSchemaValidator`
+2. **FluentValidation** (post-deserialization) – semantic/business rule checks via `IValidator<T>`
+
+### 5. Context Class Enhancements
 
 **Location:** `src/Libraries/ACATCore/PanelManagement/Context.cs`
 
-The `Context` class has been enhanced with DI-aware methods while maintaining full backward compatibility:
+The `Context` class has been redesigned to use DI while maintaining full backward compatibility. All static manager properties now resolve through the DI container when `ServiceProvider` is configured, and fall back to the static singleton instances when it is not.
 
-#### New Methods:
+#### Static Manager Properties (DI-Aware)
+
+Every `AppXxx` property uses `ResolveManager<T>()` internally:
 
 ```csharp
-// Get manager by interface type (preferred for new code)
-var actuatorManager = Context.GetManager<IActuatorManager>();
+// All properties transparently resolve from DI when ServiceProvider is set:
+Context.AppActuatorManager      // resolves ActuatorManager from DI or singleton
+Context.AppAgentMgr             // resolves AgentManager from DI or singleton
+Context.AppPanelManager         // resolves PanelManager from DI or singleton
+Context.AppTTSManager           // resolves TTSManager from DI or singleton
+Context.AppWordPredictionManager // resolves WordPredictionManager from DI or singleton
+// ...and all other manager properties
+```
 
-// Private helper for gradual migration (backward compatibility)
+#### Interface-Based Resolution (Preferred for New Code)
+
+```csharp
+// Resolve by interface type (throws if ServiceProvider is null)
+var actuatorManager = Context.GetManager<IActuatorManager>();
+```
+
+#### Internal Adapter (Backward Compatibility)
+
+```csharp
+// Private helper – resolves from DI first, falls back to singleton
 private static T ResolveManager<T>(Func<T> fallback) where T : class
 ```
 
+This adapter pattern means **existing code that uses `Context.AppXxx` properties does not need to be changed** – once `Context.ServiceProvider` is configured, DI instances are automatically used.
+
 #### Existing Functionality Preserved:
 
-- Static `ServiceProvider` property remains for extension loading
+- Static `ServiceProvider` property remains for setting up DI
 - All existing static manager properties (`AppActuatorManager`, etc.) continue to work
 - Three-phase initialization (`PreInit()`, `Init()`, `PostInit()`) unchanged
 
@@ -205,6 +295,7 @@ The test suite validates:
 - ✅ Context.GetManager<T>() correctly resolves from DI
 - ✅ Extension instantiation works with DI
 - ✅ Null/error cases handled appropriately
+- ✅ Configuration services (JsonSchemaValidator, ConfigurationReloadService, EnvironmentConfiguration) resolve from DI
 
 ## Migration Guide
 
@@ -329,6 +420,7 @@ The ACAT dependency injection infrastructure provides a modern, testable foundat
 
 **Key Deliverables Completed:**
 - ✅ Service container configuration (ServiceConfiguration class)
+- ✅ Configuration services registration (JsonSchemaValidator, ConfigurationReloadService, EnvironmentConfiguration)
 - ✅ Lifetime management (Singleton pattern via DI)
 - ✅ Factory patterns for all managers
 - ✅ Interface extraction for testability (10 interfaces)
@@ -336,5 +428,6 @@ The ACAT dependency injection infrastructure provides a modern, testable foundat
 - ✅ Extension loading integration verified
 - ✅ Entry point updates (5 applications)
 - ✅ Comprehensive test coverage (4 test classes, 30+ tests)
+- ✅ JsonSchemaValidator integrated into JsonConfigurationLoader (Task #211)
 
 **Phase 2 Tasks:** #212, #213, #214, #215, #216 - **COMPLETE**

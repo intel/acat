@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/Config/Schemas/WordPredictorSettings.schema.json",
+  "title": "ACAT Word Predictor Settings",
+  "description": "Configuration for word prediction in ACAT - maps languages to their preferred word predictor engines",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["wordPredictors"],
+  "properties": {
+    "wordPredictors": {
+      "type": "array",
+      "description": "List of preferred word predictor mappings per language",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/definitions/wordPredictorEntry"
+      }
+    },
+    "globalSettings": {
+      "type": "object",
+      "description": "Global word prediction behavior settings",
+      "$ref": "#/definitions/wordPredictorGlobalSettings"
+    }
+  },
+  "definitions": {
+    "wordPredictorEntry": {
+      "type": "object",
+      "description": "Mapping of a language to its preferred word predictor",
+      "required": ["language", "id"],
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": "Language code (ISO 639-1 two-letter code, optionally with region)",
+          "minLength": 2,
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "examples": ["en", "es", "fr", "de", "zh-CN"]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (GUID) of the preferred word predictor for this language. Use '00000000-0000-0000-0000-000000000000' for the default/null predictor.",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "examples": ["00000000-0000-0000-0000-000000000000"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "wordPredictorGlobalSettings": {
+      "type": "object",
+      "description": "Global settings controlling word prediction behavior",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether word prediction is enabled globally",
+          "default": true
+        },
+        "maxSuggestions": {
+          "type": "integer",
+          "description": "Maximum number of word suggestions to display",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 5
+        },
+        "learnFromInput": {
+          "type": "boolean",
+          "description": "Whether the word predictor should learn from user input to improve suggestions",
+          "default": true
+        },
+        "showPredictionsOnScannerPanel": {
+          "type": "boolean",
+          "description": "Show word predictions in the scanner panel",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

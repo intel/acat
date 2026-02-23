@@ -165,8 +165,9 @@ namespace ACATApp
 
             _serviceProvider = services.BuildServiceProvider();
 
-            // Make service provider available to Context for extension loading
-            Context.ServiceProvider = _serviceProvider;
+            // Resolve Context from DI – this sets Context.ServiceProvider automatically
+            // so all static Context.AppXXX accessors resolve managers through the container.
+            _serviceProvider.GetRequiredService<IContext>();
 
             _logger.LogDebug("Dependency injection initialized with ACAT services");
         }

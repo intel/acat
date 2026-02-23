@@ -346,6 +346,7 @@
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMap.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMapEntry.cs" />
     <Compile Include="PanelManagement\PanelManager.cs" />
+    <Compile Include="PanelManagement\IContext.cs" />
     <Compile Include="PanelManagement\IPanelManager.cs" />
     <Compile Include="PanelManagement\IPanelManagerFactory.cs" />
     <Compile Include="PanelManagement\IScannerFactory.cs" />

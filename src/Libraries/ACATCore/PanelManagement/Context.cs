@@ -36,7 +36,7 @@ namespace ACAT.Core.PanelManagement
     ///     PostInit()
     ///
     /// </summary>
-    public class Context
+    public class Context : IContext
     {
         private static readonly Lazy<AbbreviationsManager> _abbreviationsManager = new Lazy<AbbreviationsManager>(() => AbbreviationsManager.Instance);
         private static readonly Lazy<ActuatorManager> _actuatorManager = new Lazy<ActuatorManager>(() => ActuatorManager.Instance);
@@ -81,6 +81,74 @@ namespace ACAT.Core.PanelManagement
             // Manager singleton objects will be initialized lazily on first access
             // This allows Context.ServiceProvider to be set before managers are created
         }
+
+        /// <summary>
+        /// Initializes a new instance of Context for dependency injection.
+        /// Configures the static <see cref="ServiceProvider"/> from the injected
+        /// <paramref name="serviceProvider"/> so that all static accessor properties
+        /// resolve managers through the DI container.
+        /// </summary>
+        /// <param name="serviceProvider">The application DI service provider.</param>
+        public Context(IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
+            ServiceProvider = serviceProvider;
+        }
+
+        // ---------------------------------------------------------------
+        // IContext instance implementation – each property / method
+        // delegates to the corresponding static member so that consumers
+        // using the injected IContext get the same behaviour as those
+        // using the static Context.AppXXX API.
+        // ---------------------------------------------------------------
+
+        AbbreviationsManager IContext.AppAbbreviationsManager => AppAbbreviationsManager;
+        ActuatorManager IContext.AppActuatorManager => AppActuatorManager;
+        AgentManager IContext.AppAgentMgr => AppAgentMgr;
+        AutomationEventManager IContext.AppAutomationEventManger => AppAutomationEventManger;
+        CommandManager IContext.AppCommandManager => AppCommandManager;
+        PanelManager IContext.AppPanelManager => AppPanelManager;
+
+        bool IContext.AppQuit
+        {
+            get => AppQuit;
+            set => AppQuit = value;
+        }
+
+        SpellCheckManager IContext.AppSpellCheckManager => AppSpellCheckManager;
+        ThemeManager IContext.AppThemeManager => AppThemeManager;
+        TTSManager IContext.AppTTSManager => AppTTSManager;
+
+        Windows.WindowPosition IContext.AppWindowPosition
+        {
+            get => AppWindowPosition;
+            set => AppWindowPosition = value;
+        }
+
+        WordPredictionManager IContext.AppWordPredictionManager => AppWordPredictionManager;
+        IEnumerable<String> IContext.ExtensionDirs => ExtensionDirs;
+
+        string IContext.KeyboardLayout
+        {
+            get => KeyboardLayout;
+            set => KeyboardLayout = value;
+        }
+
+        bool IContext.RestartKeyboardLayout
+        {
+            get => RestartKeyboardLayout;
+            set => RestartKeyboardLayout = value;
+        }
+
+        bool IContext.ShowTalkWindowOnStartup
+        {
+            get => ShowTalkWindowOnStartup;
+            set => ShowTalkWindowOnStartup = value;
+        }
+
+        TInterface IContext.GetManager<TInterface>() => GetManager<TInterface>();
+        string IContext.GetInitCompletionStatus() => GetInitCompletionStatus();
+        bool IContext.IsInitFatal() => IsInitFatal();
 
         /// <summary>
         /// Raised when the culture changes

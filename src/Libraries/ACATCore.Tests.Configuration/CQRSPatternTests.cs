@@ -14,7 +14,9 @@
 using ACAT.Core.Configuration;
 using ACAT.Core.Patterns.CQRS;
 using ACAT.Core.Patterns.CQRS.Samples;
+using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -221,6 +223,70 @@ namespace ACATCore.Tests.Configuration
             string result = handler.Handle(new GetActiveAgentNameQuery());
 
             Assert.AreEqual(string.Empty, result);
+        }
+
+        // ----------------------------------------------------------------
+        // AgentManagerExtensions.GetCurrentAgentNameViaQuery – behaviour
+        // ----------------------------------------------------------------
+
+        [TestCleanup]
+        public void ResetServiceProvider()
+        {
+            // Ensure Context.ServiceProvider is reset after every test so
+            // that DI-enabled tests do not leak state into subsequent tests.
+            Context.ServiceProvider = null;
+        }
+
+        [TestMethod]
+        public void GetCurrentAgentNameViaQuery_WithoutServiceProvider_FallsBackToDirectCall()
+        {
+            Context.ServiceProvider = null;
+            var fake = new FakeAgentManager { CurrentAgentName = "FallbackAgent" };
+
+            string result = fake.GetCurrentAgentNameViaQuery();
+
+            Assert.AreEqual("FallbackAgent", result);
+        }
+
+        [TestMethod]
+        public void GetCurrentAgentNameViaQuery_WithoutServiceProvider_NullAgentName_ReturnsEmpty()
+        {
+            Context.ServiceProvider = null;
+            var fake = new FakeAgentManager { CurrentAgentName = null };
+
+            string result = fake.GetCurrentAgentNameViaQuery();
+
+            Assert.AreEqual(string.Empty, result);
+        }
+
+        [TestMethod]
+        public void GetCurrentAgentNameViaQuery_WithServiceProvider_RoutesViaHandler()
+        {
+            var fake = new FakeAgentManager { CurrentAgentName = "DirectAgent" };
+            var services = new ServiceCollection();
+            // Register a handler backed by a *different* fake so we can prove
+            // the call was routed through the DI handler and not the direct path.
+            var handlerFake = new FakeAgentManager { CurrentAgentName = "HandlerAgent" };
+            services.AddTransient<IQueryHandler<GetActiveAgentNameQuery, string>>(
+                _ => new GetActiveAgentNameQueryHandler(handlerFake));
+            Context.ServiceProvider = services.BuildServiceProvider();
+
+            string result = fake.GetCurrentAgentNameViaQuery();
+
+            Assert.AreEqual("HandlerAgent", result);
+        }
+
+        [TestMethod]
+        public void GetCurrentAgentNameViaQuery_WithServiceProvider_NoHandlerRegistered_FallsBackToDirectCall()
+        {
+            var fake = new FakeAgentManager { CurrentAgentName = "DirectFallback" };
+            // Build a DI container that does NOT register the query handler.
+            var services = new ServiceCollection();
+            Context.ServiceProvider = services.BuildServiceProvider();
+
+            string result = fake.GetCurrentAgentNameViaQuery();
+
+            Assert.AreEqual("DirectFallback", result);
         }
     }
 }

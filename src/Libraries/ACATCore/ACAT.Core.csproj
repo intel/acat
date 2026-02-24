@@ -593,6 +593,7 @@
     <Compile Include="Patterns\CQRS\Samples\GetConfigurationValueQueryHandler.cs" />
     <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQuery.cs" />
     <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\AgentManagerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ActuatorManagement\UI\ActuatorErrorForm.resx">

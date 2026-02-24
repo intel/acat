@@ -302,7 +302,16 @@ namespace ACAT.Core.ActuatorManagement
 
             _initInProgress = false;
 
-            Context.AppPanelManager.EvtAppQuit += AppPanelManager_EvtAppQuit;
+            if (_eventBus != null)
+            {
+                // Prefer EventBus subscription (new pattern)
+                _eventBus.Subscribe<AppQuitEvent>(OnAppQuit);
+            }
+            else
+            {
+                // Fallback to legacy delegate when EventBus is not available
+                Context.AppPanelManager.EvtAppQuit += AppPanelManager_EvtAppQuit;
+            }
 
             return retVal;
         }
@@ -664,6 +673,7 @@ namespace ACAT.Core.ActuatorManagement
         public void NotifyEndCalibration()
         {
             EvtCalibrationEndNotify?.Invoke(this, new EventArgs());
+            _eventBus?.Publish(new CalibrationEndEvent());
         }
 
         public IActuator GetKeyboardActuator()
@@ -914,6 +924,17 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
         private void AppPanelManager_EvtAppQuit(object sender, EventArgs e)
+        {
+            _actuators.OnAppQuit();
+        }
+
+        /// <summary>
+        /// EventBus handler for when the application exits.
+        /// Replaces the legacy <see cref="AppPanelManager_EvtAppQuit"/> delegate subscription
+        /// when <see cref="IEventBus"/> is available.
+        /// </summary>
+        /// <param name="evt">The app quit event</param>
+        private void OnAppQuit(AppQuitEvent evt)
         {
             _actuators.OnAppQuit();
         }

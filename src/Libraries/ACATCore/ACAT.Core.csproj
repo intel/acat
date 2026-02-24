@@ -571,6 +571,7 @@
     <Compile Include="EventManagement\EventBase.cs" />
     <Compile Include="EventManagement\IEventBus.cs" />
     <Compile Include="EventManagement\EventBus.cs" />
+    <Compile Include="EventManagement\ApplicationEvents.cs" />
     <Compile Include="EventManagement\PanelEvents.cs" />
     <Compile Include="EventManagement\AgentEvents.cs" />
     <Compile Include="EventManagement\ActuatorEvents.cs" />

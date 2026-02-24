@@ -31,4 +31,12 @@ namespace ACAT.Core.EventManagement
         /// </summary>
         public string SwitchName { get; }
     }
+
+    /// <summary>
+    /// Published when actuator calibration ends.
+    /// Replaces the legacy <c>IActuatorManager.EvtCalibrationEndNotify</c> delegate.
+    /// </summary>
+    public class CalibrationEndEvent : EventBase
+    {
+    }
 }

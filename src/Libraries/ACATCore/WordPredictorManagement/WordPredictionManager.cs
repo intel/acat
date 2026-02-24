@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
@@ -31,6 +32,7 @@ namespace ACAT.Core.WordPredictorManagement
     public class WordPredictionManager : IWordPredictionManager, IDisposable
     {
         private readonly ILogger<WordPredictionManager> _logger;
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
@@ -45,7 +47,8 @@ namespace ACAT.Core.WordPredictorManagement
             // Get logger from DI container if available, otherwise use LogManager
             ILogger<WordPredictionManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<WordPredictionManager>)) as ILogger<WordPredictionManager>
                 ?? LogManager.GetLogger<WordPredictionManager>();
-            return new WordPredictionManager(logger);
+            IEventBus eventBus = Context.ServiceProvider?.GetService(typeof(IEventBus)) as IEventBus;
+            return new WordPredictionManager(logger, eventBus);
         });
 
         /// <summary>
@@ -77,9 +80,10 @@ namespace ACAT.Core.WordPredictorManagement
         /// Initializes and instance of the WordPredictionManager class.
         /// </summary>
         /// <param name="logger">Logger instance</param>
-        private WordPredictionManager(ILogger<WordPredictionManager> logger)
+        private WordPredictionManager(ILogger<WordPredictionManager> logger, IEventBus eventBus = null)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus;
 
             AppDomain currentDomain = AppDomain.CurrentDomain;
 
@@ -453,6 +457,7 @@ namespace ACAT.Core.WordPredictorManagement
                 if (retVal)
                 {
                     _activeWordPredictor = wordPredictor;
+                    _eventBus?.Publish(new WordPredictionContextChangedEvent(wordPredictor));
                 }
             }
             catch (Exception ex)

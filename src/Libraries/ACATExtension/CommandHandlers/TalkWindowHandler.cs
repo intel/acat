@@ -9,6 +9,9 @@ using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
@@ -41,7 +44,20 @@ namespace ACAT.Extension.CommandHandlers
             switch (Command)
             {
                 case "CmdTalkApp":
-                    Form form = PanelManager.Instance.CreatePanel("TalkApplicationScanner");
+                    // CQRS: Use command handler instead of direct singleton access
+                    var createPanelHandler = Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>)) as ICommandHandler<CreatePanelCommand>;
+                    Form form;
+                    if (createPanelHandler != null)
+                    {
+                        var command = new CreatePanelCommand("TalkApplicationScanner");
+                        createPanelHandler.Handle(command);
+                        form = command.CreatedPanel as Form;
+                    }
+                    else
+                    {
+                        form = PanelManager.Instance.CreatePanel("TalkApplicationScanner");
+                    }
+
                     if (form != null)
                     {
                         // Add ad-hoc agent that will handle the form

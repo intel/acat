@@ -4,6 +4,8 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
@@ -206,8 +208,19 @@ namespace ACAT.Extensions.UI.Scanners
                 PredictionMode = mode
             };
 
-            // create the panel instance
-            Form form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>)) as ICommandHandler<CreatePanelCommand>;
+            Form form;
+            if (createPanelHandler != null)
+            {
+                var command = new CreatePanelCommand("TalkApplicationScanner", startupArg: startupArg);
+                createPanelHandler.Handle(command);
+                form = command.CreatedPanel as Form;
+            }
+            else
+            {
+                form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+            }
             if (form == null)
             {
                 _logger.LogError("Could not create TalkApplicationScanner panel.");

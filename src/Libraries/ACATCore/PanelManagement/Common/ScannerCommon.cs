@@ -14,6 +14,8 @@ using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.PanelManagement.Utils;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
@@ -110,6 +112,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// Is the scanner paused?
         /// </summary>
         private bool _isPaused;
+
+        /// <summary>
+        /// Backing field for <see cref="CreatePanelHandler"/>.
+        /// </summary>
+        private ICommandHandler<CreatePanelCommand> _createPanelHandler;
 
         /// <summary>
         /// is scanner in preview mode?
@@ -235,6 +242,20 @@ namespace ACAT.Core.PanelManagement.Common
         public bool IsPaused
         {
             get { return _isPaused; }
+        }
+
+        /// <summary>
+        /// Injectable command handler for creating panels. When set, panel creation
+        /// uses CQRS instead of direct singleton access. Falls back to
+        /// <see cref="Context.AppPanelManager"/> when not set.
+        /// Resolved lazily from <see cref="Context.ServiceProvider"/> if available.
+        /// </summary>
+        public ICommandHandler<CreatePanelCommand> CreatePanelHandler
+        {
+            get => _createPanelHandler ??
+                   (Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>))
+                       as ICommandHandler<CreatePanelCommand>);
+            set => _createPanelHandler = value;
         }
 
         /// <summary>
@@ -1326,7 +1347,20 @@ namespace ACAT.Core.PanelManagement.Common
 
             ScannerForm.InvokeIfRequired(() =>
             {
-                IPanel panel = Context.AppPanelManager.CreatePanel(scannerName, title) as IPanel;
+                // CQRS: Use command handler instead of direct singleton access
+                IPanel panel;
+                var handler = CreatePanelHandler;
+                if (handler != null)
+                {
+                    var command = new CreatePanelCommand(scannerName, title);
+                    handler.Handle(command);
+                    panel = command.CreatedPanel;
+                }
+                else
+                {
+                    panel = Context.AppPanelManager.CreatePanel(scannerName, title) as IPanel;
+                }
+
                 if (panel != null)
                 {
                     Context.AppPanelManager.ShowPopup(ScannerForm as IPanel, panel);

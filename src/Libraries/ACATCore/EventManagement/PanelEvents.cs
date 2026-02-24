@@ -71,4 +71,12 @@ namespace ACAT.Core.EventManagement
         /// </summary>
         public string PanelClass { get; }
     }
+
+    /// <summary>
+    /// Published when the display settings (e.g. resolution) change.
+    /// Replaces the legacy <c>IPanelManager.EvtDisplaySettingsChanged</c> delegate.
+    /// </summary>
+    public class DisplaySettingsChangedEvent : EventBase
+    {
+    }
 }

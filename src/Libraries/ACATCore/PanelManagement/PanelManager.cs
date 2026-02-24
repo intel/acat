@@ -442,7 +442,16 @@ namespace ACAT.Core.PanelManagement
             }
 
             Context.AppActuatorManager.EvtCalibrationStartNotify += AppActuatorManager_EvtCalibrationStartNotify;
-            Context.AppActuatorManager.EvtCalibrationEndNotify += AppActuatorManager_EvtCalibrationEndNotify;
+            if (_eventBus != null)
+            {
+                // Prefer EventBus subscription for CalibrationEnd (new pattern)
+                _eventBus.Subscribe<CalibrationEndEvent>(OnCalibrationEnd);
+            }
+            else
+            {
+                // Fallback to legacy delegate when EventBus is not available
+                Context.AppActuatorManager.EvtCalibrationEndNotify += AppActuatorManager_EvtCalibrationEndNotify;
+            }
             return retVal;
         }
 
@@ -587,6 +596,7 @@ namespace ACAT.Core.PanelManagement
         internal void NotifyQuitApplication()
         {
             EvtAppQuit?.Invoke(_instance, new EventArgs());
+            _eventBus?.Publish(new AppQuitEvent());
         }
 
         /// <summary>
@@ -635,6 +645,17 @@ namespace ACAT.Core.PanelManagement
             //EnumWindows.RestoreFocusToTopWindowOnDesktop();
 
             //WindowActivityMonitor.GetActiveWindowAsync();
+        }
+
+        /// <summary>
+        /// EventBus handler for calibration end.
+        /// Replaces the legacy <see cref="AppActuatorManager_EvtCalibrationEndNotify"/> delegate
+        /// subscription when <see cref="IEventBus"/> is available.
+        /// </summary>
+        /// <param name="evt">The calibration end event</param>
+        private void OnCalibrationEnd(CalibrationEndEvent evt)
+        {
+            AppActuatorManager_EvtCalibrationEndNotify(this, EventArgs.Empty);
         }
 
         private void AppActuatorManager_EvtCalibrationStartNotify(ActuatorManagement.CalibrationNotifyEventArgs args)
@@ -772,6 +793,7 @@ namespace ACAT.Core.PanelManagement
             _logger?.LogDebug("Display Resolution changed. Working area is {WorkingArea}", Screen.PrimaryScreen.WorkingArea);
 
             EvtDisplaySettingsChanged?.Invoke(sender, e);
+            _eventBus?.Publish(new DisplaySettingsChangedEvent());
         }
     }
 }

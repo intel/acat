@@ -42,4 +42,27 @@ namespace ACAT.Core.EventManagement
         /// </summary>
         public object Context { get; }
     }
+
+    /// <summary>
+    /// Published when the word prediction context changes.
+    /// Replaces the legacy word prediction context delegate.
+    /// </summary>
+    public class WordPredictionContextChangedEvent : EventBase
+    {
+        /// <summary>
+        /// Initializes a new instance of <see cref="WordPredictionContextChangedEvent"/>.
+        /// </summary>
+        /// <param name="context">
+        /// Application-defined context object (may be <c>null</c>).
+        /// </param>
+        public WordPredictionContextChangedEvent(object context)
+        {
+            Context = context;
+        }
+
+        /// <summary>
+        /// Gets the application-defined context object for the word prediction context.
+        /// </summary>
+        public object Context { get; }
+    }
 }

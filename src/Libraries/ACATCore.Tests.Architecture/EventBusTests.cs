@@ -137,6 +137,93 @@ namespace ACATCore.Tests.Architecture
             Assert.AreSame(ctx, evt.Context);
         }
 
+        [TestMethod]
+        public void AppQuitEvent_ExtendsEventBase_HasTimestamp()
+        {
+            DateTime before = DateTime.UtcNow;
+            var e = new AppQuitEvent();
+            DateTime after = DateTime.UtcNow;
+
+            Assert.IsTrue(e.Timestamp >= before && e.Timestamp <= after);
+        }
+
+        [TestMethod]
+        public void AppQuitEvent_CanBePublishedAndReceived()
+        {
+            var bus = new EventBus();
+            AppQuitEvent received = null;
+
+            bus.Subscribe<AppQuitEvent>(e => received = e);
+            bus.Publish(new AppQuitEvent());
+
+            Assert.IsNotNull(received);
+        }
+
+        [TestMethod]
+        public void CalibrationEndEvent_ExtendsEventBase_HasTimestamp()
+        {
+            DateTime before = DateTime.UtcNow;
+            var e = new CalibrationEndEvent();
+            DateTime after = DateTime.UtcNow;
+
+            Assert.IsTrue(e.Timestamp >= before && e.Timestamp <= after);
+        }
+
+        [TestMethod]
+        public void CalibrationEndEvent_CanBePublishedAndReceived()
+        {
+            var bus = new EventBus();
+            CalibrationEndEvent received = null;
+
+            bus.Subscribe<CalibrationEndEvent>(e => received = e);
+            bus.Publish(new CalibrationEndEvent());
+
+            Assert.IsNotNull(received);
+        }
+
+        [TestMethod]
+        public void DisplaySettingsChangedEvent_ExtendsEventBase_HasTimestamp()
+        {
+            DateTime before = DateTime.UtcNow;
+            var e = new DisplaySettingsChangedEvent();
+            DateTime after = DateTime.UtcNow;
+
+            Assert.IsTrue(e.Timestamp >= before && e.Timestamp <= after);
+        }
+
+        [TestMethod]
+        public void DisplaySettingsChangedEvent_CanBePublishedAndReceived()
+        {
+            var bus = new EventBus();
+            DisplaySettingsChangedEvent received = null;
+
+            bus.Subscribe<DisplaySettingsChangedEvent>(e => received = e);
+            bus.Publish(new DisplaySettingsChangedEvent());
+
+            Assert.IsNotNull(received);
+        }
+
+        [TestMethod]
+        public void WordPredictionContextChangedEvent_Context_IsPreserved()
+        {
+            var ctx = new object();
+            var e = new WordPredictionContextChangedEvent(ctx);
+
+            Assert.AreSame(ctx, e.Context);
+        }
+
+        [TestMethod]
+        public void WordPredictionContextChangedEvent_CanBePublishedAndReceived()
+        {
+            var bus = new EventBus();
+            WordPredictionContextChangedEvent received = null;
+
+            bus.Subscribe<WordPredictionContextChangedEvent>(e => received = e);
+            bus.Publish(new WordPredictionContextChangedEvent(null));
+
+            Assert.IsNotNull(received);
+        }
+
         // -----------------------------------------------------------------------
         // Null guards
         // -----------------------------------------------------------------------

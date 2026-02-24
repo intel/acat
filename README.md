@@ -49,13 +49,13 @@ ACAT uses JSON configuration files for flexible customization. Key configuration
 ### Modernization Documentation
 
 - **[ACAT Modernization Plan](ACAT_MODERNIZATION_PLAN.md)** - Complete modernization roadmap
-- **[Dependency Injection Guide](DEPENDENCY_INJECTION_GUIDE.md)** - DI architecture and implementation guidance
-- **[Logging Migration Guide](LOGGING_MIGRATION_GUIDE.md)** - Logging migration strategy and implementation details
+- **[Dependency Injection Guide](src/docs/DEPENDENCY_INJECTION_GUIDE.md)** - DI architecture and implementation guidance
+- **[Logging Migration Guide](src/docs/LOGGING_MIGRATION_GUIDE.md)** - Logging migration strategy and implementation details
 - **[Documentation Index](INDEX.md)** - Complete documentation index
 
 ### Configuration Files
 
-Configuration files are located in `%APPDATA%\ACAT\Config\` and support VS Code IntelliSense for easy editing. See the [JSON Configuration Guide](docs/JSON_CONFIGURATION_GUIDE.md) for details.
+Configuration files are located in `%APPDATA%\ACAT\Config\` and support VS Code IntelliSense for easy editing. See the [JSON Configuration Guide](src/docs/JSON_CONFIGURATION_GUIDE.md) for details.
 
 ## License
 ACAT is distributed under the Apache License, Version 2.0.

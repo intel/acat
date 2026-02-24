@@ -168,6 +168,26 @@
     <Compile Include="AnimationManagement\PlayerStateChangedEventArgs.cs" />
     <Compile Include="AnimationManagement\ResolveWidgetChildrenEventArgs.cs" />
     <Compile Include="AnimationManagement\Variables.cs" />
+    <!-- Animation Engine POC: new composable engine alongside legacy AnimationPlayer -->
+    <Compile Include="AnimationManagement\AnimationEngineEvents.cs" />
+    <Compile Include="AnimationManagement\AnimationService.cs" />
+    <Compile Include="AnimationManagement\AnimationSession.cs" />
+    <Compile Include="AnimationManagement\SystemScanTimer.cs" />
+    <Compile Include="AnimationManagement\TestScanTimer.cs" />
+    <Compile Include="AnimationManagement\Configuration\AnimationConfig.cs" />
+    <Compile Include="AnimationManagement\Configuration\AnimationConfigProvider.cs" />
+    <Compile Include="AnimationManagement\Configuration\XmlAnimationConfigAdapter.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IAnimationConfigProvider.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IAnimationService.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IAnimationSession.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IHighlightRenderer.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IScanModeStrategy.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IScanTimer.cs" />
+    <Compile Include="AnimationManagement\Rendering\HighlightStyle.cs" />
+    <Compile Include="AnimationManagement\Rendering\WinFormsHighlightRenderer.cs" />
+    <Compile Include="AnimationManagement\Strategies\AutoScanStrategy.cs" />
+    <Compile Include="AnimationManagement\Strategies\ManualScanStrategy.cs" />
+    <Compile Include="AnimationManagement\Strategies\StepScanStrategy.cs" />
     <Compile Include="Audit\AuditEvent.cs" />
     <Compile Include="Audit\AuditEventAbbreviation.cs" />
     <Compile Include="Audit\AuditEventActiveWindowChange.cs" />

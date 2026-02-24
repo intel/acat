@@ -18,6 +18,10 @@
 using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.AnimationManagement.Configuration;
+using ACAT.Core.AnimationManagement.Interfaces;
+using ACAT.Core.AnimationManagement.Strategies;
 using ACAT.Core.CommandManagement;
 using ACAT.Core.Configuration;
 using ACAT.Core.DataAccess;
@@ -112,6 +116,41 @@ namespace ACAT.Core.DependencyInjection
             }
 
             return current;
+        }
+
+        /// <summary>
+        /// Registers the new animation engine services.
+        /// </summary>
+        /// <remarks>
+        /// Service lifetimes:
+        /// <list type="bullet">
+        ///   <item><see cref="IScanTimer"/> → <see cref="SystemScanTimer"/> (Transient — one per session).</item>
+        ///   <item><see cref="IAnimationConfigProvider"/> → <see cref="AnimationConfigProvider"/> (Singleton).</item>
+        ///   <item><see cref="IAnimationService"/> → <see cref="AnimationService"/> (Singleton).</item>
+        ///   <item>Scan strategies (<see cref="AutoScanStrategy"/>, <see cref="ManualScanStrategy"/>,
+        ///         <see cref="StepScanStrategy"/>) registered as Transient.</item>
+        ///   <item><see cref="IScanStrategyFactory"/> → <see cref="DefaultScanStrategyFactory"/> (Singleton).</item>
+        /// </list>
+        /// Note: <see cref="IHighlightRenderer"/> is not registered here because it requires
+        /// host-specific callbacks. The host must register its own implementation.
+        /// </remarks>
+        public static IServiceCollection AddAnimationEngine(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddTransient<IScanTimer, SystemScanTimer>();
+            services.AddSingleton<IAnimationConfigProvider, AnimationConfigProvider>();
+            services.AddSingleton<IScanStrategyFactory, DefaultScanStrategyFactory>();
+            services.AddTransient<AutoScanStrategy>();
+            services.AddTransient<ManualScanStrategy>();
+            services.AddTransient<StepScanStrategy>();
+            services.AddSingleton<IAnimationService>(provider =>
+                new AnimationService(
+                    provider.GetRequiredService<IEventBus>(),
+                    provider.GetService<IHighlightRenderer>(),
+                    provider.GetRequiredService<IScanStrategyFactory>(),
+                    null));
+            return services;
         }
 
         // ---------------------------------------------------------------
@@ -377,7 +416,8 @@ namespace ACAT.Core.DependencyInjection
                 .AddCQRSHandlers()
                 .AddRepositories()
                 .AddDiagnostics()
-                .AddWidgetManagement();
+                .AddWidgetManagement()
+                .AddAnimationEngine();
 
             return services;
         }

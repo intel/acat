@@ -21,6 +21,8 @@ using ACAT.Core.CoreInterfaces;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
@@ -57,6 +59,11 @@ namespace ACAT.Core.ActuatorManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        /// Backing field for <see cref="CreatePanelHandler"/>.
+        /// </summary>
+        private ICommandHandler<CreatePanelCommand> _createPanelHandler;
 
         /// <summary>
         /// Initializes a new instance of the ActuatorBase class
@@ -165,6 +172,20 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         protected State actuatorState { get; set; }
         public Guid Id => Descriptor.Id;
+
+        /// <summary>
+        /// Injectable command handler for creating panels. When set, panel creation
+        /// uses CQRS instead of direct singleton access. Falls back to
+        /// <see cref="PanelManager.Instance"/> when not set.
+        /// Resolved lazily from <see cref="Context.ServiceProvider"/> if available.
+        /// </summary>
+        public ICommandHandler<CreatePanelCommand> CreatePanelHandler
+        {
+            get => _createPanelHandler ??
+                   (Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>))
+                       as ICommandHandler<CreatePanelCommand>);
+            set => _createPanelHandler = value;
+        }
 
         /// <summary>
         /// Class factory to create a switch.  Override this in the
@@ -658,7 +679,23 @@ namespace ACAT.Core.ActuatorManagement
                 return false;
             }
 
-            Form form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName, "Adjust Scanning Speed");
+            Form form;
+            var handler = CreatePanelHandler;
+            if (handler != null)
+            {
+                var command = new CreatePanelCommand(
+                    CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName,
+                    "Adjust Scanning Speed");
+                handler.Handle(command);
+                form = command.CreatedPanel as Form;
+            }
+            else
+            {
+                form = PanelManager.Instance.CreatePanel(
+                    CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName,
+                    "Adjust Scanning Speed");
+            }
+
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);
@@ -675,7 +712,23 @@ namespace ACAT.Core.ActuatorManagement
                 return false;
             }
 
-            Form form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultTryoutPanelName, "Switch Tryout");
+            Form form;
+            var handler = CreatePanelHandler;
+            if (handler != null)
+            {
+                var command = new CreatePanelCommand(
+                    CoreGlobals.AppPreferences.DefaultTryoutPanelName,
+                    "Switch Tryout");
+                handler.Handle(command);
+                form = command.CreatedPanel as Form;
+            }
+            else
+            {
+                form = PanelManager.Instance.CreatePanel(
+                    CoreGlobals.AppPreferences.DefaultTryoutPanelName,
+                    "Switch Tryout");
+            }
+
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);

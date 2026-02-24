@@ -9,19 +9,21 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.Interpreter;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.PanelManagement.Utils;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
-using ACAT.Core.PanelManagement.PanelConfig;
-using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.PanelManagement.Common
 {
@@ -66,6 +68,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// Has this object been disposed off?
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        /// Backing field for <see cref="CreatePanelHandler"/>.
+        /// </summary>
+        private ICommandHandler<CreatePanelCommand> _createPanelHandler;
 
         /// <summary>
         /// Name of the form in the Panel config map
@@ -143,6 +150,20 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public Widget RootWidget
         { get { return _rootWidget; } }
+
+        /// <summary>
+        /// Injectable command handler for creating panels. When set, panel creation
+        /// uses CQRS instead of direct singleton access. Falls back to
+        /// <see cref="Context.AppPanelManager"/> when not set.
+        /// Resolved lazily from <see cref="Context.ServiceProvider"/> if available.
+        /// </summary>
+        public ICommandHandler<CreatePanelCommand> CreatePanelHandler
+        {
+            get => _createPanelHandler ??
+                   (Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>))
+                       as ICommandHandler<CreatePanelCommand>);
+            set => _createPanelHandler = value;
+        }
 
         /// <summary>
         /// Returns the synchronization object
@@ -393,7 +414,19 @@ namespace ACAT.Core.PanelManagement.Common
             StartupArg startupArg = createStartupArgForScanner(widget);
 
             _logger?.LogDebug("Creating Panel {PanelName}", widget.Panel);
-            Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
+            // CQRS: Use command handler instead of direct singleton access
+            Form panel;
+            var handler = CreatePanelHandler;
+            if (handler != null)
+            {
+                var command = new CreatePanelCommand(widget.Panel, string.Empty, startupArg);
+                handler.Handle(command);
+                panel = command.CreatedPanel as Form;
+            }
+            else
+            {
+                panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
+            }
             var child = panel as IScannerPanel;
             if (child != null)
             {

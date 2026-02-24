@@ -8,6 +8,8 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.Utility;
 using ACAT.Extension.UI;
 using ACATResources;
@@ -46,17 +48,30 @@ namespace ACAT.Extension.CommandHandlers
             {
                 if (DialogUtils.ConfirmScanner(form as IPanel, StringResources.LockTheScreen))
                 {
-                    Form screenLockForm = PanelManager.Instance.CreatePanel("ScreenLockScanner", "Lock Screen");
-                    if (screenLockForm != null)
-                    {
-                        WindowActivityMonitor.Pause();
-                        Context.AppPanelManager.ShowDialog(screenLockForm as IPanel);
-                        WindowActivityMonitor.Resume();
-                    }
-                    else
-                    {
-                        retVal = false;
-                    }
+                        // CQRS: Use command handler instead of direct singleton access
+                        var createPanelHandler = Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>)) as ICommandHandler<CreatePanelCommand>;
+                        Form screenLockForm;
+                        if (createPanelHandler != null)
+                        {
+                            var command = new CreatePanelCommand("ScreenLockScanner", "Lock Screen");
+                            createPanelHandler.Handle(command);
+                            screenLockForm = command.CreatedPanel as Form;
+                        }
+                        else
+                        {
+                            screenLockForm = PanelManager.Instance.CreatePanel("ScreenLockScanner", "Lock Screen");
+                        }
+
+                        if (screenLockForm != null)
+                        {
+                            WindowActivityMonitor.Pause();
+                            Context.AppPanelManager.ShowDialog(screenLockForm as IPanel);
+                            WindowActivityMonitor.Resume();
+                        }
+                        else
+                        {
+                            retVal = false;
+                        }
                 }
             }));
 

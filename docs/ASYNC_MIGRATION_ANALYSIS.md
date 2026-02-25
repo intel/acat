@@ -86,14 +86,14 @@ These items are **not blockers** for adopting the async API — the async infras
 exists and callers *can* switch.  They represent further incremental migration
 opportunities:
 
-| # | Item | Notes |
-|---|------|-------|
-| 3 | `JsonConfigurationLoader<T>` callers (`Abbreviations`, `ActuatorConfig`, `Pronunciations`, `PreferredWordPredictors`, `Theme.cs`) still call `.Load()`/`.Save()` synchronously | `LoadAsync`/`SaveAsync` already exist on `JsonConfigurationLoader<T>`; callers can be migrated one-by-one |
-| 4 | `ThemeManager.SetActiveTheme()` calls `Theme.Create()` directly instead of `_themeRepository.LoadAsync()` | A `SetActiveThemeAsync()` method should be added for fully-async theme loading |
-| 5 | `NamedPipeServerConvAssist.CreatePipeServer` uses `.Result` (deadlock risk on UI thread) | Future: expose `CreatePipeServerAsync()` and update callers |
-| 6 | `NamedPipeServerConvAssist.WriteSync` polls with `Thread.Sleep` | Should be deprecated in favour of the existing `WriteAsync` |
-| 7 | `XmlUtils` has no async variants | Adding `XmlFileLoadAsync`/`XmlFileSaveAsync` would let `PreferencesRepository<T>` avoid `Task.Run` |
-| 8 | CQRS handlers that perform I/O have no `IAsyncCommandHandler`/`IAsyncQueryHandler` implementations | The interfaces exist; concrete async handlers need to be added |
+| # | Item | Status |
+|---|------|--------|
+| 3 | `JsonConfigurationLoader<T>` callers (`Abbreviations`, `ActuatorConfig`, `Pronunciations`, `PreferredWordPredictors`, `Theme.cs`) still call `.Load()`/`.Save()` synchronously | ✅ Resolved: async `LoadAsync`/`SaveAsync` public methods added to all five classes; `Theme.CreateAsync()` added |
+| 4 | `ThemeManager.SetActiveTheme()` calls `Theme.Create()` directly instead of `_themeRepository.LoadAsync()` | ✅ Resolved: `SetActiveThemeAsync()` added to both `IThemeManager` and `ThemeManager` |
+| 5 | `NamedPipeServerConvAssist.CreatePipeServer` uses `.Result` (deadlock risk on UI thread) | ✅ Resolved: `CreatePipeServerAsync()` added; `ConvAssistWordPredictor.InitAsync()` uses it |
+| 6 | `NamedPipeServerConvAssist.WriteSync` polls with `Thread.Sleep` | ✅ Resolved: async variants (`ConvAssistLearnAsync`, `SendMessageConvAssistSentencePredictionAsync`, `SendMessageConvAssistWordPredictionAsync`) added alongside sync methods |
+| 7 | `XmlUtils` has no async variants | ✅ Resolved: `XmlFileLoadAsync`/`XmlFileSaveAsync` added to `XmlUtils`; `PreferencesRepository<T>` now overrides `LoadAsync`/`SaveAsync` using these helpers |
+| 8 | CQRS handlers that perform I/O have no `IAsyncCommandHandler`/`IAsyncQueryHandler` implementations | ✅ Resolved: `LoadPreferencesQuery<T>` + `LoadPreferencesQueryHandler<T>`, `SavePreferencesCommand<T>` + `SavePreferencesCommandHandler<T>` added to `Patterns/CQRS/Samples/` |
 
 ---
 
@@ -113,5 +113,11 @@ opportunities:
 
 ## Remaining Work / Future Recommendations
 
-See the **Incremental Work** table in the *Blockers Analysis* section above for the
-full list of future migration items.
+All planned async migration items have been completed. The async API is now fully
+usable across the entire codebase.
+
+Potential further optimisations:
+- Replace the `Task.Run` fallback in `XmlUtils.XmlFileLoadAsync`/`XmlFileSaveAsync` with
+  genuinely async XML serialization once the codebase is fully on .NET 6+.
+- Replace the APM (`BeginWrite`/`EndWrite`) pattern in `NamedPipeServerConvAssist.WriteAsync`
+  with `Stream.WriteAsync()` for cleaner code once targeting .NET 6+.

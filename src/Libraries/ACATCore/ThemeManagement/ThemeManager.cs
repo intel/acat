@@ -12,6 +12,8 @@ using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.ThemeManagement
@@ -249,8 +251,52 @@ namespace ACAT.Core.ThemeManagement
         }
 
         /// <summary>
-        /// Disposer. Release resources and cleanup.
+        /// Asynchronously sets the active theme by name.
+        /// Uses <see cref="Theme.CreateAsync"/> to load theme configuration
+        /// without blocking the calling thread.
         /// </summary>
+        /// <param name="name">Name of the Theme.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        public async Task<bool> SetActiveThemeAsync(String name, CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("SetActiveThemeAsync: setting active Theme to {ThemeName}", name);
+
+            var themeDir = GetThemeDir(name);
+            if (String.IsNullOrEmpty(themeDir))
+            {
+                _logger?.LogError("Could not find Theme {ThemeName}, using default", name);
+                themeDir = GetThemeDir(DefaultThemeName);
+                if (String.IsNullOrEmpty(themeDir))
+                {
+                    return false;
+                }
+
+                name = DefaultThemeName;
+            }
+
+            var themeFileJson = Path.Combine(themeDir, ThemeConfigFileNameJson);
+            var themeFileXml = Path.Combine(themeDir, ThemeConfigFileNameXml);
+            string themeFile = File.Exists(themeFileJson) ? themeFileJson : themeFileXml;
+
+            _logger?.LogDebug("CreateAsync Theme {ThemeName}, themeDir: {ThemeDir}, themeFile: {ThemeFile}",
+                name, themeDir, themeFile);
+
+            var theme = await Theme.CreateAsync(name, themeDir, themeFile, LogManager.GetLogger<Theme>(), cancellationToken)
+                .ConfigureAwait(false);
+
+            if (theme != null)
+            {
+                _activeTheme?.Dispose();
+                _activeTheme = theme;
+                ActiveThemeName = name;
+                _logger.LogDebug("SetActiveThemeAsync: active Theme is now {ThemeName}", _activeTheme.Name);
+                return true;
+            }
+
+            _logger.LogError("SetActiveThemeAsync: error creating theme with name {ThemeName}", name);
+            return false;
+        }
         /// <param name="disposing">true to dispose managed resources</param>
         protected virtual void Dispose(bool disposing)
         {

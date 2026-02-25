@@ -617,6 +617,10 @@
     <Compile Include="Patterns\CQRS\Samples\GetConfigurationValueQueryHandler.cs" />
     <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQuery.cs" />
     <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\LoadPreferencesQuery.cs" />
+    <Compile Include="Patterns\CQRS\Samples\LoadPreferencesQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\SavePreferencesCommand.cs" />
+    <Compile Include="Patterns\CQRS\Samples\SavePreferencesCommandHandler.cs" />
     <Compile Include="Patterns\CQRS\AgentManagerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

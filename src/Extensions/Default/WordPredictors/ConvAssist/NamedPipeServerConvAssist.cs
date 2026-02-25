@@ -172,6 +172,31 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
         /// <summary>
+        /// Asynchronously creates and starts the named pipe server.
+        /// Prefer this overload over <see cref="CreatePipeServer"/> when calling
+        /// from an async context to avoid the <c>.Result</c> deadlock risk.
+        /// </summary>
+        /// <param name="send_params">When <c>true</c>, sends initial parameters to the client after connection.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> when the pipe server was created and a client connected.</returns>
+        public async Task<bool> CreatePipeServerAsync(bool send_params = false, CancellationToken cancellationToken = default)
+        {
+            disposed = false;
+            cancellationTokenSource = new CancellationTokenSource();
+            NamedPipeServer = new NamedPipeServerStream(PipeName, PipeDirection,
+                                            1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            try
+            {
+                return await StartNamedPipeServer(cancellationToken, send_params).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in CreatePipeServerAsync: {Exception}", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Disposes the pipe server.
         /// </summary>
         public void Dispose()

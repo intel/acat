@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ACAT.Core.ActuatorManagement.Settings
@@ -178,6 +180,103 @@ namespace ACAT.Core.ActuatorManagement.Settings
                     _logger.LogError("Failed to save actuator settings to JSON: {FilePath}", filePath);
                 }
                 
+                return success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving actuator settings to JSON: {FilePath}", filePath);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously loads settings from the JSON configuration file.
+        /// Uses <see cref="JsonConfigurationLoader{T}.LoadAsync"/> to avoid
+        /// blocking the calling thread during file I/O.
+        /// </summary>
+        /// <returns>Actuator settings object.</returns>
+        public static Task<ActuatorConfig> LoadAsync(CancellationToken cancellationToken = default)
+        {
+            return LoadFromJsonAsync(ActuatorSettingsFileName, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously saves settings to the JSON configuration file.
+        /// Uses <see cref="JsonConfigurationLoader{T}.SaveAsync"/> to avoid
+        /// blocking the calling thread during file I/O.
+        /// </summary>
+        /// <returns><c>true</c> on success.</returns>
+        public Task<bool> SaveAsync(CancellationToken cancellationToken = default)
+        {
+            return !string.IsNullOrEmpty(ActuatorSettingsFileName)
+                ? SaveToJsonAsync(this, ActuatorSettingsFileName, cancellationToken)
+                : Task.FromResult(false);
+        }
+
+        /// <summary>
+        /// Asynchronously loads settings from a JSON file with validation.
+        /// </summary>
+        private static async Task<ActuatorConfig> LoadFromJsonAsync(string filePath, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("ActuatorSettingsFileName is null or empty");
+                return LoadDefaults<ActuatorConfig>();
+            }
+
+            try
+            {
+                var validator = new ActuatorSettingsValidator();
+                var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(validator, _logger);
+                ActuatorSettingsJson jsonSettings = await loader.LoadAsync(filePath, createDefaultOnError: true, cancellationToken).ConfigureAwait(false);
+
+                if (jsonSettings == null)
+                {
+                    _logger.LogWarning("Failed to load JSON settings, using defaults");
+                    return LoadDefaults<ActuatorConfig>();
+                }
+
+                var config = new ActuatorConfig();
+                config.ActuatorSettings = ActuatorSettingsConverter.FromJson(jsonSettings);
+                _logger.LogInformation("Successfully loaded {Count} actuator(s) from JSON", config.ActuatorSettings.Count);
+                return config;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading actuator settings from JSON: {FilePath}", filePath);
+                return LoadDefaults<ActuatorConfig>();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously saves settings to a JSON file with validation.
+        /// </summary>
+        private static async Task<bool> SaveToJsonAsync(ActuatorConfig config, string filePath, CancellationToken cancellationToken)
+        {
+            if (config == null)
+            {
+                _logger.LogError("Cannot save null ActuatorConfig");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("ActuatorSettingsFileName is null or empty");
+                return false;
+            }
+
+            try
+            {
+                ActuatorSettingsJson jsonSettings = ActuatorSettingsConverter.ToJson(config.ActuatorSettings);
+                var validator = new ActuatorSettingsValidator();
+                var loader = new JsonConfigurationLoader<ActuatorSettingsJson>(validator, _logger);
+                bool success = await loader.SaveAsync(jsonSettings, filePath, cancellationToken).ConfigureAwait(false);
+
+                if (success)
+                    _logger.LogInformation("Successfully saved actuator settings to JSON: {FilePath}", filePath);
+                else
+                    _logger.LogError("Failed to save actuator settings to JSON: {FilePath}", filePath);
+
                 return success;
             }
             catch (Exception ex)

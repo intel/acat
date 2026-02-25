@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace ACAT.Core.TTSManagement
@@ -431,6 +433,128 @@ namespace ACAT.Core.TTSManagement
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Asynchronously loads pronunciations from the specified file.
+        /// Supports both JSON and XML formats; JSON uses native async I/O,
+        /// XML falls back to <see cref="Task.Run"/>.
+        /// </summary>
+        /// <param name="filePath">Full path to the pronunciation file.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        public async Task<bool> LoadAsync(string filePath, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
+
+            _pronunciationList.Clear();
+
+            if (!File.Exists(filePath))
+            {
+                _logger?.LogDebug("Pronunciation file not found: {FilePath}", filePath);
+                return true;
+            }
+
+            try
+            {
+                var extension = Path.GetExtension(filePath)?.ToLowerInvariant();
+
+                if (extension == ".json")
+                {
+                    return await LoadFromJsonAsync(filePath, cancellationToken).ConfigureAwait(false);
+                }
+                else if (extension == ".xml")
+                {
+                    return await Task.Run(() => LoadFromXml(filePath), cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    _logger?.LogWarning("Unknown pronunciation file format: {Extension}", extension);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error loading pronunciation file {FilePath}", filePath);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously saves pronunciations to the specified file in JSON format.
+        /// Uses native async I/O from <see cref="JsonConfigurationLoader{T}"/>.
+        /// </summary>
+        /// <param name="pronunciationsFile">Path to the output file.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        public async Task<bool> SaveAsync(string pronunciationsFile, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var config = new PronunciationsJson();
+                foreach (Pronunciation p in _pronunciationList.Values)
+                {
+                    config.Pronunciations.Add(new PronunciationJson
+                    {
+                        Word = p.Word,
+                        Pronunciation = p.AltPronunciation
+                    });
+                }
+
+                var loader = new JsonConfigurationLoader<PronunciationsJson>(new PronunciationsValidator(), _logger);
+                bool retVal = await loader.SaveAsync(config, pronunciationsFile, cancellationToken).ConfigureAwait(false);
+
+                if (retVal)
+                {
+                    _logger?.LogInformation("Saved {Count} pronunciations to JSON: {FilePath}",
+                        _pronunciationList.Count, pronunciationsFile);
+                }
+
+                return retVal;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error saving pronunciations to: {PronunciationsFile}", pronunciationsFile);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously loads pronunciations from a JSON file using
+        /// <see cref="JsonConfigurationLoader{T}.LoadAsync"/>.
+        /// </summary>
+        private async Task<bool> LoadFromJsonAsync(string filePath, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var loader = new JsonConfigurationLoader<PronunciationsJson>(new PronunciationsValidator(), _logger);
+                PronunciationsJson config = await loader.LoadAsync(filePath, createDefaultOnError: false, cancellationToken).ConfigureAwait(false);
+
+                if (config == null)
+                {
+                    _logger?.LogError("Failed to load pronunciations from JSON: {FilePath}", filePath);
+                    return false;
+                }
+
+                foreach (PronunciationJson entry in config.Pronunciations)
+                {
+                    if (!string.IsNullOrWhiteSpace(entry.Word) && !string.IsNullOrWhiteSpace(entry.Pronunciation))
+                    {
+                        Add(new Pronunciation(entry.Word, entry.Pronunciation));
+                    }
+                }
+
+                _logger?.LogInformation("Loaded {Count} pronunciations from JSON", _pronunciationList.Count);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error loading pronunciations from JSON: {FilePath}", filePath);
+                return false;
+            }
         }
 
         /// <summary>

@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ACAT.Core.WordPredictorManagement
@@ -181,6 +183,103 @@ namespace ACAT.Core.WordPredictorManagement
                 {
                     _logger.LogError("Failed to save preferred word predictors to JSON: {FilePath}", filePath);
                 }
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving preferred word predictors to JSON: {FilePath}", filePath);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously loads preferred word predictors from the JSON file.
+        /// Uses <see cref="JsonConfigurationLoader{T}.LoadAsync"/> to avoid
+        /// blocking the calling thread during file I/O.
+        /// </summary>
+        /// <returns>A <see cref="PreferredWordPredictors"/> instance.</returns>
+        public static Task<PreferredWordPredictors> LoadAsync(CancellationToken cancellationToken = default)
+        {
+            return LoadFromJsonAsync(FilePath, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously saves preferred word predictors to the JSON file.
+        /// Uses <see cref="JsonConfigurationLoader{T}.SaveAsync"/> to avoid
+        /// blocking the calling thread during file I/O.
+        /// </summary>
+        /// <returns><c>true</c> on success.</returns>
+        public Task<bool> SaveAsync(CancellationToken cancellationToken = default)
+        {
+            return !string.IsNullOrEmpty(FilePath)
+                ? SaveToJsonAsync(this, FilePath, cancellationToken)
+                : Task.FromResult(false);
+        }
+
+        /// <summary>
+        /// Asynchronously loads settings from a JSON file with validation.
+        /// </summary>
+        private static async Task<PreferredWordPredictors> LoadFromJsonAsync(string filePath, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("PreferredWordPredictors FilePath is null or empty");
+                return LoadDefaults<PreferredWordPredictors>();
+            }
+
+            try
+            {
+                var validator = new PreferredWordPredictorsValidator();
+                var loader = new JsonConfigurationLoader<PreferredWordPredictorsJson>(validator, _logger);
+                PreferredWordPredictorsJson jsonSettings = await loader.LoadAsync(filePath, createDefaultOnError: true, cancellationToken).ConfigureAwait(false);
+
+                if (jsonSettings == null)
+                {
+                    _logger.LogWarning("Failed to load JSON settings, using defaults");
+                    return LoadDefaults<PreferredWordPredictors>();
+                }
+
+                var config = new PreferredWordPredictors();
+                config.WordPredictors = PreferredWordPredictorsConverter.FromJson(jsonSettings);
+                _logger.LogInformation("Successfully loaded {Count} preferred word predictor(s) from JSON", config.WordPredictors.Count);
+                return config;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading preferred word predictors from JSON: {FilePath}", filePath);
+                return LoadDefaults<PreferredWordPredictors>();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously saves settings to a JSON file with validation.
+        /// </summary>
+        private static async Task<bool> SaveToJsonAsync(PreferredWordPredictors config, string filePath, CancellationToken cancellationToken)
+        {
+            if (config == null)
+            {
+                _logger.LogError("Cannot save null PreferredWordPredictors");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("PreferredWordPredictors FilePath is null or empty");
+                return false;
+            }
+
+            try
+            {
+                PreferredWordPredictorsJson jsonSettings = PreferredWordPredictorsConverter.ToJson(config.WordPredictors);
+                var validator = new PreferredWordPredictorsValidator();
+                var loader = new JsonConfigurationLoader<PreferredWordPredictorsJson>(validator, _logger);
+                bool success = await loader.SaveAsync(jsonSettings, filePath, cancellationToken).ConfigureAwait(false);
+
+                if (success)
+                    _logger.LogInformation("Successfully saved preferred word predictors to JSON: {FilePath}", filePath);
+                else
+                    _logger.LogError("Failed to save preferred word predictors to JSON: {FilePath}", filePath);
 
                 return success;
             }

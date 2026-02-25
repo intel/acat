@@ -204,6 +204,25 @@ namespace ACAT.ConfigMigrationTool
                 result.SuccessfulFiles.Add(outputPath);
                 
                 AnsiConsole.MarkupLine($"[green]✓ Converted: {Path.GetFileName(xmlFile)} → {Path.GetFileName(outputPath)}[/]");
+
+                // For panel configs, also produce a standalone {panelName}.animation.json
+                // so AnimationConfigProvider can load it at runtime.
+                if (schemaType == SchemaType.PanelConfig)
+                {
+                    var animConverter = new AnimationConfigConverter();
+                    AnimationConfigJson? animConfig = null;
+                    try { animConfig = animConverter.ConvertFile(xmlFile); }
+                    catch { /* tolerate — animation extraction is best-effort */ }
+
+                    if (animConfig != null && animConfig.Sequences.Count > 0)
+                    {
+                        string animOutputDir = string.IsNullOrEmpty(jsonDir)
+                            ? outputDir
+                            : Path.Combine(outputDir, jsonDir);
+                        string animOutputPath = await animConverter.WriteAsync(animConfig, animOutputDir);
+                        AnsiConsole.MarkupLine($"[green]  ↳ Animation: {Path.GetFileName(animOutputPath)}[/]");
+                    }
+                }
             }
             else
             {

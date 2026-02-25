@@ -171,5 +171,75 @@ rootCommand.AddCommand(migrateCommand);
 rootCommand.AddCommand(validateCommand);
 rootCommand.AddCommand(rollbackCommand);
 
+// Create extract-animations command
+var extractAnimCommand = new Command("extract-animations",
+    "Extract animation configuration from panel XML files and write {panelName}.animation.json files");
+
+var extractInputOption = new Option<string>(
+    aliases: new[] { "--input", "-i" },
+    description: "Input directory containing panel XML configuration files")
+{
+    IsRequired = true
+};
+
+var extractOutputOption = new Option<string>(
+    aliases: new[] { "--output", "-o" },
+    description: "Output directory for .animation.json files")
+{
+    IsRequired = true
+};
+
+var extractDryRunOption = new Option<bool>(
+    aliases: new[] { "--dry-run", "-d" },
+    getDefaultValue: () => false,
+    description: "Preview which files would be converted without writing output");
+
+extractAnimCommand.AddOption(extractInputOption);
+extractAnimCommand.AddOption(extractOutputOption);
+extractAnimCommand.AddOption(extractDryRunOption);
+
+extractAnimCommand.SetHandler(async (string input, string output, bool dryRun) =>
+{
+    try
+    {
+        AnsiConsole.Write(
+            new FigletText("ACAT")
+                .LeftJustified()
+                .Color(Color.Blue));
+
+        AnsiConsole.MarkupLine("[bold]Animation Config Extraction Tool[/]");
+        AnsiConsole.WriteLine();
+
+        var converter = new ACAT.ConfigMigrationTool.AnimationConfigConverter();
+        var result = await converter.ConvertDirectoryAsync(input, output, dryRun);
+
+        // Print per-file output
+        foreach (var file in result.SuccessfulFiles)
+        {
+            string label = dryRun ? "Would write" : "Wrote";
+            AnsiConsole.MarkupLine($"[green]✓ {label}: {Path.GetFileName(file)}[/]");
+        }
+        foreach (var (file, error) in result.Errors)
+        {
+            AnsiConsole.MarkupLine($"[red]✗ Failed: {Path.GetFileName(file)} — {error}[/]");
+        }
+
+        AnsiConsole.WriteLine();
+        Console.WriteLine(result.GenerateReport());
+
+        if (result.FailureCount > 0)
+        {
+            Environment.ExitCode = 1;
+        }
+    }
+    catch (Exception ex)
+    {
+        AnsiConsole.MarkupLine($"[red]Error: {ex.Message}[/]");
+        Environment.ExitCode = 1;
+    }
+}, extractInputOption, extractOutputOption, extractDryRunOption);
+
+rootCommand.AddCommand(extractAnimCommand);
+
 // Invoke
 return await rootCommand.InvokeAsync(args);

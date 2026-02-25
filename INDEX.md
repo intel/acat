@@ -11,6 +11,7 @@ This index lists the long-lived documentation that remains in the repository roo
 ## Modernization & Architecture
 
 - [ACAT_MODERNIZATION_PLAN.md](ACAT_MODERNIZATION_PLAN.md) - Modernization roadmap
+- [docs/ANIMATION_ENGINE_GUIDE.md](docs/ANIMATION_ENGINE_GUIDE.md) - Animation engine developer guide (Phase 3)
 - [docs/ANIMATION_SYSTEM_ARCHITECTURE.md](docs/ANIMATION_SYSTEM_ARCHITECTURE.md) - Animation system architecture spec (Phase 3 planning)
 - [docs/ANIMATION_SYSTEM_ANALYSIS.md](docs/ANIMATION_SYSTEM_ANALYSIS.md) - Animation system analysis report (Issue #206 deliverable)
 - [DEPENDENCY_INJECTION_GUIDE.md](DEPENDENCY_INJECTION_GUIDE.md) - DI architecture and usage

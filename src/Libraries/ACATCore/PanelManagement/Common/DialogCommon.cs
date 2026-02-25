@@ -461,6 +461,11 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _animationManager = new PanelAnimationManager(LogManager.GetLogger<PanelAnimationManager>());
 
+            // Wire up the new animation engine when available via DI.
+            // AnimationService is null when DI is not configured; the manager
+            // falls back to the legacy AnimationPlayer transparently.
+            _animationManager.AnimationService = Context.AppAnimationService;
+
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)
             {

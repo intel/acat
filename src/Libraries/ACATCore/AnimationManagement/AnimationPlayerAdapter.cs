@@ -22,9 +22,11 @@ using ACAT.Core.AnimationManagement.Configuration;
 using ACAT.Core.AnimationManagement.Interfaces;
 using ACAT.Core.AnimationManagement.Rendering;
 using ACAT.Core.EventManagement;
+using ACAT.Core.WidgetManagement;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace ACAT.Core.AnimationManagement
@@ -121,7 +123,8 @@ namespace ACAT.Core.AnimationManagement
                     };
                 }
 
-                var session = animationService.CreateSession(rootWidget, config, scanStrategy ?? "auto");
+                var session = animationService.CreateSession(rootWidget, config, scanStrategy ?? "auto",
+                    BuildRenderer(rootWidget, log));
                 log.LogDebug("AnimationPlayerAdapter.TryCreate: created session for panel {PanelName}", panelName);
                 return new AnimationPlayerAdapter(session, log);
             }
@@ -220,6 +223,45 @@ namespace ACAT.Core.AnimationManagement
         private void ThrowIfDisposed()
         {
             if (_disposed) throw new ObjectDisposedException(nameof(AnimationPlayerAdapter));
+        }
+
+        // ----------------------------------------------------------------
+        // Renderer factory
+        // ----------------------------------------------------------------
+
+        /// <summary>
+        /// Builds a <see cref="WinFormsHighlightRenderer"/> whose callbacks delegate to
+        /// the <see cref="Widget"/> tree rooted at <paramref name="rootWidget"/>.
+        /// Returns <c>null</c> when <paramref name="rootWidget"/> is not a
+        /// <see cref="Widget"/> (the caller should then rely on the DI singleton renderer).
+        /// All render/clear calls are marshalled to the UI thread via
+        /// <see cref="Control.BeginInvoke"/> when required.
+        /// </summary>
+        private static IHighlightRenderer BuildRenderer(object rootWidget, ILogger log)
+        {
+            if (rootWidget is not Widget root) return null;
+
+            var ctrl = root.UIControl as Control;
+            return new WinFormsHighlightRenderer(
+                renderCallback: (name, style) =>
+                    InvokeOnUIThread(ctrl, () => root.Finder.FindChild(name)?.HighlightOn()),
+                clearCallback: (name) =>
+                    InvokeOnUIThread(ctrl, () => root.Finder.FindChild(name)?.HighlightOff()),
+                clearAllCallback: () =>
+                    InvokeOnUIThread(ctrl, () => root.HighlightOff()));
+        }
+
+        /// <summary>
+        /// Executes <paramref name="action"/> on the UI thread. If <paramref name="ctrl"/>
+        /// requires a cross-thread invoke, uses <see cref="Control.BeginInvoke"/>;
+        /// otherwise executes directly on the current thread.
+        /// </summary>
+        private static void InvokeOnUIThread(Control ctrl, Action action)
+        {
+            if (ctrl != null && ctrl.InvokeRequired)
+                ctrl.BeginInvoke(action);
+            else
+                action();
         }
     }
 }

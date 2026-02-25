@@ -597,6 +597,7 @@
     <Compile Include="EventManagement\ActuatorEvents.cs" />
     <Compile Include="EventManagement\ConfigurationEvents.cs" />
     <Compile Include="DataAccess\IRepository.cs" />
+    <Compile Include="DataAccess\IAsyncRepository.cs" />
     <Compile Include="DataAccess\RepositoryBase.cs" />
     <Compile Include="DataAccess\PreferencesRepository.cs" />
     <Compile Include="DataAccess\ConfigurationRepository.cs" />
@@ -604,7 +605,9 @@
     <Compile Include="Patterns\CQRS\ICommand.cs" />
     <Compile Include="Patterns\CQRS\IQuery.cs" />
     <Compile Include="Patterns\CQRS\ICommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\IAsyncCommandHandler.cs" />
     <Compile Include="Patterns\CQRS\IQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\IAsyncQueryHandler.cs" />
     <Compile Include="Patterns\CQRS\PanelCommands.cs" />
     <Compile Include="Patterns\CQRS\Samples\CreatePanelCommand.cs" />
     <Compile Include="Patterns\CQRS\Samples\CreatePanelCommandHandler.cs" />

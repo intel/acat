@@ -14,7 +14,10 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ACAT.Core.DataAccess
 {
@@ -123,5 +126,108 @@ namespace ACAT.Core.DataAccess
 
         /// <inheritdoc/>
         public override T GetDefault() => new T();
+
+        /// <summary>
+        /// Asynchronously loads a configuration entity from the JSON file at
+        /// <paramref name="filePath"/> using non-blocking file I/O.
+        /// Returns a default instance when the file is absent or unreadable.
+        /// </summary>
+        public override async Task<T> LoadAsync(string filePath, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                Logger.LogWarning("ConfigurationRepository.LoadAsync called with null/empty path");
+                return null;
+            }
+
+            if (!File.Exists(filePath))
+            {
+                Logger.LogWarning("Configuration file not found: {FilePath} – returning defaults", filePath);
+                return new T();
+            }
+
+            try
+            {
+                string json;
+                using (var reader = new StreamReader(filePath, Encoding.UTF8))
+                {
+                    json = await reader.ReadToEndAsync().ConfigureAwait(false);
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                // Note: JsonSerializer.DeserializeAsync is not available on .NET Framework 4.8.1
+                // (it was introduced in .NET 5), so deserialization must remain synchronous here.
+                T result = JsonSerializer.Deserialize<T>(json, _readOptions);
+
+                if (result == null)
+                {
+                    Logger.LogWarning("Deserialization returned null for {FilePath} – returning defaults", filePath);
+                    return new T();
+                }
+
+                return result;
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "ConfigurationRepository failed to load {FilePath} – returning defaults", filePath);
+                return new T();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously saves <paramref name="entity"/> as JSON to the file at
+        /// <paramref name="filePath"/> using non-blocking file I/O.
+        /// </summary>
+        public override async Task<bool> SaveAsync(T entity, string filePath, CancellationToken cancellationToken = default)
+        {
+            if (entity == null)
+            {
+                Logger.LogError("ConfigurationRepository.SaveAsync: entity is null");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                Logger.LogError("ConfigurationRepository.SaveAsync: filePath is null/empty");
+                return false;
+            }
+
+            try
+            {
+                string directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                // Check cancellation before beginning the synchronous serialization step.
+                // Note: JsonSerializer.SerializeAsync is not available on .NET Framework 4.8.1
+                // (it was introduced in .NET 5), so serialization must remain synchronous here.
+                cancellationToken.ThrowIfCancellationRequested();
+
+                string json = JsonSerializer.Serialize(entity, _writeOptions);
+
+                using (var writer = new StreamWriter(filePath, append: false, Encoding.UTF8))
+                {
+                    await writer.WriteAsync(json).ConfigureAwait(false);
+                }
+
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "ConfigurationRepository failed to save to {FilePath}", filePath);
+                return false;
+            }
+        }
     }
 }

@@ -67,6 +67,36 @@ categorises it by priority, and maps it to its async replacement.
 
 ---
 
+## Blockers Analysis: Switching to Async
+
+After the initial async infrastructure was put in place, a review of the codebase
+identified the following blockers that prevented callers from switching to the async
+API.  All **blockers** listed below have been resolved in this workstream.
+
+### Resolved Blockers
+
+| # | Blocker | Fix |
+|---|---------|-----|
+| 1 | `PreferencesBase` had no async static helpers (`LoadAsync`, `ReloadAsync`, `SaveAsync`) | Added to `PreferencesManagement/PreferencesBase.cs` |
+| 2 | `GlobalPreferences` had no async entry points (`LoadAsync`, `SaveAsync`) | Added to `Utility/GlobalPreferences.cs` |
+
+### Remaining (Incremental) Work
+
+These items are **not blockers** for adopting the async API — the async infrastructure
+exists and callers *can* switch.  They represent further incremental migration
+opportunities:
+
+| # | Item | Notes |
+|---|------|-------|
+| 3 | `JsonConfigurationLoader<T>` callers (`Abbreviations`, `ActuatorConfig`, `Pronunciations`, `PreferredWordPredictors`, `Theme.cs`) still call `.Load()`/`.Save()` synchronously | `LoadAsync`/`SaveAsync` already exist on `JsonConfigurationLoader<T>`; callers can be migrated one-by-one |
+| 4 | `ThemeManager.SetActiveTheme()` calls `Theme.Create()` directly instead of `_themeRepository.LoadAsync()` | A `SetActiveThemeAsync()` method should be added for fully-async theme loading |
+| 5 | `NamedPipeServerConvAssist.CreatePipeServer` uses `.Result` (deadlock risk on UI thread) | Future: expose `CreatePipeServerAsync()` and update callers |
+| 6 | `NamedPipeServerConvAssist.WriteSync` polls with `Thread.Sleep` | Should be deprecated in favour of the existing `WriteAsync` |
+| 7 | `XmlUtils` has no async variants | Adding `XmlFileLoadAsync`/`XmlFileSaveAsync` would let `PreferencesRepository<T>` avoid `Task.Run` |
+| 8 | CQRS handlers that perform I/O have no `IAsyncCommandHandler`/`IAsyncQueryHandler` implementations | The interfaces exist; concrete async handlers need to be added |
+
+---
+
 ## .NET Framework 4.8.1 Async Notes
 
 - `File.ReadAllTextAsync` / `File.WriteAllTextAsync` are **not available** on
@@ -83,12 +113,5 @@ categorises it by priority, and maps it to its async replacement.
 
 ## Remaining Work / Future Recommendations
 
-- **`NamedPipeServerConvAssist.CreatePipeServer`**: The `.Result` call is a
-  deadlock risk if ever invoked on the UI thread. A future change should expose an
-  `await CreatePipeServerAsync()` method and update callers accordingly.
-- **`NamedPipeServerConvAssist.WriteSync`**: Should be deprecated in favour of
-  `WriteAsync`; callers need updating.
-- **`XmlUtils`**: Adding `XmlFileLoadAsync` / `XmlFileSaveAsync` helpers would allow
-  `PreferencesRepository<T>` to use fully-async XML I/O instead of `Task.Run`.
-- **CQRS handlers**: Concrete async command/query handler implementations should be
-  added for any handler that performs I/O (e.g., reading configuration).
+See the **Incremental Work** table in the *Blockers Analysis* section above for the
+full list of future migration items.

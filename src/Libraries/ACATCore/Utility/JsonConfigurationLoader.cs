@@ -20,7 +20,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ACAT.Core.Utility
 {
@@ -442,6 +445,220 @@ namespace ACAT.Core.Utility
         public ConfigurationEnvironment? GetCurrentEnvironment()
         {
             return _environmentConfig?.CurrentEnvironment;
+        }
+
+        /// <summary>
+        /// Asynchronously load configuration from JSON file with validation and error handling.
+        /// Uses non-blocking file I/O to avoid blocking the calling thread.
+        /// </summary>
+        /// <param name="filePath">Path to JSON configuration file</param>
+        /// <param name="createDefaultOnError">If true, creates default config if file is missing or invalid</param>
+        /// <param name="cancellationToken">Token used to cancel the operation</param>
+        /// <returns>Configuration object or null on error</returns>
+        public async Task<T> LoadAsync(string filePath, bool createDefaultOnError = true, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger?.LogError("Configuration file path is null or empty");
+                return createDefaultOnError ? CreateDefault() : null;
+            }
+
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    _logger?.LogWarning("Configuration file not found: {FilePath}", filePath);
+
+                    if (createDefaultOnError)
+                    {
+                        _logger?.LogInformation("Creating default configuration at: {FilePath}", filePath);
+                        T defaultConfig = CreateDefault();
+                        await SaveAsync(defaultConfig, filePath, cancellationToken).ConfigureAwait(false);
+                        return defaultConfig;
+                    }
+
+                    return null;
+                }
+
+                string json;
+                using (var reader = new StreamReader(filePath, Encoding.UTF8))
+                {
+                    json = await reader.ReadToEndAsync().ConfigureAwait(false);
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    _logger?.LogWarning("Configuration file is empty: {FilePath}", filePath);
+                    return createDefaultOnError ? CreateDefault() : null;
+                }
+
+                if (_schemaValidator != null && !string.IsNullOrEmpty(_schemaName))
+                {
+                    bool schemaValid = _schemaValidator.ValidateContent(_schemaName, json, out List<string> schemaErrors);
+
+                    if (!schemaValid)
+                    {
+                        foreach (string error in schemaErrors ?? new List<string>())
+                        {
+                            if (_strictMode)
+                                _logger?.LogError("Schema validation error in {FilePath}: {Error}", filePath, error);
+                            else
+                                _logger?.LogWarning("Schema validation warning in {FilePath}: {Error}", filePath, error);
+                        }
+
+                        if (_strictMode)
+                        {
+                            _logger?.LogError("Schema validation failed (strict mode) for: {FilePath}", filePath);
+                            return createDefaultOnError ? CreateDefault() : null;
+                        }
+
+                        _logger?.LogWarning("Schema validation failed (non-strict mode), continuing with deserialization: {FilePath}", filePath);
+                    }
+                }
+                else if (_schemaValidator != null && string.IsNullOrEmpty(_schemaName))
+                {
+                    _logger?.LogWarning("JsonSchemaValidator provided but schemaName is null or empty; schema validation will be skipped for: {FilePath}", filePath);
+                }
+
+                // Note: JsonSerializer.DeserializeAsync is not available on .NET Framework 4.8.1
+                // (it was introduced in .NET 5), so deserialization must remain synchronous here.
+                T config = System.Text.Json.JsonSerializer.Deserialize<T>(json, _jsonOptions);
+                if (config == null)
+                {
+                    _logger?.LogError("Failed to deserialize configuration from: {FilePath}", filePath);
+                    return createDefaultOnError ? CreateDefault() : null;
+                }
+
+                if (_validator != null)
+                {
+                    ValidationResult validationResult = _validator.Validate(config);
+
+                    if (!validationResult.IsValid)
+                    {
+                        _logger?.LogError("Configuration validation failed for: {FilePath}", filePath);
+
+                        foreach (ValidationFailure error in validationResult.Errors)
+                        {
+                            _logger?.LogError("  - {PropertyName}: {ErrorMessage}",
+                                error.PropertyName, error.ErrorMessage);
+                        }
+
+                        if (createDefaultOnError)
+                        {
+                            _logger?.LogWarning("Using default configuration due to validation errors");
+                            return CreateDefault();
+                        }
+
+                        return null;
+                    }
+                }
+
+                _logger?.LogInformation("Successfully loaded configuration from: {FilePath}", filePath);
+                return config;
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (JsonException ex)
+            {
+                _logger?.LogError(ex, "JSON parsing error in configuration file: {FilePath}", filePath);
+
+                if (createDefaultOnError)
+                {
+                    _logger?.LogWarning("Using default configuration due to JSON parsing error");
+                    return CreateDefault();
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Unexpected error loading configuration from: {FilePath}", filePath);
+
+                if (createDefaultOnError)
+                {
+                    _logger?.LogWarning("Using default configuration due to unexpected error");
+                    return CreateDefault();
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously save configuration to JSON file using non-blocking file I/O.
+        /// </summary>
+        /// <param name="config">Configuration object to save</param>
+        /// <param name="filePath">Path to save JSON file</param>
+        /// <param name="cancellationToken">Token used to cancel the operation</param>
+        /// <returns>True if successful, false otherwise</returns>
+        public async Task<bool> SaveAsync(T config, string filePath, CancellationToken cancellationToken = default)
+        {
+            if (config == null)
+            {
+                _logger?.LogError("Cannot save null configuration");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger?.LogError("Configuration file path is null or empty");
+                return false;
+            }
+
+            try
+            {
+                if (_validator != null)
+                {
+                    ValidationResult validationResult = _validator.Validate(config);
+
+                    if (!validationResult.IsValid)
+                    {
+                        _logger?.LogError("Cannot save invalid configuration to: {FilePath}", filePath);
+
+                        foreach (ValidationFailure error in validationResult.Errors)
+                        {
+                            _logger?.LogError("  - {PropertyName}: {ErrorMessage}",
+                                error.PropertyName, error.ErrorMessage);
+                        }
+
+                        return false;
+                    }
+                }
+
+                string directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                // Check cancellation before beginning the synchronous serialization step.
+                // Note: JsonSerializer.SerializeAsync is not available on .NET Framework 4.8.1
+                // (it was introduced in .NET 5), so serialization must remain synchronous here.
+                cancellationToken.ThrowIfCancellationRequested();
+
+                string json = System.Text.Json.JsonSerializer.Serialize(config);
+
+                using (var writer = new StreamWriter(filePath, append: false, Encoding.UTF8))
+                {
+                    await writer.WriteAsync(json).ConfigureAwait(false);
+                }
+
+                _logger?.LogInformation("Successfully saved configuration to: {FilePath}", filePath);
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error saving configuration to: {FilePath}", filePath);
+                return false;
+            }
         }
 
         /// <summary>

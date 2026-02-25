@@ -223,6 +223,63 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
         /// <summary>
+        /// Asynchronously initialises the ConvAssist named pipe server.
+        /// Uses <see cref="NamedPipeServerConvAssist.CreatePipeServerAsync"/> to avoid
+        /// blocking the calling thread with <c>.Result</c>.
+        /// </summary>
+        /// <param name="ci">Language for word prediction.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        public async Task<bool> InitAsync(CultureInfo ci, CancellationToken cancellationToken = default)
+        {
+            Attributions.Add("CONVASSIST",
+                    "The ConvAssist predictive text functionality is derived from Pressagio, the " +
+                    "intelligent predictive text and characters. ");
+
+            Disclaimers.Add("ConvAssist", StringResources.DisclaimerConvAssist);
+
+            bool send_params = true;
+
+#if !DEBUG_CONVASSIST
+            string path = Path.Combine(FileUtils.ACATPath, ConvAssistAppFolder, ConvAssistAppName);
+            _logger.LogInformation("ConvAssist path: {Path}", path);
+
+            Process[] runningProcesses = Process.GetProcessesByName(ConvAssistName);
+            if (runningProcesses.Length == 0)
+            {
+                ProcessStartInfo convAssistInfo = new()
+                {
+                    FileName = path,
+                    WorkingDirectory = Path.GetDirectoryName(path),
+                    Arguments = "",
+                    UseShellExecute = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
+                    CreateNoWindow = false
+                };
+
+                using Process convAssist = Process.Start(convAssistInfo);
+                while (!convAssist.Responding)
+                {
+                    await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+                }
+            }
+#endif
+            _logger.LogInformation("ConvAssist process started. Starting Named Pipe.");
+            string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Settings");
+
+            namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings, LoggingConfiguration.CreateLogger<NamedPipeServerConvAssist>());
+            pipeCreated = await namedPipe.CreatePipeServerAsync(send_params, cancellationToken).ConfigureAwait(false);
+
+            if (pipeCreated)
+            {
+                wordPredictionTask = Task.Factory.StartNew(WordPredictionTaskProcess, TaskCreationOptions.LongRunning);
+            }
+
+            return pipeCreated;
+        }
+
+        /// <summary>
         /// Display disclaimer dialog
         /// </summary>
         /// <returns>true</returns>
@@ -278,6 +335,17 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
         /// <summary>
+        /// Asynchronously sends a learn request using <see cref="NamedPipeServerConvAssist.WriteAsync"/>
+        /// instead of the blocking <c>WriteSync</c>.
+        /// </summary>
+        public Task<string> ConvAssistLearnAsync(string text, WordPredictorMessageTypes requestType)
+        {
+            ConvAssistMessage message = new(requestType, WordPredictionModes.None, text);
+            string jsonMessage = JsonSerializer.SerializeForInterop(message);
+            return namedPipe.WriteAsync(jsonMessage, 10000);
+        }
+
+        /// <summary>
         /// Send a request message Synchronously
         /// </summary>
         /// <param name="text">Text to send to the client</param>
@@ -291,6 +359,17 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
         /// <summary>
+        /// Asynchronously sends a sentence prediction request using <see cref="NamedPipeServerConvAssist.WriteAsync"/>
+        /// instead of the blocking <c>WriteSync</c>.
+        /// </summary>
+        public Task<string> SendMessageConvAssistSentencePredictionAsync(string text, WordPredictionModes mode)
+        {
+            ConvAssistMessage message = new(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
+            string jsonMessage = JsonSerializer.SerializeForInterop(message);
+            return namedPipe.WriteAsync(jsonMessage, 10000);
+        }
+
+        /// <summary>
         /// Send a request message Syncronously
         /// </summary>
         /// <param name="text">Text to send to the client</param>
@@ -301,6 +380,17 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             string jsonMessage = JsonSerializer.SerializeForInterop(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
+        }
+
+        /// <summary>
+        /// Asynchronously sends a word prediction request using <see cref="NamedPipeServerConvAssist.WriteAsync"/>
+        /// instead of the blocking <c>WriteSync</c>.
+        /// </summary>
+        public Task<string> SendMessageConvAssistWordPredictionAsync(string text, WordPredictionModes mode)
+        {
+            ConvAssistMessage message = new(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
+            string jsonMessage = JsonSerializer.SerializeForInterop(message);
+            return namedPipe.WriteAsync(jsonMessage, 10000);
         }
 
         /// <summary>

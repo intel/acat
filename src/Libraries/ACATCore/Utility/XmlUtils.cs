@@ -8,6 +8,8 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
@@ -259,6 +261,35 @@ namespace ACAT.Core.Utility
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Asynchronously de-serializes an object from the file.
+        /// Performs the blocking XML deserialization on a thread-pool thread via
+        /// <see cref="Task.Run{T}"/> so the calling thread is not blocked.
+        /// </summary>
+        /// <typeparam name="T">Class to deserialize.</typeparam>
+        /// <param name="filename">File to deserialize from.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns>The deserialized object, or <c>default</c> on failure.</returns>
+        public static Task<T> XmlFileLoadAsync<T>(string filename, CancellationToken cancellationToken = default)
+        {
+            return Task.Run(() => XmlFileLoad<T>(filename), cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously serializes an object to the specified file.
+        /// Performs the blocking XML serialization on a thread-pool thread via
+        /// <see cref="Task.Run{T}"/> so the calling thread is not blocked.
+        /// </summary>
+        /// <typeparam name="T">Class to serialize.</typeparam>
+        /// <param name="o">Object to serialize.</param>
+        /// <param name="filename">File to serialize to.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
+        public static Task<bool> XmlFileSaveAsync<T>(T o, string filename, CancellationToken cancellationToken = default)
+        {
+            return Task.Run(() => XmlFileSave(o, filename), cancellationToken);
         }
     }
 }

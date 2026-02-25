@@ -12,6 +12,8 @@ using ACAT.Core.Validation;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace ACAT.Core.ThemeManagement
@@ -108,6 +110,57 @@ namespace ACAT.Core.ThemeManagement
                 // Fallback to XML if JSON fails (for backward compatibility during transition)
                 logger?.LogWarning("JSON load failed, attempting XML fallback for: {ThemeFile}", themeFile);
                 theme = LoadFromXml(themeName, themeDir, themeFile, logger);
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex, "Failed to create theme from file: {ThemeFile}", themeFile);
+            }
+
+            return theme;
+        }
+
+        /// <summary>
+        /// Asynchronously creates a <see cref="Theme"/> object from the specified file.
+        /// Uses <see cref="JsonConfigurationLoader{T}.LoadAsync"/> so the calling thread
+        /// is not blocked during file I/O. Falls back to synchronous XML loading when the
+        /// file has a <c>.xml</c> extension (XML parsing has no async variant).
+        /// </summary>
+        /// <param name="themeName">Name of the theme.</param>
+        /// <param name="themeDir">Directory containing theme assets.</param>
+        /// <param name="themeFile">Path to the theme configuration file.</param>
+        /// <param name="logger">Optional logger.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns>The created <see cref="Theme"/>, or <c>null</c> on failure.</returns>
+        public static async Task<Theme> CreateAsync(String themeName, String themeDir, String themeFile,
+            ILogger<Theme> logger = null, CancellationToken cancellationToken = default)
+        {
+            Theme theme = null;
+
+            if (!File.Exists(themeFile))
+            {
+                logger?.LogWarning("Theme file not found: {ThemeFile}", themeFile);
+                return null;
+            }
+
+            try
+            {
+                var validator = new ThemeValidator();
+                var loader = new JsonConfigurationLoader<ThemeJson>(validator, logger);
+                ThemeJson themeJson = await loader.LoadAsync(themeFile, createDefaultOnError: false, cancellationToken).ConfigureAwait(false);
+
+                if (themeJson != null)
+                {
+                    theme = new Theme(themeName, logger)
+                    {
+                        Colors = ColorSchemes.CreateFromJson(themeJson.ColorSchemes, themeDir)
+                    };
+                    logger?.LogInformation("Successfully loaded theme from JSON: {ThemeFile}", themeFile);
+                    return theme;
+                }
+
+                // Fallback to XML for backward compatibility; XML has no async variant so run on thread pool
+                logger?.LogWarning("JSON load failed, attempting XML fallback for: {ThemeFile}", themeFile);
+                theme = await Task.Run(() => LoadFromXml(themeName, themeDir, themeFile, logger), cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

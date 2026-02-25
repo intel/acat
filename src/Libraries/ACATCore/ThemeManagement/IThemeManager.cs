@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ACAT.Core.ThemeManagement
 {
@@ -50,5 +52,15 @@ namespace ACAT.Core.ThemeManagement
         /// <param name="name">Name of the Theme</param>
         /// <returns>true on success</returns>
         bool SetActiveTheme(String name);
+
+        /// <summary>
+        /// Asynchronously sets the active theme by name.
+        /// Uses <see cref="Theme.CreateAsync"/> to load the theme configuration
+        /// without blocking the calling thread.
+        /// </summary>
+        /// <param name="name">Name of the Theme.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        Task<bool> SetActiveThemeAsync(String name, CancellationToken cancellationToken = default);
     }
 }

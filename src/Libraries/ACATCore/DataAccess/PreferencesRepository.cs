@@ -13,6 +13,8 @@
 
 using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ACAT.Core.DataAccess
 {
@@ -85,5 +87,57 @@ namespace ACAT.Core.DataAccess
 
         /// <inheritdoc/>
         public override T GetDefault() => new T();
+
+        /// <summary>
+        /// Asynchronously loads preferences from an XML file at <paramref name="filePath"/>
+        /// using <see cref="XmlUtils.XmlFileLoadAsync{T}"/> to avoid blocking the calling thread.
+        /// Returns a default instance when the file is absent or unreadable.
+        /// </summary>
+        public override async Task<T> LoadAsync(string filePath, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                Logger.LogWarning("PreferencesRepository.LoadAsync called with null/empty path");
+                return null;
+            }
+
+            T result = await XmlUtils.XmlFileLoadAsync<T>(filePath, cancellationToken).ConfigureAwait(false);
+
+            if (result == null)
+            {
+                Logger.LogWarning("Could not load preferences from {FilePath} – returning defaults", filePath);
+                result = new T();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Asynchronously saves <paramref name="entity"/> to an XML file at <paramref name="filePath"/>
+        /// using <see cref="XmlUtils.XmlFileSaveAsync{T}"/> to avoid blocking the calling thread.
+        /// </summary>
+        public override async Task<bool> SaveAsync(T entity, string filePath, CancellationToken cancellationToken = default)
+        {
+            if (entity == null)
+            {
+                Logger.LogError("PreferencesRepository.SaveAsync: entity is null");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                Logger.LogError("PreferencesRepository.SaveAsync: filePath is null/empty");
+                return false;
+            }
+
+            bool success = await XmlUtils.XmlFileSaveAsync(entity, filePath, cancellationToken).ConfigureAwait(false);
+
+            if (!success)
+            {
+                Logger.LogError("PreferencesRepository failed to save preferences to {FilePath}", filePath);
+            }
+
+            return success;
+        }
     }
 }

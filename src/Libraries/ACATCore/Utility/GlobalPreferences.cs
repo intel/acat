@@ -7,6 +7,8 @@
 
 using ACAT.Core.DataAccess;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
@@ -127,6 +129,89 @@ namespace ACAT.Core.Utility
         public bool Save()
         {
             return !String.IsNullOrEmpty(PreferencesFilePath) && Save(this, PreferencesFilePath);
+        }
+
+        /// <summary>
+        /// Asynchronously reads global preferences from <paramref name="prefFile"/>.
+        /// Creates a default file when the file is absent (when
+        /// <paramref name="loadDefaultsOnFail"/> is <c>true</c>).
+        /// </summary>
+        /// <param name="prefFile">Full path to the preferences file.</param>
+        /// <param name="loadDefaultsOnFail">When <c>true</c>, return defaults if the file is absent.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns>The loaded preferences, or <c>null</c> on failure.</returns>
+        public static async Task<GlobalPreferences> LoadAsync(string prefFile, bool loadDefaultsOnFail = true, CancellationToken cancellationToken = default)
+        {
+            saveFactoryDefaultSettings();
+
+            var repo = new PreferencesRepository<GlobalPreferences>(_logger);
+            GlobalPreferences retVal = await repo.LoadAsync(prefFile, cancellationToken).ConfigureAwait(false);
+
+            if (retVal == null)
+            {
+                _logger?.LogError("Could not load global preferences from {PrefFile}. Creating a new one.", prefFile);
+                if (loadDefaultsOnFail)
+                {
+                    retVal = new GlobalPreferences();
+                }
+                else
+                {
+                    return retVal;
+                }
+            }
+
+            if (!await repo.SaveAsync(retVal, prefFile, cancellationToken).ConfigureAwait(false))
+            {
+                _logger?.LogError("Unable to save global preferences!");
+                retVal = null;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Asynchronously reads global preferences from <see cref="PreferencesFilePath"/>.
+        /// </summary>
+        /// <param name="loadDefaultsOnFail">When <c>true</c>, return defaults if the file is absent.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns>The loaded preferences, or <c>null</c> on failure.</returns>
+        public static Task<GlobalPreferences> LoadAsync(bool loadDefaultsOnFail = true, CancellationToken cancellationToken = default)
+        {
+            return !String.IsNullOrEmpty(PreferencesFilePath)
+                ? LoadAsync(PreferencesFilePath, loadDefaultsOnFail, cancellationToken)
+                : Task.FromResult(LoadDefaultSettings());
+        }
+
+        /// <summary>
+        /// Asynchronously saves global preferences to the specified file.
+        /// </summary>
+        /// <param name="prefs">Preferences to save.</param>
+        /// <param name="preferencesFile">Full path to the file.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
+        public static async Task<bool> SaveAsync(GlobalPreferences prefs, string preferencesFile, CancellationToken cancellationToken = default)
+        {
+            var repo = new PreferencesRepository<GlobalPreferences>(_logger);
+            bool retVal = await repo.SaveAsync(prefs, preferencesFile, cancellationToken).ConfigureAwait(false);
+
+            if (!retVal)
+            {
+                _logger?.LogError("Error saving preferences! file={PreferencesFile}", preferencesFile);
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Asynchronously saves these settings to <see cref="PreferencesFilePath"/>.
+        /// </summary>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
+        public Task<bool> SaveAsync(CancellationToken cancellationToken = default)
+        {
+            return !String.IsNullOrEmpty(PreferencesFilePath)
+                ? SaveAsync(this, PreferencesFilePath, cancellationToken)
+                : Task.FromResult(false);
         }
 
         /// <summary>

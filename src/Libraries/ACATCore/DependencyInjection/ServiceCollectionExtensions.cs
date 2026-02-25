@@ -316,6 +316,7 @@ namespace ACAT.Core.DependencyInjection
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services.AddSingleton<IRepository<Theme>, ThemeRepository>();
+            services.AddSingleton<IAsyncRepository<Theme>>(provider => (ThemeRepository)provider.GetRequiredService<IRepository<Theme>>());
             return services;
         }
 

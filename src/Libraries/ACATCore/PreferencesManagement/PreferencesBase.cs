@@ -22,6 +22,8 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 
@@ -181,6 +183,100 @@ namespace ACAT.Core.PreferencesManagement
             var retVal = repo.Save(prefs, preferencesFile);
 
             if (retVal == false)
+            {
+                _logger.LogError("Error saving preferences to file {PreferencesFile}", preferencesFile);
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Asynchronously reads preferences from the specified file.
+        /// If the file doesn't exist a default instance is returned (when
+        /// <paramref name="loadDefaultsOnFail"/> is <c>true</c>).
+        /// </summary>
+        /// <typeparam name="T">Preferences type.</typeparam>
+        /// <param name="preferencesFile">Full path to the preferences file.</param>
+        /// <param name="loadDefaultsOnFail">When <c>true</c>, return defaults if the file is absent or unreadable.</param>
+        /// <param name="saveAfterLoad">When <c>true</c>, save preferences after loading to ensure the file exists.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns>The loaded preferences, or <c>null</c> on failure.</returns>
+        public static async Task<T> LoadAsync<T>(string preferencesFile, bool loadDefaultsOnFail = true, bool saveAfterLoad = true, CancellationToken cancellationToken = default) where T : class, new()
+        {
+            T preferences = default;
+
+            if (string.IsNullOrEmpty(preferencesFile))
+            {
+                return preferences;
+            }
+
+            var repo = new PreferencesRepository<T>(_logger);
+            preferences = await repo.LoadAsync(preferencesFile, cancellationToken).ConfigureAwait(false);
+
+            if (preferences == null)
+            {
+                _logger.LogWarning("Could not load preferences from {PreferencesFile} - creating a new one", preferencesFile);
+                if (loadDefaultsOnFail)
+                {
+                    preferences = new T();
+                }
+            }
+
+            if (preferences != null && saveAfterLoad)
+            {
+                if (!await repo.SaveAsync(preferences, preferencesFile, cancellationToken).ConfigureAwait(false))
+                {
+                    _logger.LogError("Unable to save default preferences");
+                    preferences = default;
+                }
+            }
+
+            return preferences;
+        }
+
+        /// <summary>
+        /// Asynchronously attempts to reload preferences from the specified file.
+        /// Returns <c>null</c> on failure so the caller can retain the existing instance.
+        /// </summary>
+        /// <typeparam name="T">Preferences type.</typeparam>
+        /// <param name="preferencesFile">Full path to the preferences file.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns>The reloaded preferences, or <c>null</c> if reload failed.</returns>
+        public static async Task<T> ReloadAsync<T>(string preferencesFile, CancellationToken cancellationToken = default) where T : class, new()
+        {
+            if (string.IsNullOrEmpty(preferencesFile))
+            {
+                _logger.LogError("ReloadAsync failed: preferences file path is null or empty");
+                return null;
+            }
+
+            var repo = new PreferencesRepository<T>(_logger);
+            T reloaded = await repo.LoadAsync(preferencesFile, cancellationToken).ConfigureAwait(false);
+
+            if (reloaded == null)
+            {
+                _logger.LogError("ReloadAsync failed: could not load preferences from {PreferencesFile}", preferencesFile);
+                return null;
+            }
+
+            _logger.LogInformation("Preferences reloaded successfully from {PreferencesFile}", preferencesFile);
+            return reloaded;
+        }
+
+        /// <summary>
+        /// Asynchronously saves preferences to the specified file.
+        /// </summary>
+        /// <typeparam name="T">Preferences type.</typeparam>
+        /// <param name="prefs">Preferences object to save.</param>
+        /// <param name="preferencesFile">Full path to the file.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success; <c>false</c> otherwise.</returns>
+        public static async Task<bool> SaveAsync<T>(T prefs, string preferencesFile, CancellationToken cancellationToken = default) where T : class, new()
+        {
+            var repo = new PreferencesRepository<T>(_logger);
+            bool retVal = await repo.SaveAsync(prefs, preferencesFile, cancellationToken).ConfigureAwait(false);
+
+            if (!retVal)
             {
                 _logger.LogError("Error saving preferences to file {PreferencesFile}", preferencesFile);
             }

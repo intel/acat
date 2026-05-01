@@ -52,18 +52,20 @@ namespace ACAT.Core.AnimationManagement
         }
 
         /// <inheritdoc/>
-        public IAnimationSession CreateSession(object rootWidget, AnimationConfig config, string strategyName)
+        public IAnimationSession CreateSession(object rootWidget, AnimationConfig config, string strategyName, IHighlightRenderer renderer = null)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
-            if (_renderer == null)
+
+            var effectiveRenderer = renderer ?? _renderer;
+            if (effectiveRenderer == null)
                 throw new InvalidOperationException(
                     "IHighlightRenderer has not been registered. " +
-                    "The host must register an IHighlightRenderer before creating animation sessions.");
+                    "Either register an IHighlightRenderer in DI or pass one to CreateSession().");
 
             var strategy = _strategyFactory.Create(strategyName ?? config.ScanStrategy ?? "auto");
             var timer = new SystemScanTimer();
 
-            var session = new AnimationSession(config, timer, strategy, _eventBus, _renderer, null);
+            var session = new AnimationSession(config, timer, strategy, _eventBus, effectiveRenderer, null);
 
             lock (_lock)
             {

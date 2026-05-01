@@ -27,6 +27,19 @@ namespace ACAT.Core.AnimationManagement
 
         public event PlayerAnimationTransition EvtPlayerAnimationTransition;
 
+        /// <summary>
+        /// Optional new-engine animation service. When set, <see cref="OnLoad"/> creates
+        /// an <see cref="AnimationPlayerAdapter"/> instead of the legacy
+        /// <see cref="AnimationPlayer"/>. Uses property injection so existing callers
+        /// that use <c>new UserControlAnimationManager()</c> are not broken.
+        /// </summary>
+        public IAnimationService AnimationService { get; set; }
+
+        /// <summary>
+        /// The active adapter when the new engine is in use; null when the legacy player is used.
+        /// </summary>
+        private AnimationPlayerAdapter _adapter;
+
         public UserControlAnimationManager() : base()
         {
             _logger = LogManager.GetLogger<UserControlAnimationManager>();
@@ -57,6 +70,8 @@ namespace ACAT.Core.AnimationManagement
 
         public bool IsPlayerRunning()
         {
+            if (_adapter != null)
+                return _adapter.State == PlayerState.Running;
             return (_player != null && _player.State == PlayerState.Running);
         }
 
@@ -69,13 +84,43 @@ namespace ACAT.Core.AnimationManagement
                 _player.EvtPlayerStateChanged -= _player_EvtPlayerStateChanged;
                 _player.EvtPlayerAnimationTransition -= _player_EvtPlayerAnimationTransition;
                 _player.Dispose();
+                _player = null;
             }
+
+            _adapter?.Dispose();
+            _adapter = null;
 
             resetSwitchEventStates();
 
             _currentPanel = panelWidget;
 
             subscribeToMouseClickEvents(panelWidget);
+
+            // Attempt to use the new animation engine via AnimationPlayerAdapter when
+            // IAnimationService is available. Fall back to legacy AnimationPlayer if
+            // adapter creation fails (TryCreate returns null).
+            if (AnimationService != null)
+            {
+                var xmlNode = LoadAnimationsXmlNode(mapEntry?.ConfigFileName);
+                _adapter = AnimationPlayerAdapter.TryCreate(
+                    panelWidget.Name,
+                    xmlNode,
+                    AnimationService,
+                    eventBus: null,
+                    rootWidget: panelWidget,
+                    scanStrategy: "auto",
+                    logger: LogManager.GetLogger<AnimationPlayerAdapter>());
+
+                if (_adapter != null)
+                {
+                    _logger.LogDebug("UserControlAnimationManager: using new AnimationPlayerAdapter for {PanelName}", panelWidget.Name);
+                    _variables.Set(Variables.SelectedWidget, panelWidget);
+                    _variables.Set(Variables.CurrentPanel, panelWidget);
+                    return;
+                }
+
+                _logger.LogDebug("UserControlAnimationManager: adapter creation failed; falling back to legacy AnimationPlayer for {PanelName}", panelWidget.Name);
+            }
 
             _player = new AnimationPlayer(panelWidget, _interpreter, _variables);
             _player.EvtPlayerStateChanged += _player_EvtPlayerStateChanged;
@@ -119,6 +164,13 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="animationName">Name of the animation sequence</param>
         public void Start(String animationName = null)
         {
+            if (_adapter != null)
+            {
+                _logger.LogTrace("CALIBTEST: UserControlAnimationManager.Start via adapter.");
+                _adapter.Start(animationName);
+                return;
+            }
+
             if (!CoreGlobals.AppPreferences.EnableAutoStartScan)
             {
                 _logger.LogTrace("CALIBTEST: UserControlAnimationManager.Start.  Do AutoTransition");
@@ -140,6 +192,12 @@ namespace ACAT.Core.AnimationManagement
                 _logger.LogDebug("_currentPanel: {CurrentPanel}", _currentPanel);
 
                 resetSwitchEventStates();
+
+                if (_adapter != null)
+                {
+                    _adapter.Transition(animationName);
+                    return;
+                }
 
                 if (_player == null)
                 {
@@ -189,7 +247,20 @@ namespace ACAT.Core.AnimationManagement
             IActuatorSwitch switchObj = e.SwitchObj;
             try
             {
-                if (_player == null || _currentPanel == null)
+                if (_currentPanel == null)
+                {
+                    return;
+                }
+
+                // When using the new engine, route switch activation to the adapter.
+                if (_adapter != null)
+                {
+                    _logger.LogDebug("switch via adapter: {SwitchName}", switchObj.Name);
+                    _adapter.Interrupt();
+                    return;
+                }
+
+                if (_player == null)
                 {
                     return;
                 }
@@ -398,6 +469,27 @@ namespace ACAT.Core.AnimationManagement
         private void _player_EvtPlayerAnimationTransition(object sender, string animationName, bool isTopLevel)
         {
             EvtPlayerAnimationTransition?.Invoke(sender, animationName, isTopLevel);
+        }
+
+        /// <summary>
+        /// Loads the first <c>&lt;Animations&gt;</c> node from the given XML config file.
+        /// Returns null if the file does not exist or has no Animations element.
+        /// </summary>
+        private static System.Xml.XmlNode LoadAnimationsXmlNode(string configFileName)
+        {
+            if (string.IsNullOrEmpty(configFileName) || !System.IO.File.Exists(configFileName))
+                return null;
+
+            try
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(configFileName);
+                return doc.SelectSingleNode("/ACAT/Animations");
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

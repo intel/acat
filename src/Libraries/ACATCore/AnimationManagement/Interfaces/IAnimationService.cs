@@ -31,7 +31,14 @@ namespace ACAT.Core.AnimationManagement.Interfaces
         ///   Name of the IScanModeStrategy to use ("auto", "manual", "step").
         ///   Defaults to "auto" if null.
         /// </param>
-        IAnimationSession CreateSession(object rootWidget, AnimationConfig config, string strategyName);
+        /// <param name="renderer">
+        ///   Optional per-session highlight renderer. When provided, overrides the
+        ///   singleton renderer registered in DI. Allows each panel to supply its
+        ///   own renderer with panel-specific widget-lookup callbacks.
+        ///   When null the singleton renderer is used; if that is also null an
+        ///   <see cref="InvalidOperationException"/> is thrown.
+        /// </param>
+        IAnimationSession CreateSession(object rootWidget, AnimationConfig config, string strategyName, IHighlightRenderer renderer = null);
 
         /// <summary>
         /// Disposes all active sessions created by this service instance.

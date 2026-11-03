@@ -117,6 +117,9 @@ and dialog save rejection when the reloaded actuator is absent.
   cannot be verified here; they require Windows with the net481 developer pack.
 - Existing MSB3539 output-directory warnings appear on baseline test commands;
   output configuration is outside this migration's scope.
+- Secret scanning of every changed/new file found no secrets. Post-commit CodeQL
+  was requested, but C# analysis was skipped because the database is too large;
+  this is not a completed clean security analysis.
 
 ### Deliberately synchronous compatibility boundaries
 

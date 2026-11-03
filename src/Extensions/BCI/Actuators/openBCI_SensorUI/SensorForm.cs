@@ -16,7 +16,6 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACATResources;
 using System;
 using System.Drawing;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static ACAT.Extensions.BCI.Actuators.openBCISensorUI.OpenBCIDeviceTester;
@@ -332,7 +331,8 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                 // Start task that will launch data processing / plotting (optical sensor or signal check screens)
                 if (OpenBCIDeviceTester._Testing_useSensor)
-                    TaskStartStopDataProcessing(state);
+                    TaskStartStopDataProcessing(state)
+                        .Forget(ex => _logger?.LogError(ex, "Failed to start BCI data processing"));
             }
         }
 
@@ -407,7 +407,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             return TaskStartStopDataProcessing(state, default);
         }
 
-        public async Task TaskStartStopDataProcessing(DeviceTestingState state, CancellationToken cancellationToken)
+        public async Task TaskStartStopDataProcessing(DeviceTestingState state, System.Threading.CancellationToken cancellationToken)
         {
             await Task.Delay(100, cancellationToken);
 

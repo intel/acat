@@ -325,8 +325,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (_Testing_useSensor)
             {
                 // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-                Thread t = new(start: () => startBCIDeviceTesting(3));
-                t.Start();
+                startBCIDeviceTesting(3).Forget(ex => _logger.LogError(ex, "Failed to start gTec device testing"));
             }
         }
 
@@ -367,8 +366,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     updateOnboardingStatus(_currentOnboardingUserState, null);
 
                     // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-                    Thread t = new(() => startBCIDeviceTesting(3));
-                    t.Start();
+                    startBCIDeviceTesting(3).Forget(ex => _logger.LogError(ex, "Failed to restart gTec device testing"));
 
                     break;
 
@@ -580,8 +578,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             updateOnboardingStatus(_currentOnboardingUserState, null);
 
             // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-            Thread t = new(() => startBCIDeviceTesting(3));
-            t.Start();
+            startBCIDeviceTesting(3).Forget(ex => _logger.LogError(ex, "Failed to retest gTec device"));
         }
 
         /// <summary>

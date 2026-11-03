@@ -274,6 +274,12 @@ namespace ACAT.Core.UserControlManagement
             bool retVal;
 
             AnimationManager = new UserControlAnimationManager();
+
+            // Wire up the new animation engine when available via DI.
+            // AnimationService is null when DI is not configured; the manager
+            // falls back to the legacy AnimationPlayer transparently.
+            AnimationManager.AnimationService = Context.AppAnimationService;
+
             retVal = AnimationManager.Init(panelConfigMapEntry);
 
             if (!retVal)

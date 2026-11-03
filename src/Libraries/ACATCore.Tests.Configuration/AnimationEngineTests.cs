@@ -530,5 +530,123 @@ namespace ACATCore.Tests.Configuration
             public double HesitateTimeMs => 0;
             public PlayerState SessionState { get; set; } = PlayerState.Running;
         }
+
+        // ----------------------------------------------------------------
+        // T21: CreateSession uses per-session renderer when supplied, overriding null singleton
+        // ----------------------------------------------------------------
+
+        [TestMethod]
+        public void T21_AnimationService_CreateSession_PerSessionRendererOverridesNullSingleton()
+        {
+            var bus = new EventBus();
+            var service = new AnimationService(bus, renderer: null); // no singleton renderer
+
+            var rendered = new List<string>();
+            var perSessionRenderer = new WinFormsHighlightRenderer(
+                (name, style) => rendered.Add(name),
+                name => { },
+                () => { });
+
+            var config = MakeConfig();
+            var session = service.CreateSession(null, config, "auto", perSessionRenderer);
+
+            Assert.IsNotNull(session, "Session should be created when per-session renderer is supplied");
+            session.Dispose();
+        }
+
+        // ----------------------------------------------------------------
+        // T22: CreateSession throws when no renderer is available at all
+        // ----------------------------------------------------------------
+
+        [TestMethod]
+        public void T22_AnimationService_CreateSession_ThrowsWhenNoRendererAvailable()
+        {
+            var bus = new EventBus();
+            var service = new AnimationService(bus, renderer: null);
+
+            try
+            {
+                service.CreateSession(null, MakeConfig(), "auto", renderer: null);
+                Assert.Fail("Expected InvalidOperationException when no renderer is available");
+            }
+            catch (InvalidOperationException)
+            {
+                // expected
+            }
+        }
+
+        // ----------------------------------------------------------------
+        // T23: CreateSession uses singleton renderer when per-session renderer is null
+        // ----------------------------------------------------------------
+
+        [TestMethod]
+        public void T23_AnimationService_CreateSession_UsesSingletonWhenPerSessionNull()
+        {
+            var bus = new EventBus();
+            var singletonRenderer = new WinFormsHighlightRenderer(
+                (name, style) => { },
+                name => { },
+                () => { });
+            var service = new AnimationService(bus, singletonRenderer);
+
+            // Passing null for per-session renderer → should fall back to singleton
+            var session = service.CreateSession(null, MakeConfig(), "auto", renderer: null);
+            Assert.IsNotNull(session);
+            session.Dispose();
+        }
+
+        // ----------------------------------------------------------------
+        // T24: AnimationPlayerAdapter.TryCreate returns null when IAnimationService is null
+        // ----------------------------------------------------------------
+
+        [TestMethod]
+        public void T24_AnimationPlayerAdapter_TryCreate_ReturnsNullWhenServiceNull()
+        {
+            var result = AnimationPlayerAdapter.TryCreate(
+                panelName: "TestPanel",
+                animationsNode: null,
+                animationService: null,
+                eventBus: null,
+                rootWidget: null,
+                scanStrategy: "auto",
+                logger: null);
+
+            Assert.IsNull(result, "TryCreate should return null when IAnimationService is null");
+        }
+
+        // ----------------------------------------------------------------
+        // T25: AnimationPlayerAdapter.TryCreate succeeds with a singleton renderer + null rootWidget
+        // ----------------------------------------------------------------
+
+        [TestMethod]
+        public void T25_AnimationPlayerAdapter_TryCreate_SucceedsWithSingletonRenderer()
+        {
+            var bus = new EventBus();
+            var renderer = new WinFormsHighlightRenderer(
+                (name, style) => { },
+                name => { },
+                () => { });
+            var service = new AnimationService(bus, renderer);
+
+            var doc = new XmlDocument();
+            doc.LoadXml(@"<Animations>
+  <Animation name=""Seq1"" start=""true"" scanTime=""200"" iterations=""1"">
+    <Widget name=""W1"" />
+  </Animation>
+</Animations>");
+
+            var adapter = AnimationPlayerAdapter.TryCreate(
+                panelName: "AdapterPanel",
+                animationsNode: doc.DocumentElement,
+                animationService: service,
+                eventBus: bus,
+                rootWidget: null,
+                scanStrategy: "auto",
+                logger: null);
+
+            Assert.IsNotNull(adapter, "Adapter should be created when singleton renderer is available");
+            Assert.AreEqual("AdapterPanel", adapter.PanelName);
+            adapter.Dispose();
+        }
     }
 }

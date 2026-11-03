@@ -25,6 +25,19 @@ namespace ACAT.Core.AnimationManagement
 
         private PanelConfigMapEntry _panelConfigMapEntry;
 
+        /// <summary>
+        /// Optional new-engine animation service. When set, <see cref="Start"/> creates
+        /// an <see cref="AnimationPlayerAdapter"/> instead of the legacy
+        /// <see cref="AnimationPlayer"/>. Uses property injection so existing callers
+        /// that use <c>new PanelAnimationManager(logger)</c> are not broken.
+        /// </summary>
+        public IAnimationService AnimationService { get; set; }
+
+        /// <summary>
+        /// The active adapter when the new engine is in use; null when the legacy player is used.
+        /// </summary>
+        private AnimationPlayerAdapter _adapter;
+
         public PanelAnimationManager(ILogger<PanelAnimationManager> logger) : base()
         {
             _logger = logger;
@@ -64,13 +77,44 @@ namespace ACAT.Core.AnimationManagement
             {
                 _player.EvtPlayerStateChanged -= _player_EvtPlayerStateChanged;
                 _player.Dispose();
+                _player = null;
             }
+
+            _adapter?.Dispose();
+            _adapter = null;
 
             resetSwitchEventStates();
 
             _currentPanel = panelWidget;
 
             subscribeToMouseClickEvents(panelWidget);
+
+            // Attempt to use the new animation engine via AnimationPlayerAdapter when
+            // IAnimationService is available. Fall back to legacy AnimationPlayer if
+            // adapter creation fails (TryCreate returns null).
+            if (AnimationService != null)
+            {
+                var xmlNode = LoadAnimationsXmlNode(_panelConfigMapEntry?.ConfigFileName);
+                _adapter = AnimationPlayerAdapter.TryCreate(
+                    panelWidget.Name,
+                    xmlNode,
+                    AnimationService,
+                    eventBus: null,
+                    rootWidget: panelWidget,
+                    scanStrategy: "auto",
+                    logger: LogManager.GetLogger<AnimationPlayerAdapter>());
+
+                if (_adapter != null)
+                {
+                    _logger.LogDebug("PanelAnimationManager: using new AnimationPlayerAdapter for {PanelName}", panelWidget.Name);
+                    _variables.Set(Variables.SelectedWidget, panelWidget);
+                    _variables.Set(Variables.CurrentPanel, panelWidget);
+                    _adapter.Start(animationName);
+                    return;
+                }
+
+                _logger.LogDebug("PanelAnimationManager: adapter creation failed; falling back to legacy AnimationPlayer for {PanelName}", panelWidget.Name);
+            }
 
             _player = new AnimationPlayer(panelWidget, _interpreter, _variables);
             _player.EvtPlayerStateChanged += _player_EvtPlayerStateChanged;
@@ -390,6 +434,29 @@ namespace ACAT.Core.AnimationManagement
                 {
                     _interpreter.Execute(pcode);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Loads the first <c>&lt;Animations&gt;</c> node from the given XML config file.
+        /// Returns null if the file does not exist or has no Animations element.
+        /// Used by <see cref="Start"/> to supply the XmlNode to
+        /// <see cref="AnimationPlayerAdapter.TryCreate"/>.
+        /// </summary>
+        private static System.Xml.XmlNode LoadAnimationsXmlNode(string configFileName)
+        {
+            if (string.IsNullOrEmpty(configFileName) || !System.IO.File.Exists(configFileName))
+                return null;
+
+            try
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(configFileName);
+                return doc.SelectSingleNode("/ACAT/Animations");
+            }
+            catch
+            {
+                return null;
             }
         }
     }

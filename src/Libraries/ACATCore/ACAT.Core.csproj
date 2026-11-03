@@ -170,6 +170,7 @@
     <Compile Include="AnimationManagement\Variables.cs" />
     <!-- Animation Engine POC: new composable engine alongside legacy AnimationPlayer -->
     <Compile Include="AnimationManagement\AnimationEngineEvents.cs" />
+    <Compile Include="AnimationManagement\AnimationPlayerAdapter.cs" />
     <Compile Include="AnimationManagement\AnimationService.cs" />
     <Compile Include="AnimationManagement\AnimationSession.cs" />
     <Compile Include="AnimationManagement\SystemScanTimer.cs" />

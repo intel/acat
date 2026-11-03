@@ -8,6 +8,7 @@
 using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
+using ACAT.Core.AnimationManagement.Interfaces;
 using ACAT.Core.CommandManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.SpellCheckManagement;
@@ -283,6 +284,23 @@ namespace ACAT.Core.PanelManagement
         public static WordPredictionManager AppWordPredictionManager
         {
             get { return ResolveManager<WordPredictionManager>(() => _wordPredictionManager.Value); }
+        }
+
+        /// <summary>
+        /// Gets the animation service from the DI container, or null when DI is not configured
+        /// or the service is not registered.
+        /// Used by <see cref="PanelManagement.Common.DialogCommon"/> and
+        /// <see cref="UserControlManagement.UserControlCommon"/> to wire the new engine into the
+        /// scanning managers at panel-init time without breaking callers that don't use DI.
+        /// </summary>
+        public static IAnimationService AppAnimationService
+        {
+            get
+            {
+                var provider = ServiceProvider;
+                if (provider == null) return null;
+                return provider.GetService(typeof(IAnimationService)) as IAnimationService;
+            }
         }
 
         /// <summary>

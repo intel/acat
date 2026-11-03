@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ACATConfig
 {
@@ -60,6 +61,11 @@ namespace ACATConfig
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            AppCommon.RunApplication(StartApplicationAsync);
+        }
+
+        private static async Task StartApplicationAsync()
+        {
             // Ensure PreferencesEditForm is initialized before other steps.
             // This is required to avoid issues with preference editing dialogs later.
             // If initialization fails, log the error and exit.
@@ -90,9 +96,9 @@ namespace ACATConfig
 
             FileUtils.LogAssemblyInfo();
 
-            AppCommon.LoadGlobalSettings();
+            await AppCommon.LoadGlobalSettingsAsync();
 
-            AppCommon.SetUserName();
+            await AppCommon.SetUserNameAsync();
             AppCommon.SetProfileName();
 
             bool freshInstallForUser = !UserManager.UserExists(UserManager.CurrentUser);
@@ -102,7 +108,7 @@ namespace ACATConfig
                 return;
             }
 
-            if (!AppCommon.LoadUserPreferences())
+            if (!await AppCommon.LoadUserPreferencesAsync())
             {
                 return;
             }
@@ -114,12 +120,12 @@ namespace ACATConfig
 
             User32Interop.SetProcessDPIAware();
 
-            AppCommon.CheckDisplayScalingAndResolution();
+            await AppCommon.CheckDisplayScalingAndResolutionAsync();
 
             // Initialize dependency injection with ACAT infrastructure
             var services = new ServiceCollection();
             services.AddACATInfrastructure();
-            var serviceProvider = services.BuildServiceProvider();
+            using var serviceProvider = services.BuildServiceProvider();
             Context.ServiceProvider = serviceProvider;
 
             CommandDescriptors.Init();
@@ -132,11 +138,18 @@ namespace ACATConfig
 
             splash.Close();
 
-            var form = new ACATConfigMainForm();
+            using var form = new ACATConfigMainForm();
             //form.EvtLanguageChanged += form_EvtLanguageChanged;
-            Application.Run(form);
-            
-            (serviceProvider as IDisposable)?.Dispose();
+            try
+            {
+                await AppCommon.ShowFormAsync(form);
+            }
+            finally
+            {
+                Common.Uninit();
+                splash?.Close();
+                FatalErrorHandler.EvtFatalError -= CoreGlobals_EvtFatalError;
+            }
         }
 
         /// <summary>

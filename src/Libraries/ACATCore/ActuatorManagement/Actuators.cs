@@ -186,6 +186,40 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true on success</returns>
         public bool Load(IEnumerable<String> extensionDirs, String configFile, bool loadAll = false)
         {
+            bool result = LoadCore(extensionDirs, configFile, loadAll, null, out bool dirty);
+            if (dirty)
+            {
+                Config.Save();
+            }
+            return result;
+        }
+
+        public async System.Threading.Tasks.Task<bool> LoadAsync(
+            IEnumerable<String> extensionDirs, String configFile, bool loadAll = false)
+        {
+            var dispatcher = new StartupDispatcher();
+            ActuatorConfig.ActuatorSettingsFileName = configFile;
+            if (!File.Exists(configFile))
+            {
+                await new ActuatorConfig().SaveAsync().ConfigureAwait(false);
+            }
+            var configuration = await ActuatorConfig.LoadAsync().ConfigureAwait(false);
+            var result = await dispatcher.InvokeAsync(() =>
+            {
+                bool success = LoadCore(extensionDirs, configFile, loadAll, configuration, out bool dirty);
+                return (success, dirty);
+            }).ConfigureAwait(false);
+            if (result.dirty)
+            {
+                await Config.SaveAsync().ConfigureAwait(false);
+            }
+            return result.success;
+        }
+
+        private bool LoadCore(IEnumerable<String> extensionDirs, String configFile, bool loadAll,
+            ActuatorConfig configuration, out bool isDirty)
+        {
+            isDirty = false;
             ClassDescriptorAttribute keyboard = typeof(KeyboardActuator)
                 .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
                 .FirstOrDefault() as ClassDescriptorAttribute;
@@ -207,7 +241,7 @@ namespace ACAT.Core.ActuatorManagement
             ActuatorConfig.ActuatorSettingsFileName = configFile;
 
             // If config file doesn't exist, create a default one
-            if (!File.Exists(configFile))
+            if (configuration == null && !File.Exists(configFile))
             {
                 _logger?.LogWarning("ActuatorSettings config file not found at {ConfigFile}, creating default", configFile);
 
@@ -218,7 +252,7 @@ namespace ACAT.Core.ActuatorManagement
                 _logger?.LogInformation("Created default ActuatorSettings.json at {ConfigFile}", configFile);
             }
 
-            Config = ActuatorConfig.Load();
+            Config = configuration ?? ActuatorConfig.Load();
 
             // walk through the settings file create and configure
             // actuators
@@ -260,7 +294,6 @@ namespace ACAT.Core.ActuatorManagement
             // now go through all the actuators that are not in the
             // settings file and add them to the settings file
 
-            bool isDirty = false;
             foreach (Type actuatorType in _actuatorTypeLoader.LoadedTypes.Values)
             {
                 ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(actuatorType);
@@ -293,11 +326,6 @@ namespace ACAT.Core.ActuatorManagement
                         _logger?.LogError(ex, "Exception adding actuator");
                     }
                 }
-            }
-
-            if (isDirty)
-            {
-                Config.Save();
             }
 
             return true;

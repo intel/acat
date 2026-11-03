@@ -290,6 +290,9 @@
     </Compile>
     <Compile Include="Utility\ControlExtensions.cs" />
     <Compile Include="Utility\ExtensionInstantiator.cs" />
+    <Compile Include="Utility\IAsyncInitializer.cs" />
+    <Compile Include="Utility\IAsyncWordPredictorLearning.cs" />
+    <Compile Include="Utility\StartupDispatcher.cs" />
     <Compile Include="Utility\HotkeyManager.cs" />
     <Compile Include="Utility\ConfigurationWatcher.cs" />
     <Compile Include="Utility\ConfigurationMigration.cs" />

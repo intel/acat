@@ -1,8 +1,8 @@
 # ACAT Modernization Plan
 
-**Last Updated**: February 25, 2026  
-**Status**: Phase 3 Animation System Modernization In Progress 🔄  
-**Version**: 3.3
+**Last Updated**: November 3, 2026  
+**Status**: Phase 3 Animation System Modernization Complete ✅  
+**Version**: 3.4
 
 ---
 
@@ -12,15 +12,16 @@ The ACAT Modernization Plan is a comprehensive initiative to modernize the ACAT 
 
 1. **Phase 1**: Logging Infrastructure & JSON Configuration (✅ **COMPLETE**)
 2. **Phase 2**: Dependency Injection & Service Architecture (✅ **COMPLETE**)
-3. **Phase 3**: Animation System Modernization (🔄 **IN PROGRESS** — Issue #274)
-4. **Phase 4**: Async/Await Patterns & Performance (📋 **FUTURE**)
+3. **Phase 3**: Animation System Modernization (✅ **COMPLETE** — Issues #270, #274)
+4. **Phase 4**: Async/Await Patterns & Performance (🔄 **PARTIALLY DELIVERED** — I/O async migration landed early via #273)
 5. **Phase 5**: UI Modernization & WinUI 3 Migration (📋 **FUTURE**)
 
 ### Current Status
 - ✅ **Phase 1 Complete**: All 12 tickets delivered on schedule
 - ✅ **Phase 2 Architecture Modernization Complete**: Interface extraction, event system, CQRS, and repository pattern delivered
 - ✅ **Phase 2 DI Infrastructure Complete**: Service container, Context class refactor, interface extraction, factory patterns, configuration services (Issues #209–#216, #211)
-- 🔄 **Phase 3 Animation System**: Adapter layer, integration tests, performance benchmarks, and developer guide delivered (Issue #274)
+- ✅ **Phase 3 Animation System Complete**: Core engine (#270), adapter layer, scanning-manager wiring with per-session renderer and DI integration (#274), integration tests, performance benchmarks, and developer guide. Validated November 3, 2026: integration suite 42 passed / 1 skipped, performance suite 53/53 passed.
+- 🔄 **Phase 4 Async/Await**: Core I/O async migration already delivered (#273): `IAsyncRepository<T>`, async CQRS handler interfaces, async configuration/preferences loading, async named-pipe operations. Remaining: UI-thread safety review, `ConfigureAwait` audit, call-site adoption, performance benchmarking
 - 🎯 **Focus**: Incremental modernization, maintaining backward compatibility
 
 ---
@@ -363,12 +364,13 @@ All manager interfaces created and registered in DI:
 
 ---
 
-## Phase 3: Animation System Modernization 🔄 IN PROGRESS
+## Phase 3: Animation System Modernization ✅ COMPLETE
 
 **Duration**: ~2 weeks  
 **Timeline**: February 2026  
-**Status**: 🔄 **In Progress** — Issue #274 (adapter layer, tests, docs)  
-**Depends On**: Issues #206 (analysis), #207 (design), #208/#4 (POC engine)
+**Status**: ✅ **Complete** — Issue #274 (adapter layer, scanning-manager wiring, tests, docs)  
+**Depends On**: Issues #206 (analysis), #207 (design), #208/#4 (POC engine)  
+**Validation**: November 3, 2026 — `ACATCore.Tests.Integration` 42 passed / 1 skipped; `ACATCore.Tests.Performance` 53/53 passed
 
 ### Objectives
 
@@ -423,34 +425,46 @@ All manager interfaces created and registered in DI:
 
 ---
 
-## Phase 4: Async/Await Patterns 📋 FUTURE
+## Phase 4: Async/Await Patterns � PARTIALLY DELIVERED
 
 **Duration**: 4-6 weeks (estimated)  
-**Timeline**: TBD (after Phase 3)  
-**Status**: 📋 **Future planning**
+**Timeline**: TBD  
+**Status**: 🔄 **Partially delivered** — core I/O async migration landed early via PR #273 ("Workstream C")
 
-### Preliminary Objectives
+### Delivered (PR #273)
 
-1. **Async Infrastructure**
-   - Identify blocking I/O operations
-   - Convert to async/await patterns
-   - Update service interfaces to support async
+1. ✅ **Async Infrastructure**
+   - Blocking I/O audit documented in `docs/ASYNC_MIGRATION_ANALYSIS.md`
+   - `IAsyncRepository<T>` with `LoadAsync`/`SaveAsync`/`GetDefaultAsync`; implemented by `RepositoryBase<T>`, `ConfigurationRepository<T>`, `PreferencesRepository<T>`
+   - Async CQRS interfaces: `IAsyncCommandHandler<TCommand>`, `IAsyncQueryHandler<TQuery,TResult>` plus concrete samples (`LoadPreferencesQueryHandler<T>`, `SavePreferencesCommandHandler<T>`)
+   - `JsonConfigurationLoader<T>.LoadAsync/SaveAsync` with async file I/O
+   - Async static helpers on `PreferencesBase` and `GlobalPreferences`
 
-2. **Performance Optimization**
-   - Implement async file I/O
-   - Async network operations
+2. ✅ **Async Call-Site Coverage (initial)**
+   - `Abbreviations`, `Pronunciations`, `ActuatorConfig`, `PreferredWordPredictors`, `Theme.CreateAsync`
+   - `IThemeManager.SetActiveThemeAsync`
+   - ConvAssist named-pipe async operations (`CreatePipeServerAsync`, `WriteAsync`-based send methods)
+   - `XmlUtils.XmlFileLoadAsync/XmlFileSaveAsync`
+   - Validation guide: `docs/ASYNC_VALIDATION_GUIDE.md`
+
+### Remaining Objectives
+
+1. **Call-Site Adoption**
+   - Migrate remaining synchronous callers to the new async APIs
    - Parallel processing where appropriate
-   - Performance benchmarking
 
-3. **Threading Model**
+2. **Threading Model**
    - Review UI thread safety
    - Implement proper synchronization
    - Use `ConfigureAwait` appropriately
 
+3. **Performance**
+   - Benchmark async paths against synchronous baselines
+
 ### Dependencies
 - ✅ Phase 1 complete
 - ✅ Phase 2 complete (DI infrastructure needed)
-- ⏸️ Phase 3 complete (Animation system)
+- ✅ Phase 3 complete (Animation system)
 
 ---
 
@@ -480,8 +494,8 @@ All manager interfaces created and registered in DI:
 
 ### Dependencies
 - ✅ Phase 1 complete
-- ⏸️ Phase 2 complete
-- ⏸️ Phase 3 complete
+- ✅ Phase 2 complete
+- ✅ Phase 3 complete
 - 📋 Windows App SDK / WinUI 3 readiness
 
 ---
@@ -503,14 +517,17 @@ Phase 2: Dependency Injection & Service Architecture ✅
 └─ Schema Validation & Configuration Services (Issues #211, #218)
 Status: ✅ Complete (February 22, 2026)
 
-Phase 3: Animation System Modernization 🔄
+Phase 3: Animation System Modernization ✅
+├─ Core engine POC (Issue #270)
 ├─ AnimationPlayerAdapter bridges PanelAnimationManager to new engine
+├─ Scanning managers wired to new engine with per-session renderer (Issue #274)
 ├─ Integration tests (IT01–IT15) and performance benchmarks (BP01–BP08)
 └─ Developer guide docs/ANIMATION_ENGINE_GUIDE.md
-Status: 🔄 In Progress (Issue #274)
+Status: ✅ Complete (validated November 3, 2026)
 
-Phase 4: Async/Await Patterns 📋
-└─ TBD (4-6 weeks after Phase 3)
+Phase 4: Async/Await Patterns 🔄
+├─ Async infrastructure & I/O migration delivered early (PR #273)
+└─ Remaining: call-site adoption, UI-thread safety, ConfigureAwait audit, benchmarks
 
 Phase 5: UI Modernization 📋
 └─ TBD (8-12 weeks after Phase 4)
@@ -533,7 +550,7 @@ Phase 5: UI Modernization 📋
 - **Backward compatibility**: Maintained XML support
 - **Rationale**: Modern, validated, great tooling support
 
-#### Dependency Injection (Phase 2) ⏸️
+#### Dependency Injection (Phase 2) ✅
 - **Framework**: Microsoft.Extensions.DependencyInjection
 - **Pattern**: Constructor injection preferred
 - **Legacy support**: Service locator for existing code

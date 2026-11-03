@@ -38,6 +38,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ACATTalk
 {
@@ -50,6 +51,9 @@ namespace ACATTalk
         private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
         private static IServiceProvider _serviceProvider;
+        private static bool _commonInitialized;
+        private static bool _preferencesInitialized;
+        private static bool _contextInitialized;
 #if DEBUG
         private static PerformanceDashboard _performanceDashboard = null;
 #endif
@@ -66,13 +70,6 @@ namespace ACATTalk
             PerformanceMonitor.LogEvent("Application", "Main entry point");
 #endif
 
-#if DEBUG
-            _performanceDashboard = new PerformanceDashboard(
-                PerformanceMonitor.GetRuntimeCollector(),
-                PerformanceMonitor.GetMemoryProfiler());
-            _performanceDashboard.Show();
-#endif
-
             if (AppCommon.OtherInstancesRunning())
             {
                 return;
@@ -80,6 +77,29 @@ namespace ACATTalk
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            AppCommon.RunApplication(StartApplicationAsync);
+        }
+
+        private static async Task StartApplicationAsync()
+        {
+            try
+            {
+                await StartApplicationCoreAsync();
+            }
+            finally
+            {
+                ShutdownApplication();
+            }
+        }
+
+        private static async Task StartApplicationCoreAsync()
+        {
+#if DEBUG
+            _performanceDashboard = new PerformanceDashboard(
+                PerformanceMonitor.GetRuntimeCollector(),
+                PerformanceMonitor.GetMemoryProfiler());
+            _performanceDashboard.Show();
+#endif
 
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
@@ -96,12 +116,12 @@ namespace ACATTalk
 #if PERFORMANCE
             var swGS = Stopwatch.StartNew();
 #endif
-            AppCommon.LoadGlobalSettings();
+            await AppCommon.LoadGlobalSettingsAsync();
 #if PERFORMANCE
             PerformanceMonitor.RecordIoOperation("LoadGlobalSettings", swGS.Elapsed.TotalMilliseconds);
 #endif
 
-            AppCommon.SetUserName();
+            await AppCommon.SetUserNameAsync();
             AppCommon.SetProfileName();
 
             if (!AppCommon.CreateUserAndProfile())
@@ -112,10 +132,11 @@ namespace ACATTalk
 #if PERFORMANCE
             var swUP = Stopwatch.StartNew();
 #endif
-            if (!AppCommon.LoadUserPreferences())
+            if (!await AppCommon.LoadUserPreferencesAsync())
             {
                 return;
             }
+            _preferencesInitialized = true;
 #if PERFORMANCE
             PerformanceMonitor.RecordIoOperation("LoadUserPreferences", swUP.Elapsed.TotalMilliseconds);
 #endif
@@ -126,7 +147,7 @@ namespace ACATTalk
 
             User32Interop.SetProcessDPIAware();
 
-            AppCommon.CheckDisplayScalingAndResolution();
+            await AppCommon.CheckDisplayScalingAndResolutionAsync();
 
             Common.AppPreferences.AppName = "ACAT Talk";
 
@@ -148,28 +169,31 @@ namespace ACATTalk
 
             Common.AppPreferences.PreferredPanelConfigNames = string.Empty;
 
-            if (!AppCommon.DoOnboarding())
+            if (!await AppCommon.DoOnboardingAsync())
             {
                 return;
             }
+            AppCommon.SetCulture();
 
             splash = new Splash(2000);
             splash.Show(StringResources.StartingACAT);
 
             Context.PreInit();
             Common.PreInit();
+            _commonInitialized = true;
             Context.AppAgentMgr.EnableAppAgentContextSwitch = false;
 
 #if PERFORMANCE
             var swCtxInit = Stopwatch.StartNew();
 #endif
-            if (!Context.Init(Context.StartupFlags.Minimal |
+            _contextInitialized = await Context.InitAsync(Context.StartupFlags.Minimal |
                                 Context.StartupFlags.TextToSpeech |
                                 Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.AgentManager |
                                 Context.StartupFlags.SpellChecker |
                                 Context.StartupFlags.WindowsActivityMonitor |
-                                Context.StartupFlags.Abbreviations))
+                                Context.StartupFlags.Abbreviations);
+            if (!_contextInitialized)
             {
                 splash.Close();
 
@@ -212,7 +236,6 @@ namespace ACATTalk
 
             if (!Context.PostInit())
             {
-                Context.Dispose();
                 return;
             }
 
@@ -225,80 +248,100 @@ namespace ACATTalk
 
             AuditLog.Audit(new AuditEvent("Application", "Initialiation complete"));
 
-            try
+            Context.AppActuatorManager.ShowTryoutDialog(true);
+
+            showTalkInterfaceDescription();
+
+            var startupArg = new StartupArg("TalkApplicationScanner")
             {
-                Context.AppActuatorManager.ShowTryoutDialog(true);
+                QuitAppOnFormClose = false
+            };
 
-                showTalkInterfaceDescription();
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
+            var command = new CreatePanelCommand("TalkApplicationScanner", null, startupArg);
+            createPanelHandler.Handle(command);
 
-                var startupArg = new StartupArg("TalkApplicationScanner")
+            Form form = command.CreatedPanel as Form;
+            if (form != null)
+            {
+                // Add ad-hoc agent that will handle the form
+                IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+                if (agent == null)
                 {
-                    QuitAppOnFormClose = false
-                };
-
-                // CQRS: Use command handler instead of direct singleton access
-                var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
-                var command = new CreatePanelCommand("TalkApplicationScanner", null, startupArg);
-                createPanelHandler.Handle(command);
-
-                Form form = command.CreatedPanel as Form;
-                if (form != null)
-                {
-                    // Add ad-hoc agent that will handle the form
-                    IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
-                    if (agent == null)
-                    {
-                        MessageBox.Show("Could not find application agent for this application.");
-                        return;
-                    }
-
-                    Context.AppAgentMgr.AddAgent(form.Handle, agent);
-                    Context.AppPanelManager.ShowDialog(form as IPanel);
-                }
-                else
-                {
-                    MessageBox.Show(string.Format(StringResources.InvalidFormName, "TalkApplicationScanner"));
+                    MessageBox.Show("Could not find application agent for this application.");
                     return;
                 }
 
-                splash = new Splash();
-                splash.Show(StringResources.ExitingACAT);
-                AuditLog.Audit(new AuditEvent("Application", "stop"));
+                Context.AppAgentMgr.AddAgent(form.Handle, agent);
+                Context.AppPanelManager.ShowDialog(form as IPanel);
+            }
+            else
+            {
+                MessageBox.Show(string.Format(StringResources.InvalidFormName, "TalkApplicationScanner"));
+                return;
+            }
+
+            splash = new Splash();
+            splash.Show(StringResources.ExitingACAT);
+        }
+
+        private static void ShutdownApplication()
+        {
+            if (_preferencesInitialized)
+            {
+                TryCleanup(() => AuditLog.Audit(new AuditEvent("Application", "stop")));
+            }
 
 #if DEBUG
-                // Close PerformanceDashboard before disposing Context to prevent WPF dispatcher from keeping app alive
-                if (_performanceDashboard != null)
-                {
-                    _performanceDashboard.Dispatcher.InvokeShutdown();
-                    _performanceDashboard.Close();
-                    _performanceDashboard = null;
-                }
+            if (_performanceDashboard != null)
+            {
+                TryCleanup(() => _performanceDashboard.Dispatcher.InvokeShutdown());
+                TryCleanup(() => _performanceDashboard.Close());
+                _performanceDashboard = null;
+            }
 #endif
 
-                Context.Dispose();
+            if (_contextInitialized)
+            {
+                TryCleanup(Context.Dispose);
+            }
+            if (_commonInitialized)
+            {
+                TryCleanup(Common.Uninit);
+            }
+            TryCleanup(() => splash?.Close());
+            splash = null;
 
-                Common.Uninit();
+            TryCleanup(() => FatalErrorHandler.EvtFatalError -= CoreGlobals_EvtFatalError);
+            TryCleanup(() => _logger?.LogDebug("ACATTalk Application shutdown"));
 
-                splash?.Close();
-                splash = null;
+            TryCleanup(() => (_serviceProvider as IDisposable)?.Dispose());
+            TryCleanup(() => modernLoggingFactory?.Dispose());
+#if PERFORMANCE
+            TryCleanup(() => PerformanceMonitor.StopTimer("TotalStartupTime", PerformanceMonitor.MetricCategory.Startup));
+            TryCleanup(() => PerformanceMonitor.LogEvent("Application", "Exit"));
+            TryCleanup(PerformanceMonitor.Shutdown);
+#endif
+        }
 
-                _logger.LogDebug("ACATTalk Application shutdown");
-
-                modernLoggingFactory?.Dispose();
+        private static void TryCleanup(Action cleanup)
+        {
+            try
+            {
+                cleanup();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
-                modernLoggingFactory?.Dispose();
+                // Cleanup must not replace a startup exception or skip later resources.
+                try
+                {
+                    _logger?.LogError(ex, "Application cleanup failed");
+                }
+                catch
+                {
+                }
             }
-#if PERFORMANCE
-            PerformanceMonitor.StopTimer("TotalStartupTime", PerformanceMonitor.MetricCategory.Startup);
-            PerformanceMonitor.LogEvent("Application", "Exit");
-            PerformanceMonitor.Shutdown();
-#endif
-
-            AppCommon.OnExit();
-
         }
 
         private static void InitializeDependencyInjection()

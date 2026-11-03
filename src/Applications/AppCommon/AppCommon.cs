@@ -16,16 +16,85 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ACAT.Applications
 {
     public partial class AppCommon
     {
         /// <summary>
-        /// Creates the user and profile directories if they
-        /// don't exist
+        /// Runs startup on the STA after the WinForms message loop has started.
+        /// The operation owns its windows and completes only after they close.
         /// </summary>
-        /// <returns></returns>
+        public static void RunApplication(Func<Task> startup)
+        {
+            if (startup == null)
+            {
+                throw new ArgumentNullException(nameof(startup));
+            }
+
+            using (var application = new ApplicationContext())
+            {
+                EventHandler start = null;
+                start = async (sender, args) =>
+                {
+                    Application.Idle -= start;
+                    try
+                    {
+                        await startup();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString(), "ACAT", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        application.ExitThread();
+                    }
+                };
+
+                // Install the context on this STA, never on a worker thread.
+                using (var synchronizationContext = new WindowsFormsSynchronizationContext())
+                {
+                    var previous = SynchronizationContext.Current;
+                    SynchronizationContext.SetSynchronizationContext(synchronizationContext);
+                    Application.Idle += start;
+                    try
+                    {
+                        Application.Run(application);
+                    }
+                    finally
+                    {
+                        Application.Idle -= start;
+                        SynchronizationContext.SetSynchronizationContext(previous);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shows a modeless form and keeps startup alive until it closes.
+        /// </summary>
+        public static async Task ShowFormAsync(Form form)
+        {
+            var closed = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            FormClosedEventHandler onClosed = (sender, args) => closed.TrySetResult(true);
+            form.FormClosed += onClosed;
+            try
+            {
+                form.Show();
+                await closed.Task;
+            }
+            finally
+            {
+                form.FormClosed -= onClosed;
+            }
+        }
+
+        /// <summary>
+        /// Creates the user and profile directories if they don't exist.
+        /// </summary>
         public static bool CreateUserAndProfile()
         {
             if (!UserManager.CreateUser(UserManager.CurrentUser))
@@ -77,6 +146,13 @@ namespace ACAT.Applications
             CoreGlobals.AppGlobalPreferences = GlobalPreferences.Load();
         }
 
+        public static async Task LoadGlobalSettingsAsync()
+        {
+            GlobalPreferences.PreferencesFilePath = FileUtils.GetFullPathRelativeToHome("Settings.xml");
+            GlobalPreferences.DefaultPreferencesFilePath = FileUtils.GetFullPathRelativeToHome("DefaultSettings.xml");
+            CoreGlobals.AppGlobalPreferences = await GlobalPreferences.LoadAsync(GlobalPreferences.PreferencesFilePath);
+        }
+
         /// <summary>
         /// Loads user settings from the user's profile directory
         /// </summary>
@@ -106,6 +182,27 @@ namespace ACAT.Applications
 
             ACATPreferences.ApplicationAssembly = Assembly.GetEntryAssembly();
 
+            return true;
+        }
+
+        /// <summary>
+        /// Loads user preferences without blocking the UI during file I/O.
+        /// </summary>
+        public static async Task<bool> LoadUserPreferencesAsync()
+        {
+            setPreferencesPaths();
+            FileUtils.AppPreferencesDir = ProfileManager.CurrentProfileDir;
+            Common.AppPreferences = await ACATPreferences.LoadAsync();
+            if (Common.AppPreferences == null)
+            {
+                MessageBox.Show($"Unable to read preferences from {FileUtils.AppPreferencesDir}");
+                return false;
+            }
+
+            CoreGlobals.AppPreferences = Common.AppPreferences;
+            CoreGlobals.AppDefaultPreferences = ACATPreferences.LoadDefaultSettings();
+            Common.AppPreferences.DebugAssertOnError = false;
+            ACATPreferences.ApplicationAssembly = Assembly.GetEntryAssembly();
             return true;
         }
 
@@ -162,6 +259,15 @@ namespace ACAT.Applications
 
             ResourceUtils.SetCulture(culture);
             ResourceUtils.InstallLanguageForUser();
+            if (SynchronizationContext.Current is WindowsFormsSynchronizationContext context)
+            {
+                // Also persist culture outside an async startup's ExecutionContext
+                // so subsequent native UI events use the selected language.
+                using (ExecutionContext.SuppressFlow())
+                {
+                    context.Post(_ => ResourceUtils.SetCulture(culture), null);
+                }
+            }
             return true;
 
             // TODO: Re-enable this code
@@ -234,6 +340,22 @@ namespace ACAT.Applications
         /// </summary>
         public static void SetUserName(string userName = null)
         {
+            if (setUserName(userName))
+            {
+                CoreGlobals.AppGlobalPreferences.Save();
+            }
+        }
+
+        public static async Task SetUserNameAsync(string userName = null)
+        {
+            if (setUserName(userName))
+            {
+                await CoreGlobals.AppGlobalPreferences.SaveAsync();
+            }
+        }
+
+        private static bool setUserName(string userName)
+        {
             // if username has not been specified in the
             // command line, use the one from GlobalPreferences
             UserManager.CurrentUser = string.IsNullOrEmpty(userName)
@@ -246,11 +368,28 @@ namespace ACAT.Applications
             {
                 UserManager.CurrentUser = UserManager.DefaultUserName;
                 CoreGlobals.AppGlobalPreferences.CurrentUser = UserManager.CurrentUser;
-                CoreGlobals.AppGlobalPreferences.Save();
+                return true;
             }
+            return false;
         }
 
         public static void CheckDisplayScalingAndResolution()
+        {
+            if (checkDisplayScalingAndResolution())
+            {
+                Common.AppPreferences.Save();
+            }
+        }
+
+        public static async Task CheckDisplayScalingAndResolutionAsync()
+        {
+            if (checkDisplayScalingAndResolution())
+            {
+                await Common.AppPreferences.SaveAsync();
+            }
+        }
+
+        private static bool checkDisplayScalingAndResolution()
         {
             _ = ResourceHelper.GetAvailableCultures();
 
@@ -273,9 +412,10 @@ namespace ACAT.Applications
                 {
                     Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, StringResources.OK, null, true);
 
-                    Common.AppPreferences.Save();
+                    return true;
                 }
             }
+            return false;
         }
 
         //public static bool CheckFontsInstalled()

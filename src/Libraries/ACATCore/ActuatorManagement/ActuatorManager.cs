@@ -379,6 +379,17 @@ namespace ACAT.Core.ActuatorManagement
             return retVal;
         }
 
+        public async System.Threading.Tasks.Task<bool> LoadExtensionsAsync(IEnumerable<String> extensionDirs, bool all = false)
+        {
+            if (_actuators != null)
+            {
+                return true;
+            }
+            _actuators = new Actuators();
+            return await _actuators.LoadAsync(extensionDirs, UserManager.GetFullPath(ActuatorSettingsFileName), all)
+                .ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Invoked when calibration is canceled for the
         /// specified actuator

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
@@ -176,6 +177,51 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             _logger?.LogInformation("<<< ProcessPredictionRequest returning response with {Count} predictions", 
                 response.Results != null ? System.Linq.Enumerable.Count(response.Results) : 0);
             return response;
+        }
+
+        public async Task<WordPredictionResponse> ProcessPredictionRequestAsync(WordPredictionRequest request)
+        {
+            if (request.PredictionType != PredictionTypes.Sentences)
+            {
+                return new WordPredictionResponse(request, new List<string>(), false);
+            }
+            try
+            {
+                if (_prevMode == _wordPredictor.GetMode() &&
+                    _prevPrevWords != null && _prevCurrentWord != null &&
+                    String.Compare(_prevPrevWords, request.PrevWords) == 0 &&
+                    String.Compare(_prevCurrentWord, request.CurrentWord) == 0)
+                {
+                    return new WordPredictionResponse(request, _prevSentencePredictionResults, true);
+                }
+
+                _prevMode = _wordPredictor.GetMode();
+                _prevPrevWords = request.PrevWords;
+                _prevCurrentWord = request.CurrentWord;
+                _prevSentencePredictionResults = new List<string>();
+                try
+                {
+                    if (String.IsNullOrEmpty(request.CurrentWord.Trim()))
+                    {
+                        var text = request.PrevWords + request.CurrentWord;
+                        var predictions = request.WordPredictionMode == WordPredictionModes.Sentence
+                            ? await _wordPredictor.SendMessageConvAssistSentencePredictionAsync(text, request.WordPredictionMode).ConfigureAwait(false)
+                            : await _wordPredictor.SendMessageConvAssistWordPredictionAsync(text, request.WordPredictionMode).ConfigureAwait(false);
+                        _prevSentencePredictionResults = ProcessSentencesPredictions(predictions, request.CurrentWord);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError(ex, "Exception in sentence prediction processing");
+                }
+                return new WordPredictionResponse(request, _prevSentencePredictionResults, true);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "ConvAssist Predict Exception");
+                _prevSentencePredictionResults = new List<string>();
+                return new WordPredictionResponse(request, _prevSentencePredictionResults, false);
+            }
         }
 
         /// <summary>

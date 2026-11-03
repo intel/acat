@@ -142,7 +142,7 @@ namespace ACAT.Core.Utility
         /// <returns>The loaded preferences, or <c>null</c> on failure.</returns>
         public static async Task<GlobalPreferences> LoadAsync(string prefFile, bool loadDefaultsOnFail = true, CancellationToken cancellationToken = default)
         {
-            saveFactoryDefaultSettings();
+            await SaveAsync(new GlobalPreferences(), DefaultPreferencesFilePath, cancellationToken).ConfigureAwait(false);
 
             var repo = new PreferencesRepository<GlobalPreferences>(_logger);
             GlobalPreferences retVal = await repo.LoadAsync(prefFile, cancellationToken).ConfigureAwait(false);

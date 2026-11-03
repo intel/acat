@@ -16,6 +16,7 @@ using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.ActuatorManagement.UI;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -201,14 +202,52 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void buttonOK_Click(object sender, EventArgs e)
+        private async void buttonOK_Click(object sender, EventArgs e)
         {
+            var dispatcher = new StartupDispatcher();
             if (validate())
             {
                 if (_isDirty && ConfirmBoxTwoOption.ShowDialog("Save changes?", "", "Yes", "No"))
                 {
-                    updateDataFromUIAndSave();
-                    DialogResult = DialogResult.OK;
+                    Enabled = false;
+                    var actuatorConfig = await ActuatorConfig.LoadAsync().ConfigureAwait(false);
+                    if (!await dispatcher.InvokeAsync(() =>
+                    {
+                        if (IsDisposed || Disposing)
+                        {
+                            return false;
+                        }
+                        if (!updateDataFromUI(actuatorConfig))
+                        {
+                            Enabled = true;
+                            MessageBox.Show("Unable to find actuator settings.");
+                            return false;
+                        }
+                        return true;
+                    }).ConfigureAwait(false))
+                    {
+                        return;
+                    }
+                    bool saved = await actuatorConfig.SaveAsync().ConfigureAwait(false);
+                    await dispatcher.InvokeAsync(() =>
+                    {
+                        if (IsDisposed || Disposing)
+                        {
+                            return false;
+                        }
+                        Enabled = true;
+                        if (saved)
+                        {
+                            DialogResult = DialogResult.OK;
+                            Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Unable to save actuator settings.");
+                        }
+                        return true;
+                    }).ConfigureAwait(false);
+                    return;
                 }
 
                 Close();
@@ -483,13 +522,15 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="eventArgs">eventargs</param>
-        private void OnLoad(object sender, EventArgs eventArgs)
+        private async void OnLoad(object sender, EventArgs eventArgs)
         {
+            var dispatcher = new StartupDispatcher();
             if (Actuator == null)
             {
                 // MessageBox.Show("Error.  Actuator to configure is null");
                 _ = ConfirmBoxOneOption.ShowDialog("Unexpected Error", "No valid actuators available", "OK");
                 Close();
+                return;
             }
 
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
@@ -511,11 +552,26 @@ namespace ACAT.Core.ActuatorManagement
 
             initializeUI();
 
-            _actuatorConfig = ActuatorConfig.Load();
-
-            _actuatorSetting = _actuatorConfig.Find(Actuator.Descriptor.Id);
-
-            refreshDataGridView();
+            Enabled = false;
+            var actuatorConfig = await ActuatorConfig.LoadAsync().ConfigureAwait(false);
+            await dispatcher.InvokeAsync(() =>
+            {
+                if (IsDisposed || Disposing)
+                {
+                    return false;
+                }
+                _actuatorConfig = actuatorConfig;
+                _actuatorSetting = _actuatorConfig.Find(Actuator.Descriptor.Id);
+                if (_actuatorSetting == null)
+                {
+                    MessageBox.Show("Unable to find actuator settings.");
+                    Close();
+                    return false;
+                }
+                refreshDataGridView();
+                Enabled = true;
+                return true;
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -582,12 +638,10 @@ namespace ACAT.Core.ActuatorManagement
 
         /// <summary>
         /// Gets data from the datagrid view, updates the switch settings
-        /// and saves the settings to file
+        /// in the loaded configuration
         /// </summary>
-        private void updateDataFromUIAndSave()
+        private bool updateDataFromUI(ActuatorConfig actuatorConfig)
         {
-            var actuatorConfig = ActuatorConfig.Load();
-
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
                 var switchSetting = dataGridView2.Rows[ii].Tag as SwitchSetting;
@@ -636,9 +690,9 @@ namespace ACAT.Core.ActuatorManagement
             if (actuatorSetting != null)
             {
                 actuatorSetting.SwitchSettings = _actuatorSetting.SwitchSettings;
-
-                actuatorConfig.Save();
+                return true;
             }
+            return false;
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
     [ClassDescriptor("33A07974-72A5-4147-A8EA-7B001520C175",
                         "TTS Client",
                         "Text to Speech client that sends the text to be converted to a server using the supported protocols")]
-    public class TTSClient : ExtensionInvoker, ITTSEngine, ISupportsPreferences
+    public class TTSClient : ExtensionInvoker, ITTSEngine, ISupportsPreferences, IAsyncInitializer<CultureInfo>
     {
         /// <summary>
         /// Name of the settings file
@@ -273,11 +273,27 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <returns>true on success</returns>
         public bool Init(CultureInfo ci)
         {
+            return InitCore(ci, true);
+        }
+
+        public async System.Threading.Tasks.Task<bool> InitAsync(CultureInfo ci)
+        {
+            InitCore(ci, false);
+            _pronunciations = new Pronunciations();
+            await _pronunciations.LoadAsync(ci, Settings.PronunciationsFile).ConfigureAwait(false);
+            return true;
+        }
+
+        private bool InitCore(CultureInfo ci, bool loadPronunciationFile)
+        {
             _volume = Settings.Volume;
             _pitch = Settings.Pitch;
             _rate = Settings.Rate;
 
-            loadPronunciations(ci);
+            if (loadPronunciationFile)
+            {
+                loadPronunciations(ci);
+            }
 
             return true;
         }

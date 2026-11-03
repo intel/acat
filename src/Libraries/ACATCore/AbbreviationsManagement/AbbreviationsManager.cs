@@ -79,6 +79,13 @@ namespace ACAT.Core.AbbreviationsManagement
         /// Loads abbreviations from the abbreviations file
         /// </summary>
         /// <returns></returns>
+        public System.Threading.Tasks.Task<bool> InitAsync(String abbreviationsFile = null)
+        {
+            Abbreviations?.Dispose();
+            Abbreviations = new Abbreviations();
+            return Abbreviations.LoadAsync(abbreviationsFile);
+        }
+
         public bool Init(String abbreviationsFile = null)
         {
             Abbreviations?.Dispose();

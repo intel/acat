@@ -345,6 +345,65 @@ namespace ACAT.Core.TTSManagement
             return retVal;
         }
 
+        public async System.Threading.Tasks.Task<bool> SetActiveEngineAsync(CultureInfo ci = null)
+        {
+            var dispatcher = new StartupDispatcher();
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
+            Guid guid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
+            bool cultureSpecific = guid != Guid.Empty;
+            if (!cultureSpecific)
+            {
+                guid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
+            }
+            if (cultureSpecific)
+            {
+                ActiveEngine?.Dispose();
+                ActiveEngine = null;
+            }
+
+            bool initialized = false;
+            if (guid != Guid.Empty)
+            {
+                Type type = _ttsEngines.Lookup(guid);
+                try
+                {
+                    ITTSEngine engine = null;
+                    initialized = await dispatcher.InvokeAsync(() =>
+                    {
+                        engine = ExtensionInstantiator.CreateExtensionInstance(Context.ServiceProvider, type, _logger) as ITTSEngine;
+                        if (engine == null)
+                        {
+                            return System.Threading.Tasks.Task.FromResult(false);
+                        }
+                        return engine is IAsyncInitializer<CultureInfo> asyncInitializer
+                            ? asyncInitializer.InitAsync(ci)
+                            : System.Threading.Tasks.Task.FromResult(engine.Init(ci));
+                    }).ConfigureAwait(false);
+                    if (initialized)
+                    {
+                        await dispatcher.InvokeAsync(() =>
+                        {
+                            saveSettings(engine);
+                            ActiveEngine = engine;
+                            return true;
+                        }).ConfigureAwait(false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Unable to load TTS Engine {Type}", type);
+                    initialized = false;
+                }
+            }
+            if (!initialized)
+            {
+                await dispatcher.InvokeAsync(() => ActiveEngine = TTSEngines.NullTTSEngine)
+                    .ConfigureAwait(false);
+            }
+            // Synchronous startup also treats the null engine fallback as successful.
+            return true;
+        }
+
         /// <summary>
         /// Sets the normalized volume.   Since different engines support
         /// different ranges for volume, ACAT normalizes them and

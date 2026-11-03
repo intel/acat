@@ -139,9 +139,9 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public static async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
         {
-            if (task == await Task.WhenAny(task, Task.Delay(timeout)))
+            if (task == await Task.WhenAny(task, Task.Delay(timeout)).ConfigureAwait(false))
             {
-                return await task; // Task completed within timeout
+                return await task.ConfigureAwait(false); // Task completed within timeout
             }
             else
             {

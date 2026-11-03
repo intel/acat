@@ -312,6 +312,32 @@ namespace ACAT.Core.TTSManagement
             return Load(filePath);
         }
 
+        public Task<bool> LoadAsync(CultureInfo ci, String pronunciationsFileName,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(pronunciationsFileName))
+            {
+                return Task.FromResult(false);
+            }
+            string filePath = getPronunciationsFilePath(ci, pronunciationsFileName);
+            if (string.IsNullOrEmpty(filePath))
+            {
+                string baseName = Path.GetFileNameWithoutExtension(pronunciationsFileName);
+                if (string.IsNullOrWhiteSpace(baseName))
+                {
+                    return Task.FromResult(false);
+                }
+                filePath = getPronunciationsFilePath(ci, baseName + ".json");
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    filePath = getPronunciationsFilePath(ci, baseName + ".xml");
+                }
+            }
+            return string.IsNullOrEmpty(filePath)
+                ? Task.FromResult(false)
+                : LoadAsync(filePath, cancellationToken);
+        }
+
         /// <summary>
         /// Looks up the word and returns its pronunciation object.
         /// </summary>

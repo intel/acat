@@ -207,6 +207,49 @@ namespace ACATCore.Tests
         }
 
         [Fact]
+        public async Task GlobalPreferences_LoadAsync_PreCancelled_DoesNotWriteFactoryDefaults()
+        {
+            string savedPath = GlobalPreferences.DefaultPreferencesFilePath;
+            string defaultsPath = Path.Combine(_tempDir, "factory_defaults.xml");
+            GlobalPreferences.DefaultPreferencesFilePath = defaultsPath;
+            try
+            {
+                using (var cancellation = new CancellationTokenSource())
+                {
+                    cancellation.Cancel();
+                    await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                        GlobalPreferences.LoadAsync(Path.Combine(_tempDir, "global.xml"),
+                            cancellationToken: cancellation.Token));
+                }
+                Assert.False(File.Exists(defaultsPath));
+            }
+            finally
+            {
+                GlobalPreferences.DefaultPreferencesFilePath = savedPath;
+            }
+        }
+
+        [Fact]
+        public async Task GlobalPreferences_LoadAsync_WritesFactoryDefaultsAndUserPreferences()
+        {
+            string savedPath = GlobalPreferences.DefaultPreferencesFilePath;
+            string defaultsPath = Path.Combine(_tempDir, "factory_defaults.xml");
+            string userPath = Path.Combine(_tempDir, "global.xml");
+            GlobalPreferences.DefaultPreferencesFilePath = defaultsPath;
+            try
+            {
+                var preferences = await GlobalPreferences.LoadAsync(userPath);
+                Assert.NotNull(preferences);
+                Assert.True(File.Exists(defaultsPath));
+                Assert.True(File.Exists(userPath));
+            }
+            finally
+            {
+                GlobalPreferences.DefaultPreferencesFilePath = savedPath;
+            }
+        }
+
+        [Fact]
         public async Task GlobalPreferences_Instance_SaveAsync_ReturnsFalseWhenNoPath()
         {
             var prefs = new GlobalPreferences();

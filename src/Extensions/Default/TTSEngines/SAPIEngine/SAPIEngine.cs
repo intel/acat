@@ -30,7 +30,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
     [ClassDescriptor("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
                         "Speech Synthesizer TTS Engine",
                         "Text to Speech based on the Microsoft Speech Synthesizer")]
-    public class SAPIEngine : ExtensionInvoker, ITTSEngine, ISupportsPreferences
+    public class SAPIEngine : ExtensionInvoker, ITTSEngine, ISupportsPreferences, IAsyncInitializer<CultureInfo>
     {
         /// <summary>
         /// Name of the settings file
@@ -282,6 +282,19 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public bool Init(CultureInfo ci)
         {
+            return InitCore(ci, true);
+        }
+
+        public async System.Threading.Tasks.Task<bool> InitAsync(CultureInfo ci)
+        {
+            InitCore(ci, false);
+            _pronunciations = new Pronunciations();
+            await _pronunciations.LoadAsync(ci, SAPISettings.PronunciationsFile).ConfigureAwait(false);
+            return true;
+        }
+
+        private bool InitCore(CultureInfo ci, bool loadPronunciationFile)
+        {
             ReadOnlyCollection<InstalledVoice> ins = Synthesizer.GetInstalledVoices();
 
             foreach (InstalledVoice iv in ins)
@@ -290,7 +303,10 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                     iv.VoiceInfo.Name, iv.VoiceInfo.Gender, iv.VoiceInfo.Age, iv.VoiceInfo.Culture.Name);
             }
 
-            loadPronunciations(ci);
+            if (loadPronunciationFile)
+            {
+                loadPronunciations(ci);
+            }
 
             setSpeechSynthSettings();
 

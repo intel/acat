@@ -80,7 +80,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         private CancellationTokenSource cancellationTokenSource;
         private bool disposed;
 
-        private static readonly object _writeSyncObj = new();
+        // The protocol has no request IDs and a single response slot.
+        private readonly SemaphoreSlim _requestGate = new(1, 1);
 
         /// <summary>
         /// Direction of comunication
@@ -157,6 +158,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             disposed = false;
             bool success = false;
             cancellationTokenSource = new CancellationTokenSource();
+            cancellationToken = cancellationTokenSource.Token;
             NamedPipeServer = new NamedPipeServerStream(PipeName, PipeDirection,
                                             1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             try
@@ -182,12 +184,13 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         public async Task<bool> CreatePipeServerAsync(bool send_params = false, CancellationToken cancellationToken = default)
         {
             disposed = false;
-            cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            this.cancellationToken = cancellationTokenSource.Token;
             NamedPipeServer = new NamedPipeServerStream(PipeName, PipeDirection,
                                             1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             try
             {
-                return await StartNamedPipeServer(cancellationToken, send_params).ConfigureAwait(false);
+                return await StartNamedPipeServer(this.cancellationToken, send_params).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -236,7 +239,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             return true;
         }
 
-        public async Task SendParams()
+        public Task SendParams()
+        {
+            return SendParamsAsync(cancellationToken);
+        }
+
+        private async Task SendParamsAsync(CancellationToken token)
         {
             int waitDelay = 3200;
             //Static Path
@@ -268,7 +276,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     _logger.LogDebug("Sending ConvAssist message: {Message}", message);
 
                     //TODO: Check result and handle appropriately.
-                    _ = WriteAsync(message, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
+                    _ = await WriteRequestAsync(message, waitDelay, token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
@@ -280,47 +292,31 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             // ConvAssist needs some time to get ready.  Send a message to check if it is ready
             string msg = JsonSerializer.SerializeForInterop(new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty));
 
-            bool clientReady = false;
-            var tcs = new TaskCompletionSource<bool>();
-
-            await Task.Run(async () =>
+            while (true)
             {
-                while (!clientReady)
+                token.ThrowIfCancellationRequested();
+                try
                 {
-                    try
+                    var result = await WriteRequestAsync(msg, waitDelay, token).ConfigureAwait(false);
+                    if (!string.IsNullOrWhiteSpace(result))
                     {
-                        var result = WriteAsync(msg, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
-
-                        // Check if we got a valid response
-                        if (string.IsNullOrWhiteSpace(result))
-                        {
-                            _logger.LogDebug("No response from ConvAssist, retrying...");
-                            await Task.Delay(waitDelay);
-                            continue;
-                        }
-
                         WordAndCharacterPredictionResponse resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
                         if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
                         {
-                            clientReady = true;
-                            tcs.SetResult(true);
-                            break;
+                            return;
                         }
                     }
-                    catch (System.Text.Json.JsonException jsonEx)
-                    {
-                        _logger.LogWarning(jsonEx, "Failed to deserialize ConvAssist response, retrying...");
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Error checking ConvAssist ready state");
-                    }
-
-                    await Task.Delay(waitDelay);
                 }
-            });
-
-            bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(100000));
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Error checking ConvAssist ready state, retrying...");
+                }
+                await Task.Delay(waitDelay, token).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -355,7 +351,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                     try
                     {
-                        success = ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec)).ConfigureAwait(false).GetAwaiter().GetResult();
+                        success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec)).ConfigureAwait(false);
                     }
                     catch (TimeoutException)
                     {
@@ -368,12 +364,16 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 {
                     try
                     {
-                        Task sendTask = SendParams();
-                        if(await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(60))) != sendTask)
+                        using var sendCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
+                        sendCancellation.CancelAfter(TimeSpan.FromSeconds(60));
+                        try
+                        {
+                            await SendParamsAsync(sendCancellation.Token).ConfigureAwait(false);
+                        }
+                        catch (OperationCanceledException) when (!token.IsCancellationRequested)
                         {
                             throw new TimeoutException("SendParam() took too long.");
                         }
-                        await sendTask;
                         success = true;
                     }
                     catch (TimeoutException ex)
@@ -388,7 +388,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     }
                 }
 
-                PipeServer_EvtClientConnected();
+                if (success)
+                {
+                    PipeServer_EvtClientConnected();
+                }
 
             }
 
@@ -476,32 +479,60 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         {
             if (this.disposed) return;
 
-            byte[] payload = Encoding.UTF8.GetBytes(value);
-            byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
-
+            if (!_requestGate.Wait(10000))
+            {
+                _logger.LogWarning("ConvAssist notification timed out waiting for the request gate");
+                return;
+            }
             try
             {
-                this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
-                this.NamedPipeServer.Write(payload, 0, payload.Length);
-                this.NamedPipeServer.Flush();
-            }
+                if (disposed) return;
+                byte[] payload = Encoding.UTF8.GetBytes(value);
+                byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
 
-            catch (Exception ex)
+                try
+                {
+                    this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
+                    this.NamedPipeServer.Write(payload, 0, payload.Length);
+                    this.NamedPipeServer.Flush();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "ConvAssist Write Error: {Message}", ex.Message);
+                }
+            }
+            finally
             {
-                _logger.LogError(ex, "ConvAssist Write Error: {Message}", ex.Message);
+                _requestGate.Release();
             }
         }
 
 #nullable enable
-        public async Task<string> WriteAsync(string value, int msDelay)
+        public Task<string> WriteAsync(string value, int msDelay)
+        {
+            return WriteRequestAsync(value, msDelay, cancellationToken);
+        }
+
+        private async Task<string> WriteRequestAsync(string value, int msDelay, CancellationToken token)
+        {
+            await _requestGate.WaitAsync(token).ConfigureAwait(false);
+            try
+            {
+                return await WriteRequestCoreAsync(value, msDelay, token).ConfigureAwait(false);
+            }
+            finally
+            {
+                _requestGate.Release();
+            }
+        }
+
+        private async Task<string> WriteRequestCoreAsync(string value, int msDelay, CancellationToken token)
         {
             if (disposed)
                 return string.Empty;
 
             TaskFinished = false;
             messageReceived = string.Empty;
-
-            var writeTcs = new TaskCompletionSource<object?>();
 
             byte[] payload = Encoding.UTF8.GetBytes(value);
             
@@ -510,38 +541,15 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
 
-            this.NamedPipeServer.BeginWrite(lengthPrefix, 0, lengthPrefix.Length, ar =>
-            {
-                try
-                {
-                    this.NamedPipeServer.EndWrite(ar);
-
-                    this.NamedPipeServer.BeginWrite(payload, 0, payload.Length, ar2 =>
-                    {
-                        try
-                        {
-                            this.NamedPipeServer.EndWrite(ar2);
-                            this.NamedPipeServer.Flush();
-                            writeTcs.TrySetResult(null);
-                        }
-                        catch (Exception ex)
-                        {
-                            writeTcs.TrySetException(ex);
-                        }
-                    }, null);
-                }
-                catch (Exception ex)
-                {
-                    writeTcs.TrySetException(ex);
-                }
-            }, null);
-
-            using var source = new CancellationTokenSource(msDelay);
-
             try
             {
-                await writeTcs.Task.ConfigureAwait(false);
+                var pipe = NamedPipeServer;
+                await pipe.WriteAsync(lengthPrefix, 0, lengthPrefix.Length, token).ConfigureAwait(false);
+                await pipe.WriteAsync(payload, 0, payload.Length, token).ConfigureAwait(false);
+                await pipe.FlushAsync(token).ConfigureAwait(false);
 
+                using var source = CancellationTokenSource.CreateLinkedTokenSource(token);
+                source.CancelAfter(msDelay);
                 while (!source.IsCancellationRequested && !disposed)
                 {
                     if (!string.IsNullOrEmpty(messageReceived))
@@ -549,9 +557,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                     await Task.Delay(10, source.Token).ConfigureAwait(false);
                 }
+                token.ThrowIfCancellationRequested();
             }
 
-            catch (TaskCanceledException) { }
+            catch (TaskCanceledException) when (!token.IsCancellationRequested) { }
 
             finally
             {
@@ -579,7 +588,13 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             try
             {
                 _logger.LogDebug("ConvAssist WriteSync Lock on");
-                lock (_writeSyncObj)
+                // This bounded semaphore acquisition synchronizes legacy IPC callers, not a Task.Wait bridge.
+                if (!_requestGate.Wait(10000))
+                {
+                    _logger.LogWarning("ConvAssist WriteSync timed out waiting for the request gate");
+                    return string.Empty;
+                }
+                try
                 {
                     TaskFinished = false;
                     //Variable set when the event from receiving data triggers
@@ -630,6 +645,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                         _logger.LogWarning("<<< RECEIVED from ConvAssist - Empty or timeout after {Delay}ms", msDelay);
                     }
                 }
+                finally
+                {
+                    _requestGate.Release();
+                }
             }
             catch (Exception ex)
             {
@@ -646,14 +665,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         private void OnConnection(IAsyncResult ar)
         {
             _logger.LogDebug("ConvAssist Establish connection");
+            var pipeServerState = (PipeServerStateConvAssist)ar.AsyncState;
+            pipeServerState.ExternalCancellationToken.ThrowIfCancellationRequested();
+            pipeServerState.PipeServer.EndWaitForConnection(ar);
             NumClientsConnected++;
             clientConected = true;
-            var pipeServerState = (PipeServerStateConvAssist)ar.AsyncState;
-            if (pipeServerState.ExternalCancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
-            pipeServerState.PipeServer.EndWaitForConnection(ar);
             pipeServerState.PipeServer.BeginRead(pipeServerState.Buffer, 0, PipeServerStateConvAssist.BufferSize, ReadCallback, pipeServerState);
         }
 
@@ -676,14 +692,21 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             clientConected = true;
         }
 
-        private void PipeServer_EvtClientDisconnected()
+        private async Task RestartAsync()
         {
-            _logger.LogDebug("ConvAssist PipeServer_EvtClientDisconnected");
-            EvtClientDisconnected?.Invoke(null, new EventArgs());
-            clientConected = false;
-            clientAnswerParameters = false;
-            ClosePipeServer();
-            CreatePipeServer();
+            try
+            {
+                _logger.LogDebug("ConvAssist PipeServer_EvtClientDisconnected");
+                EvtClientDisconnected?.Invoke(null, new EventArgs());
+                clientConected = false;
+                clientAnswerParameters = false;
+                ClosePipeServer();
+                await CreatePipeServerAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error restarting ConvAssist pipe");
+            }
         }
 
         /// <summary>
@@ -692,14 +715,32 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <param name="ar">
         /// The ar.
         /// </param>
-        private void ReadCallback(IAsyncResult ar)
+        private async void ReadCallback(IAsyncResult ar)
         {
             var pipeState = (PipeServerStateConvAssist)ar.AsyncState;
-            int received = pipeState.PipeServer.EndRead(ar);
+            int received;
+            try
+            {
+                received = pipeState.PipeServer.EndRead(ar);
+            }
+            catch (Exception ex) when (disposed || pipeState.ExternalCancellationToken.IsCancellationRequested)
+            {
+                _logger.LogDebug(ex, "ConvAssist pipe read stopped");
+                return;
+            }
+            catch (IOException ex)
+            {
+                _logger.LogWarning(ex, "ConvAssist client disconnected during read");
+                received = 0;
+            }
             if (received <= 0)
             {
+                if (disposed || pipeState.ExternalCancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
                 NumClientsConnected--;
-                PipeServer_EvtClientDisconnected();
+                await RestartAsync().ConfigureAwait(false);
                 return;
             }
 

@@ -6,6 +6,35 @@ This document records the audit of blocking I/O operations in ACAT as the first 
 of the async/await workstream (Phase 3 – Workstream C). It identifies each blocking call,
 categorises it by priority, and maps it to its async replacement.
 
+## Phase 4: Call-site adoption inventory (#278)
+
+The following inventory was collected **before code changes**, searching `src/**/*.cs`
+for the synchronous APIs listed in the issue and following instance and inherited
+preference calls. Definitions, comments, and tests are not production callers.
+The existing synchronous implementations are compatibility boundaries, not candidates
+for deletion.
+
+| API family | Initial callers / locations | Adoption plan |
+|---|---|---|
+| JSON loader | 10 calls inside `Theme`, `Abbreviations`, `Pronunciations`, `ActuatorConfig`, `PreferredWordPredictors`; 5 in `ConfigurationExamples` | Preserve sync implementations; route startup to the existing async implementations. Examples are not startup paths. |
+| Global/user preferences | `AppCommon.LoadGlobalSettings`, `LoadUserPreferences`, onboarding saves; `ACATPreferences.Load`, `LoadDefaultSettings` | Add async helpers alongside the public sync methods and await from WinForms startup events. |
+| PreferencesBase | Command tables; extension settings wrappers in LaunchApp, Chrome, Edge, Outlook, Explorer, Camera, SAPI, TTSClient, and EEG settings | Preserve synchronous plugin contracts; adopt async where a task-returning load path is available. |
+| Abbreviations / pronunciations | `AbbreviationsManager.Load`, manager initialization and mutation saves; `TTSManager` pronunciation initialization and mutation saves | Async manager initialization; retain immediate-result mutation contracts where necessary. |
+| Actuator configuration | 8 explicit `ActuatorConfig.Load` calls in core (`ActuatorManager`, `Actuators`, switch/keyboard forms), 1 in onboarding; instance saves | Async startup loading; document immediate-result accessors and UI configuration boundaries. |
+| Preferred predictors | `WordPredictors` constructor (`PreferredWordPredictors.Load`) and instance saves | Move I/O out of construction into async initialization. |
+| Themes | 2 `Theme.Create` calls in `ThemeManager` constructor, 1 in `SetActiveTheme`, 2 in `ThemeRepository`; 1 `SetActiveTheme` in `Context` | Async manager startup and repository loads; retain public synchronous compatibility paths. |
+| ConvAssist | `ConvAssistWordPredictor.Init`: 1 pipe creation; 3 request methods call `WriteSync`; `NamedPipeServerConvAssist.Restart`: 1 pipe creation | Use existing async initialization and request methods in task-capable paths; preserve synchronous predictor interface methods. |
+| XML helpers | `PreferencesRepository.Save`: 1 `XmlFileSave`; generic `XmlFileLoad` in synchronous preference/repository helpers | Preserve sync repository methods; use existing async repository overrides in async callers. |
+
+Initialization is order-sensitive: user/profile paths precede preference loading;
+themes precede panels; actuators and agents may construct WinForms controls. Do not
+run the whole initialization sequence on a worker thread. Independent file loads
+may overlap, but UI work must return to the owning STA thread.
+
+Validation baseline in this Linux sandbox: the integration test command stops at
+MSB3644 (missing .NET Framework 4.8.1 reference assemblies), before compilation or
+test execution. Windows validation remains necessary; this is not a test failure.
+
 ---
 
 ## Blocking I/O Audit

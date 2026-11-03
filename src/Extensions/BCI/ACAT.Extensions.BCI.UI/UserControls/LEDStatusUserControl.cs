@@ -14,6 +14,8 @@ using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Common.AnimationSharp.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using System.Drawing;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -30,7 +32,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         {
             InitializeComponent();
             getData = true;
-            _ = UpdateSensorStatus().ConfigureAwait(false);
+            UpdateSensorStatus().Forget(ex => Trace.TraceError(ex.ToString()));
         }
 
         public static void OnFormClossing()
@@ -42,17 +44,22 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         /// Task to update LED indicators of the Cap
         /// </summary>
         /// <returns></returns>
-        public async Task UpdateSensorStatus()
+        public Task UpdateSensorStatus()
         {
-            while (getData)
+            return UpdateSensorStatus(default);
+        }
+
+        public async Task UpdateSensorStatus(CancellationToken cancellationToken)
+        {
+            while (getData && !cancellationToken.IsCancellationRequested)
             {
                 if (AnimationManagerUtils.StatusSignal == SignalStatus.SIGNAL_OK)
                     BT1.BackColor = Color.Green;
                 else
                     BT1.BackColor = Color.Red;
-                await Task.Delay(1000);
+                await Task.Delay(1000, cancellationToken);
             }
-            await Task.Delay(50);
+            await Task.Delay(50, cancellationToken);
         }
     }
 }

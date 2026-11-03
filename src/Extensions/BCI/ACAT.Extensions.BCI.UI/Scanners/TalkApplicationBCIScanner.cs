@@ -41,6 +41,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -301,9 +302,14 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             get { return _scannerCommon.TextController; }
         }
 
-        public async Task BCIRequestCalibrationStatus()
+        public Task BCIRequestCalibrationStatus()
         {
-            await Task.Delay(25);
+            return BCIRequestCalibrationStatus(default);
+        }
+
+        public async Task BCIRequestCalibrationStatus(CancellationToken cancellationToken)
+        {
+            await Task.Delay(25, cancellationToken);
             _bciActuator?.IoctlRequest((int)OpCodes.RequestCalibrationStatus, String.Empty);
         }
 
@@ -311,10 +317,15 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// Task to request initial parameters for BCI
         /// </summary>
         /// <returns></returns>
-        public async Task BCIStartBCIReqParams()
+        public Task BCIStartBCIReqParams()
+        {
+            return BCIStartBCIReqParams(default);
+        }
+
+        public async Task BCIStartBCIReqParams(CancellationToken cancellationToken)
         {
             //STEP - 5
-            await Task.Delay(5);
+            await Task.Delay(5, cancellationToken);
             BCIMode bCIMode = new();
             if (_RequestCalibration)
                 bCIMode.BciMode = BCIModes.CALIBRATION;
@@ -322,17 +333,22 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 bCIMode.BciMode = BCIModes.TYPING;
             bCIMode.BciCalibrationMode = _ScanningSection;
             animationSharpManager.RequestParameters(bCIMode, _CalibrationParameters);
-            await Task.Delay(5);
+            await Task.Delay(5, cancellationToken);
         }
 
         /// <summary>
         /// Task to request to BCI actuator to start BCI
         /// </summary>
         /// <returns></returns>
-        public async Task BCIStartSession()
+        public Task BCIStartSession()
+        {
+            return BCIStartSession(default);
+        }
+
+        public async Task BCIStartSession(CancellationToken cancellationToken)
         {
             //STEP - 7
-            await Task.Delay(25);
+            await Task.Delay(25, cancellationToken);
             switch (_RequestCalibration)
             {
                 case true:
@@ -353,7 +369,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
 
                 default:
             }
-            await Task.Delay(25);
+            await Task.Delay(25, cancellationToken);
         }
 
         /// <summary>
@@ -421,11 +437,16 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// Task in charge to adjust the UI controls to scale and fit corretly
         /// </summary>
         /// <returns></returns>
-        public async Task ControlsUIAdjustment()
+        public Task ControlsUIAdjustment()
         {
-            while (true)//Loop until the Windows controls has shown completely so the heigh and width can be changed with real values
+            return ControlsUIAdjustment(default);
+        }
+
+        public async Task ControlsUIAdjustment(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)//Loop until the Windows controls has shown completely so the heigh and width can be changed with real values
             {
-                await Task.Delay(100);//Since SharpDx transparency Mode did not worked to show the TextBox the UI had to be force to be shaped and assemble to match the UI from The final design version
+                await Task.Delay(100, cancellationToken);//Since SharpDx transparency Mode did not worked to show the TextBox the UI had to be force to be shaped and assemble to match the UI from The final design version
                 if (_formShown)
                 {
                     //This way is to have the UI fully load and the controls are fit into full screen so we can get the latest values and modify them
@@ -435,10 +456,11 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     scannerTableLayoutWordPredictions.Width = (mainPanel.Width / 2);
                     scannerTableLayoutSentences.Height = (unit * 5) - 3;
                     panelTextbox.Width = scannerTableLayoutSentences.Width - 10;
-                    await Task.Delay(50);
+                    await Task.Delay(50, cancellationToken);
                     break;
                 }
             }
+            cancellationToken.ThrowIfCancellationRequested();
             EvtBCIInitState?.Invoke(BCIState.Initializing);
         }
 
@@ -506,7 +528,12 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// Task to Initialize objects used by BCI
         /// </summary>
         /// <returns></returns>
-        public async Task InitializeBCI()
+        public Task InitializeBCI()
+        {
+            return InitializeBCI(default);
+        }
+
+        public async Task InitializeBCI(CancellationToken cancellationToken)
         {
             //STEP - 0
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(scannerPanelWordPredictions, "wordPrediction", "WordPredictionUserControlBCI");
@@ -519,11 +546,11 @@ namespace ACAT.Extensions.BCI.UI.Scanners
 
             List<Widget>[] widgets = SaveUserControlWidgets();
             SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardABCUserControlBCI.getpathConfigFile(), true);
-            await Task.Delay(700);
+            await Task.Delay(700, cancellationToken);
 
             animationSharpManager.DrawMainLayout();
             Windows.SetText(_textBoxTalkWindow, string.Empty);
-            await Task.Delay(25);
+            await Task.Delay(25, cancellationToken);
 
             EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
         }
@@ -746,7 +773,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         if (!_RequestCalibration)//have a delay before start typing so the user can see the options and suggestions and start looking where is desired
                         {
                             _logger?.LogDebug("BCI LOG | Delay before Typing ");//Run the delay in another therad to avoid blocking the UI
-                            _ = ShowTimedMessageBoxAsync().ConfigureAwait(false);
+                            ShowTimedMessageBoxAsync().Forget(ex => _logger?.LogError(ex, "Failed to show timed message"));
                         }
                         else
                         {
@@ -1016,32 +1043,32 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     case BCIState.UIRefresh://1 Init state
                         _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.UIRefresh);
                         _BCIState = BCIState.UIRefresh;
-                        _ = ControlsUIAdjustment().ConfigureAwait(false);
+                        ControlsUIAdjustment().Forget(ex => _logger?.LogError(ex, "Failed to adjust BCI controls"));
                         break;
 
                     case BCIState.Initializing://2 Init state
                         _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.Initializing);
                         _BCIState = BCIState.Initializing;
-                        _ = InitializeBCI().ConfigureAwait(false);
+                        InitializeBCI().Forget(ex => _logger?.LogError(ex, "Failed to initialize BCI"));
                         break;
 
                     case BCIState.ReqCalibrationStatus://3 Init state
                         _BCIState = BCIState.ReqCalibrationStatus;
                         _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.ReqCalibrationStatus);
-                        _ = BCIRequestCalibrationStatus().ConfigureAwait(false);
+                        BCIRequestCalibrationStatus().Forget(ex => _logger?.LogError(ex, "Failed to request BCI calibration status"));
                         break;
 
                     case BCIState.StartBCIReqParams://4 Init state
                         //STEP - 4
                         _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.StartBCIReqParams);
                         _BCIState = BCIState.StartBCIReqParams;
-                        _ = BCIStartBCIReqParams().ConfigureAwait(false);
+                        BCIStartBCIReqParams().Forget(ex => _logger?.LogError(ex, "Failed to request BCI parameters"));
                         break;
 
                     case BCIState.BCIStartSession://5 Init state
                         _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.BCIStartSession);
                         _BCIState = BCIState.BCIStartSession;
-                        _ = BCIStartSession().ConfigureAwait(false);
+                        BCIStartSession().Forget(ex => _logger?.LogError(ex, "Failed to start BCI session"));
                         break;
                 }
             }

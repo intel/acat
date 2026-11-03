@@ -36,24 +36,24 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
                 format = TTSFormat.Text;
             }
 
-            sendHttp(data, format);
+            sendHttpAsync(data, format).Forget(ex => _logger.LogError(ex, "Could not send TTS request over HTTP"));
 
             return true;
         }
 
-        private async void sendHttp(String data, TTSFormat format)
+        private async Task sendHttpAsync(String data, TTSFormat format)
         {
             string Url = "http://localhost:8004";
-            StringContent stringContent = format switch
-            {
-                TTSFormat.Json => new StringContent(data, Encoding.UTF8, "application/json"),
-                TTSFormat.SSML => new StringContent(data, Encoding.UTF8, "application/xml"),
-                _ => new StringContent(data, Encoding.UTF8, "text/plain"),
-            };
             try
             {
+                StringContent stringContent = format switch
+                {
+                    TTSFormat.Json => new StringContent(data, Encoding.UTF8, "application/json"),
+                    TTSFormat.SSML => new StringContent(data, Encoding.UTF8, "application/xml"),
+                    _ => new StringContent(data, Encoding.UTF8, "text/plain"),
+                };
                 using var client = new HttpClient();
-                HttpResponseMessage response = await client.PostAsync(Url, stringContent);
+                using HttpResponseMessage response = await client.PostAsync(Url, stringContent).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

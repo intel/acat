@@ -164,7 +164,9 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                     _switchTested = true;
                     setButtonBackgroundAndText(true, "Switch\nActivated");
 
-                    Task task = Task.Delay(switchActivationDelay).ContinueWith(t => setButtonBackgroundAndText(false));
+                    Task.Delay(switchActivationDelay)
+                        .ContinueWith(t => setButtonBackgroundAndText(false))
+                        .Forget(ex => _logger.LogError(ex, "Failed to update switch test button"));
                 }
                 else
                 {

@@ -16,6 +16,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACATResources;
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static ACAT.Extensions.BCI.Actuators.openBCISensorUI.OpenBCIDeviceTester;
@@ -401,9 +402,14 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         /// <returns></returns>
         /// Run only once per new set of state changes receieved
-        public async Task TaskStartStopDataProcessing(DeviceTestingState state)
+        public Task TaskStartStopDataProcessing(DeviceTestingState state)
         {
-            await Task.Delay(100);
+            return TaskStartStopDataProcessing(state, default);
+        }
+
+        public async Task TaskStartStopDataProcessing(DeviceTestingState state, CancellationToken cancellationToken)
+        {
+            await Task.Delay(100, cancellationToken);
 
             // Start task which processes data for signal status checks
             if (state == DeviceTestingState.BCISignalCheck)

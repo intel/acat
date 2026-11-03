@@ -726,22 +726,29 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Asynchronous task that initializes BCI device testing
         /// </summary>
         /// <returns></returns>
-        public async Task startBCIDeviceTesting(int initialDelaySec = 0)
+        public Task startBCIDeviceTesting(int initialDelaySec = 0)
         {
+            return startBCIDeviceTesting(default, initialDelaySec);
+        }
+
+        public async Task startBCIDeviceTesting(CancellationToken cancellationToken, int initialDelaySec = 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             // Wait until main form fully loaded before starting
-            while (!_FormFullySHown)
+            while (!_FormFullySHown && !cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(500); // 2000, 500, 50, 10
+                await Task.Delay(500, cancellationToken); // 2000, 500, 50, 10
             }
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Extra time to wait before starting testing process
             if (initialDelaySec > 0)
             {
                 DateTime startDatetime = DateTime.UtcNow;
                 double timeElapsed = 0;
-                while (timeElapsed <= initialDelaySec)
+                while (timeElapsed <= initialDelaySec && !cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(50); // 2000, 500, 50, 10
+                    await Task.Delay(50, cancellationToken); // 2000, 500, 50, 10
                     timeElapsed = ((TimeSpan)(DateTime.UtcNow - startDatetime)).TotalSeconds;
                 }
             }
@@ -751,7 +758,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             // Call async function which connects to BCI sensor + starts task that controls TriggerBox flashing and tests optical sensor by request
             if (_Testing_useSensor == true)
             {
-                InitDAQ();
+                InitDAQ(cancellationToken);
             }
         }
 
@@ -819,17 +826,23 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Task to Initialize the DAQ sensor if is already then process skip the init method
         /// </summary>
         /// <returns></returns>
-        public async Task InitDAQ() // Original function
+        public Task InitDAQ()
         {
+            return InitDAQ(default);
+        }
+
+        public async Task InitDAQ(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             _logger.LogDebug("Initializing DAQ");
             _initDAQTaskStopped = false;
 
-            while (!_endTasks)
+            while (!_endTasks && !cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(100); // Original delay
+                await Task.Delay(100, cancellationToken); // Original delay
                 if (_FormFullySHown)
                 {
-                    await Task.Delay(1500); // Original delay
+                    await Task.Delay(1500, cancellationToken); // Original delay
 
                     // Use the DAQ instance instead of static methods
                     BaseDAQ.ExitCodes exitCode = ((DAQ_OpenBCI)_daqInstance).getUsbDongleConnected();

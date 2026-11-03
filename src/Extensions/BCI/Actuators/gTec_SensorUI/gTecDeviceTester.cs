@@ -278,8 +278,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         // Asynchronous task that initializes BCI device testing
         // </summary>
         // <returns></returns>
-        public async Task startBCIDeviceTesting(int initialDelaySec = 0)
+        public Task startBCIDeviceTesting(int initialDelaySec = 0)
         {
+            return startBCIDeviceTesting(default, initialDelaySec);
+        }
+
+        public async Task startBCIDeviceTesting(CancellationToken cancellationToken, int initialDelaySec = 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             _logger.LogDebug("gTecDeviceTester | startBCIDeviceTesting | initialDelaySec: " + initialDelaySec.ToString());
 
             // Extra time to wait before actually starting testing process (a lot of testing functions can return immediately, so this is for user experience)
@@ -287,9 +293,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 DateTime startDatetime = DateTime.UtcNow;
                 double timeElapsed = 0;
-                while (timeElapsed <= initialDelaySec)
+                while (timeElapsed <= initialDelaySec && !cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(50); // 2000, 500, 50, 10
+                    await Task.Delay(50, cancellationToken); // 2000, 500, 50, 10
                     timeElapsed = ((TimeSpan)(DateTime.UtcNow - startDatetime)).TotalSeconds;
                 }
             }
@@ -297,7 +303,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Test gTec bluetooth device connection based on device name in settings (result of test are handled as events)
             if (_Testing_useSensor == true)
             {
-                await gTecBCI.connectionTestAsync();
+                await gTecBCI.connectionTestAsync(cancellationToken);
             }
         }
 

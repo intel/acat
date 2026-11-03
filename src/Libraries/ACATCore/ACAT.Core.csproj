@@ -9,17 +9,21 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="lioncs.ColorSlider" Version="1.0.0" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3" />
+    <PackageReference Include="Serilog" Version="4.3.1" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
-    <PackageReference Include="System.Text.Json" Version="9.0.7" />
+    <PackageReference Include="System.Text.Json" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj" />
@@ -31,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Security" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Web" />
@@ -50,11 +55,16 @@
     <Compile Include="AbbreviationsManagement\Abbreviations.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationTTSEventArgs.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationsManager.cs" />
+    <Compile Include="AbbreviationsManagement\IAbbreviationsManager.cs" />
+    <Compile Include="AbbreviationsManagement\IAbbreviationsManagerFactory.cs" />
     <Compile Include="ActuatorManagement\ActuatorBase.cs" />
     <Compile Include="ActuatorManagement\ActuatorEx.cs" />
     <Compile Include="ActuatorManagement\ActuatorManager.cs" />
     <Compile Include="ActuatorManagement\Actuators.cs" />
     <Compile Include="ActuatorManagement\CalibrationNotifyEventArgs.cs" />
+    <Compile Include="ActuatorManagement\IActuatorManager.cs" />
+    <Compile Include="ActuatorManagement\IActuatorManagerFactory.cs" />
+    <Compile Include="ActuatorManagement\IActuatorFactory.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\SwitchInterfaceActuator.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorSetting.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorConfig.cs" />
@@ -66,6 +76,7 @@
     <Compile Include="ActuatorManagement\BaseActuators\KeyboardHook.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\KeyboardSwitch.cs" />
     <Compile Include="ActuatorManagement\BaseActuators\MouseHook.cs" />
+    <Compile Include="ActuatorManagement\Settings\ActuatorSettingsConverter.cs" />
     <Compile Include="ActuatorManagement\Settings\SwitchSetting.cs" />
     <Compile Include="ActuatorManagement\UI\ActuatorErrorForm.cs">
       <SubType>Form</SubType>
@@ -76,7 +87,7 @@
     <Compile Include="ActuatorManagement\UI\CalibrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ActuatorManagement\UI\CalibrationForm.designer.cs">
+    <Compile Include="ActuatorManagement\UI\CalibrationForm.Designer.cs">
       <DependentUpon>CalibrationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ActuatorManagement\UI\ConfigureSwitchesForm.cs">
@@ -118,6 +129,9 @@
     <Compile Include="AgentManagement\AgentCloseEventArgs.cs" />
     <Compile Include="AgentManagement\AgentContext.cs" />
     <Compile Include="AgentManagement\AgentManager.cs" />
+    <Compile Include="AgentManagement\IAgentManager.cs" />
+    <Compile Include="AgentManagement\IAgentManagerFactory.cs" />
+    <Compile Include="AgentManagement\IAgentFactory.cs" />
     <Compile Include="AgentManagement\AgentProcessInfo.cs" />
     <Compile Include="AgentManagement\Agents\AgentsCache.cs" />
     <Compile Include="AgentManagement\Agents\PreferredAgents.cs" />
@@ -154,6 +168,26 @@
     <Compile Include="AnimationManagement\PlayerStateChangedEventArgs.cs" />
     <Compile Include="AnimationManagement\ResolveWidgetChildrenEventArgs.cs" />
     <Compile Include="AnimationManagement\Variables.cs" />
+    <!-- Animation Engine POC: new composable engine alongside legacy AnimationPlayer -->
+    <Compile Include="AnimationManagement\AnimationEngineEvents.cs" />
+    <Compile Include="AnimationManagement\AnimationService.cs" />
+    <Compile Include="AnimationManagement\AnimationSession.cs" />
+    <Compile Include="AnimationManagement\SystemScanTimer.cs" />
+    <Compile Include="AnimationManagement\TestScanTimer.cs" />
+    <Compile Include="AnimationManagement\Configuration\AnimationConfig.cs" />
+    <Compile Include="AnimationManagement\Configuration\AnimationConfigProvider.cs" />
+    <Compile Include="AnimationManagement\Configuration\XmlAnimationConfigAdapter.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IAnimationConfigProvider.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IAnimationService.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IAnimationSession.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IHighlightRenderer.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IScanModeStrategy.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IScanTimer.cs" />
+    <Compile Include="AnimationManagement\Rendering\HighlightStyle.cs" />
+    <Compile Include="AnimationManagement\Rendering\WinFormsHighlightRenderer.cs" />
+    <Compile Include="AnimationManagement\Strategies\AutoScanStrategy.cs" />
+    <Compile Include="AnimationManagement\Strategies\ManualScanStrategy.cs" />
+    <Compile Include="AnimationManagement\Strategies\StepScanStrategy.cs" />
     <Compile Include="Audit\AuditEvent.cs" />
     <Compile Include="Audit\AuditEventAbbreviation.cs" />
     <Compile Include="Audit\AuditEventActiveWindowChange.cs" />
@@ -175,9 +209,23 @@
     <Compile Include="CommandManagement\CmdScopeMapEntry.cs" />
     <Compile Include="CommandManagement\CmdScopeTable.cs" />
     <Compile Include="CommandManagement\CommandManager.cs" />
+    <Compile Include="CommandManagement\ICommandManager.cs" />
+    <Compile Include="CommandManagement\ICommandManagerFactory.cs" />
+    <Compile Include="Configuration\AbbreviationsJson.cs" />
+    <Compile Include="Configuration\ConfigurationExamples.cs" />
+    <Compile Include="Configuration\ConfigurationReloadService.cs" />
+    <Compile Include="Configuration\ConfigurationVersioning.cs" />
+    <Compile Include="Configuration\EnvironmentConfiguration.cs" />
+    <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\IConfigurationManagerFactory.cs" />
+    <Compile Include="Configuration\JsonSchemaValidator.cs" />
+    <Compile Include="Configuration\PreferredWordPredictorsJson.cs" />
+    <Compile Include="Configuration\PronunciationsJson.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionExtensions.cs" />
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
     <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />
+    <Compile Include="Diagnostics\PanelActivityMonitor.cs" />
     <Compile Include="PanelManagement\PanelConfig\AppPanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelClassConfigMap.cs" />
@@ -240,7 +288,13 @@
       <DependentUpon>WebBrowserForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\ControlExtensions.cs" />
+    <Compile Include="Utility\ExtensionInstantiator.cs" />
     <Compile Include="Utility\HotkeyManager.cs" />
+    <Compile Include="Utility\ConfigurationWatcher.cs" />
+    <Compile Include="Utility\ConfigurationMigration.cs" />
+    <Compile Include="Utility\Migrations\MigrationBase.cs" />
+    <Compile Include="Utility\JsonConfigurationLoader.cs" />
+    <Compile Include="Utility\LogManager.cs" />
     <Compile Include="Utility\TopMostManager.cs" />
     <Compile Include="PreferencesManagement\Attributes\BoolDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\Attributes\DescriptorAttribute.cs" />
@@ -315,6 +369,10 @@
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMap.cs" />
     <Compile Include="PanelManagement\PanelConfig\PanelConfigMapEntry.cs" />
     <Compile Include="PanelManagement\PanelManager.cs" />
+    <Compile Include="PanelManagement\IContext.cs" />
+    <Compile Include="PanelManagement\IPanelManager.cs" />
+    <Compile Include="PanelManagement\IPanelManagerFactory.cs" />
+    <Compile Include="PanelManagement\IScannerFactory.cs" />
     <Compile Include="PanelManagement\Utils\AutoPositionScanner.cs" />
     <Compile Include="PanelManagement\Utils\Fonts.cs" />
     <Compile Include="PanelManagement\Utils\OutlineWindow.cs" />
@@ -326,10 +384,14 @@
     <Compile Include="SpellCheckManagement\PreferredSpellCheckers.cs" />
     <Compile Include="SpellCheckManagement\SpellCheckers.cs" />
     <Compile Include="SpellCheckManagement\SpellCheckManager.cs" />
+    <Compile Include="SpellCheckManagement\ISpellCheckManager.cs" />
+    <Compile Include="SpellCheckManagement\ISpellCheckManagerFactory.cs" />
     <Compile Include="ThemeManagement\ColorScheme.cs" />
     <Compile Include="ThemeManagement\ColorSchemes.cs" />
     <Compile Include="ThemeManagement\Theme.cs" />
     <Compile Include="ThemeManagement\ThemeManager.cs" />
+    <Compile Include="ThemeManagement\IThemeManager.cs" />
+    <Compile Include="ThemeManagement\IThemeManagerFactory.cs" />
     <Compile Include="TTSManagement\Interfaces\ITTSEngine.cs" />
     <Compile Include="TTSManagement\Interfaces\ITTSValue.cs" />
     <Compile Include="TTSManagement\PreferredTTSEngine.cs" />
@@ -340,6 +402,8 @@
     <Compile Include="TTSManagement\TTSEngines.cs" />
     <Compile Include="TTSManagement\NullTTSEngine.cs" />
     <Compile Include="TTSManagement\TTSManager.cs" />
+    <Compile Include="TTSManagement\ITTSManager.cs" />
+    <Compile Include="TTSManagement\ITTSManagerFactory.cs" />
     <Compile Include="TTSManagement\TTSStatusChangedEventArgs.cs" />
     <Compile Include="TTSManagement\TTSValue.cs" />
     <Compile Include="TTSManagement\TTSVoiceChangedEventArgs.cs" />
@@ -353,11 +417,15 @@
     <Compile Include="UserManagement\ProfileManager.cs" />
     <Compile Include="UserManagement\UserManager.cs" />
     <Compile Include="Utility\AppInfo.cs" />
+    <Compile Include="Utility\TypeLoader\ExtensionLoader.cs" />
+    <Compile Include="Utility\TypeLoader\IExtensionLoader.cs" />
     <Compile Include="Utility\TypeLoader\ITypeLoader.cs" />
     <Compile Include="Utility\Disclaimers.cs" />
     <Compile Include="Utility\Attributions.cs" />
     <Compile Include="Utility\AudioController.cs" />
     <Compile Include="Utility\AutomationEventManager.cs" />
+    <Compile Include="Utility\IAutomationEventManager.cs" />
+    <Compile Include="Utility\IAutomationEventManagerFactory.cs" />
     <Compile Include="Utility\BlockingQueue.cs" />
     <Compile Include="PreferencesManagement\Interfaces\IPreferences.cs" />
     <Compile Include="PreferencesManagement\Interfaces\ISupportsPreferences.cs" />
@@ -385,6 +453,10 @@
     <Compile Include="Utility\NamedPipe\PipeClientState.cs" />
     <Compile Include="Utility\NamedPipe\PipeSererState.cs" />
     <Compile Include="Utility\NamedPipe\PipeServer.cs" />
+    <Compile Include="Utility\Diagnostics\MemoryProfiler.cs" />
+    <Compile Include="Utility\Diagnostics\PerformanceBaseline.cs" />
+    <Compile Include="Utility\Diagnostics\PerformanceRegressionDetector.cs" />
+    <Compile Include="Utility\Metrics\RuntimeMetricsCollector.cs" />
     <Compile Include="Utility\PerfMon.cs" />
     <Compile Include="Utility\PerfMonData.cs" />
     <Compile Include="Utility\SystemPreferences.cs" />
@@ -402,7 +474,6 @@
     <Compile Include="Utility\GlobalPreferences.cs" />
     <Compile Include="Utility\ImageUtils.cs" />
     <Compile Include="Utility\KeyStateTracker.cs" />
-    <Compile Include="Utility\Log.cs" />
     <Compile Include="Utility\LoggingConfiguration.cs" />
     <Compile Include="Tests\LoggingConfigurationTest.cs" />
     <Compile Include="Utility\Mouse\MouseUtils.cs" />
@@ -410,6 +481,7 @@
     <Compile Include="PanelManagement\Common\PanelRequestEventArgs.cs" />
     <Compile Include="PreferencesManagement\PreferencesBase.cs" />
     <Compile Include="Utility\RoundedCornerControl.cs" />
+    <Compile Include="Utility\ServiceConfiguration.cs" />
     <Compile Include="Utility\SmartPath.cs" />
     <Compile Include="Utility\SyncLock.cs" />
     <Compile Include="Utility\TextUtils.cs" />
@@ -421,6 +493,9 @@
     <Compile Include="Utility\WindowActivityMonitorInfo.cs" />
     <Compile Include="Utility\Windows.cs" />
     <Compile Include="Utility\EnumWindows.cs" />
+    <Compile Include="Validation\AbbreviationsValidator.cs" />
+    <Compile Include="Validation\PreferredWordPredictorsValidator.cs" />
+    <Compile Include="Validation\PronunciationsValidator.cs" />
     <Compile Include="WidgetManagement\Interfaces\IBoxWidget.cs" />
     <Compile Include="WidgetManagement\Interfaces\IToggleButtonWidget.cs" />
     <Compile Include="WidgetManagement\Interfaces\IButtonWidget.cs" />
@@ -431,7 +506,7 @@
     <Compile Include="WidgetManagement\ScannerButtonControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WidgetManagement\ScannerButtonControl.designer.cs">
+    <Compile Include="WidgetManagement\ScannerButtonControl.Designer.cs">
       <DependentUpon>ScannerButtonControl.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetManagement\ScannerProgressBar.cs">
@@ -463,6 +538,7 @@
     <Compile Include="WidgetManagement\WidgetEventArg.cs" />
     <Compile Include="WidgetManagement\WidgetFinder.cs" />
     <Compile Include="WidgetManagement\WidgetManager.cs" />
+    <Compile Include="WidgetManagement\IWidgetFactory.cs" />
     <Compile Include="Widgets\ACATFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -498,10 +574,54 @@
     <Compile Include="WordPredictorManagement\NullWordPredictor.cs" />
     <Compile Include="WordPredictorManagement\PreferredWordPredictor.cs" />
     <Compile Include="WordPredictorManagement\PreferredWordPredictors.cs" />
+    <Compile Include="WordPredictorManagement\PreferredWordPredictorsConverter.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionManager.cs" />
+    <Compile Include="WordPredictorManagement\IWordPredictionManager.cs" />
+    <Compile Include="WordPredictorManagement\IWordPredictionManagerFactory.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionRequest.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionResponse.cs" />
     <Compile Include="WordPredictorManagement\WordPredictors.cs" />
+    <Compile Include="Configuration\ActuatorSettingsJson.cs" />
+    <Compile Include="Configuration\ThemeJson.cs" />
+    <Compile Include="Configuration\PanelConfigJson.cs" />
+    <Compile Include="Validation\ActuatorSettingsValidator.cs" />
+    <Compile Include="Validation\ThemeValidator.cs" />
+    <Compile Include="Validation\PanelConfigValidator.cs" />
+    <Compile Include="EventManagement\IEvent.cs" />
+    <Compile Include="EventManagement\EventBase.cs" />
+    <Compile Include="EventManagement\IEventBus.cs" />
+    <Compile Include="EventManagement\EventBus.cs" />
+    <Compile Include="EventManagement\ApplicationEvents.cs" />
+    <Compile Include="EventManagement\PanelEvents.cs" />
+    <Compile Include="EventManagement\AgentEvents.cs" />
+    <Compile Include="EventManagement\ActuatorEvents.cs" />
+    <Compile Include="EventManagement\ConfigurationEvents.cs" />
+    <Compile Include="DataAccess\IRepository.cs" />
+    <Compile Include="DataAccess\IAsyncRepository.cs" />
+    <Compile Include="DataAccess\RepositoryBase.cs" />
+    <Compile Include="DataAccess\PreferencesRepository.cs" />
+    <Compile Include="DataAccess\ConfigurationRepository.cs" />
+    <Compile Include="DataAccess\ThemeRepository.cs" />
+    <Compile Include="Patterns\CQRS\ICommand.cs" />
+    <Compile Include="Patterns\CQRS\IQuery.cs" />
+    <Compile Include="Patterns\CQRS\ICommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\IAsyncCommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\IQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\IAsyncQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\PanelCommands.cs" />
+    <Compile Include="Patterns\CQRS\Samples\CreatePanelCommand.cs" />
+    <Compile Include="Patterns\CQRS\Samples\CreatePanelCommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\HandleActuatorSwitchCommand.cs" />
+    <Compile Include="Patterns\CQRS\Samples\HandleActuatorSwitchCommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetConfigurationValueQuery.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetConfigurationValueQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQuery.cs" />
+    <Compile Include="Patterns\CQRS\Samples\GetActiveAgentNameQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\LoadPreferencesQuery.cs" />
+    <Compile Include="Patterns\CQRS\Samples\LoadPreferencesQueryHandler.cs" />
+    <Compile Include="Patterns\CQRS\Samples\SavePreferencesCommand.cs" />
+    <Compile Include="Patterns\CQRS\Samples\SavePreferencesCommandHandler.cs" />
+    <Compile Include="Patterns\CQRS\AgentManagerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ActuatorManagement\UI\ActuatorErrorForm.resx">
@@ -585,4 +705,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+    <ItemGroup>
+      <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
+    </ItemGroup>
 </Project>

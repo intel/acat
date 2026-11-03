@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -14,6 +14,7 @@
 
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -25,6 +26,8 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
                         "Handles Keyboard and Mouse input")]
     public class KeyboardActuator : ActuatorBase
     {
+        private static readonly ILogger<KeyboardActuator> _logger = LogManager.GetLogger<KeyboardActuator>();
+
         /// <summary>
         /// Indicated whetherthis object been disposed
         /// </summary>
@@ -106,7 +109,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
         /// <returns>The keyboard switch object</returns>
         public override IActuatorSwitch CreateSwitch()
         {
-            return new KeyboardSwitch();
+            return new KeyboardSwitch(LogManager.GetLogger<KeyboardSwitch>());
         }
 
         //public override IOnboardingExtension GetOnboardingExtension()
@@ -193,7 +196,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {
@@ -223,21 +226,21 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
         {
             try
             {
-                foreach (var obj in Switches)
+                foreach (IActuatorSwitch obj in Switches)
                 {
                     var keySwitch = obj as KeyboardSwitch;
                     if (keySwitch != null)
                     {
                         if (string.Compare(keySwitch.HotKey, hotKey, true) == 0)
                         {
-                            return new KeyboardSwitch(keySwitch);
+                            return new KeyboardSwitch(keySwitch, LogManager.GetLogger<KeyboardSwitch>());
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
 
             return null;
@@ -257,11 +260,11 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
                 return;
             }
 
-            Log.Debug("Keydown: " + e.KeyCode.ToString());
+            _logger.LogDebug("Keydown: {KeyCode}", e.KeyCode);
 
             // check if this is one of the keys we recognize.  If so, trigger
             // a switch-activated event
-            var actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
+            IActuatorSwitch actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
             if (actuatorSwitch != null)
             {
                 e.Handled = true;
@@ -286,7 +289,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
                     hotKey += "+" + e.KeyCode;
                 }
 
-                Log.Debug("KeyStateTracker.KeyString: " + hotKey);
+                _logger.LogDebug("KeyStateTracker.KeyString: {HotKey}", hotKey);
 
                 // check which switch handles this hotkey and trigger it
                 actuatorSwitch = findActuatorSwitch(hotKey);
@@ -316,7 +319,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -333,11 +336,11 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
             }
 
             var s = string.Format("Keyup{0}.  Alt: {1} Ctrl: {2}", e.KeyCode, e.Alt, e.Control);
-            Log.Debug(s);
+            _logger.LogDebug("{Message}", s);
 
             KeyStateTracker.KeyUp(e.KeyCode);
 
-            var actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
+            IActuatorSwitch actuatorSwitch = findActuatorSwitch(e.KeyCode.ToString());
             if (actuatorSwitch != null)
             {
                 e.Handled = true;

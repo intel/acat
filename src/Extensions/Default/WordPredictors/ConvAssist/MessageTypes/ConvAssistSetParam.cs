@@ -17,17 +17,20 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes
     [Serializable]
     internal class ConvAssistSetParam
     {
-        public ConvAssistParameterType Parameter { get; set; }
-        public string Value { get; set; }
+        public ConvAssistParameterType Parameter { get; set; } = ConvAssistParameterType.None;
+        public string Value { get; set; } = string.Empty;
 
-        // Parameterless constructor for deserialization
+        // Parameterless constructor for deserialization - explicitly initialize all properties
         public ConvAssistSetParam()
-        { }
+        {
+            Parameter = ConvAssistParameterType.None;
+            Value = string.Empty;
+        }
 
         public ConvAssistSetParam(ConvAssistParameterType param, string value)
         {
             Parameter = param;
-            Value = value;
+            Value = value ?? string.Empty;
         }
 
         public ConvAssistSetParam(ConvAssistParameterType param, int value)

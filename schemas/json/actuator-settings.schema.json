@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/schemas/actuator-settings.schema.json",
+  "title": "ACAT Actuator Settings",
+  "description": "Configuration for input devices (switches) in ACAT - keyboard, camera, BCI, external switches",
+  "type": "object",
+  "required": ["actuatorSettings"],
+  "properties": {
+    "actuatorSettings": {
+      "type": "array",
+      "description": "List of actuator configurations",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/actuatorSetting"
+      }
+    }
+  },
+  "definitions": {
+    "actuatorSetting": {
+      "type": "object",
+      "description": "Configuration for a single actuator (input device)",
+      "required": ["name", "id", "enabled"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the actuator (e.g., 'Keyboard', 'Camera', 'BCI', 'External')",
+          "minLength": 1,
+          "examples": ["Keyboard", "Camera", "BCI", "External", "Sample Actuator"]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (GUID) for the actuator. Must be preserved during migration.",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "examples": ["d91a1877-c92b-4d7e-9ab6-f01f30b12df9"]
+        },
+        "description": {
+          "type": "string",
+          "description": "User-friendly description of the actuator. May contain HTML markup for help links.",
+          "default": ""
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the actuator is currently enabled",
+          "default": false
+        },
+        "imageFileName": {
+          "type": "string",
+          "description": "Name of the image file representing the actuator (stored in theme folder)",
+          "default": "",
+          "examples": ["KeyboardSwitch.jpg", "WebcamSwitch.jpg", "BCISwitch.png", "HardwareSwitch.png"]
+        },
+        "switchSettings": {
+          "type": "array",
+          "description": "List of switch configurations for this actuator",
+          "default": [],
+          "items": {
+            "$ref": "#/definitions/switchSetting"
+          }
+        }
+      }
+    },
+    "switchSetting": {
+      "type": "object",
+      "description": "Configuration for a single switch belonging to an actuator",
+      "required": ["name", "enabled"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the switch",
+          "minLength": 1,
+          "examples": ["Trigger", "Cheek Twitch", "Eyebrow Raise", "G1", "G2", "G3"]
+        },
+        "source": {
+          "type": "string",
+          "description": "Switch source identifier (e.g., key combination, gesture code)",
+          "default": "",
+          "examples": ["F12", "Ctrl+Alt+W", "CT", "ER", "G1", "R1"]
+        },
+        "description": {
+          "type": "string",
+          "description": "User-friendly description of the switch",
+          "default": ""
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the switch is enabled",
+          "default": false
+        },
+        "actuate": {
+          "type": "boolean",
+          "description": "Whether the switch should trigger actions. If false, it only logs events.",
+          "default": false
+        },
+        "command": {
+          "type": "string",
+          "description": "Command verb associated with the switch. Use '@Trigger' for selection. May reference variables like @CmdActuatorToggleCalibrationWindow.",
+          "default": "",
+          "examples": ["@Trigger", "@CmdActuatorToggleCalibrationWindow", "@CmdEnterKey"]
+        },
+        "minHoldTime": {
+          "type": "string",
+          "description": "Minimum hold time for the switch. If held for less, activation is ignored. May reference variable '@MinActuationHoldTime'.",
+          "default": "",
+          "examples": ["@MinActuationHoldTime", "100", "200"]
+        },
+        "beepFile": {
+          "type": "string",
+          "description": "Optional audio file to play when switch is activated",
+          "default": "",
+          "examples": ["beep.wav"]
+        }
+      }
+    }
+  }
+}

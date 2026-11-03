@@ -4,6 +4,7 @@
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
 using System.ComponentModel;
 
 namespace ACAT.Extension.UI.UserControls
@@ -15,13 +16,16 @@ namespace ACAT.Extension.UI.UserControls
 
         public override bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
         {
+            // Initialize logger for this user control
+            _logger = LogManager.GetLogger(GetType());
+
             _userControlCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
 
             bool retVal = _userControlCommon.Initialize();
 
             _userControlCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
             retVal = HandleInitialize();
-            
+
             return retVal;
         }
 

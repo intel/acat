@@ -29,7 +29,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         {
             if (DecisionMakerDict != null)
             {
-                foreach (var item in DecisionMakerDict)
+                foreach (KeyValuePair<BCIScanSections, DecisionMaker> item in DecisionMakerDict)
                     item.Value.RestartProbabilities();
             }
             return true;

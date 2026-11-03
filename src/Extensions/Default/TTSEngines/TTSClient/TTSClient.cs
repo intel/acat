@@ -629,7 +629,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not create temp directory for TTSClient. {Exception}", ex);
-                path = ".\\\
+                path = ".\\";
             }
 
             path = path + "\\TTS_" + Guid.NewGuid() + extension;

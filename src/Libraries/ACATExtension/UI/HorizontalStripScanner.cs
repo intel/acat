@@ -41,9 +41,10 @@ namespace ACAT.Extension
         /// <param name="panelClass">The panel class of the contextual menu</param>
         /// <param name="panelTitle">title of the contextual</param>
         /// <param name="logger">Logger instance</param>
-        public HorizontalStripScanner(String panelClass, String panelTitle, ILogger<HorizontalStripScanner> logger)
+        public HorizontalStripScanner(String panelClass, String panelTitle, ILogger<HorizontalStripScanner> logger = null)
             : base(panelClass, panelTitle)
         {
+            _logger = logger ?? LogManager.GetLogger<HorizontalStripScanner>();
             commandDispatcher = new Dispatcher(this);
         }
 

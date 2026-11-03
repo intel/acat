@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -23,6 +23,7 @@ namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviation : IDisposable
     {
+        private static readonly ILogger<Abbreviation> _staticLogger = LogManager.GetLogger<Abbreviation>();
         private readonly ILogger<Abbreviation> _logger;
 
         /// <summary>
@@ -88,14 +89,14 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <returns></returns>
         public static AbbreviationMode Convert(String mode)
         {
-            var retVal = AbbreviationMode.None;
+            AbbreviationMode retVal = AbbreviationMode.None;
             try
             {
                 retVal = (AbbreviationMode)Enum.Parse(typeof(AbbreviationMode), mode);
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Exception converting abbreviation mode");
+                _staticLogger?.LogError(ex, "Exception converting abbreviation mode");
             }
 
             return retVal;

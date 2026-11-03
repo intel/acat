@@ -18,9 +18,7 @@
     <ProjectReference Include="..\AppCommon\AppCommon.csproj" />
   </ItemGroup>
     <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -38,7 +36,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
-    <PackageReference Include="MahApps.Metro" version="2.4.10" />
+    <PackageReference Include="MahApps.Metro" version="2.4.11" />
   </ItemGroup>
+    <ItemGroup>
+      <PackageReference Update="System.Resources.Extensions" Version="10.0.3" />
+    </ItemGroup>
 
 </Project>

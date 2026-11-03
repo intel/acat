@@ -24,6 +24,7 @@ using ACAT.Core.Utility.TypeLoader;
 using ACATResources;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
@@ -227,6 +228,11 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             return true;
         }
 
+        public CameraActuator()
+        {
+            _logger = LoggingConfiguration.CreateLogger<CameraActuator>();
+        }
+
         /// <summary>
         /// Pause the actuator
         /// </summary>
@@ -297,7 +303,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             try
             {
-                Log.Debug("Calling UpdateCalibrationstatus");
+                _logger.LogDebug("Calling UpdateCalibrationstatus");
 
                 if (_autoCalibrateForm != null)
                 {
@@ -305,16 +311,16 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                     _autoCalibrateForm = null;
                 }
 
-                Log.Debug("Calling NotifyStartCalibration");
+                _logger.LogDebug("Calling NotifyStartCalibration");
 
                 Context.AppActuatorManager.NotifyStartCalibration(new CalibrationNotifyEventArgs(true, false));
 
                 if (reason == RequestCalibrationReason.SensorInitiated)
                 {
-                    Log.Debug("Calling new Calibform");
+                    _logger.LogDebug("Calling new Calibform");
                     _autoCalibrateForm = new AutoCalibrateForm(this);
 
-                    Log.Debug("Calling new Calibform show dialog");
+                    _logger.LogDebug("Calling new Calibform show dialog");
 
                     var form = Context.AppPanelManager.GetCurrentForm() as Form;
                     if (form != null)
@@ -328,7 +334,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                     {
                         _autoCalibrateForm.ShowDialog();
                     }
-                    Log.Debug("Returned from Calibform show dialog");
+                    _logger.LogDebug("Returned from Calibform show dialog");
 
                     _autoCalibrateForm = null;
                 }
@@ -342,10 +348,10 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                     }
                 }
 
-                Log.Debug("Calling NotifyEndCalibration");
+                _logger.LogDebug("Calling NotifyEndCalibration");
                 Context.AppActuatorManager.NotifyEndCalibration();
 
-                Log.Debug("Calling OnEndCalibration");
+                _logger.LogDebug("Calling OnEndCalibration");
                 OnEndCalibration();
 
                 if (_cameraActuatorInitInProgress)
@@ -357,7 +363,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -410,7 +416,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 return false;
             }
 
-            var activeCameraList = Cameras.GetCameraNames();
+            IEnumerable<string> activeCameraList = Cameras.GetCameraNames();
 
             return activeCameraList.Any(c => String.Compare(c, camera, false) == 0);
         }
@@ -453,21 +459,21 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         internal void setVisionSettings()
         {
-            Log.Debug("Setting vision parameters...");
+            _logger.LogDebug("Setting vision parameters...");
 
-            Log.Debug("HeadMovementSensitivity: " + CameraActuatorSettings.HeadMovementSensitivity);
+            _logger.LogDebug("HeadMovementSensitivity: {HeadMovementSensitivity}", CameraActuatorSettings.HeadMovementSensitivity);
             setHeadMovementSensitivity(CameraActuatorSettings.HeadMovementSensitivity);
 
-            Log.Debug("CheekTwitchSensitivity: " + CameraActuatorSettings.CheekTwitchSensitivity);
+            _logger.LogDebug("CheekTwitchSensitivity: {CheekTwitchSensitivity}", CameraActuatorSettings.CheekTwitchSensitivity);
             setCheekTwitchSensitivity(CameraActuatorSettings.CheekTwitchSensitivity);
 
-            Log.Debug("EyebrowRaiseSensitivity: " + CameraActuatorSettings.EyebrowRaiseSensitivity);
+            _logger.LogDebug("EyebrowRaiseSensitivity: {EyebrowRaiseSensitivity}", CameraActuatorSettings.EyebrowRaiseSensitivity);
             setEyebrowRaiseSensitivity(CameraActuatorSettings.EyebrowRaiseSensitivity);
 
-            Log.Debug("CheekTwitchHoldTime: " + CameraActuatorSettings.CheekTwitchHoldTime);
+            _logger.LogDebug("CheekTwitchHoldTime: {CheekTwitchHoldTime}", CameraActuatorSettings.CheekTwitchHoldTime);
             setCheekTwitchHoldTime(CameraActuatorSettings.CheekTwitchHoldTime);
 
-            Log.Debug("EyebrowRaiseHoldTime: " + CameraActuatorSettings.EyebrowRaiseHoldTime);
+            _logger.LogDebug("EyebrowRaiseHoldTime: {EyebrowRaiseHoldTime}", CameraActuatorSettings.EyebrowRaiseHoldTime);
             setEyebrowRaiseHoldTime(CameraActuatorSettings.EyebrowRaiseHoldTime);
         }
 
@@ -481,7 +487,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("Dispose");
 
                     if (disposing)
                     {
@@ -562,7 +568,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             var gesture = String.Empty;
 
-            Log.Debug("Received msg: " + text);
+            _logger.LogDebug("Received msg: {Message}", text);
 
             IActuatorSwitch actuatorSwitch = parseActuatorMsgAndGetSwitch(text, ref gesture);
 
@@ -593,27 +599,27 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 {
                     IsCalibrating = true;
 
-                    Log.Debug("Received CALIB_START");
+                    _logger.LogDebug("Received CALIB_START");
 
                     EvtCalibrationStart?.Invoke(this, new EventArgs());
 
                     if (!_cameraActuatorInitInProgress && !_calibrateAndTestInProgress)
                     {
-                        Log.Debug("Calling RequestCalibration");
+                        _logger.LogDebug("Calling RequestCalibration");
                         RequestCalibration(_calibrateAndTestInProgress ?
                                                 RequestCalibrationReason.AppRequested :
                                                 RequestCalibrationReason.SensorInitiated);
-                        Log.Debug("Returned from RequestCalibration");
+                        _logger.LogDebug("Returned from RequestCalibration");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception("Exception " + ex);
+                    _logger.LogError(ex, ex.Message);
                 }
             }
             else if (gesture == "CALIB_END") // end camera calibration
             {
-                Log.Debug("CALIB_END");
+                _logger.LogDebug("CALIB_END");
 
                 IsCalibrating = false;
 
@@ -645,7 +651,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private bool detectAndSetPreferredCamera()
         {
             bool retVal = true;
-            var installedCameras = Cameras.GetCameraNames();
+            IEnumerable<string> installedCameras = Cameras.GetCameraNames();
             PreferredCamera = CameraActuatorSettings.PreferredCamera;
 
             if (!IsCameraInstalled(PreferredCamera))
@@ -674,7 +680,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private bool hasCameraListChanged()
         {
             var listFromSettings = CameraActuatorSettings.CameraList;
-            var activeCameraList = Cameras.GetCameraNames();
+            IEnumerable<string> activeCameraList = Cameras.GetCameraNames();
 
             if (listFromSettings == null || activeCameraList == null)
             {
@@ -708,7 +714,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             _calibrateAndTestInProgress = true;
 
-            _configureActuatorForm = new ConfigureActuatorForm(this);
+            _configureActuatorForm = new ConfigureActuatorForm(this, null);
 
             CameraSensor.showVideoWindow();
 
@@ -785,21 +791,18 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
             catch (SEHException seh)
             {
-                Log.Exception("acatVision threw a SEHException:   " + seh.ToString());
-                Log.Exception(seh);
+                _logger.LogError(seh, "acatVision threw a SEHException");
             }
             catch (AccessViolationException ave)
             {
-                Log.Exception("acatVision threw an AccessViolationException:   " + ave.ToString());
-                Log.Exception(ave);
+                _logger.LogError(ave, "acatVision threw an AccessViolationException");
             }
             catch (Exception ex)
             {
-                Log.Exception("acatVision threw an exception:   " + ex.ToString());
-                Log.Exception(ex);
+                _logger.LogError(ex, "acatVision threw an exception");
             }
 
-            Log.Debug("ACATvision quit");
+            _logger.LogDebug("ACATvision quit");
         }
 
         public bool CalibrationDoneAtleastOnce

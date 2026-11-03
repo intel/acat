@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36105.17
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11429.125
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{A1CD68C8-CE85-4A15-BF82-6154CB6E4A77}"
 EndProject
@@ -134,6 +134,22 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATConfig", "Applications\ACATConfigNext\ACATConfig.csproj", "{489EAED8-55EB-C35C-59B7-6B862E57F816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.AppAgents.WindowsExplorerAgent", "Extensions\Default\AppAgents\WindowsExplorerAgent\ACAT.Extensions.AppAgents.WindowsExplorerAgent.csproj", "{07818F5B-4F27-1E9D-C94F-4D082D234906}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Configuration", "Libraries\ACATCore.Tests.Configuration\ACATCore.Tests.Configuration.csproj", "{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests", "Libraries\ACATCore.Tests\ACATCore.Tests.csproj", "{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATExtension.Tests", "Libraries\ACATExtension.Tests\ACATExtension.Tests.csproj", "{A1B2C3D4-E5F6-7890-ABCD-123456789012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Shared", "Libraries\ACATCore.Tests.Shared\ACATCore.Tests.Shared.csproj", "{85C163C5-C976-480F-A0C2-C56A2D2EC878}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Logging", "Libraries\ACATCore.Tests.Logging\ACATCore.Tests.Logging.csproj", "{2A492CE7-9014-6672-55E5-CC293561CFA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Integration", "Libraries\ACATCore.Tests.Integration\ACATCore.Tests.Integration.csproj", "{55D58F6D-68E0-52D6-5909-E5772FA29551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATCore.Tests.Performance", "Libraries\ACATCore.Tests.Performance\ACATCore.Tests.Performance.csproj", "{FE21501B-006B-6A50-67CE-2F04089E0127}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -434,6 +450,76 @@ Global
 		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release_signed|x64.Build.0 = Release_signed|x64
 		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release|x64.ActiveCfg = Release|x64
 		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release|x64.Build.0 = Release|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug|x64.ActiveCfg = Debug|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Debug|x64.Build.0 = Debug|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release_signed|x64.Build.0 = Release_signed|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release|x64.ActiveCfg = Release|x64
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993}.Release|x64.Build.0 = Release|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.ActiveCfg = Debug|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.Build.0 = Debug|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release_signed|x64.Build.0 = Release_signed|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release|x64.ActiveCfg = Release|x64
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890}.Release|x64.Build.0 = Release|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Debug|x64.Build.0 = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release_signed|x64.Build.0 = Release_signed|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release|x64.ActiveCfg = Release|x64
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012}.Release|x64.Build.0 = Release|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Debug|x64.ActiveCfg = Debug|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Debug|x64.Build.0 = Debug|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Release_signed|x64.Build.0 = Release_signed|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Release|x64.ActiveCfg = Release|x64
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878}.Release|x64.Build.0 = Release|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Debug|x64.ActiveCfg = Debug|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Debug|x64.Build.0 = Debug|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Release_signed|x64.Build.0 = Release_signed|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Release|x64.ActiveCfg = Release|x64
+		{2A492CE7-9014-6672-55E5-CC293561CFA3}.Release|x64.Build.0 = Release|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Debug|x64.ActiveCfg = Debug|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Debug|x64.Build.0 = Debug|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Release_signed|x64.Build.0 = Release_signed|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Release|x64.ActiveCfg = Release|x64
+		{55D58F6D-68E0-52D6-5909-E5772FA29551}.Release|x64.Build.0 = Release|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Debug_signed|x64.ActiveCfg = Debug_signed|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Debug_signed|x64.Build.0 = Debug_signed|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Debug|x64.ActiveCfg = Debug|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Debug|x64.Build.0 = Debug|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Release_signed|x64.ActiveCfg = Release_signed|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Release_signed|x64.Build.0 = Release_signed|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Release|x64.ActiveCfg = Release|x64
+		{FE21501B-006B-6A50-67CE-2F04089E0127}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -481,9 +567,16 @@ Global
 		{A7F35610-4A21-CBD9-229C-8A82A0A975B6} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{489EAED8-55EB-C35C-59B7-6B862E57F816} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{07818F5B-4F27-1E9D-C94F-4D082D234906} = {7E0D614D-B425-44A5-BD39-277AC72EBA0B}
+		{ABC43A09-30B7-93BC-8905-5ACCDCCA9993} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{D1A2B3C4-E5F6-7890-ABCD-EF1234567890} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{A1B2C3D4-E5F6-7890-ABCD-123456789012} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{85C163C5-C976-480F-A0C2-C56A2D2EC878} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{2A492CE7-9014-6672-55E5-CC293561CFA3} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{55D58F6D-68E0-52D6-5909-E5772FA29551} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
+		{FE21501B-006B-6A50-67CE-2F04089E0127} = {B1C7A56F-1DBD-4FF9-B402-B6B89244AED6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
 		RESX_AutoCreateNewLanguageFiles = True
+		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
 	EndGlobalSection
 EndGlobal

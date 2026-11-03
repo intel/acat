@@ -128,8 +128,6 @@ namespace ACAT.Core.PanelManagement.Utils
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
-
                 if (disposing)
                 {
                     // dispose all managed resources.
@@ -156,7 +154,7 @@ namespace ACAT.Core.PanelManagement.Utils
         /// <param name="e">event args</param>
         private void _timer_Tick(object sender, EventArgs e)
         {
-            var nextPosition = Windows.WindowPosition.TopRight;
+            Windows.WindowPosition nextPosition = Windows.WindowPosition.TopRight;
 
             _form.Invoke(new MethodInvoker(delegate
             {
@@ -265,7 +263,7 @@ namespace ACAT.Core.PanelManagement.Utils
         {
             Context.AppActuatorManager.EvtSwitchHook += AppActuatorManager_EvtSwitchHook;
 
-            var actuator = Context.AppActuatorManager.GetActuator(typeof(KeyboardActuator));
+            IActuator actuator = Context.AppActuatorManager.GetActuator(typeof(KeyboardActuator));
             if (actuator is KeyboardActuator)
             {
                 _keyboardActuator = actuator as KeyboardActuator;

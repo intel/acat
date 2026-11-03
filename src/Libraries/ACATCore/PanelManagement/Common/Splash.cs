@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -21,6 +22,8 @@ namespace ACAT.Core.PanelManagement.Common
     /// </summary>
     public class Splash
     {
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(Splash).Name);
+
         /// <summary>
         /// The splash screen form
         /// </summary>
@@ -70,7 +73,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 

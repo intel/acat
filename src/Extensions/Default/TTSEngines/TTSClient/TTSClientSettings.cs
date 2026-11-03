@@ -41,7 +41,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <summary>
         /// Name of the alternate pronunciations file
         /// </summary>
-        public String PronunciationsFile = "TTSPronunciations.xml";
+        public String PronunciationsFile = "TTSPronunciations.json";
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -118,7 +118,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <returns>true on success</returns>
         public static TTSClientSettings Load()
         {
-            var retVal = PreferencesBase.Load<TTSClientSettings>(PreferencesFilePath);
+            TTSClientSettings retVal = PreferencesBase.Load<TTSClientSettings>(PreferencesFilePath);
             if (!File.Exists(PreferencesFilePath))
             {
                 retVal.Save();
@@ -144,7 +144,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<TTSClientSettings>();
+            TTSClientSettings tmp = LoadDefaults<TTSClientSettings>();
             var res = Save(tmp, PreferencesFilePath);
             Load();
 

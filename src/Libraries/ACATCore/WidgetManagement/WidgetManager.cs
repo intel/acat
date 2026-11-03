@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -32,6 +32,7 @@ namespace ACAT.Core.WidgetManagement
     public class WidgetManager : IDisposable
     {
         private readonly ILogger<WidgetManager> _logger;
+        private static readonly ILogger<WidgetManager> _staticLogger = LogManager.GetLogger<WidgetManager>();
 
         /// <summary>
         /// Holds the types of all classes in the executing assembly that
@@ -68,8 +69,8 @@ namespace ACAT.Core.WidgetManagement
         {
             _logger = logger;
 
-            _widgetAttributes = new WidgetAttributes(logger);
-            _layout = new LayoutAttribute(logger);
+            _widgetAttributes = new WidgetAttributes(LogManager.GetLogger<WidgetAttributes>());
+            _layout = new LayoutAttribute(LogManager.GetLogger<LayoutAttribute>());
             _rootWidget = new Widget(control, null);
 
             _logger.LogDebug("control name is {Name}", control.Name);
@@ -130,7 +131,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Could not find widgettype {WidgetTypeName}", widgetTypeName);
+                _staticLogger.LogError(ex, "Could not find widgettype {WidgetTypeName}", widgetTypeName);
             }
 
             return retVal;
@@ -143,6 +144,11 @@ namespace ACAT.Core.WidgetManagement
         /// <returns>Full type name, empty string if invalid</returns>
         public static String GetWidgetTypeFullName(String widgetTypeName)
         {
+            if (_widgetTypeCollection == null)
+            {
+                return String.Empty;
+            }
+
             foreach (String s in _widgetTypeCollection)
             {
                 if (s.EndsWith("." + widgetTypeName, StringComparison.InvariantCultureIgnoreCase))
@@ -265,7 +271,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _staticLogger.LogError(ex, ex.Message);
                 retVal = false;
             }
 
@@ -304,7 +310,7 @@ namespace ACAT.Core.WidgetManagement
                 }
                 else
                 {
-                    Log.Error("Extension directory does not exist: " + extensionDir);
+                    _staticLogger.LogError("Extension directory does not exist: {ExtensionDir}", extensionDir);
                 }
             }
 
@@ -338,19 +344,19 @@ namespace ACAT.Core.WidgetManagement
         {
             try
             {
-                Log.Debug("Found dll " + dllName);
+                _staticLogger.LogDebug("Found dll {DllName}", dllName);
                 loadTypesFromAssembly(Assembly.LoadFile(dllName));
             }
             catch (Exception ex)
             {
-                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
+                _staticLogger.LogError(ex, "Could get types from assembly {DllName}", dllName);
                 if (ex is ReflectionTypeLoadException)
                 {
                     var typeLoadException = (ReflectionTypeLoadException)ex;
-                    var exceptions = typeLoadException.LoaderExceptions;
-                    foreach (var e in exceptions)
+                    Exception[] exceptions = typeLoadException.LoaderExceptions;
+                    foreach (Exception e in exceptions)
                     {
-                        Log.Debug("Loader exception: " + e);
+                        _staticLogger.LogDebug("Loader exception: {Exception}", e);
                     }
                 }
             }
@@ -364,11 +370,16 @@ namespace ACAT.Core.WidgetManagement
         private static void onFileFound(String file)
         {
             String filePath = file.ToLower();
-            _ = Path.GetFileName(filePath);
+            String fileName = Path.GetFileName(filePath);
             String extension = Path.GetExtension(filePath);
             if (String.Compare(extension, ".dll", true) == 0)
             {
-                onDllFound(filePath);
+                // Skip resource assemblies (satellite assemblies for localization)
+                // These are automatically loaded by .NET and should not be loaded directly
+                if (!fileName.EndsWith(".resources.dll", StringComparison.OrdinalIgnoreCase))
+                {
+                    onDllFound(filePath);
+                }
             }
         }
 

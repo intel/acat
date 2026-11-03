@@ -97,7 +97,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
                 Multiselect = false
             };
 
-            var dialogResult = openFileDialog.ShowDialog();
+            DialogResult dialogResult = openFileDialog.ShowDialog();
 
             if (dialogResult == DialogResult.OK)
             {

@@ -127,12 +127,10 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
-
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    foreach (var animations in _animationsTable.Values)
+                    foreach (Animations animations in _animationsTable.Values)
                     {
                         animations.Dispose();
                     }

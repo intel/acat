@@ -104,7 +104,7 @@ namespace ACAT.Core.Utility
 
             if (IsSupportingDpiPerMonitor)
             {
-                var monitorFromPoint = User32Interop.MonitorFromPoint(monitorPoint, 2);
+                IntPtr monitorFromPoint = User32Interop.MonitorFromPoint(monitorPoint, 2);
                 GetDpiForMonitor(monitorFromPoint, DpiType.Effective, out dpiX, out _);
             }
             else

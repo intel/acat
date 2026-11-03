@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,6 +20,7 @@ namespace ACAT.Core.Interpreter
     /// </summary>
     public class Parser
     {
+        private static readonly ILogger<Parser> _logger = LogManager.GetLogger<Parser>();
         /// <summary>
         /// State of parsing
         /// </summary>
@@ -110,7 +112,7 @@ namespace ACAT.Core.Interpreter
             bool retVal = true;
             bool done = false;
             int index;
-            var state = ParseState.Begin;
+            ParseState state = ParseState.Begin;
             var action = new StringBuilder();
             var arguments = new StringBuilder();
 
@@ -159,7 +161,7 @@ namespace ACAT.Core.Interpreter
                         break;
 
                     case ParseState.Invalid:
-                        Log.Error("Parse error at index " + index + ". String: " + parseString);
+                        _logger.LogError("Parse error at index {Index}. String: {ParseString}", index, parseString);
                         retVal = false;
                         done = true;
                         break;
@@ -168,13 +170,13 @@ namespace ACAT.Core.Interpreter
 
             if (!done)
             {
-                Log.Error("Parse error at index " + index + ". String: " + parseString);
+                _logger.LogError("Parse error at index {Index}. String: {ParseString}", index, parseString);
                 retVal = false;
             }
 
             if (retVal && index < parseString.Length)
             {
-                Log.Error("Parse error at index " + index + ". String: " + parseString);
+                _logger.LogError("Parse error at index {Index}. String: {ParseString}", index, parseString);
                 retVal = false;
             }
 

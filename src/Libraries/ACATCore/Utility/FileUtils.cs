@@ -26,7 +26,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class FileUtils
     {
-        private static ILogger<FileUtils> _logger;
+        private static ILogger<FileUtils> _logger => LogManager.GetLogger<FileUtils>();
 
         /// <summary>
         /// Folder under which ACAT extensions are stored
@@ -112,7 +112,7 @@ namespace ACAT.Core.Utility
         public static bool AreMultipleInstancesRunning()
         {
             var processName = Process.GetCurrentProcess().ProcessName;
-            var processes = Process.GetProcesses();
+            Process[] processes = Process.GetProcesses();
 
             int count = processes.Count(process => String.Compare(process.ProcessName, processName, true) == 0);
 
@@ -232,7 +232,7 @@ namespace ACAT.Core.Utility
             bool retVal = true;
             try
             {
-                var fileAttr = File.GetAttributes(source);
+                FileAttributes fileAttr = File.GetAttributes(source);
                 if ((fileAttr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     retVal = CopyDir(source, target, true);
@@ -631,7 +631,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         public static void LogAssemblyInfo(Assembly executingAssembly = null)
         {
-            var assembly = executingAssembly ?? Assembly.GetExecutingAssembly();
+            Assembly assembly = executingAssembly ?? Assembly.GetExecutingAssembly();
 
             // get appname and copyright information
             object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
@@ -728,7 +728,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Exception in RunBatchFile");
                 retVal = false;
             }
 
@@ -760,11 +760,11 @@ namespace ACAT.Core.Utility
         private static void copyDir(string srcDir, string targetDir, bool recursive = true, bool overwrite = false)
         {
             var dir = new DirectoryInfo(srcDir);
-            var dirs = dir.GetDirectories();
+            DirectoryInfo[] dirs = dir.GetDirectories();
 
             if (!dir.Exists)
             {
-                Log.Error("No such directory: " + srcDir);
+                _logger?.LogError("No such directory: {SrcDir}", srcDir);
                 return;
             }
 
@@ -773,8 +773,8 @@ namespace ACAT.Core.Utility
                 Directory.CreateDirectory(targetDir);
             }
 
-            var files = dir.GetFiles();
-            foreach (var file in files)
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
             {
                 var targetFile = Path.Combine(targetDir, file.Name);
 
@@ -794,13 +794,13 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception("Error copying file " + file.FullName + " to " + targetFile + ", exception: " + ex);
+                    _logger?.LogError(ex, "Error copying file {SourceFile} to {TargetFile}", file.FullName, targetFile);
                 }
             }
 
             if (recursive)
             {
-                foreach (var subdir in dirs)
+                foreach (DirectoryInfo subdir in dirs)
                 {
                     CopyDir(subdir.FullName, Path.Combine(targetDir, subdir.Name), recursive, overwrite);
                 }

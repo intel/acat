@@ -19,7 +19,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class ImageUtils
     {
-        private static ILogger<ImageUtils> _logger;
+        private static ILogger<ImageUtils> _logger => LogManager.GetLogger<ImageUtils>();
         /// <summary>
         /// Converts the specified icon into a bitmap
         /// </summary>

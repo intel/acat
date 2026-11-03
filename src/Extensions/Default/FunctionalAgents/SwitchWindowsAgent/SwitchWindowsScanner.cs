@@ -37,6 +37,7 @@ using ACAT.Extension.UI;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.ActuatorManagement.BaseActuators;
+using System.Diagnostics;
 
 namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
 {
@@ -49,7 +50,8 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                             "SwitchWindowsScanner",
                             "Switch Windows Scanner")]
     public partial class SwitchWindowsScanner : GenericScannerForm
-    {        private readonly ILogger<SwitchWindowsScanner> _logger;
+    {
+        private readonly ILogger<SwitchWindowsScanner> _logger;
         /// <summary>
         /// Enables invoking methods and properties in this form
         /// </summary>
@@ -121,6 +123,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         public SwitchWindowsScanner() : base()
         {
+            _logger = LoggingConfiguration.CreateLogger<SwitchWindowsScanner>();
             InitializeComponent();
         }
 
@@ -484,7 +487,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         {
             var processName = FilterByProcessName.Trim();
 
-            var windowList = EnumWindows.Enumerate();
+            List<EnumWindows.WindowInfo> windowList = EnumWindows.Enumerate();
 
             if (!String.IsNullOrEmpty(processName))
             {
@@ -492,7 +495,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
 
                 for (int ii = 0; ii < windowList.Count; ii++)
                 {
-                    var process = WindowActivityMonitor.GetProcessForWindow(windowList[ii].Handle);
+                    Process process = WindowActivityMonitor.GetProcessForWindow(windowList[ii].Handle);
                     if (String.Compare(process.ProcessName, FilterByProcessName, true) == 0)
                     {
                         filteredList.Add(windowList[ii]);
@@ -502,7 +505,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                 windowList = filteredList;
             }
 
-            var sortedList = sortWindowList(windowList, order);
+            List<EnumWindows.WindowInfo> sortedList = sortWindowList(windowList, order);
             if (String.IsNullOrEmpty(processName))
             {
                 IntPtr desktopHWnd = User32Interop.GetDesktopWindow();
@@ -655,7 +658,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                 return;
             }
 
-            foreach (var button in list)
+            foreach (Widget button in list)
             {
                 button.UserData = null;
                 button.SetText(String.Empty);
@@ -826,7 +829,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
 
             PanelCommon.RootWidget.HighlightOff();
 
-            var panel = PanelManager.Instance.GetCurrentPanel();
+            IPanel panel = PanelManager.Instance.GetCurrentPanel();
             if (panel != null)
             {
                 dockToScanner(panel as Form);

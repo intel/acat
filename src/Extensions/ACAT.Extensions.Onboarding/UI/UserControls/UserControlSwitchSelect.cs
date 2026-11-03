@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.Onboarding.UI.UserControls
@@ -70,25 +71,48 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             bool retVal = true;
 
-            var actuators = Context.AppActuatorManager.ActuatorsList;
+            IEnumerable<IActuator> actuators = Context.AppActuatorManager.ActuatorsList;
+
+            _logger.LogDebug($"Initializing UserControlSwitchSelect. Found {actuators.Count()} actuators");
 
             _actuatorConfig = ActuatorConfig.Load();
 
-            foreach (var actuator in actuators)
+            if (_actuatorConfig == null)
             {
-                var actuatorSetting = getAcutatorSetting(actuator.Descriptor.Id);
+                _logger.LogError("ActuatorConfig.Load() returned null");
+                return false;
+            }
+
+            _logger.LogDebug($"ActuatorConfig loaded with {_actuatorConfig.ActuatorSettings.Count} actuator settings");
+
+            foreach (IActuator actuator in actuators)
+            {
+                _logger.LogDebug($"Processing actuator: {actuator.Name} (ID: {actuator.Descriptor.Id})");
+
+                ActuatorSetting actuatorSetting = getAcutatorSetting(actuator.Descriptor.Id);
                 if (actuatorSetting != null)
                 {
+                    _logger.LogDebug($"Found actuator setting for {actuatorSetting.Name}");
                     listBoxActuators.Items.Add(actuatorSetting.Name);
                     _actuatorSettings.Add(actuatorSetting);
                 }
+                else
+                {
+                    _logger.LogWarning($"No actuator setting found for actuator {actuator.Name} (ID: {actuator.Descriptor.Id})");
+                }
             }
+
+            _logger.LogDebug($"Added {listBoxActuators.Items.Count} actuators to listbox");
 
             listBoxActuators.SelectedIndexChanged += ListBoxActuators_SelectedIndexChanged;
 
             if (listBoxActuators.Items.Count > 0)
             {
                 listBoxActuators.SelectedIndex = 0;
+            }
+            else
+            {
+                _logger.LogWarning("No actuators were added to the listbox");
             }
 
             webBrowserDesc.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
@@ -127,8 +151,8 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         private IActuator getActuator(int index)
         {
-            var actuatorSetting = _actuatorSettings[index];
-            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
+            ActuatorSetting actuatorSetting = _actuatorSettings[index];
+            foreach (IActuator actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (actuatorSetting.Id.Equals(actuator.Descriptor.Id))
                 {
@@ -141,7 +165,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         private ActuatorSetting getAcutatorSetting(Guid guid)
         {
-            foreach (var actuatorSetting in _actuatorConfig.ActuatorSettings)
+            foreach (ActuatorSetting actuatorSetting in _actuatorConfig.ActuatorSettings)
             {
                 if (guid.Equals(actuatorSetting.Id))
                 {

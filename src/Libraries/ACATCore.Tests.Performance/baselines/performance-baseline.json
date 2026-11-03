@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-02-20T18:00:00.000Z",
+  "thresholds": {
+    "StartupTime": {
+      "name": "StartupTime",
+      "maxAcceptableValue": 3000,
+      "unit": "ms",
+      "description": "Application must start within 3 seconds"
+    },
+    "UiInputLag": {
+      "name": "UiInputLag",
+      "maxAcceptableValue": 100,
+      "unit": "ms",
+      "description": "UI input response must be \u003c 100 ms"
+    },
+    "PredictionLatency": {
+      "name": "PredictionLatency",
+      "maxAcceptableValue": 500,
+      "unit": "ms",
+      "description": "Word-prediction latency must be \u003c 500 ms"
+    },
+    "PeakWorkingSetMB": {
+      "name": "PeakWorkingSetMB",
+      "maxAcceptableValue": 500,
+      "unit": "MB",
+      "description": "Peak working set must be \u003c 500 MB"
+    },
+    "ManagedHeapMB": {
+      "name": "ManagedHeapMB",
+      "maxAcceptableValue": 200,
+      "unit": "MB",
+      "description": "Managed heap must be \u003c 200 MB"
+    }
+  }
+}

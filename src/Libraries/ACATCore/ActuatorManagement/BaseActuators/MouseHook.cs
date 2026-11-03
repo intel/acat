@@ -163,7 +163,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
         /// <param name="handled">set to true if handled</param>
         private void notifyEvent(MouseWParam wParam, MSLLHOOKSTRUCT mouseHookStruct, ref bool handled)
         {
-            var button = MouseButtons.None;
+            MouseButtons button = MouseButtons.None;
             MouseEventHandler mouseEvent = null;
             int delta = 0;
 

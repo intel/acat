@@ -22,10 +22,8 @@ namespace ACAT.Extension.AppAgents.DialogControlAgent
     /// </summary>
     public class DialogControlAgentBase : GenericAppAgentBase
     {
-        private readonly ILogger<DialogControlAgentBase> _logger;
-
         /// <summary>
-        /// If set to true, the agent will autoswitch the
+        /// If set to true, the agent will auto switch the
         /// scanners depending on which element has focus.
         /// Eg: Alphabet scanner if an edit text window has focus,
         /// the contextual menu if the main document has focus
@@ -37,9 +35,8 @@ namespace ACAT.Extension.AppAgents.DialogControlAgent
         /// </summary>
         private IntPtr _prevHwnd = IntPtr.Zero;
 
-        public DialogControlAgentBase(ILogger<DialogControlAgentBase> logger)
+        public DialogControlAgentBase()
         {
-            _logger = logger;
         }
 
         /// <summary>

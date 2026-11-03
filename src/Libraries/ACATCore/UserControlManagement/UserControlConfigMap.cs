@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace ACAT.Core.UserControlManagement
     /// </summary>
     public class UserControlConfigMap
     {
+        private static readonly ILogger<UserControlConfigMap> _logger = LogManager.GetLogger<UserControlConfigMap>();
+
         private const String DefaultKey = "panelconfigs";
 
         /// <summary>
@@ -70,11 +73,11 @@ namespace ACAT.Core.UserControlManagement
         {
             if (_userControlsCache.ContainsKey(guid))
             {
-                Log.Debug("Form Type " + type.FullName + ", guid " + guid + " is already added");
+                _logger?.LogTrace("Form Type {TypeName} with guid {Guid} is already added", type.FullName, guid);
                 return;
             }
 
-            Log.Debug("Adding form " + type.FullName + ", guid " + guid + " to cache");
+            _logger?.LogTrace("Adding form {TypeName} with guid {Guid} to cache", type.FullName, guid);
             _userControlsCache.Add(guid, type);
 
             updateUserControlTypeReferences(guid, type);
@@ -103,7 +106,7 @@ namespace ACAT.Core.UserControlManagement
         public static String GetConfigFileForUserControl(String name)
         {
             var retVal = String.Empty;
-            var mapEntry = GetUserControlConfigMapEntry(name);
+            UserControlConfigMapEntry mapEntry = GetUserControlConfigMapEntry(name);
             if (mapEntry != null)
             {
                 retVal = mapEntry.ConfigFileName;
@@ -120,7 +123,7 @@ namespace ACAT.Core.UserControlManagement
         /// <returns>config id</returns>
         public static Guid GetConfigIdForConfigName(String configName)
         {
-            foreach (var configMapEntry in _masterUserControlConfigMapTable.Values)
+            foreach (UserControlConfigMapEntry configMapEntry in _masterUserControlConfigMapTable.Values)
             {
                 if (String.Compare(configName, configMapEntry.ConfigName, true) == 0)
                 {
@@ -217,14 +220,17 @@ namespace ACAT.Core.UserControlManagement
             var usercontrolConfigMapFile = Path.Combine(FileUtils.GetPanelConfigDir(), UserControlConfigMapFileName);
             LoadUserControlConfigMap(usercontrolConfigMapFile);
 
+            var configsDir = FileUtils.GetPanelConfigDir();
+            _logger?.LogDebug("Loading resources from {ConfigsDir}", configsDir);
+
             // load the panels from the default culture (which is English)
             var resourcesDir = Path.Combine(FileUtils.GetPanelConfigDir(), "common");
-            Log.Debug("DefaultResourcesDir: " + resourcesDir);
+            _logger?.LogDebug("Default resources directory: {ResourcesDir}", resourcesDir);
             load(resourcesDir, "*.xml");
 
             // Also pick up any overrides for the current culture
             resourcesDir = Path.Combine(FileUtils.GetPanelConfigDir(), CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
-            Log.Debug("DefaultResourcesDir: " + resourcesDir);
+            _logger?.LogDebug("Culture-specific resources directory: {ResourcesDir}", resourcesDir);
             load(resourcesDir, "*.xml");
 
             _ConfigIdMapTable.Add(DefaultKey, _loadUserControlConfigMapTable);
@@ -266,34 +272,34 @@ namespace ACAT.Core.UserControlManagement
         /// </summary>
         internal static void CleanupOrphans()
         {
-            Log.Debug("Cleaning up userControlConfigMap entries...");
+            _logger?.LogDebug("Cleaning up userControlConfigMap entries");
 
             var removeList = new List<UserControlConfigMapEntry>();
-            foreach (var mapEntry in _masterUserControlConfigMapTable.Values)
+            foreach (UserControlConfigMapEntry mapEntry in _masterUserControlConfigMapTable.Values)
             {
-                Log.Debug("Looking up " + mapEntry.ToString());
+                _logger?.LogTrace("Looking up entry: {Entry}", mapEntry.ToString());
                 if (_userControlsCache.ContainsKey(mapEntry.UserControlId))
                 {
                     mapEntry.UserControlType = (Type)_userControlsCache[mapEntry.UserControlId];
                 }
 
-                Log.IsNull("mapEntry.UsercontrolType", mapEntry.UserControlType);
+                _logger?.LogTrace("UserControlType is null: {IsNull}", mapEntry.UserControlType == null);
 
                 var configFilePath = getConfigFilePathFromLocationMap(mapEntry.ConfigFileName);
 
                 if (mapEntry.UserControlType != null && !String.IsNullOrEmpty(configFilePath))
                 {
-                    Log.Debug("Yes. _configFileLocationMap has configfile " + mapEntry.ConfigFileName);
+                    _logger?.LogTrace("Found config file {ConfigFileName} in location map", mapEntry.ConfigFileName);
                     mapEntry.ConfigFileName = configFilePath;
                 }
                 else
                 {
-                    Log.Debug("No. _configFileLocationMap does not have configfile " + mapEntry.ConfigFileName);
+                    _logger?.LogTrace("Config file {ConfigFileName} not found in location map - marking for removal", mapEntry.ConfigFileName);
                     removeList.Add(mapEntry);
                 }
             }
 
-            foreach (var panelConfigMapEntry in removeList)
+            foreach (UserControlConfigMapEntry panelConfigMapEntry in removeList)
             {
                 removeMapEntry(panelConfigMapEntry);
             }
@@ -328,7 +334,7 @@ namespace ACAT.Core.UserControlManagement
         {
             if (typeof(IUserControl).IsAssignableFrom(type))
             {
-                var guid = GetUserControlId(type);
+                Guid guid = GetUserControlId(type);
                 if (guid != Guid.Empty)
                 {
                     AddUserControlToCache(guid, type);
@@ -346,7 +352,7 @@ namespace ACAT.Core.UserControlManagement
         {
             if (_configFileLocationMap.ContainsKey(DefaultKey))
             {
-                var map = _configFileLocationMap[DefaultKey];
+                Dictionary<string, string> map = _configFileLocationMap[DefaultKey];
 
                 if (map.ContainsKey(configFile))
                 {
@@ -373,11 +379,11 @@ namespace ACAT.Core.UserControlManagement
 
             List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
-            foreach (var configId in configIds)
+            foreach (Guid configId in configIds)
             {
                 if (_masterUserControlConfigMapTable.ContainsKey(configId))
                 {
-                    var userControlConfigMapEntry = _masterUserControlConfigMapTable[configId];
+                    UserControlConfigMapEntry userControlConfigMapEntry = _masterUserControlConfigMapTable[configId];
                     if (String.Compare(userControlConfigMapEntry.Name, name, true) == 0)
                     {
                         return userControlConfigMapEntry;
@@ -404,11 +410,11 @@ namespace ACAT.Core.UserControlManagement
 
             List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
-            foreach (var configId in configIds)
+            foreach (Guid configId in configIds)
             {
                 if (_masterUserControlConfigMapTable.ContainsKey(configId))
                 {
-                    var userControlConfigMapEntry = _masterUserControlConfigMapTable[configId];
+                    UserControlConfigMapEntry userControlConfigMapEntry = _masterUserControlConfigMapTable[configId];
                     if (userControlConfigMapEntry.UserControlId == guid)
                     {
                         return userControlConfigMapEntry;
@@ -430,7 +436,7 @@ namespace ACAT.Core.UserControlManagement
             if (Directory.Exists(dir) && !_DLLError)
             {
                 var walker = new DirectoryWalker(dir, wildcard);
-                Log.Debug("Walking dir " + dir);
+                _logger?.LogDebug("Walking directory {Directory}", dir);
                 walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
         }
@@ -447,26 +453,26 @@ namespace ACAT.Core.UserControlManagement
 
             try
             {
-                Log.Debug("Found dll " + dllName);
+                _logger?.LogTrace("Found dll {DllName}", dllName);
 
                 typeLoader.LoadFromAssembly(dllName, false);
 
-                foreach (var type in typeLoader.LoadedTypes.Values)
+                foreach (Type type in typeLoader.LoadedTypes.Values)
                 {
-                    Log.Debug("Found type " + type.FullName);
+                    _logger?.LogTrace("Found type {TypeName}", type.FullName);
                     addUserControlTypeToCache(type);
                 }
             }
 
             catch (BadImageFormatException ex)
             {
-                Log.Exception($"Error loading dll {dllName} Exception: {ex.Message}");
+                _logger?.LogError(ex, "Error loading dll {DllName}", dllName);
                 //_DLLError = true;
             }
 
             catch (Exception ex)
             {
-                Log.Exception($"Error loading dll{dllName} Exception: {ex.Message}");
+                _logger?.LogError(ex, "Error loading dll {DllName}", dllName);
                 _DLLError = true;
             }
         }
@@ -485,7 +491,12 @@ namespace ACAT.Core.UserControlManagement
             String extension = Path.GetExtension(filePath);
             if (String.Compare(extension, ".dll", true) == 0)
             {
-                onDllFound(filePath);
+                // Skip resource assemblies (satellite assemblies for localization)
+                // These are automatically loaded by .NET and should not be loaded directly
+                if (!fileName.EndsWith(".resources.dll", StringComparison.OrdinalIgnoreCase))
+                {
+                    onDllFound(filePath);
+                }
             }
             else if (String.Compare(extension, ".xml", true) == 0)
             {
@@ -509,7 +520,7 @@ namespace ACAT.Core.UserControlManagement
 
                 doc.Load(configFileName);
 
-                var configNodes = doc.SelectNodes("/ACAT/UserControlConfigMapEntries/UserControlConfigMapEntry");
+                XmlNodeList configNodes = doc.SelectNodes("/ACAT/UserControlConfigMapEntries/UserControlConfigMapEntry");
 
                 // load each scheme from the config file
                 foreach (XmlNode node in configNodes)
@@ -523,7 +534,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Error loading user control config map");
             }
         }
 
@@ -538,12 +549,12 @@ namespace ACAT.Core.UserControlManagement
 
             if (_loadConfigFileLocationMap.ContainsKey(fileName))
             {
-                Log.Debug("Updating xmlfile " + fileName + ", fullPath: " + xmlFileName);
+                _logger?.LogTrace("Updating xml file {FileName}, full path: {FullPath}", fileName, xmlFileName);
                 _loadConfigFileLocationMap[fileName] = xmlFileName;
             }
             else
             {
-                Log.Debug("Adding xmlfile " + fileName + ", fullPath: " + xmlFileName);
+                _logger?.LogTrace("Adding xml file {FileName}, full path: {FullPath}", fileName, xmlFileName);
                 _loadConfigFileLocationMap.Add(fileName, xmlFileName);
             }
         }
@@ -569,7 +580,7 @@ namespace ACAT.Core.UserControlManagement
         /// <param name="type">Scanner Type</param>
         private static void updateUserControlTypeReferences(Guid guid, Type type)
         {
-            foreach (var configMapEntry in _masterUserControlConfigMapTable.Values)
+            foreach (UserControlConfigMapEntry configMapEntry in _masterUserControlConfigMapTable.Values)
             {
                 if (configMapEntry.UserControlType == null && configMapEntry.UserControlId.Equals(guid))
                 {

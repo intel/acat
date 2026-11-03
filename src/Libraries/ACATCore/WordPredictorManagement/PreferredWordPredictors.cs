@@ -1,15 +1,20 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.Validation;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ACAT.Core.WordPredictorManagement
@@ -23,6 +28,8 @@ namespace ACAT.Core.WordPredictorManagement
     [Serializable]
     public class PreferredWordPredictors : PreferencesBase
     {
+        private static readonly ILogger<PreferredWordPredictors> _logger = LogManager.GetLogger<PreferredWordPredictors>();
+
         /// <summary>
         /// Path to the file to serialize to
         /// </summary>
@@ -51,13 +58,55 @@ namespace ACAT.Core.WordPredictorManagement
         }
 
         /// <summary>
-        /// Deserializes list of word predictors from the file and
+        /// Deserializes list of word predictors from JSON file and
         /// returns an instance of this class
         /// </summary>
         /// <returns>an object of this class</returns>
         public static PreferredWordPredictors Load()
         {
-            return Load<PreferredWordPredictors>(FilePath);
+            return LoadFromJson(FilePath);
+        }
+
+        /// <summary>
+        /// Loads settings from JSON file with validation
+        /// </summary>
+        /// <param name="filePath">Path to JSON configuration file</param>
+        /// <returns>PreferredWordPredictors object</returns>
+        private static PreferredWordPredictors LoadFromJson(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("PreferredWordPredictors FilePath is null or empty");
+                return LoadDefaults<PreferredWordPredictors>();
+            }
+
+            try
+            {
+                // Use JsonConfigurationLoader with validation
+                var validator = new PreferredWordPredictorsValidator();
+                var loader = new JsonConfigurationLoader<PreferredWordPredictorsJson>(validator, _logger);
+
+                PreferredWordPredictorsJson jsonSettings = loader.Load(filePath, createDefaultOnError: true);
+
+                if (jsonSettings == null)
+                {
+                    _logger.LogWarning("Failed to load JSON settings, using defaults");
+                    return LoadDefaults<PreferredWordPredictors>();
+                }
+
+                // Convert JSON model to legacy model
+                var config = new PreferredWordPredictors();
+                config.WordPredictors = PreferredWordPredictorsConverter.FromJson(jsonSettings);
+
+                _logger.LogInformation("Successfully loaded {Count} preferred word predictor(s) from JSON", config.WordPredictors.Count);
+
+                return config;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading preferred word predictors from JSON: {FilePath}", filePath);
+                return LoadDefaults<PreferredWordPredictors>();
+            }
         }
 
         /// <summary>
@@ -66,38 +115,179 @@ namespace ACAT.Core.WordPredictorManagement
         /// </summary>
         /// <param name="ci">culture</param>
         /// <returns>id, guid.empty if none found</returns>
-        public Guid GetByCulture(CultureInfo ci)
+        public Guid GetByCulture(System.Globalization.CultureInfo ci)
         {
             if (ci == null)
             {
                 return getByLanguage(String.Empty);
             }
 
-            var guid = getByLanguage(ci.TwoLetterISOLanguageName);
+            Guid guid = getByLanguage(ci.TwoLetterISOLanguageName);
             return guid;
         }
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<PreferredWordPredictors>();
-            var res = Save(tmp, FilePath);
+            PreferredWordPredictors tmp = LoadDefaults<PreferredWordPredictors>();
+            var res = SaveToJson(tmp, FilePath);
             Load();
 
             return res;
         }
 
         /// <summary>
-        /// Persists this object to a file
+        /// Persists this object to a JSON file
         /// </summary>
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            if (!String.IsNullOrEmpty(FilePath))
+            return !string.IsNullOrEmpty(FilePath) && SaveToJson(this, FilePath);
+        }
+
+        /// <summary>
+        /// Saves settings to JSON file with validation
+        /// </summary>
+        /// <param name="config">Configuration to save</param>
+        /// <param name="filePath">Path to JSON file</param>
+        /// <returns>True if successful</returns>
+        private static bool SaveToJson(PreferredWordPredictors config, string filePath)
+        {
+            if (config == null)
             {
-                return Save(this, FilePath);
+                _logger.LogError("Cannot save null PreferredWordPredictors");
+                return false;
             }
 
-            return false;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("PreferredWordPredictors FilePath is null or empty");
+                return false;
+            }
+
+            try
+            {
+                // Convert legacy model to JSON model
+                PreferredWordPredictorsJson jsonSettings = PreferredWordPredictorsConverter.ToJson(config.WordPredictors);
+
+                // Use JsonConfigurationLoader with validation
+                var validator = new PreferredWordPredictorsValidator();
+                var loader = new JsonConfigurationLoader<PreferredWordPredictorsJson>(validator, _logger);
+
+                bool success = loader.Save(jsonSettings, filePath);
+
+                if (success)
+                {
+                    _logger.LogInformation("Successfully saved preferred word predictors to JSON: {FilePath}", filePath);
+                }
+                else
+                {
+                    _logger.LogError("Failed to save preferred word predictors to JSON: {FilePath}", filePath);
+                }
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving preferred word predictors to JSON: {FilePath}", filePath);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously loads preferred word predictors from the JSON file.
+        /// Uses <see cref="JsonConfigurationLoader{T}.LoadAsync"/> to avoid
+        /// blocking the calling thread during file I/O.
+        /// </summary>
+        /// <returns>A <see cref="PreferredWordPredictors"/> instance.</returns>
+        public static Task<PreferredWordPredictors> LoadAsync(CancellationToken cancellationToken = default)
+        {
+            return LoadFromJsonAsync(FilePath, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously saves preferred word predictors to the JSON file.
+        /// Uses <see cref="JsonConfigurationLoader{T}.SaveAsync"/> to avoid
+        /// blocking the calling thread during file I/O.
+        /// </summary>
+        /// <returns><c>true</c> on success.</returns>
+        public Task<bool> SaveAsync(CancellationToken cancellationToken = default)
+        {
+            return !string.IsNullOrEmpty(FilePath)
+                ? SaveToJsonAsync(this, FilePath, cancellationToken)
+                : Task.FromResult(false);
+        }
+
+        /// <summary>
+        /// Asynchronously loads settings from a JSON file with validation.
+        /// </summary>
+        private static async Task<PreferredWordPredictors> LoadFromJsonAsync(string filePath, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("PreferredWordPredictors FilePath is null or empty");
+                return LoadDefaults<PreferredWordPredictors>();
+            }
+
+            try
+            {
+                var validator = new PreferredWordPredictorsValidator();
+                var loader = new JsonConfigurationLoader<PreferredWordPredictorsJson>(validator, _logger);
+                PreferredWordPredictorsJson jsonSettings = await loader.LoadAsync(filePath, createDefaultOnError: true, cancellationToken).ConfigureAwait(false);
+
+                if (jsonSettings == null)
+                {
+                    _logger.LogWarning("Failed to load JSON settings, using defaults");
+                    return LoadDefaults<PreferredWordPredictors>();
+                }
+
+                var config = new PreferredWordPredictors();
+                config.WordPredictors = PreferredWordPredictorsConverter.FromJson(jsonSettings);
+                _logger.LogInformation("Successfully loaded {Count} preferred word predictor(s) from JSON", config.WordPredictors.Count);
+                return config;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading preferred word predictors from JSON: {FilePath}", filePath);
+                return LoadDefaults<PreferredWordPredictors>();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously saves settings to a JSON file with validation.
+        /// </summary>
+        private static async Task<bool> SaveToJsonAsync(PreferredWordPredictors config, string filePath, CancellationToken cancellationToken)
+        {
+            if (config == null)
+            {
+                _logger.LogError("Cannot save null PreferredWordPredictors");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                _logger.LogError("PreferredWordPredictors FilePath is null or empty");
+                return false;
+            }
+
+            try
+            {
+                PreferredWordPredictorsJson jsonSettings = PreferredWordPredictorsConverter.ToJson(config.WordPredictors);
+                var validator = new PreferredWordPredictorsValidator();
+                var loader = new JsonConfigurationLoader<PreferredWordPredictorsJson>(validator, _logger);
+                bool success = await loader.SaveAsync(jsonSettings, filePath, cancellationToken).ConfigureAwait(false);
+
+                if (success)
+                    _logger.LogInformation("Successfully saved preferred word predictors to JSON: {FilePath}", filePath);
+                else
+                    _logger.LogError("Failed to save preferred word predictors to JSON: {FilePath}", filePath);
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving preferred word predictors to JSON: {FilePath}", filePath);
+                return false;
+            }
         }
 
         /// <summary>
@@ -109,7 +299,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// <returns></returns>
         public bool SetAsDefault(String language, Guid guid)
         {
-            var preferredWP = WordPredictors.FirstOrDefault(wordPredictor => String.Compare(language, wordPredictor.Language, true) == 0);
+            PreferredWordPredictor preferredWP = WordPredictors.FirstOrDefault(wordPredictor => String.Compare(language, wordPredictor.Language, true) == 0);
             if (preferredWP != null)
             {
                 preferredWP.ID = guid;
@@ -130,7 +320,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// <returns>ID, Guid.empty if none found</returns>
         private Guid getByLanguage(String language)
         {
-            foreach (var preferredWordPredictor in WordPredictors)
+            foreach (PreferredWordPredictor preferredWordPredictor in WordPredictors)
             {
                 if (String.Compare(preferredWordPredictor.Language, language, true) == 0)
                 {

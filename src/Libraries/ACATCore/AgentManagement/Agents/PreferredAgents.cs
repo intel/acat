@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -8,6 +8,7 @@
 
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -36,6 +37,8 @@ namespace ACAT.Core.AgentManagement.Agents
     /// </summary>
     internal class PreferredAgents : IDisposable
     {
+        private readonly ILogger<PreferredAgents> _logger;
+
         /// <summary>
         /// Name of the preferences file
         /// </summary>
@@ -51,7 +54,7 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         public PreferredAgents()
         {
-            Log.Verbose();
+            _logger = LogManager.GetLogger<PreferredAgents>();
             _preferredAgents = new Hashtable();
         }
 
@@ -110,7 +113,7 @@ namespace ACAT.Core.AgentManagement.Agents
         {
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                foreach (var agentProcessInfo in agent.ProcessesSupported)
+                foreach (AgentProcessInfo agentProcessInfo in agent.ProcessesSupported)
                 {
                     if (string.Compare(processName, agentProcessInfo.Name, true) == 0)
                     {
@@ -132,7 +135,7 @@ namespace ACAT.Core.AgentManagement.Agents
             IApplicationAgent nullPathAgent = null;
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                foreach (var processInfo in agent.ProcessesSupported)
+                foreach (AgentProcessInfo processInfo in agent.ProcessesSupported)
                 {
                     if (string.Compare(process.ProcessName, processInfo.Name, true) == 0)
                     {
@@ -193,7 +196,7 @@ namespace ACAT.Core.AgentManagement.Agents
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Exception loading preferred agents");
             }
         }
     }

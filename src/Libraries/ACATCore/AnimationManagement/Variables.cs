@@ -142,7 +142,7 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="value">It's value</param>
         public void Set(String variableName, object value)
         {
-            //Log.Debug("Set variable " + variableName);
+            //_logger.LogDebug("Set variable {VariableName}", variableName);
             if (_list.ContainsKey(variableName))
             {
                 _list[variableName] = value;

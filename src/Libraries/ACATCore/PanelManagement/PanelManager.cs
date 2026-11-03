@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.PanelConfig;
@@ -52,7 +53,7 @@ namespace ACAT.Core.PanelManagement
     /// the parent scanner is 'paused' (hidden). When the scanner is
     /// closed, the parent scanner is 'resumed' (displayed).
     /// </summary>
-    public class PanelManager : IDisposable
+    public class PanelManager : IPanelManager, IDisposable
     {
         /// <summary>
         /// The root directory under ACAT from where the scanners/dialog/menus
@@ -61,14 +62,29 @@ namespace ACAT.Core.PanelManagement
         public static String UiRootDir = "";
 
         /// <summary>
-        /// Singleton instance of PanelManager
+        /// Singleton instance of PanelManager - lazy initialized to get logger from DI container
         /// </summary>
-        private static PanelManager _instance;
+        private static readonly Lazy<PanelManager> _instance = new Lazy<PanelManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<PanelManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<PanelManager>)) as ILogger<PanelManager>
+                ?? LogManager.GetLogger<PanelManager>();
+
+            // Get IEventBus from DI container if available (may be null if not registered)
+            IEventBus eventBus = Context.ServiceProvider?.GetService(typeof(IEventBus)) as IEventBus;
+
+            return new PanelManager(logger, eventBus);
+        });
 
         /// <summary>
         /// Logger instance
         /// </summary>
         private readonly ILogger<PanelManager> _logger;
+
+        /// <summary>
+        /// Event bus for publishing panel lifecycle events (optional, may be null)
+        /// </summary>
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// Represents the stack of panels
@@ -88,9 +104,12 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Initializes an instance of the PanelManager
         /// </summary>
-        public PanelManager(ILogger<PanelManager> logger = null)
+        /// <param name="logger">Logger instance (required)</param>
+        /// <param name="eventBus">Event bus for publishing events (optional)</param>
+        public PanelManager(ILogger<PanelManager> logger, IEventBus eventBus = null)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus; // May be null - event publishing is optional
             Context.AppAgentMgr.EvtPanelRequest += AppAgent_EvtPanelRequest;
             Context.AppAgentMgr.EvtFocusChanged += AppAgent_EvtFocusChanged;
             Context.EvtCultureChanged += Context_EvtCultureChanged;
@@ -160,7 +179,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static PanelManager Instance
         {
-            get { return _instance ??= new PanelManager(); }
+            get { return _instance.Value; }
         }
 
         /// <summary>
@@ -208,7 +227,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="type">the .NET type</param>
         public void AddFormToCache(Type type)
         {
-            var guid = PanelConfigMap.GetFormId(type);
+            Guid guid = PanelConfigMap.GetFormId(type);
             PanelConfigMap.AddFormToCache(guid, type);
         }
 
@@ -220,7 +239,7 @@ namespace ACAT.Core.PanelManagement
         {
             while (_stack.Count > 0)
             {
-                var panelStack = _stack.Pop();
+                PanelStack panelStack = _stack.Pop();
 
                 panelStack.CloseCurrentPanel();
 
@@ -269,7 +288,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_stack.Count > 0)
             {
-                var panelStack = _stack.Pop();
+                PanelStack panelStack = _stack.Pop();
 
                 panelStack.CloseCurrentPanel();
 
@@ -423,7 +442,16 @@ namespace ACAT.Core.PanelManagement
             }
 
             Context.AppActuatorManager.EvtCalibrationStartNotify += AppActuatorManager_EvtCalibrationStartNotify;
-            Context.AppActuatorManager.EvtCalibrationEndNotify += AppActuatorManager_EvtCalibrationEndNotify;
+            if (_eventBus != null)
+            {
+                // Prefer EventBus subscription for CalibrationEnd (new pattern)
+                _eventBus.Subscribe<CalibrationEndEvent>(OnCalibrationEnd);
+            }
+            else
+            {
+                // Fallback to legacy delegate when EventBus is not available
+                Context.AppActuatorManager.EvtCalibrationEndNotify += AppActuatorManager_EvtCalibrationEndNotify;
+            }
             return retVal;
         }
 
@@ -446,7 +474,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_stack.Count > 0)
             {
-                var panelStack = _stack.Peek();
+                PanelStack panelStack = _stack.Peek();
                 panelStack.Pause();
             }
 
@@ -550,7 +578,16 @@ namespace ACAT.Core.PanelManagement
         /// <param name="arg"></param>
         internal void NotifyPanelPreShow(PanelPreShowEventArg arg)
         {
+            // Fire legacy event for backward compatibility
             EvtPanelPreShow?.Invoke(this, arg);
+
+            // Publish to EventBus (gradual migration path)
+            if (_eventBus != null && arg.Panel is IScannerPanel scanner)
+            {
+                var panelClass = scanner.PanelClass ?? arg.Panel.GetType().Name;
+                _eventBus.Publish(new PanelShowEvent(panelClass));
+                _logger?.LogTrace($"Published PanelShowEvent for {panelClass}");
+            }
         }
 
         /// <summary>
@@ -559,6 +596,7 @@ namespace ACAT.Core.PanelManagement
         internal void NotifyQuitApplication()
         {
             EvtAppQuit?.Invoke(_instance, new EventArgs());
+            _eventBus?.Publish(new AppQuitEvent());
         }
 
         /// <summary>
@@ -595,7 +633,7 @@ namespace ACAT.Core.PanelManagement
 
             WindowActivityMonitor.Resume();
 
-            var panelStack = _stack.Peek();
+            PanelStack panelStack = _stack.Peek();
 
             if (panelStack.IsPaused)
             {
@@ -609,6 +647,17 @@ namespace ACAT.Core.PanelManagement
             //WindowActivityMonitor.GetActiveWindowAsync();
         }
 
+        /// <summary>
+        /// EventBus handler for calibration end.
+        /// Replaces the legacy <see cref="AppActuatorManager_EvtCalibrationEndNotify"/> delegate
+        /// subscription when <see cref="IEventBus"/> is available.
+        /// </summary>
+        /// <param name="evt">The calibration end event</param>
+        private void OnCalibrationEnd(CalibrationEndEvent evt)
+        {
+            AppActuatorManager_EvtCalibrationEndNotify(this, EventArgs.Empty);
+        }
+
         private void AppActuatorManager_EvtCalibrationStartNotify(ActuatorManagement.CalibrationNotifyEventArgs args)
         {
             _actuatorCalibrationInProgress = true;
@@ -617,7 +666,7 @@ namespace ACAT.Core.PanelManagement
 
             WindowActivityMonitor.Pause();
 
-            var panelStack = _stack.Peek();
+            PanelStack panelStack = _stack.Peek();
 
             if (!panelStack.IsPaused)
             {
@@ -634,7 +683,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="e"></param>
         private void AppAgent_EvtFocusChanged(object sender, FocusChangedEventArgs e)
         {
-            var panel = getTopOfStack().GetCurrentPanel();
+            IPanel panel = getTopOfStack().GetCurrentPanel();
             if (panel is IScannerPanel)
             {
                 ((IScannerPanel)panel).OnFocusChanged(e.WindowActivityInfo);
@@ -674,7 +723,11 @@ namespace ACAT.Core.PanelManagement
         /// <returns>created object</returns>
         private PanelStack createPanelStack()
         {
-            var panelStack = new PanelStack();
+            // Get logger from DI if available
+            ILogger<PanelStack> stackLogger = Context.ServiceProvider?.GetService(typeof(ILogger<PanelStack>)) as ILogger<PanelStack>
+                ?? LogManager.GetLogger<PanelStack>();
+
+            var panelStack = new PanelStack(stackLogger, _eventBus);
             panelStack.EvtScannerClosed += panelStack_EvtScannerClosed;
             return panelStack;
         }
@@ -740,6 +793,7 @@ namespace ACAT.Core.PanelManagement
             _logger?.LogDebug("Display Resolution changed. Working area is {WorkingArea}", Screen.PrimaryScreen.WorkingArea);
 
             EvtDisplaySettingsChanged?.Invoke(sender, e);
+            _eventBus?.Publish(new DisplaySettingsChangedEvent());
         }
     }
 }

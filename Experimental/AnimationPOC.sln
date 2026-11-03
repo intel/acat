@@ -1,0 +1,33 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationPOC", "AnimationPOC\AnimationPOC.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationPOCDemo", "AnimationPOCDemo\AnimationPOCDemo.csproj", "{B2C3D4E5-F6A7-890B-CDEF-123456789ABC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationPOC.Tests", "AnimationPOC.Tests\AnimationPOC.Tests.csproj", "{C3D4E5F6-A7B8-90CD-EF01-23456789ABCD}"
+EndProject
+
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x64.Build.0 = Debug|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x64.ActiveCfg = Release|x64
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x64.Build.0 = Release|x64
+		{B2C3D4E5-F6A7-890B-CDEF-123456789ABC}.Debug|x64.ActiveCfg = Debug|x64
+		{B2C3D4E5-F6A7-890B-CDEF-123456789ABC}.Debug|x64.Build.0 = Debug|x64
+		{B2C3D4E5-F6A7-890B-CDEF-123456789ABC}.Release|x64.ActiveCfg = Release|x64
+		{B2C3D4E5-F6A7-890B-CDEF-123456789ABC}.Release|x64.Build.0 = Release|x64
+		{C3D4E5F6-A7B8-90CD-EF01-23456789ABCD}.Debug|x64.ActiveCfg = Debug|x64
+		{C3D4E5F6-A7B8-90CD-EF01-23456789ABCD}.Debug|x64.Build.0 = Debug|x64
+		{C3D4E5F6-A7B8-90CD-EF01-23456789ABCD}.Release|x64.ActiveCfg = Release|x64
+		{C3D4E5F6-A7B8-90CD-EF01-23456789ABCD}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+EndGlobal

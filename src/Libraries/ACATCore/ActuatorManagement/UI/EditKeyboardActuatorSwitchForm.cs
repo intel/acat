@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Windows.Forms;
@@ -77,7 +78,7 @@ namespace ACAT.Core.ActuatorManagement.UI
             Hide();
 
             // var switchCommandMapForm = new SwitchCommandMapForm { Title = "Map command to keyboard shortcut" };
-            var switchCommandMapForm = new SwitchCommandMapForm { Title = "Map command to keyboard shortcut" };
+            var switchCommandMapForm = new SwitchCommandMapForm(LogManager.GetLogger<SwitchCommandMapForm>()) { Title = "Map command to keyboard shortcut" };
             switchCommandMapForm.ShowDialog();
 
             Show();

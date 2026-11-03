@@ -71,7 +71,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>A list of predicted words</returns>
         public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
-            _logger.LogDebug("Predict for: {PrevWords} {CurrentWord}", request.PrevWords, request.CurrentWord);
+            _logger?.LogDebug("Predict for: {PrevWords} {CurrentWord}", request.PrevWords, request.CurrentWord);
             StringBuilder preceedingWords = new();
 
             if (request.PredictionType != PredictionTypes.Words)
@@ -95,7 +95,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     var prevWords = request.PrevWords;
                     var currentWord = request.CurrentWord;
 
-                    var pref = (WordPredictor as ISupportsPreferences).GetPreferences();
+                    IPreferences pref = (WordPredictor as ISupportsPreferences).GetPreferences();
 
                     //if ((pref as Settings).UseDefaultEncoding)
                     //{
@@ -109,13 +109,13 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     List<string> result;
                     try
                     {
-                        _logger.LogDebug("ConvAssist Mode: {WordPredictionMode}", request.WordPredictionMode);
+                        _logger?.LogDebug("ConvAssist Mode: {WordPredictionMode}", request.WordPredictionMode);
 
                         string predictedWords = String.Empty;
 
                         predictedWords = WordPredictor.SendMessageConvAssistWordPrediction(preceedingWords.ToString(), request.WordPredictionMode);
 
-                        _logger.LogDebug("ConvAssist Words response: {PredictedWords}", predictedWords);
+                        _logger?.LogDebug("ConvAssist Words response: {PredictedWords}", predictedWords);
 
                         try
                         {
@@ -133,7 +133,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                         PrevWordPredictionResults = result;
                     }
 
-                    _logger.LogDebug("Entered prediction {PrevWords} {CurrentWord}", prevWords, currentWord);
+                    _logger?.LogDebug("Entered prediction {PrevWords} {CurrentWord}", prevWords, currentWord);
 
                     response = new WordPredictionResponse(request, result, true);
                 }
@@ -144,7 +144,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ConvAssist Predict Exception");
+                _logger?.LogError(ex, "ConvAssist Predict Exception");
                 response = new WordPredictionResponse(request, new List<String>(), false);
             }
             finally
@@ -165,7 +165,23 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             StringBuilder resultFullPredictionWords = new();
             WordAndCharacterPredictionResponse answer = new();
             var retVal = new List<string>();
-            answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
+
+            // Check for empty response before deserializing
+            if (string.IsNullOrWhiteSpace(predictions))
+            {
+                return retVal; // Return empty list
+            }
+
+            try
+            {
+                answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
+            }
+            catch (System.Text.Json.JsonException ex)
+            {
+                // Log and return empty list if deserialization fails
+                return retVal;
+            }
+
             List<string> predictWords = new();
             List<string> predictLetters = new();
             int i = 0;
@@ -192,14 +208,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 //Adding all elements into one single string
                 wordsPred = new string[WordsList.Count];
 
-                foreach (var element in WordsList)
+                foreach (KeyValuePair<string, double> element in WordsList)
                 {
                     wordsPred[i] = ConvAssistUtils.CleanText(element.Key, false, false);
                     i += 1;
                 }
                 for (int ii = 0; ii < wordsPred.Length; ii++)
                 {
-                    var pref = (wordPredictor as ISupportsPreferences).GetPreferences();
+                    IPreferences pref = (wordPredictor as ISupportsPreferences).GetPreferences();
 
                     //if (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("en") && (pref as Settings).UseDefaultEncoding)
                     //{
@@ -234,7 +250,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception words)
             {
-                _logger.LogError(words, "ConvAssist Predict Words");
+                _logger?.LogError(words, "ConvAssist Predict Words");
             }
             // Keyword to split between predictions
             retVal.Add("&LETTERS");
@@ -246,7 +262,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 wordPredictor.NotifyNextLetterProbabilities(LetterList, true);
                 i = 0;
                 letterPred = new string[LetterList.Count];
-                foreach (var element in LetterList)
+                foreach (KeyValuePair<string, double> element in LetterList)
                 {
                     letterPred[i] = ConvAssistUtils.CleanText(element.Key, false, false);
                     i += 1;
@@ -262,7 +278,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception letters)
             {
-                _logger.LogError(letters, "ConvAssist Predict letters");
+                _logger?.LogError(letters, "ConvAssist Predict letters");
             }
             return retVal;
         }

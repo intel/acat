@@ -1,10 +1,11 @@
-﻿using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AnimationManagement.Interfaces;
 using ACAT.Core.Interpreter;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Media;
@@ -86,6 +87,8 @@ namespace ACAT.Core.AnimationManagement
 {
     public partial class AnimationManager : IAnimationManager, IDisposable
     {
+        private static readonly ILogger<AnimationManager> _logger = LogManager.GetLogger<AnimationManager>();
+
         /// <summary>
         /// Collection of animations for this panel
         /// </summary>
@@ -381,16 +384,16 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_player != null)
             {
-                Log.Verbose("Before animation player stop");
+                _logger.LogTrace("Before animation player stop");
                 try
                 {
                     _player.Stop();
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex.ToString());
+                    _logger.LogError(ex, ex.Message);
                 }
-                Log.Verbose("After animation player stop");
+                _logger.LogTrace("After animation player stop");
             }
         }
 
@@ -407,7 +410,7 @@ namespace ACAT.Core.AnimationManagement
                 {
                     if (animation != null)
                     {
-                        Log.Verbose("Transition( " + animation.Name + "). _currentPanel: " + _currentPanel.Name);
+                        _logger.LogTrace("Transition( {AnimationName}). _currentPanel: {PanelName}", animation.Name, _currentPanel.Name);
                         _player.Transition(animation);
                     }
                     else
@@ -422,7 +425,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -436,7 +439,7 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("");
 
                 if (disposing)
                 {
@@ -480,10 +483,10 @@ namespace ACAT.Core.AnimationManagement
             if (_player != null)
             {
                 _switchDownAnimation = _player.CurrentAnimation;
-                var widget = _player.HighlightedAnimationWidget;
+                AnimationWidget widget = _player.HighlightedAnimationWidget;
                 if (widget != null)
                 {
-                    Log.Verbose("Highlighted widget: " + widget.UIWidget.Name);
+                    _logger.LogTrace("Highlighted widget: {WidgetName}", widget.UIWidget.Name);
                     _switchDownHighlightedWidget = widget;
                 }
                 else
@@ -542,7 +545,7 @@ namespace ACAT.Core.AnimationManagement
                 var children = new List<Widget>();
                 e.ContainerWidget.Finder.FindAllButtons(children);
 
-                foreach (var widget in children)
+                foreach (Widget widget in children)
                 {
                     widget.EvtMouseClicked -= button_EvtMouseClicked;
                     widget.EvtMouseClicked += button_EvtMouseClicked;
@@ -564,16 +567,16 @@ namespace ACAT.Core.AnimationManagement
                 String widgetName = resolvedArgs[0];
 
                 // get the widget object
-                 var widget = _currentPanel.Finder.FindChild(widgetName);
+                Widget widget = _currentPanel.Finder.FindChild(widgetName);
                 if (widget != null)
                 {
-                    Log.Info("Actuate. widgetname: " + widget.Name + " Text: " + widget.GetText());
+                    _logger.LogInformation("Actuate. widgetname: {WidgetName} Text: {Text}", widget.Name, widget.GetText());
 
                     widget.Actuate();
                 }
                 else
                 {
-                    Log.Warn("Did not actuate.  Could not find widget  " + widgetName);
+                    _logger.LogWarning("Did not actuate.  Could not find widget {WidgetName}", widgetName);
                 }
             }
         }
@@ -623,8 +626,8 @@ namespace ACAT.Core.AnimationManagement
 
             String widgetName = resolvedArgs[0];
 
-            Log.Verbose("_currentPanel " + _currentPanel.Name + " widgetname: " + widgetName);
-            var widget = _currentPanel.Finder.FindChild(widgetName);
+            _logger.LogTrace("_currentPanel {PanelName} widgetname: {WidgetName}", _currentPanel.Name, widgetName);
+            Widget widget = _currentPanel.Finder.FindChild(widgetName);
             if (widget != null)
             {
                 if (onOff)
@@ -672,13 +675,13 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="e">Argument list</param>
         protected void AppInterpreter_EvtTransitionNotify(object sender, InterpreterEventArgs e)
         {
-            Log.Verbose();
+            _logger.LogTrace("");
 
             List<String> resolvedArgs = ResolveArgs(e.Args);
             if (resolvedArgs.Count > 0)
             {
                 String targetAnimation = resolvedArgs[0];
-                Log.Verbose(targetAnimation);
+                _logger.LogTrace("{TargetAnimation}", targetAnimation);
                 //Transition(GetAnimation(targetAnimation));
                 TransitionFromName(targetAnimation);
             }
@@ -702,7 +705,7 @@ namespace ACAT.Core.AnimationManagement
                 return;
             }
 
-            var widget = e.SourceWidget;
+            Widget widget = e.SourceWidget;
 
             SetSelectedWidget(widget);
 
@@ -755,7 +758,7 @@ namespace ACAT.Core.AnimationManagement
         /// <returns>scan mode</returns>
         protected ManualScanModes mapTriggerScanMode(TriggerScanModes triggerScanMode)
         {
-            var scanMode = ManualScanModes.None;
+            ManualScanModes scanMode = ManualScanModes.None;
 
             switch (triggerScanMode)
             {
@@ -834,7 +837,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -851,7 +854,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -918,7 +921,7 @@ namespace ACAT.Core.AnimationManagement
         {
             var list = new List<Widget>();
             rootWidget.Finder.FindAllButtons(list);
-            foreach (var button in list)
+            foreach (Widget button in list)
             {
                 button.EvtMouseClicked += button_EvtMouseClicked;
             }
@@ -946,7 +949,7 @@ namespace ACAT.Core.AnimationManagement
             {
                 var list = new List<Widget>();
                 rootWidget.Finder.FindAllButtons(list);
-                foreach (var button in list)
+                foreach (Widget button in list)
                 {
                     button.EvtMouseClicked -= button_EvtMouseClicked;
                 }
@@ -962,8 +965,8 @@ namespace ACAT.Core.AnimationManagement
         {
             if (EvtPlayerStateChanged != null)
             {
-                var delegates = EvtPlayerStateChanged.GetInvocationList();
-                foreach (var del in delegates)
+                Delegate[] delegates = EvtPlayerStateChanged.GetInvocationList();
+                foreach (Delegate del in delegates)
                 {
                     var playerstateChanged = (PlayerStateChanged)del;
                     playerstateChanged.BeginInvoke(sender, e, null, null);

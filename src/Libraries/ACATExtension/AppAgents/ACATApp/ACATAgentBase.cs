@@ -19,8 +19,6 @@ namespace ACAT.Extension.AppAgents.ACATApp
     /// </summary>
     public class ACATAgentBase : AgentBase
     {
-        private readonly ILogger<ACATAgentBase> _logger;
-
         /// <summary>
         /// Name of the executing assembly
         /// </summary>
@@ -29,9 +27,8 @@ namespace ACAT.Extension.AppAgents.ACATApp
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ACATAgentBase(ILogger<ACATAgentBase> logger)
+        public ACATAgentBase(ILogger<ACATAgentBase> logger) : base(logger)
         {
-            _logger = logger;
             _currentProcessName = Process.GetCurrentProcess().ProcessName.ToLower();
         }
 
@@ -58,8 +55,6 @@ namespace ACAT.Extension.AppAgents.ACATApp
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            _logger.LogTrace();
-
             handled = true;
         }
     }

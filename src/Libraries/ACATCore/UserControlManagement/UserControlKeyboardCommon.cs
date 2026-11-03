@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -12,6 +12,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Core.Widgets;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -19,9 +20,19 @@ namespace ACAT.Core.UserControlManagement
 {
     public class UserControlKeyboardCommon : UserControlCommon
     {
-        public UserControlKeyboardCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel iScannerPanel) :
-            base(userControl, mapEntry, iScannerPanel)
+        private readonly ILogger<UserControlKeyboardCommon> _logger;
+
+        /// <summary>
+        /// Optional callback invoked with the key type ("MultiChar" or "SingleKey") and
+        /// elapsed time in milliseconds each time a key actuation completes.
+        /// Set from the application layer to forward data into PerformanceMonitor.
+        /// </summary>
+        public static Action<string, double> OnKeyActuationLatencyMs;
+
+        public UserControlKeyboardCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel iScannerPanel, ILogger<UserControlKeyboardCommon> logger = null) :
+            base(userControl, mapEntry, iScannerPanel, logger ?? LogManager.GetLogger<UserControlCommon>())
         {
+            _logger = logger;
             TextController = textController;
         }
 
@@ -62,23 +73,21 @@ namespace ACAT.Core.UserControlManagement
             {
                 if (widget.Value.Length > 1)
                 {
-                    CoreGlobals.Stopwatch1.Reset();
-                    CoreGlobals.Stopwatch1.Start();
+                    var sw = System.Diagnostics.Stopwatch.StartNew();
                     Context.AppAgentMgr.TextChangedNotifications.Hold();
                     SendKeys.SendWait(widget.Value + " ");
                     Context.AppAgentMgr.TextChangedNotifications.Release();
-                    CoreGlobals.Stopwatch1.Stop();
-                    Log.Debug("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    sw.Stop();
+                    OnKeyActuationLatencyMs?.Invoke("MultiChar", sw.Elapsed.TotalMilliseconds);
                 }
                 else
                 {
-                    CoreGlobals.Stopwatch1.Reset();
-                    CoreGlobals.Stopwatch1.Start();
+                    var sw = System.Diagnostics.Stopwatch.StartNew();
 
                     actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
 
-                    CoreGlobals.Stopwatch1.Stop();
-                    Log.Debug("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    sw.Stop();
+                    OnKeyActuationLatencyMs?.Invoke("SingleKey", sw.Elapsed.TotalMilliseconds);
                 }
             }
 
@@ -87,7 +96,7 @@ namespace ACAT.Core.UserControlManagement
 
         private void actuateKey(WidgetAttribute widgetAttribute, char value)
         {
-            Log.Debug(value.ToString());
+            _logger?.LogDebug("{Value}", value);
             if (!TextController.HandlePunctuation(widgetAttribute.Modifiers, value))
             {
                 if ((KeyStateTracker.IsShiftOn() || KeyStateTracker.IsCapsLockOn()) &&
@@ -104,7 +113,7 @@ namespace ACAT.Core.UserControlManagement
 
         private void actuateVirtualKey(WidgetAttribute widgetAttribute, String value)
         {
-            Log.Debug("VirtualKey: " + value);
+            _logger?.LogDebug("VirtualKey: {Value}", value);
 
             TextController.HandleVirtualKey(widgetAttribute.Modifiers, value);
         }

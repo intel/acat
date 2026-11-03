@@ -370,3 +370,6 @@ src/WindowsFormsApp1/Properties/Settings.Designer.cs
 src/WindowsFormsApp1/Properties/Settings.settings
 src/keys/acat-dev-signingcert.snk
 src/keys/acat-rel-signingcert.snk
+
+# Local configuration overrides (developer-specific, not for source control)
+*.local.json

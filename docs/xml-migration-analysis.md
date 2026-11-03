@@ -1,6 +1,6 @@
 # XML Configuration Analysis Report
 
-**Date:** 2026-02-05  
+**Date:** 2026-02-10 (Updated)  
 **Ticket:** intel/acat#6  
 **Purpose:** Comprehensive inventory of XML configuration files for JSON migration planning
 
@@ -10,8 +10,8 @@
 
 - **Total XML Files:** 86 configuration files
 - **Distinct Schemas:** 8 major schema types identified
-- **Total File Size:** 644 KB
-- **Estimated Migration Effort:** 80-100 hours (2-3 weeks with AI assistance)
+- **Total File Size:** ~440 KB
+- **Estimated Migration Effort:** 40-60 hours (1-1.5 weeks for 1 developer)
 - **Critical Path:** ActuatorSettings → Panel Configurations → Theme Settings
 
 ### High-Level Findings
@@ -21,6 +21,8 @@
 3. **Theme.xml** is moderately complex with color schemes and styling
 4. **Configuration maps** (PanelConfigMap, UserControlConfigMap) are simple routing tables
 5. **LanguageSettings** and **SpellCheck** are simple data files
+6. Heavy use of DTD entities for templating (fonts, sizes, colors) in panel configurations
+7. Variable references (@MinActuationHoldTime, @CmdEnterKey) must be preserved during migration
 
 ---
 
@@ -978,10 +980,244 @@ Before considering migration complete:
 
 ---
 
+## JSON Schema Examples
+
+### Example: actuator-settings.schema.json
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://acat.intel.com/schemas/actuator-settings.json",
+  "title": "ACAT Actuator Settings",
+  "description": "Configuration for input devices (switches) that control ACAT",
+  "type": "object",
+  "required": ["actuatorSettings"],
+  "properties": {
+    "actuatorSettings": {
+      "type": "array",
+      "description": "List of configured actuators",
+      "items": { "$ref": "#/definitions/actuatorSetting" },
+      "minItems": 1
+    }
+  },
+  "definitions": {
+    "actuatorSetting": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "enabled": { "type": "boolean", "default": false },
+        "imageFileName": { "type": "string" },
+        "switchSettings": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/switchSetting" }
+        }
+      }
+    },
+    "switchSetting": {
+      "type": "object",
+      "required": ["name", "source"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "command": { "type": "string" },
+        "enabled": { "type": "boolean", "default": true },
+        "actuate": { "type": "boolean", "default": true },
+        "beepFile": { "type": ["string", "null"] },
+        "description": { "type": "string" },
+        "minHoldTime": { "type": "string" }
+      }
+    }
+  }
+}
+```
+
+### Example: theme.schema.json
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://acat.intel.com/schemas/theme.json",
+  "title": "ACAT Theme Configuration",
+  "type": "object",
+  "required": ["theme"],
+  "properties": {
+    "theme": {
+      "type": "object",
+      "required": ["colorSchemes"],
+      "properties": {
+        "description": { "type": "string" },
+        "colorSchemes": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/colorScheme" },
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "definitions": {
+    "colorScheme": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["Scanner", "ScannerButton", "Dialog", "Menu", "MenuTitle", 
+                   "Button", "HighContrast", "TalkWindow", "BCIColorCodedRegionDefault"]
+        },
+        "background": { "type": "string", "pattern": "^(#[0-9A-Fa-f]{6}|[A-Za-z]+)$" },
+        "foreground": { "type": "string", "pattern": "^(#[0-9A-Fa-f]{6}|[A-Za-z]+)$" },
+        "highlightBackground": { "type": "string" },
+        "highlightForeground": { "type": "string" },
+        "highlightSelectedBackground": { "type": "string" },
+        "highlightSelectedForeground": { "type": "string" },
+        "backgroundImage": { "type": "string" },
+        "highlightBackgroundImage": { "type": "string" }
+      }
+    }
+  }
+}
+```
+
+---
+
+## Example Migration Output
+
+### Before: ActuatorSettings.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<ActuatorConfig>
+  <ActuatorSettings>
+    <ActuatorSetting>
+      <Enabled>true</Enabled>
+      <Id>d91a1877-c92b-4d7e-9ab6-f01f30b12df9</Id>
+      <Name>Keyboard</Name>
+      <SwitchSettings>
+        <SwitchSetting>
+          <Command>@Trigger</Command>
+          <Name>Trigger</Name>
+          <Source>F12</Source>
+        </SwitchSetting>
+      </SwitchSettings>
+    </ActuatorSetting>
+  </ActuatorSettings>
+</ActuatorConfig>
+```
+
+### After: actuator-settings.json
+```json
+{
+  "$schema": "https://acat.intel.com/schemas/actuator-settings.json",
+  "actuatorSettings": [
+    {
+      "enabled": true,
+      "id": "d91a1877-c92b-4d7e-9ab6-f01f30b12df9",
+      "name": "Keyboard",
+      "switchSettings": [
+        {
+          "command": "@Trigger",
+          "name": "Trigger",
+          "source": "F12"
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## Additional POCO Classes
+
+### SpellCheck.cs
+
+```csharp
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace ACAT.Lib.Core.SpellCheckManagement
+{
+    public class SpellCheckConfig
+    {
+        [JsonPropertyName("spellings")]
+        [Required]
+        public List<SpellingRule> Spellings { get; set; } = new();
+        
+        public static SpellCheckConfig CreateDefault()
+        {
+            return new SpellCheckConfig
+            {
+                Spellings = new List<SpellingRule>
+                {
+                    new SpellingRule { Word = "i", ReplaceWith = "I" },
+                    new SpellingRule { Word = "cant", ReplaceWith = "can't" },
+                    new SpellingRule { Word = "dont", ReplaceWith = "don't" }
+                }
+            };
+        }
+    }
+
+    public class SpellingRule
+    {
+        [JsonPropertyName("word")]
+        [Required]
+        public string Word { get; set; }
+
+        [JsonPropertyName("replaceWith")]
+        [Required]
+        public string ReplaceWith { get; set; }
+    }
+}
+```
+
+### LanguageSettings.cs
+
+```csharp
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace ACAT.Lib.Core.Utility
+{
+    public class LanguageSettings
+    {
+        [JsonPropertyName("deletePrecedingSpacesChars")]
+        [Required]
+        public string DeletePrecedingSpacesChars { get; set; }
+
+        [JsonPropertyName("insertSpaceAfterChars")]
+        [Required]
+        public string InsertSpaceAfterChars { get; set; }
+
+        [JsonPropertyName("sentenceTerminatorChars")]
+        [Required]
+        public string SentenceTerminatorChars { get; set; }
+        
+        [JsonPropertyName("terminatorChars")]
+        public string TerminatorChars { get; set; }
+        
+        public static LanguageSettings CreateSpanishDefault()
+        {
+            return new LanguageSettings
+            {
+                DeletePrecedingSpacesChars = ".? !,:;@})]",
+                InsertSpaceAfterChars = ".?!,:;})]",
+                SentenceTerminatorChars = "¿¡?!.",
+                TerminatorChars = "¿¡.? !,:;"
+            };
+        }
+    }
+}
+```
+
+---
+
 ## Next Steps
 
 1. **Review this report** with team - validate findings
-2. **Create Ticket #7** - Generate JSON schemas and validators
+2. **Proceed to Ticket #7** - Generate JSON schemas and POCOs
 3. **Create Ticket #8** - Build migration tool
 4. **Create Ticket #9** - Update ACAT configuration loaders
 5. **Begin Phase 1 migration** following priority order
@@ -989,6 +1225,30 @@ Before considering migration complete:
 
 ---
 
-**Report Generated:** 2026-02-05  
+## Conclusion
+
+This comprehensive analysis has successfully:
+- ✅ Inventoried all 86 XML configuration files
+- ✅ Identified 8 distinct schema types
+- ✅ Documented structure and complexity for each schema
+- ✅ Generated POCO classes for top 5 schemas
+- ✅ Created migration priority list (P1, P2, P3)
+- ✅ Assessed risks and special handling requirements
+- ✅ Provided JSON schema examples
+- ✅ Estimated migration effort: 40-60 hours
+
+The migration is feasible with a phased approach. Priority 1 configurations (ActuatorSettings, Theme, maps) can be migrated first to validate the approach, followed by the more complex panel configurations in Phase 2.
+
+**Key Success Factors:**
+- Strong typing with POCO classes and JSON Schema validation
+- Automated migration tool to reduce errors
+- Comprehensive testing to ensure no data loss
+- Preserve GUIDs and variable references exactly
+- Handle DTD entities through XML preprocessing
+
+---
+
+**Report Generated:** 2026-02-10 (Updated)  
 **Author:** GitHub Copilot  
-**Ticket:** intel/acat#6
+**Ticket:** intel/acat#6  
+**Status:** ✅ Complete - Ready for Review

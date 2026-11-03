@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -23,13 +23,17 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public abstract class GenericAppAgentBase : AgentBase
     {
+        protected GenericAppAgentBase(ILogger<AgentBase> logger = null) : base(logger ?? LogManager.GetLogger<AgentBase>())
+        {
+        }
+
         /// <summary>
         /// Gets or sets the text control agent object
         /// </summary>
         protected TextControlAgentBase appTextInterface { get; set; }
 
         /// <summary>
-        /// Implement this to display a contexutal menu for
+        /// Implement this to display a contextual menu for
         /// the currently active process
         /// </summary>
         /// <param name="monitorInfo">Info  about the active process/window</param>
@@ -136,7 +140,7 @@ namespace ACAT.Core.AgentManagement
         {
             bool handled = false;
             _logger.LogDebug("base.createEditControlTextInterface()");
-            var textInterface = createEditControlTextInterface(handleMain, focusedElement, ref handled);
+            TextControlAgentBase textInterface = createEditControlTextInterface(handleMain, focusedElement, ref handled);
             if (handled)
             {
                 return textInterface;
@@ -155,8 +159,8 @@ namespace ACAT.Core.AgentManagement
         private void disposeAndCreateTextInterface(WindowActivityMonitorInfo monitorInfo)
         {
             disposeTextInterface();
-            Log.Debug("Calling createEditControlTextInterface");
-            var textInterface = createEditControlTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement) ??
+            _logger.LogDebug("Calling createEditControlTextInterface");
+            TextControlAgentBase textInterface = createEditControlTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement) ??
                                 createKeyLoggerTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement);
 
             appTextInterface = textInterface;

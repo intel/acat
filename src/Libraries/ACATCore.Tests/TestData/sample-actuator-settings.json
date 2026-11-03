@@ -1,0 +1,20 @@
+{
+  "actuatorSettings": [
+    {
+      "name": "Keyboard",
+      "id": "00000000-0000-0000-0000-000000000000",
+      "description": "Standard keyboard actuator for switch input",
+      "enabled": true,
+      "switches": [
+        {
+          "switchName": "Switch1",
+          "command": "Select"
+        },
+        {
+          "switchName": "Switch2",
+          "command": "NextGroup"
+        }
+      ]
+    }
+  ]
+}

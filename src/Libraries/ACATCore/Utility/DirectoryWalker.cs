@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -7,6 +7,7 @@
 
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -64,7 +65,7 @@ namespace ACAT.Core.Utility
         
         public DirectoryWalker(String rootDir, String fileWildCard, ILogger<DirectoryWalker> logger = null)
         {
-            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<DirectoryWalker>();
+            _logger = logger ?? LogManager.GetLogger<DirectoryWalker>();
             _rootDir = rootDir;
             _wildCard = fileWildCard;
         }
@@ -83,7 +84,7 @@ namespace ACAT.Core.Utility
         {
             try
             {
-                var dllFiles = Directory.EnumerateFiles(_rootDir, _wildCard, SearchOption.AllDirectories);
+                IEnumerable<string> dllFiles = Directory.EnumerateFiles(_rootDir, _wildCard, SearchOption.AllDirectories);
 
                 foreach (var file in dllFiles)
                 {

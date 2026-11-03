@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -81,9 +81,9 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
         public CheckBoxWidget(Control uiControl, ILogger<CheckBoxWidget> logger = null)
-            : base(uiControl)
+            : base(uiControl, logger ?? LogManager.GetLogger<LabelWidget>())
         {
-            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<CheckBoxWidget>();
+            _logger = logger ?? LogManager.GetLogger<CheckBoxWidget>();
             EvtActuated += CheckBoxWidget_EvtActuated;
             SetToggleState(_toggleState);
         }

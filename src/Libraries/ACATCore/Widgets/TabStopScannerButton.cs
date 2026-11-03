@@ -170,7 +170,7 @@ namespace ACAT.Core.Widgets
 
                 e.Graphics.DrawString(GetText(), UIControl.Font, solidBrush, rect, stringFormat);
 
-                var pen = Pens.Transparent;
+                Pen pen = Pens.Transparent;
                 e.Graphics.DrawRectangle(pen, rect);
             }
             catch (Exception ex)

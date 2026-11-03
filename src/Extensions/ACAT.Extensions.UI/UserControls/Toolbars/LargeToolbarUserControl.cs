@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.UI.UserControls;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,6 +56,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
         }
         public LargeToolbarUserControl(string name)
         {
+            _logger = LoggingConfiguration.CreateLogger<LargeToolbarUserControl>();
             Name = name;
             InitializeButtonsList();
             InitializeComponent();
@@ -68,7 +70,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             var defaultSize = new Size((int)(80 * scaleFactor), (int)(80 * scaleFactor));
 
             // Create buttons with specific properties
-            foreach (var (button, index) in Buttons.Select((p, i) => (p, i)))
+            foreach ((ButtonSpec button, int index) in Buttons.Select((p, i) => (p, i)))
             {
                 var scannerButton = new ScannerRoundedButtonControl
                 {
@@ -154,7 +156,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Log.Debug($"{e.Graphics.DpiX} x {e.Graphics.DpiY}");
+            _logger.LogDebug("{DpiX} x {DpiY}", e.Graphics.DpiX, e.Graphics.DpiY);
 
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             base.OnPaint(e);

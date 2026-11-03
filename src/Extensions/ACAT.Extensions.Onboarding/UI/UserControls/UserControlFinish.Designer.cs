@@ -49,7 +49,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(2040, 1594);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1024, 669);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // labelStartingACAT
@@ -58,25 +58,25 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelStartingACAT.AutoSize = true;
-            this.labelStartingACAT.Font = new System.Drawing.Font("Montserrat Black", 36F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStartingACAT.Font = new System.Drawing.Font("Montserrat Black", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelStartingACAT.ForeColor = System.Drawing.Color.White;
-            this.labelStartingACAT.Location = new System.Drawing.Point(6, 0);
-            this.labelStartingACAT.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelStartingACAT.Location = new System.Drawing.Point(3, 0);
+            this.labelStartingACAT.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.labelStartingACAT.Name = "labelStartingACAT";
-            this.labelStartingACAT.Size = new System.Drawing.Size(2028, 1594);
+            this.labelStartingACAT.Size = new System.Drawing.Size(1018, 669);
             this.labelStartingACAT.TabIndex = 1;
             this.labelStartingACAT.Text = "Starting ACAT....";
             this.labelStartingACAT.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // UserControlFinish
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(3);
             this.Name = "UserControlFinish";
-            this.Size = new System.Drawing.Size(2040, 1594);
+            this.Size = new System.Drawing.Size(1024, 669);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

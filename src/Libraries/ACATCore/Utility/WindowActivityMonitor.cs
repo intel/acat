@@ -46,6 +46,8 @@ namespace ACAT.Core.Utility
                 _form = new Form { Visible = false };
                 _form.Show();
                 _form.Visible = false;
+                // Force handle creation to ensure Invoke/BeginInvoke can be called
+                IntPtr handle = _form.Handle;
             }
 
             if (_forgroundHook == IntPtr.Zero)
@@ -76,12 +78,21 @@ namespace ACAT.Core.Utility
 
             if (_heartbeatTimer == null)
             {
-                _form.Invoke(new MethodInvoker(() =>
+                if (_form.InvokeRequired && _form.IsHandleCreated)
+                {
+                    _form.Invoke(new MethodInvoker(() =>
+                    {
+                        _heartbeatTimer = new Timer { Interval = HeartbeatInterval };
+                        _heartbeatTimer.Tick += HeartbeatTick;
+                        _heartbeatTimer.Start();
+                    }));
+                }
+                else
                 {
                     _heartbeatTimer = new Timer { Interval = HeartbeatInterval };
                     _heartbeatTimer.Tick += HeartbeatTick;
                     _heartbeatTimer.Start();
-                }));
+                }
             }
 
             Automation.AddAutomationFocusChangedEventHandler(OnAutomationFocusChanged);
@@ -92,7 +103,7 @@ namespace ACAT.Core.Utility
         {
             if (_isPaused) return;
             // Get the current foreground window and focused element
-            var info = GetForegroundWindowInfo();
+            WindowActivityMonitorInfo info = GetForegroundWindowInfo();
             if (info != null)
             {
                 HandleFocusOrWindowChange(info);
@@ -144,7 +155,7 @@ namespace ACAT.Core.Utility
 
             if(_currentHwnd != IntPtr.Zero)
             {
-                var info = GetForegroundWindowInfo();
+                WindowActivityMonitorInfo info = GetForegroundWindowInfo();
                 EvtWindowMonitorHeartbeat?.Invoke(info);
             }
         }
@@ -154,7 +165,7 @@ namespace ACAT.Core.Utility
         {
             if (_isPaused || hwnd == IntPtr.Zero) return;
 
-            var info = GetForegroundWindowInfo(hwnd);
+            WindowActivityMonitorInfo info = GetForegroundWindowInfo(hwnd);
             HandleFocusOrWindowChange(info);
         }
 
@@ -166,7 +177,7 @@ namespace ACAT.Core.Utility
             const int OBJID_WINDOW = 0;
             if (idObject != OBJID_WINDOW || idChild != 0) return;
 
-            var form = Form.FromChildHandle(hwnd);
+            Control form = Form.FromChildHandle(hwnd);
             if (form == null) return;
 
             switch (eventType)
@@ -184,11 +195,11 @@ namespace ACAT.Core.Utility
         {
             if (_isPaused) return;
 
-            var focusedElement = AutomationElement.FocusedElement;
+            AutomationElement focusedElement = AutomationElement.FocusedElement;
 
             if (focusedElement == null) return;
 
-            var info = GetForegroundWindowInfo();
+            WindowActivityMonitorInfo info = GetForegroundWindowInfo();
 
             if (info == null)
                 return;
@@ -224,11 +235,14 @@ namespace ACAT.Core.Utility
                 info.IsNewWindow = isNewWindow;
                 info.IsNewFocusedElement = isNewElement;
 
-                // Marshal to UI thread
-                _form.BeginInvoke((MethodInvoker)(() =>
+                // Marshal to UI thread - ensure form handle is created
+                if (_form != null && _form.IsHandleCreated)
                 {
-                    EvtFocusChanged?.Invoke(info);
-                }));
+                    _form.BeginInvoke((MethodInvoker)(() =>
+                    {
+                        EvtFocusChanged?.Invoke(info);
+                    }));
+                }
 
                 _currentHwnd = info.FgHwnd;
                 _currentFocusedElement = info.FocusedElement;

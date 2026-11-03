@@ -1,0 +1,22 @@
+{
+  "$schema": "../json/panel-config.schema.json",
+  "widgetAttributes": [],
+  "layout": {
+    "colorScheme": "Scanner",
+    "widgets": [
+      {
+        "class": "WinControlWidget",
+        "name": "panelWordPrediction"
+      },
+      {
+        "class": "WinControlWidget",
+        "name": "panelSentencePrediction"
+      },
+      {
+        "class": "WinControlWidget",
+        "name": "panelKeyboard"
+      }
+    ]
+  },
+  "animations": []
+}

@@ -12,13 +12,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.Validation;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace ACAT.Core.AbbreviationsManagement
@@ -28,9 +32,14 @@ namespace ACAT.Core.AbbreviationsManagement
         private readonly ILogger<Abbreviations> _logger;
 
         /// <summary>
-        /// Name of the abbreviations file
+        /// Name of the abbreviations file (JSON format)
         /// </summary>
-        public const string AbbreviationFile = "Abbreviations.xml";
+        public const string AbbreviationFile = "Abbreviations.json";
+
+        /// <summary>
+        /// Legacy XML file name for backward compatibility
+        /// </summary>
+        private const string LegacyAbbreviationFile = "Abbreviations.xml";
 
         /// <summary>
         ///  xml attribute for the abbreviation mode
@@ -125,20 +134,46 @@ namespace ACAT.Core.AbbreviationsManagement
 
         /// <summary>
         /// Returns the full path to the abbreviations file.  Checks the user
-        /// folder under the culture specific folder first.
+        /// folder under the culture specific folder first. Tries JSON first,
+        /// then falls back to legacy XML file.
         /// </summary>
         /// <returns>full path to the abbreviations file</returns>
         public string GetAbbreviationsFilePath()
         {
+            // Try JSON file first
             var abbreviationsFile = Path.Combine(UserManager.GetResourcesDir(), AbbreviationFile);
+            if (File.Exists(abbreviationsFile))
+            {
+                return abbreviationsFile;
+            }
 
-            return File.Exists(abbreviationsFile) ? abbreviationsFile : UserManager.GetFullPath(AbbreviationFile);
+            abbreviationsFile = UserManager.GetFullPath(AbbreviationFile);
+            if (File.Exists(abbreviationsFile))
+            {
+                return abbreviationsFile;
+            }
+
+            // Fall back to legacy XML file
+            var legacyFile = Path.Combine(UserManager.GetResourcesDir(), LegacyAbbreviationFile);
+            if (File.Exists(legacyFile))
+            {
+                return legacyFile;
+            }
+
+            legacyFile = UserManager.GetFullPath(LegacyAbbreviationFile);
+            if (File.Exists(legacyFile))
+            {
+                return legacyFile;
+            }
+
+            // Return JSON path for new file creation
+            return UserManager.GetFullPath(AbbreviationFile);
         }
 
         /// <summary>
         /// Loads abbreviations from the specified file.  If filename
-        /// is null, loads from the default file.  Parses the XML file
-        /// and populates the sorted list
+        /// is null, loads from the default file.  Supports both JSON and XML formats.
+        /// JSON is preferred; XML is used for backward compatibility.
         /// </summary>
         /// <param name="abbreviationsFile">name of the abbreviations file</param>
         /// <returns>true on success</returns>
@@ -151,39 +186,117 @@ namespace ACAT.Core.AbbreviationsManagement
                 abbreviationsFile = GetAbbreviationsFilePath();
             }
 
-            var doc = new XmlDocument();
+            _abbreviationList.Clear();
+
+            if (!File.Exists(abbreviationsFile))
+            {
+                _logger?.LogDebug("Abbreviation file {AbbreviationsFile} does not exist", abbreviationsFile);
+                return true; // Return true for non-existent file (empty list is valid)
+            }
 
             try
             {
-                _abbreviationList.Clear();
-
-                if (File.Exists(abbreviationsFile))
+                // Determine format based on file extension
+                var extension = Path.GetExtension(abbreviationsFile)?.ToLowerInvariant();
+                
+                if (extension == ".json")
                 {
-                    doc.Load(abbreviationsFile);
-
-                    var abbrNodes = doc.SelectNodes("/ACAT/Abbreviations/Abbreviation");
-
-                    if (abbrNodes != null)
-                    {
-                        // load all the abbreviations
-                        foreach (XmlNode node in abbrNodes)
-                        {
-                            createAndAddAbbreviation(node);
-                        }
-                    }
+                    retVal = LoadFromJson(abbreviationsFile);
+                }
+                else if (extension == ".xml")
+                {
+                    retVal = LoadFromXml(abbreviationsFile);
                 }
                 else
                 {
-                    Log.Debug("Abbreviation file " + abbreviationsFile + " does not exist");
+                    _logger?.LogWarning("Unknown abbreviation file format: {Extension}", extension);
+                    retVal = false;
                 }
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Error processing abbreviations file {AbbreviationsFile}", abbreviationsFile);
+                _logger?.LogError(ex, "Error loading abbreviations file {AbbreviationsFile}", abbreviationsFile);
                 retVal = false;
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Loads abbreviations from a JSON file
+        /// </summary>
+        /// <param name="filePath">Path to JSON file</param>
+        /// <returns>true on success</returns>
+        private bool LoadFromJson(string filePath)
+        {
+            try
+            {
+                var loader = new JsonConfigurationLoader<AbbreviationsJson>(
+                    new AbbreviationsValidator(), 
+                    _logger);
+
+                AbbreviationsJson config = loader.Load(filePath, createDefaultOnError: false);
+                
+                if (config == null)
+                {
+                    _logger?.LogError("Failed to load abbreviations from JSON: {FilePath}", filePath);
+                    return false;
+                }
+
+                // Convert JSON entries to Abbreviation objects
+                foreach (AbbreviationJson entry in config.Abbreviations)
+                {
+                    if (!string.IsNullOrWhiteSpace(entry.Word) && 
+                        !string.IsNullOrWhiteSpace(entry.ReplaceWith))
+                    {
+                        Add(new Abbreviation(entry.Word, entry.ReplaceWith, entry.Mode));
+                    }
+                }
+
+                _logger?.LogInformation("Loaded {Count} abbreviations from JSON", _abbreviationList.Count);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error loading abbreviations from JSON: {FilePath}", filePath);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Loads abbreviations from a legacy XML file
+        /// </summary>
+        /// <param name="filePath">Path to XML file</param>
+        /// <returns>true on success</returns>
+        private bool LoadFromXml(string filePath)
+        {
+            var doc = new XmlDocument();
+
+            try
+            {
+                _logger?.LogDebug("Loading abbreviations from legacy XML file: {FilePath}", filePath);
+                
+                doc.Load(filePath);
+
+                XmlNodeList abbrNodes = doc.SelectNodes("/ACAT/Abbreviations/Abbreviation");
+
+                if (abbrNodes != null)
+                {
+                    // load all the abbreviations
+                    foreach (XmlNode node in abbrNodes)
+                    {
+                        createAndAddAbbreviation(node);
+                    }
+                }
+
+                _logger?.LogInformation("Loaded {Count} abbreviations from XML", _abbreviationList.Count);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error processing abbreviations XML file {FilePath}", filePath);
+                return false;
+            }
         }
 
         /// <summary>
@@ -199,7 +312,7 @@ namespace ACAT.Core.AbbreviationsManagement
             // do we detect something?
             if (_abbreviationList.ContainsKey(lookupString))
             {
-                Log.Debug("Yes. Abbreviation list contains : " + lookupString);
+                _logger?.LogDebug("Yes. Abbreviation list contains : {LookupString}", lookupString);
                 return _abbreviationList[lookupString];
             }
 
@@ -230,7 +343,7 @@ namespace ACAT.Core.AbbreviationsManagement
         }
 
         /// <summary>
-        /// Saves abbreviations to the specified file
+        /// Saves abbreviations to the specified file in JSON format
         /// </summary>
         /// <param name="abbreviationsFile">name of the file</param>
         /// <returns>true on success</returns>
@@ -240,25 +353,35 @@ namespace ACAT.Core.AbbreviationsManagement
 
             try
             {
-                XmlTextWriter xmlTextWriter = createAbbreviationsFile(abbreviationsFile);
-                if (xmlTextWriter != null)
+                // Create JSON configuration object
+                var config = new AbbreviationsJson();
+                
+                foreach (Abbreviation abbr in _abbreviationList.Values)
                 {
-                    foreach (Abbreviation abbr in _abbreviationList.Values)
+                    config.Abbreviations.Add(new AbbreviationJson
                     {
-                        xmlTextWriter.WriteStartElement("Abbreviation");
-                        xmlTextWriter.WriteAttributeString(WordAttr, abbr.Mnemonic);
-                        xmlTextWriter.WriteAttributeString(ReplaceWithAttr, abbr.Expansion);
-                        xmlTextWriter.WriteAttributeString(ModeAttr, abbr.Mode.ToString());
+                        Word = abbr.Mnemonic,
+                        ReplaceWith = abbr.Expansion,
+                        Mode = abbr.Mode.ToString()
+                    });
+                }
 
-                        xmlTextWriter.WriteEndElement();
-                    }
-
-                    closeAbbreviationFile(xmlTextWriter);
+                // Save using JsonConfigurationLoader
+                var loader = new JsonConfigurationLoader<AbbreviationsJson>(
+                    new AbbreviationsValidator(), 
+                    _logger);
+                
+                retVal = loader.Save(config, abbreviationsFile);
+                
+                if (retVal)
+                {
+                    _logger?.LogInformation("Saved {Count} abbreviations to JSON: {FilePath}", 
+                        _abbreviationList.Count, abbreviationsFile);
                 }
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Error saving abbreviations to: {AbbreviationsFile}", abbreviationsFile);
                 retVal = false;
             }
 
@@ -273,6 +396,134 @@ namespace ACAT.Core.AbbreviationsManagement
         public bool Save()
         {
             return Save(GetAbbreviationsFilePath());
+        }
+
+        /// <summary>
+        /// Asynchronously loads abbreviations from the specified file.
+        /// Supports both JSON and XML formats; JSON uses native async I/O,
+        /// XML falls back to <see cref="Task.Run"/>.
+        /// </summary>
+        /// <param name="abbreviationsFile">Path to the abbreviations file; uses default path when null.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        public async Task<bool> LoadAsync(string abbreviationsFile = null, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(abbreviationsFile))
+            {
+                abbreviationsFile = GetAbbreviationsFilePath();
+            }
+
+            _abbreviationList.Clear();
+
+            if (!File.Exists(abbreviationsFile))
+            {
+                _logger?.LogDebug("Abbreviation file {AbbreviationsFile} does not exist", abbreviationsFile);
+                return true;
+            }
+
+            try
+            {
+                var extension = Path.GetExtension(abbreviationsFile)?.ToLowerInvariant();
+
+                if (extension == ".json")
+                {
+                    return await LoadFromJsonAsync(abbreviationsFile, cancellationToken).ConfigureAwait(false);
+                }
+                else if (extension == ".xml")
+                {
+                    return await Task.Run(() => LoadFromXml(abbreviationsFile), cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    _logger?.LogWarning("Unknown abbreviation file format: {Extension}", extension);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error loading abbreviations file {AbbreviationsFile}", abbreviationsFile);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously saves abbreviations to the specified file in JSON format.
+        /// Uses native async I/O from <see cref="JsonConfigurationLoader{T}"/>.
+        /// </summary>
+        /// <param name="abbreviationsFile">Path to the output file; uses default path when null.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> on success.</returns>
+        public async Task<bool> SaveAsync(string abbreviationsFile = null, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(abbreviationsFile))
+            {
+                abbreviationsFile = GetAbbreviationsFilePath();
+            }
+
+            try
+            {
+                var config = new AbbreviationsJson();
+                foreach (Abbreviation abbr in _abbreviationList.Values)
+                {
+                    config.Abbreviations.Add(new AbbreviationJson
+                    {
+                        Word = abbr.Mnemonic,
+                        ReplaceWith = abbr.Expansion,
+                        Mode = abbr.Mode.ToString()
+                    });
+                }
+
+                var loader = new JsonConfigurationLoader<AbbreviationsJson>(new AbbreviationsValidator(), _logger);
+                bool retVal = await loader.SaveAsync(config, abbreviationsFile, cancellationToken).ConfigureAwait(false);
+
+                if (retVal)
+                {
+                    _logger?.LogInformation("Saved {Count} abbreviations to JSON: {FilePath}",
+                        _abbreviationList.Count, abbreviationsFile);
+                }
+
+                return retVal;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error saving abbreviations to: {AbbreviationsFile}", abbreviationsFile);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously loads abbreviations from a JSON file using
+        /// <see cref="JsonConfigurationLoader{T}.LoadAsync"/>.
+        /// </summary>
+        private async Task<bool> LoadFromJsonAsync(string filePath, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var loader = new JsonConfigurationLoader<AbbreviationsJson>(new AbbreviationsValidator(), _logger);
+                AbbreviationsJson config = await loader.LoadAsync(filePath, createDefaultOnError: false, cancellationToken).ConfigureAwait(false);
+
+                if (config == null)
+                {
+                    _logger?.LogError("Failed to load abbreviations from JSON: {FilePath}", filePath);
+                    return false;
+                }
+
+                foreach (AbbreviationJson entry in config.Abbreviations)
+                {
+                    if (!string.IsNullOrWhiteSpace(entry.Word) && !string.IsNullOrWhiteSpace(entry.ReplaceWith))
+                    {
+                        Add(new Abbreviation(entry.Word, entry.ReplaceWith, entry.Mode));
+                    }
+                }
+
+                _logger?.LogInformation("Loaded {Count} abbreviations from JSON", _abbreviationList.Count);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error loading abbreviations from JSON: {FilePath}", filePath);
+                return false;
+            }
         }
 
         /// <summary>
@@ -300,7 +551,7 @@ namespace ACAT.Core.AbbreviationsManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {
@@ -332,7 +583,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, ex.Message);
             }
         }
 
@@ -355,7 +606,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, ex.Message);
                 xmlTextWriter = null;
             }
 

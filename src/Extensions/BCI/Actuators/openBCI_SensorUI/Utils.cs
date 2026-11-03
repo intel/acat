@@ -9,9 +9,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
     internal class Utils
     {
-        private static readonly ILogger<Utils> _logger = LoggerFactory.GetLogger<Utils>();
+        private static readonly ILogger<Utils> _logger = LoggingConfiguration.CreateLogger<Utils>();
 
-        internal static void HandleHelpNavigaion(WebBrowserNavigatingEventArgs e)
+        internal static void HandleHelpNavigation(WebBrowserNavigatingEventArgs e)
         {
             var str = e.Url.ToString();
 

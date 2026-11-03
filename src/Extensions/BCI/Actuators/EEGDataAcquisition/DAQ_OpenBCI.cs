@@ -17,9 +17,11 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
@@ -28,6 +30,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
     public class DAQ_OpenBCI : BaseDAQ
     {
+        private new readonly ILogger<DAQ_OpenBCI> _logger;
+
         // ********** Params set here (not read from settings)
         // private readonly string[] otherChannelsPinsNameList = { "x", "D11", "D12", "D13", "D17", "D18", "x" };
         // private readonly int[] otherChannelsPinsIdxList = {12, 13, 14, 15, 16, 17, 18}; this is returnet when DeviceObj.get_other_channels();
@@ -56,17 +60,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Status of the board
         /// </summary>
-        private BoardStatus status;
+        private new BoardStatus status;
 
         /// <summary>
         /// Boolean, true if device initialized
         /// </summary>
-        public bool deviceInitialized = false;
+        public new bool deviceInitialized = false;
 
         /// <summary>
         /// Buffer to store data and calculate signal stauts
         /// </summary>
-        private double[,] _bufferSignalStatus;
+        private new double[,] _bufferSignalStatus;
 
         /// <summary>
         /// Buffer to store data for eyes closed detection
@@ -77,16 +81,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Index of the EEG channels in data returned from sensor
         /// This is directly via from brainflow
         /// </summary>
-        public int[] indEegChannels;
+        public new int[] indEegChannels;
 
-        public enum DeviceStatus
+        public new enum DeviceStatus
         {
             DEVICE_STANDBY,
             DEVICE_ERROR,
             DEVICE_ACQUIRINGDATA,
         };
 
-        public DeviceStatus deviceStatus;
+        public new DeviceStatus deviceStatus;
 
         // BoardStatus enum is now inherited from BaseDAQ
 
@@ -106,12 +110,20 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         // ExitCodes enum is now inherited from BaseDAQ
 
         /// <summary>
+        /// Initializes an instance of the class
+        /// </summary>
+        public DAQ_OpenBCI()
+        {
+            _logger = LoggingConfiguration.CreateLogger<DAQ_OpenBCI>();
+        }
+
+        /// <summary>
         /// Loads settings from the configuration file
         /// </summary>
         public override void LoadSettings()
         {
             SignalControl_WindowDurationForVrmsMeaseurment = BCIActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
-            Log.Debug("DAQ settings loaded. Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
+            _logger.LogDebug("DAQ settings loaded. Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
 
             switch (BCIActuatorSettings.Settings.DAQ_NumEEGChannels)
             {
@@ -135,19 +147,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 16;
                     BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 24;
                     BCISettingsFixed.DimReduct_DownsampleRate = 2;
-                    Log.Debug("Num Channels settings is incorrect. Sensor set to default: 8 channels");
+                    _logger.LogDebug("Num Channels settings is incorrect. Sensor set to default: 8 channels");
                     break;
             }
 
             BCIActuatorSettings.Save();
-            Log.Debug("Sensor set to " + BCIActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
+            _logger.LogDebug("Sensor set to " + BCIActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
                       " , Idx hw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Hw + " , Idx sw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Sw);
 
             boardID = BCISettingsFixed.DAQ_SensorId;
             saveDataToFile = BCIActuatorSettings.Settings.DAQ_SaveToFileFlag;
             frontendFilterIdx = BCIActuatorSettings.Settings.DAQ_FrontendFilterIdx;
             notchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
-            Log.Debug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
+            _logger.LogDebug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
 
             eyesClosedDetectionUseFixThreshold = BCIActuatorSettings.Settings.EyesClosed_UseFixThreshold;
             if (eyesClosedDetectionUseFixThreshold)
@@ -155,7 +167,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             else
                 eyesClosedDetectionThreshold = BCIActuatorSettings.Settings.EyesClosed_AdaptiveThreshold;
             eyesClosed_WindowDuration = BCIActuatorSettings.Settings.EyesClosed_WindowDuration;
-            Log.Debug("Eyes closed detection. Use Fix Threshold" + eyesClosedDetectionUseFixThreshold + " Threshold: " + eyesClosedDetectionThreshold + " Window duration: " + eyesClosed_WindowDuration);
+            _logger.LogDebug("Eyes closed detection. Use Fix Threshold" + eyesClosedDetectionUseFixThreshold + " Threshold: " + eyesClosedDetectionThreshold + " Window duration: " + eyesClosed_WindowDuration);
         }
 
         #region Get/set
@@ -221,13 +233,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
             foreach (String port in SerialPort.GetPortNames())
             {
-                Log.Debug("Checking port " + port);
+                _logger.LogDebug("Checking port " + port);
 
                 serialPort = port;
                 AddWarning(ExitCodes.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  TESTING PORT    MESSAGE: Serial port " + serialPort);
                 if (TestPort(port, out _))
                 {
-                    Log.Debug("Detected cytonboard port " + port);
+                    _logger.LogDebug("Detected cytonboard port " + port);
                     return serialPort;
                 }
             }
@@ -298,13 +310,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 if (status == BoardStatus.BOARD_OPEN)
                 {
-                    Log.Debug("Board was open, closing device");
+                    _logger.LogDebug("Board was open, closing device");
                     CloseDevice();
                 }
 
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 {
-                    Log.Debug("Board already acquiring data, returning");
+                    _logger.LogDebug("Board already acquiring data, returning");
                     return true;
                 }
                 else
@@ -314,13 +326,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     // Enable /disable boardlogging
                     if (boardLoggerEnabled)
                     {
-                        Log.Debug("BoardLoggerEnabled: " + boardLoggerEnabled + " Enabling brainflow logging");
+                        _logger.LogDebug("BoardLoggerEnabled: " + boardLoggerEnabled + " Enabling brainflow logging");
                         BoardShim.enable_dev_board_logger();
                         BoardShim.set_log_file(boardLogFileName);
                     }
                     else
                     {
-                        Log.Debug("BoardLoggerEnabled: " + boardLoggerEnabled + " Disabling brainflow logging");
+                        _logger.LogDebug("BoardLoggerEnabled: " + boardLoggerEnabled + " Disabling brainflow logging");
                         BoardShim.disable_board_logger();
                     }
 
@@ -331,22 +343,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     }
 
                     // Test port
-                    Log.Debug("Testing port: " + port);
+                    _logger.LogDebug("Testing port: " + port);
                     bool sensorConnected = TestPort(port, out _);
                     if (!sensorConnected)
                     {
-                        Log.Debug("Sensor not connected to port " + port + ". Starting port detection");
+                        _logger.LogDebug("Sensor not connected to port " + port + ". Starting port detection");
                         port = DetectPort();
-                        Log.Debug("Port " + port + " detected. Testing port");
+                        _logger.LogDebug("Port " + port + " detected. Testing port");
                         sensorConnected = TestPort(port, out _);
-                        Log.Debug("Port " + port + " tested. Result: " + sensorConnected);
+                        _logger.LogDebug("Port " + port + " tested. Result: " + sensorConnected);
                     }
 
                     BrainFlowInputParams input_params = new();
 
                     if (sensorConnected)
                     {
-                        Log.Debug("Sensor connected to port " + port);
+                        _logger.LogDebug("Sensor connected to port " + port);
 
                         // Save port
                         serialPort = port;
@@ -354,7 +366,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         // Save port to settings
                         BCIActuatorSettings.Settings.DAQ_ComPort = serialPort;
                         BCIActuatorSettings.Save();
-                        Log.Debug("Port: " + serialPort + " saved to settings");
+                        _logger.LogDebug("Port: " + serialPort + " saved to settings");
 
                         // Check if Cyton Daisy board attached
                         // Makes separate COM connection (BrainFlow / BoardShim does not allow parsing of responses from lower level commands
@@ -375,7 +387,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         DeviceObj = new BoardShim(boardID, input_params);
                         DeviceObj.prepare_session();
 
-                        Log.Debug("DAQ_OpenBCI - InitDevice | Board session prepared");
+                        _logger.LogDebug("DAQ_OpenBCI - InitDevice | Board session prepared");
 
                         indEegChannels = BoardShim.get_eeg_channels(boardID);
                         sampleRate = BoardShim.get_sampling_rate(boardID);
@@ -385,12 +397,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                         FrontendFilter = new Filter(frontendFilterIdx, Filter.FilterTypes.Frontend);
                         NotchFilter = new Filter(notchFilterIdx, Filter.FilterTypes.Notch);
-                        Log.Debug("Creating Frontend filter: " + frontendFilterIdx + " | Notch filter: " + notchFilterIdx);
+                        _logger.LogDebug("Creating Frontend filter: " + frontendFilterIdx + " | Notch filter: " + notchFilterIdx);
 
                         status = BoardStatus.BOARD_OPEN;
                         deviceInitialized = true;
                         AddWarning(ExitCodes.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serialPort);
-                        Log.Debug("Board initialized. Status: " + status.ToString());
+                        _logger.LogDebug("Board initialized. Status: " + status.ToString());
                         return true;
                     }
                     else
@@ -399,7 +411,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, e.Message);
                 sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_READY_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 return false;
@@ -422,7 +434,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     // Init device
                     bool initPortSuccess;
-                    Log.Debug("Initiating device");
+                    _logger.LogDebug("Initiating device");
                     if (status != BoardStatus.BOARD_OPEN)
                     {
                         if (!String.IsNullOrWhiteSpace(deviceIdentifier))
@@ -433,15 +445,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     else
                         initPortSuccess = true;
 
-                    Log.Debug("Starting stream");
+                    _logger.LogDebug("Starting stream");
                     DeviceObj.start_stream();
-                    Log.Debug("Stream started");
+                    _logger.LogDebug("Stream started");
 
                     status = BoardStatus.BOARD_ACQUIRINGDATA;
 
                     if (saveDataToFile)
                     {
-                        Log.Debug("Creating files for session " + sessionID);
+                        _logger.LogDebug("Creating files for session " + sessionID);
                         CreateFiles(sessionID);
                     }
 
@@ -455,10 +467,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_CREATED_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Exception("Exception:" + e.Message + " Error code:" + sensorStatus);
+                _logger.LogError("Exception:" + e.Message + " Error code:" + sensorStatus);
                 success = false;
             }
-            Log.Debug("Device started: " + success);
+            _logger.LogDebug("Device started: " + success);
             return success;
         }
 
@@ -472,19 +484,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 {
-                    Log.Debug("Board acquiring data. Stopping device");
+                    _logger.LogDebug("Board acquiring data. Stopping device");
                     GetData();
                     DeviceObj.stop_stream();
                     DeviceObj.release_session();
-                    Log.Debug("Device stopped");
+                    _logger.LogDebug("Device stopped");
                 }
 
                 if (saveDataToFile && FileWriterObj != null && FileWriterObj.isFileOpened)
                 {
-                    Log.Debug("Closing files");
+                    _logger.LogDebug("Closing files");
                     FileWriterObj.CloseFiles();
                     FileWriterObj = null;
-                    Log.Debug("Files closed");
+                    _logger.LogDebug("Files closed");
                 }
 
                 status = BoardStatus.BOARD_STANDBY;
@@ -494,7 +506,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 sensorStatus = getErrorCode(e.Message, ExitCodes.SYNC_TIMEOUT_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING               MESSAGE: Error Code: " + sensorStatus);
-                Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
+                _logger.LogError("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
             }
         }
@@ -509,7 +521,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 if (status == BoardStatus.BOARD_CLOSED)
                 {
-                    Log.Debug("Board already closed");
+                    _logger.LogDebug("Board already closed");
                     return true;
                 }
 
@@ -518,14 +530,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                 DeviceObj.release_session();
                 status = BoardStatus.BOARD_CLOSED;
-                Log.Debug("Device closed");
+                _logger.LogDebug("Device closed");
                 return true;
             }
             catch (Exception e)
             {
                 sensorStatus = getErrorCode(e.Message, ExitCodes.UNABLE_TO_CLOSE);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
+                _logger.LogError("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
             }
         }
@@ -570,7 +582,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception("Exception: " + e.Message);
+                _logger.LogError(e, e.Message);
             }
 
             if (returnFilteredData)
@@ -715,7 +727,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 catch (Exception e)
                 {
-                    Log.Exception("Exception: " + e.Message);
+                    _logger.LogError(e, e.Message);
                 }
             }
             return statusAllSignals;
@@ -738,7 +750,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
-        private bool AppendDataToBuffer(double[,] data, double[,] inBuffer, int numSamplesInBuffer, out double[,] outBuffer)
+        protected override bool AppendDataToBuffer(double[,] data, double[,] inBuffer, int numSamplesInBuffer, out double[,] outBuffer)
         {
             bool result = false;
             outBuffer = null;
@@ -765,7 +777,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, e.Message);
             }
             return result;
         }
@@ -831,7 +843,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         }
                         catch (Exception e)
                         {
-                            Log.Exception(e.Message);
+                            _logger.LogError(e, e.Message);
                         }
                     }
                     avgAlpha /= indEegChannels.Length;
@@ -860,7 +872,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             portAlreadyOpen = false;
             try
             {
-                Log.Debug("Testing port " + port);
+                _logger.LogDebug("Testing port " + port);
                 BrainFlowInputParams input_params = new()
                 {
                     serial_port = port
@@ -869,7 +881,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 DeviceObj = new BoardShim(boardID, input_params);
                 DeviceObj.prepare_session();
                 DeviceObj.release_session();
-                Log.Debug("Sensor detected to port" + port);
+                _logger.LogDebug("Sensor detected to port" + port);
                 return true;
             }
             catch (Exception e)
@@ -878,7 +890,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 if (sensorStatus == ExitCodes.ANOTHER_BOARD_IS_CREATED_ERROR)
                     portAlreadyOpen = true;
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Exception("Exception: " + e.Message);
+                _logger.LogError(e, e.Message);
                 return false;
             }
         }
@@ -927,7 +939,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception("Exception: " + e.Message);
+                _logger.LogError(e, e.Message);
             }
 
             return 0;
@@ -953,13 +965,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Creates files where data is stored
         /// </summary>
         /// <param name="sessionID"></param>
-        private void CreateFiles(String sessionID)
+        protected override void CreateFiles(String sessionID)
         {
             if (saveDataToFile)
             {
                 if (FileWriterObj == null)
                 {
-                    Log.Debug("Creating files for session: " + sessionID);
+                    _logger.LogDebug("Creating files for session: " + sessionID);
 
                     if (sessionID == "")
                         FileWriterObj = new FileWriter();
@@ -993,7 +1005,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                     if (saveDataToFile)
                     {
-                        Log.Debug("Creating files for session: " + sessionID);
+                        _logger.LogDebug("Creating files for session: " + sessionID);
 
                         // Creates new file
                         if (sessionID == "")
@@ -1010,7 +1022,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception("Exception " + e.Message);
+                _logger.LogError(e.Message);
             }
             return result;
         }
@@ -1033,12 +1045,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     GetData(); // Empty buffer
                 }
-                Log.Debug("Session closed");
+                _logger.LogDebug("Session closed");
                 result = true;
             }
             catch (Exception e)
             {
-                Log.Exception("Exception " + e.Message);
+                _logger.LogError(e.Message);
             }
 
             return result;
@@ -1082,7 +1094,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, e.Message);
                 return info;
             }
             return info;
@@ -1092,16 +1104,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Send lower level config command to BoardShim device
         /// </summary>
         /// <param name="cmd"></param>
-        public void Config_Board(string cmd)
+        public override void Config_Board(string cmd)
         {
             try
             {
-                Log.Debug("Config board. Command" + cmd);
+                _logger.LogDebug("Config board. Command" + cmd);
                 DeviceObj.config_board(cmd);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -1160,14 +1172,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     NewLine = "$$$"
                 };
 
-                Log.Debug(String.Format("cytonIsDaisyAttached | Opening serial port with port name: {0}, baud rate: {1}", serialPort.PortName, serialPort.BaudRate));
+                _logger.LogDebug(String.Format("cytonIsDaisyAttached | Opening serial port with port name: {0}, baud rate: {1}", serialPort.PortName, serialPort.BaudRate));
                 serialPort.Open();
                 Thread.Sleep(100);
 
                 // If the port is open, do something
                 if (serialPort.IsOpen)
                 {
-                    Log.Debug("cytonIsDaisyAttached | serialPort is open");
+                    _logger.LogDebug("cytonIsDaisyAttached | serialPort is open");
                     int max_tries = 3;
                     while (!receivedResponse && max_tries > 0)
                     {
@@ -1176,7 +1188,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         Thread.Sleep(1000);
 
                         String response = serialPort.ReadLine().Trim();
-                        Log.Debug(String.Format("cytonIsDaisyAttached | response: {0}", response));
+                        _logger.LogDebug(String.Format("cytonIsDaisyAttached | response: {0}", response));
 
                         if (response == "8" || response == "16")
                         {
@@ -1203,7 +1215,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         Thread.Sleep(500);
                     }
 
-                    Log.Debug("cytonIsDaisyAttached | End read line / check loop. Sending reset board command");
+                    _logger.LogDebug("cytonIsDaisyAttached | End read line / check loop. Sending reset board command");
                     serialPort.WriteLine("d");
                     Thread.Sleep(3500);
                 }
@@ -1221,35 +1233,35 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         BCIActuatorSettings.Settings.DAQ_NumEEGChannels = 8;
                         _daisyBoardStatus = DaisyBoardStatus.NOT_CONNECTED;
                     }
-                    Log.Debug("cytonIsDaisyAttached | Received a valid response from cyton board | DAQ_NumEEGChannels: " +
+                    _logger.LogDebug("cytonIsDaisyAttached | Received a valid response from cyton board | DAQ_NumEEGChannels: " +
                         BCIActuatorSettings.Settings.DAQ_NumEEGChannels.ToString());
 
                     BCIActuatorSettings.Save();
                 }
                 else
                 {
-                    Log.Debug("cytonIsDaisyAttached | Did not receive a valid response from cyton board. Setting DAQ_NumEEGChannels to 8");
+                    _logger.LogDebug("cytonIsDaisyAttached | Did not receive a valid response from cyton board. Setting DAQ_NumEEGChannels to 8");
                     BCIActuatorSettings.Settings.DAQ_NumEEGChannels = 16;
                 }
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, e.Message);
             }
             finally
             {
-                Log.Debug("cytonIsDaisyAttached | closing serialPort from finally");
+                _logger.LogDebug("cytonIsDaisyAttached | closing serialPort from finally");
                 serialPort.Close();
-                Log.Debug("cytonIsDaisyAttached | serialPort closed from finally");
+                _logger.LogDebug("cytonIsDaisyAttached | serialPort closed from finally");
             }
 
             if (serialPort != null && serialPort.IsOpen)
             {
-                Log.Debug("cytonIsDaisyAttached | serialPort not yet closed. calling close() again");
+                _logger.LogDebug("cytonIsDaisyAttached | serialPort not yet closed. calling close() again");
                 serialPort.Close();
             }
 
-            Log.Debug(String.Format("cytonDaisyAttached() done | " +
+            _logger.LogDebug(String.Format("cytonDaisyAttached() done | " +
                 "receivedResponse: {0}, " +
                 "daisyBoardAttached: {1}, " +
                 "BCIActuatorSettings.Settings.DAQ_NumEEGChannels: {2}",

@@ -61,7 +61,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
         public PanelClassConfigMap Add(string configMapName, string description, bool isDefault)
         {
-            var panelClassConfigMap = Find(configMapName);
+            PanelClassConfigMap panelClassConfigMap = Find(configMapName);
             if (panelClassConfigMap == null)
             {
                 panelClassConfigMap = new PanelClassConfigMap(configMapName, description, string.Empty, string.Empty, isDefault);
@@ -101,11 +101,11 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns>object if found, null if not</returns>
         public PanelClassConfigMapEntry GetDefaultClassConfigMapEntry(string panelClass)
         {
-            foreach (var panelClassConfigMap in PanelClassConfigMaps)
+            foreach (PanelClassConfigMap panelClassConfigMap in PanelClassConfigMaps)
             {
                 if (panelClassConfigMap.Default)
                 {
-                    foreach (var panelClassConfigMapEntry in panelClassConfigMap.PanelClassConfigMapEntries)
+                    foreach (PanelClassConfigMapEntry panelClassConfigMapEntry in panelClassConfigMap.PanelClassConfigMapEntries)
                     {
                         if (string.Compare(panelClass, panelClassConfigMapEntry.PanelClass, true) == 0)
                         {
@@ -128,11 +128,11 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         {
             bool retVal = false;
 
-            var panelClassConfigMap = Find(configMapName);
+            PanelClassConfigMap panelClassConfigMap = Find(configMapName);
 
             if (panelClassConfigMap != null)
             {
-                foreach (var configMap in PanelClassConfigMaps)
+                foreach (PanelClassConfigMap configMap in PanelClassConfigMaps)
                 {
                     configMap.Default = false;
                 }

@@ -125,7 +125,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <returns>list of spellcheckers</returns>
         public ICollection<Type> Get(String language)
         {
-            var list = _spellCheckersTypeCache.Values;
+            Dictionary<Guid, Tuple<string, Type>>.ValueCollection list = _spellCheckersTypeCache.Values;
 
             return (String.IsNullOrEmpty(language) || language.Length == 0) ?
                 (from tuple in list where String.IsNullOrEmpty(tuple.Item1) select tuple.Item2).ToList() :
@@ -144,7 +144,7 @@ namespace ACAT.Core.SpellCheckManagement
             Tuple<String, Type> foundTuple = null;
 
             // first look for culture-specific word predictors
-            foreach (var tuple in _spellCheckersTypeCache.Values)
+            foreach (Tuple<string, Type> tuple in _spellCheckersTypeCache.Values)
             {
                 if (ci == null)
                 {
@@ -167,7 +167,8 @@ namespace ACAT.Core.SpellCheckManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
-                    Log.Debug("Found spellchecker for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
+                    _logger?.LogDebug("Found spellchecker for culture {Culture} [{Name}]",
+                        (ci != null ? ci.TwoLetterISOLanguageName : "Neutral"), descriptor.Name);
                     return descriptor.Id;
                 }
             }
@@ -195,7 +196,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <returns>id of the spellchecker</returns>
         public Guid GetPreferredOrDefaultByCulture(CultureInfo ci)
         {
-            var guid = GetPreferredByCulture(ci);
+            Guid guid = GetPreferredByCulture(ci);
 
             if (Equals(guid, Guid.Empty))
             {
@@ -223,7 +224,7 @@ namespace ACAT.Core.SpellCheckManagement
             if (_DLLError)
                 return false;
 
-            var languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
+            IEnumerable<string> languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
             foreach (string dir in languageDirs)
             {
                 var extensionDir = dir + "\\" + FileUtils.ExtensionsDir;
@@ -260,12 +261,12 @@ namespace ACAT.Core.SpellCheckManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug($"Found spellchecker of type {type}");
+                    _logger?.LogDebug("Found spellchecker of type {Type}", type);
                     return type;
                 }
             }
 
-            Log.Error($"Could not find spellchecker for id {guid}");
+            _logger?.LogError("Could not find spellchecker for id {Guid}", guid);
             return null;
         }
 
@@ -322,7 +323,7 @@ namespace ACAT.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing SpellCheckers");
 
                 if (disposing)
                 {
@@ -384,7 +385,7 @@ namespace ACAT.Core.SpellCheckManagement
                 if (!_DLLError)
                 {
                     var wordPredictorAssembly = Assembly.LoadFile(dllName);
-                    foreach (var type in wordPredictorAssembly.GetTypes())
+                    foreach (Type type in wordPredictorAssembly.GetTypes())
                     {
                         if (typeof(ISpellChecker).IsAssignableFrom(type))
                         {
@@ -399,7 +400,7 @@ namespace ACAT.Core.SpellCheckManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
+                _logger?.LogError(ex, "Could not get types from assembly {DllName}", dllName);
             }
         }
     }

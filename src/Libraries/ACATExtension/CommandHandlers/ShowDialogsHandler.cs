@@ -32,10 +32,10 @@ namespace ACAT.Extension.CommandHandlers
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
         /// <param name="logger">Logger instance</param>
-        public ShowDialogsHandler(String cmd, ILogger<ShowDialogsHandler> logger)
+        public ShowDialogsHandler(String cmd, ILogger<ShowDialogsHandler> logger = null)
             : base(cmd)
         {
-            _logger = logger;
+            _logger = logger ?? LoggingConfiguration.CreateLogger<ShowDialogsHandler>();
         }
 
         /// <summary>

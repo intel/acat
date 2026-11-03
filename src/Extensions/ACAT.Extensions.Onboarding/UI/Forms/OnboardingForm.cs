@@ -68,7 +68,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
 
         private void _onboardingWizard_EvtSetButtonText(OnboardingButtonTypes buttonType, string text)
         {
-            var control = getButton(buttonType);
+            Control control = getButton(buttonType);
             if (control != null)
             {
                 control.Text = text;
@@ -77,7 +77,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
 
         private void _onboardingWizard_EvtSetButtonVisible(OnboardingButtonTypes buttonType, bool visible)
         {
-            var control = getButton(buttonType);
+            Control control = getButton(buttonType);
             if (control != null)
             {
                 control.Visible = visible;
@@ -101,7 +101,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
 
         private void enableButton(OnboardingButtonTypes buttonType, bool enable)
         {
-            var control = getButton(buttonType);
+            Control control = getButton(buttonType);
             if (control == null)
             {
                 return;
@@ -109,7 +109,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
 
             control.Enabled = enable;
 
-            var tuple = _buttonColors[buttonType];
+            Tuple<Color, Color> tuple = _buttonColors[buttonType];
 
             if (tuple != null)
             {
@@ -128,7 +128,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
 
         private Control getButton(OnboardingButtonTypes buttonType)
         {
-            foreach (var key in _buttonMap.Keys)
+            foreach (Control key in _buttonMap.Keys)
             {
                 if (_buttonMap[key] == buttonType)
                 {
@@ -153,7 +153,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
                 return;
             }
 
-            var historyEntry = _onboardingWizard.GetPrevious();
+            OnboardingWizard.OnboardingHistoryEntry historyEntry = _onboardingWizard.GetPrevious();
             if (historyEntry == null)
             {
                 return;
@@ -194,7 +194,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
 
             _currentOnboardExtension.OnEndStep(_currentStep, Reason.GotoNext);
 
-            var step = _currentOnboardExtension.GetNextStep(_currentStep.StepId);
+            IOnboardingUserControl step = _currentOnboardExtension.GetNextStep(_currentStep.StepId);
 
             IOnboardingExtension nextExtension;
             IOnboardingExtension prevExtension = null;
@@ -280,7 +280,7 @@ namespace ACAT.Extensions.Onboarding.UI.Forms
 
             foreach (OnboardingButtonTypes buttonType in (OnboardingButtonTypes[])Enum.GetValues(typeof(OnboardingButtonTypes)))
             {
-                var control = getButton(buttonType);
+                Control control = getButton(buttonType);
                 if (control != null)
                 {
                     _buttonColors.Add(buttonType, Tuple.Create(control.BackColor, control.ForeColor));

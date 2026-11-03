@@ -15,6 +15,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement.CommandDispatcher;
@@ -116,7 +117,7 @@ namespace ACAT.Extensions.UI.Menus
             _dispatcher = new Dispatcher(this);
             _invoker = new ExtensionInvoker(this);
 
-            var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+            IActuator actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
             if (actuator is KeyboardActuator)
             {
                 _keyboardActuator = actuator as KeyboardActuator;
@@ -199,7 +200,7 @@ namespace ACAT.Extensions.UI.Menus
         {
             get
             {
-                _logger.LogTrace("CreateParams");
+                _logger?.LogTrace("CreateParams");
                 return Windows.SetFormStyles(base.CreateParams);
             }
         }
@@ -238,7 +239,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <returns>true on success</returns>
         public bool Initialize(StartupArg startupArg)
         {
-            _logger.LogTrace("Initialize");
+            _logger?.LogTrace("Initialize");
             PanelClass = startupArg.PanelClass;
             startupCommandArg = startupArg.Arg;
             this.startupArg = startupArg;
@@ -247,7 +248,7 @@ namespace ACAT.Extensions.UI.Menus
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Warn("Could not initialize form " + Name);
+                _logger.LogWarning("Could not initialize form {Name}", Name);
                 return false;
             }
 
@@ -270,7 +271,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnPause()
         {
-            _logger.LogTrace("OnPause");
+            _logger?.LogTrace("OnPause");
 
             scannerCommon.OnPause();
         }
@@ -290,7 +291,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnResume()
         {
-            _logger.LogTrace("OnResume");
+            _logger?.LogTrace("OnResume");
 
             scannerCommon.OnResume();
         }
@@ -364,7 +365,7 @@ namespace ACAT.Extensions.UI.Menus
 
             PanelCommon.RootWidget.Finder.FindAllButtons(list);
 
-            foreach (var button in list)
+            foreach (Widget button in list)
             {
                 if (button.Value == "@CmdNo")
                 {
@@ -432,11 +433,9 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         private void YesNoScanner_Load(object sender, EventArgs e)
         {
-            Log.Verbose();
-
             scannerCommon.OnLoad();
 
-            var widget = PanelCommon.RootWidget.Finder.FindChild("Prompt");
+            Widget widget = PanelCommon.RootWidget.Finder.FindChild("Prompt");
             if (widget != null && !String.IsNullOrEmpty(Caption))
             {
                 widget.SetText(Caption);

@@ -17,15 +17,21 @@ using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.Diagnostics;
+using ACAT.Core.Utility.Metrics;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
+using ACAT.Extensions.UI.Diagnostics;
 using ACATResources;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
-using System.Windows.Navigation;
 
 namespace ACATApp
 {
@@ -36,8 +42,12 @@ namespace ACATApp
     internal static class Program
     {
         private static Splash splash = null;
-        private static Microsoft.Extensions.Logging.ILoggerFactory modernLoggingFactory = null;
+        private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
+        private static IServiceProvider _serviceProvider;
+#if DEBUG
+        private static PerformanceDashboard _performanceDashboard = null;
+#endif
 
         /// <summary>
         /// The main entry point for the application.
@@ -56,12 +66,22 @@ namespace ACATApp
             InitializeGlobals();
             InitializeUser();
             InitializeLogging();
+            InitializeDependencyInjection();
             InitializeContext();
 
             if (!PerformOnboarding())
             {
                 return;
             }
+
+#if DEBUG
+            var collector = new RuntimeMetricsCollector();
+            var profiler = new MemoryProfiler();
+            collector.Start(intervalMs: 5000);
+
+            _performanceDashboard = new PerformanceDashboard(collector, profiler);
+            _performanceDashboard.Show();
+#endif
 
             ShowSplashScreen("Starting ACAT");
 
@@ -99,14 +119,57 @@ namespace ACATApp
 
         private static void InitializeLogging()
         {
-            // Initialize legacy logging
-            Log.SetupListeners();
-            
-            // Initialize modern logging infrastructure (ticket #3)
+            // Initialize modern logging infrastructure
             modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
             _logger = modernLoggingFactory.CreateLogger(typeof(Program));
 
             _logger.LogDebug("ACAT Dashboard Application Launch");
+
+            // Wire up word prediction performance callbacks for diagnostics
+            UserControlWordPredictionCommon.OnPredictionLatencyMs = (latencyMs) =>
+            {
+                if (latencyMs > 100)
+                {
+                    _logger.LogWarning("Slow word prediction: {LatencyMs:F2}ms", latencyMs);
+                }
+            };
+
+            UserControlWordPredictionCommon.OnAutoCompleteLatencyMs = (latencyMs) =>
+            {
+                if (latencyMs > 50)
+                {
+                    _logger.LogWarning("Slow autocomplete: {LatencyMs:F2}ms", latencyMs);
+                }
+            };
+
+            UserControlWordPredictionCommon.OnRefreshLatencyMs = (latencyMs) =>
+            {
+                if (latencyMs > 100)
+                {
+                    _logger.LogWarning("Slow prediction refresh: {LatencyMs:F2}ms", latencyMs);
+                }
+            };
+        }
+
+        private static void InitializeDependencyInjection()
+        {
+            // Set up dependency injection using ACAT infrastructure
+            var services = new ServiceCollection();
+
+            // Add logging (reuse existing factory)
+            services.AddSingleton<ILoggerFactory>(modernLoggingFactory);
+            services.AddLogging();
+
+            // Add ACAT core services (managers, factories, etc.)
+            services.AddACATServices();
+
+            _serviceProvider = services.BuildServiceProvider();
+
+            // Resolve Context from DI – this sets Context.ServiceProvider automatically
+            // so all static Context.AppXXX accessors resolve managers through the container.
+            _serviceProvider.GetRequiredService<IContext>();
+
+            _logger.LogDebug("Dependency injection initialized with ACAT services");
         }
 
         private static void InitializeUser()
@@ -166,6 +229,9 @@ namespace ACATApp
 
         private static bool PostInitialization()
         {
+            // Start EventBus activity monitoring (demonstrates new EventBus pattern)
+            ActivatePanelActivityMonitor();
+
             Context.ShowTalkWindowOnStartup = false;
             Context.AppAgentMgr.EnableContextualMenusForDialogs = false;
             Context.AppAgentMgr.EnableContextualMenusForMenus = false;
@@ -181,7 +247,12 @@ namespace ACATApp
                 QuitAppOnFormClose = false
             };
 
-            var form = PanelManager.Instance.CreatePanel("DashboardAppScanner", startupArg);
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
+            var command = new CreatePanelCommand("DashboardAppScanner", null, startupArg);
+            createPanelHandler.Handle(command);
+
+            Form form = command.CreatedPanel as Form;
             if (form == null)
             {
                 MessageBox.Show(string.Format(StringResources.InvalidFormName, startupArg.ToString()));
@@ -207,14 +278,49 @@ namespace ACATApp
             //Application.Run(form as Form);
         }
 
+        /// <summary>
+        /// Activates the PanelActivityMonitor to demonstrate EventBus pattern
+        /// This shows real-time panel and actuator activity via EventBus subscriptions
+        /// </summary>
+        private static void ActivatePanelActivityMonitor()
+        {
+            try
+            {
+                if (_serviceProvider != null)
+                {
+                    var monitor = _serviceProvider.GetRequiredService<ACAT.Core.Diagnostics.PanelActivityMonitor>();
+                    _logger.LogInformation("✅ PanelActivityMonitor activated - EventBus subscriptions active");
+                    _logger.LogInformation("📊 You will now see real-time panel and actuator activity logs!");
+                }
+                else
+                {
+                    _logger.LogWarning("ServiceProvider not available - PanelActivityMonitor not activated");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to activate PanelActivityMonitor");
+            }
+        }
+
         private static void ShutdownApplication()
         {
             AuditLog.Audit(new AuditEvent("Application", "stop"));
+
+#if DEBUG
+            // Close PerformanceDashboard before disposing Context to prevent WPF dispatcher from keeping app alive
+            if (_performanceDashboard != null)
+            {
+                _performanceDashboard.Dispatcher.InvokeShutdown();
+                _performanceDashboard.Close();
+                _performanceDashboard = null;
+            }
+#endif
+
             Context.Dispose();
             Common.Uninit();
             CloseSplashScreen();
-            _logger.LogDebug("ACATTalk Application shutdown");
-            Log.Close();
+            _logger.LogDebug("ACAT Dashboard Application shutdown");
             modernLoggingFactory?.Dispose();
             AppCommon.OnExit();
         }
@@ -252,10 +358,14 @@ namespace ACATApp
                 return;
             }
 
-            var form = PanelManager.Instance.CreatePanel("DefaultInterfaceScanner", "ACAT Talk Description");
-            if (form != null)
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
+            var command = new CreatePanelCommand("DefaultInterfaceScanner", "ACAT Talk Description");
+            createPanelHandler.Handle(command);
+
+            if (command.CreatedPanel != null)
             {
-                Context.AppPanelManager.ShowDialog(form as IPanel);
+                Context.AppPanelManager.ShowDialog(command.CreatedPanel);
             }
         }
     }

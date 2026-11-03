@@ -1,10 +1,11 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms;
@@ -24,7 +25,7 @@ namespace ACAT.Core.Widgets
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
         public LetterListWidget(Control control)
-            : base(control)
+            : base(control, LogManager.GetLogger<Widget>())
         {
             AddForAnimation = false;
         }

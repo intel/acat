@@ -172,6 +172,31 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
         /// <summary>
+        /// Asynchronously creates and starts the named pipe server.
+        /// Prefer this overload over <see cref="CreatePipeServer"/> when calling
+        /// from an async context to avoid the <c>.Result</c> deadlock risk.
+        /// </summary>
+        /// <param name="send_params">When <c>true</c>, sends initial parameters to the client after connection.</param>
+        /// <param name="cancellationToken">Token used to cancel the operation.</param>
+        /// <returns><c>true</c> when the pipe server was created and a client connected.</returns>
+        public async Task<bool> CreatePipeServerAsync(bool send_params = false, CancellationToken cancellationToken = default)
+        {
+            disposed = false;
+            cancellationTokenSource = new CancellationTokenSource();
+            NamedPipeServer = new NamedPipeServerStream(PipeName, PipeDirection,
+                                            1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            try
+            {
+                return await StartNamedPipeServer(cancellationToken, send_params).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in CreatePipeServerAsync: {Exception}", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Disposes the pipe server.
         /// </summary>
         public void Dispose()
@@ -223,14 +248,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             List<string> parameters = new()
             {
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString())),
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathLog, FileUtils.GetLogsDir())),
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Suggestions, Common.AppPreferences.WordsSuggestions.ToString())),
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.TestGeneralSentencePrediction, ConvAssistWordPredictor.settings.Test_GeneralSentencePrediction.ToString())),
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.RetrieveACC, ConvAssistWordPredictor.settings.EnableSmallVocabularySentencePrediction.ToString())),
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathStatic, staticPath)),
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathPersonilized, personalizedPath)),
-                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Path, _pathToFiles))
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString())),
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathLog, FileUtils.GetLogsDir())),
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Suggestions, Common.AppPreferences.WordsSuggestions.ToString())),
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.TestGeneralSentencePrediction, ConvAssistWordPredictor.settings.Test_GeneralSentencePrediction.ToString())),
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.RetrieveACC, ConvAssistWordPredictor.settings.EnableSmallVocabularySentencePrediction.ToString())),
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathStatic, staticPath)),
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathPersonilized, personalizedPath)),
+                JsonSerializer.SerializeForInterop(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Path, _pathToFiles))
             };
 
 
@@ -238,8 +263,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             {
                 try
                 {
-                    var message = JsonSerializer.Serialize(new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, param));
-                    
+                    var message = JsonSerializer.SerializeForInterop(new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, param));
+
+                    _logger.LogDebug("Sending ConvAssist message: {Message}", message);
+
                     //TODO: Check result and handle appropriately.
                     _ = WriteAsync(message, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
@@ -251,7 +278,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
 
             // ConvAssist needs some time to get ready.  Send a message to check if it is ready
-            string msg = JsonSerializer.Serialize(new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty));
+            string msg = JsonSerializer.SerializeForInterop(new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty));
 
             bool clientReady = false;
             var tcs = new TaskCompletionSource<bool>();
@@ -260,14 +287,35 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             {
                 while (!clientReady)
                 {
-                    var result = WriteAsync(msg, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
-                    var resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
-                    if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
+                    try
                     {
-                        clientReady = true;
-                        tcs.SetResult(true);
-                        break;
+                        var result = WriteAsync(msg, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                        // Check if we got a valid response
+                        if (string.IsNullOrWhiteSpace(result))
+                        {
+                            _logger.LogDebug("No response from ConvAssist, retrying...");
+                            await Task.Delay(waitDelay);
+                            continue;
+                        }
+
+                        WordAndCharacterPredictionResponse resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
+                        if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
+                        {
+                            clientReady = true;
+                            tcs.SetResult(true);
+                            break;
+                        }
                     }
+                    catch (System.Text.Json.JsonException jsonEx)
+                    {
+                        _logger.LogWarning(jsonEx, "Failed to deserialize ConvAssist response, retrying...");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error checking ConvAssist ready state");
+                    }
+
                     await Task.Delay(waitDelay);
                 }
             });
@@ -320,7 +368,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 {
                     try
                     {
-                        var sendTask = SendParams();
+                        Task sendTask = SendParams();
                         if(await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(60))) != sendTask)
                         {
                             throw new TimeoutException("SendParam() took too long.");
@@ -456,7 +504,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             var writeTcs = new TaskCompletionSource<object?>();
 
             byte[] payload = Encoding.UTF8.GetBytes(value);
-
+            
+            _logger.LogDebug("Sending ConvAssist message asynchronously: {Message}", value);
             _logger.LogDebug("Payload hex: {Payload}", BitConverter.ToString(payload));
 
             byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
@@ -540,6 +589,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                         byte[] payload = Encoding.UTF8.GetBytes(value);
                         byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
 
+                        // Log the message being sent to ConvAssist
+                        _logger.LogInformation(">>> SENDING to ConvAssist - Length: {Length}, Content: {Content}", 
+                            payload.Length, value);
+
                         this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
                         this.NamedPipeServer.Write(payload, 0, payload.Length);
                         this.NamedPipeServer.Flush();
@@ -565,6 +618,17 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     message = messageReceived;
                     messageReceived = string.Empty;
                     TaskFinished = true;
+
+                    // Log the response received from ConvAssist
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        _logger.LogInformation("<<< RECEIVED from ConvAssist - Length: {Length}, Content: {Content}", 
+                            message.Length, message);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("<<< RECEIVED from ConvAssist - Empty or timeout after {Delay}ms", msDelay);
+                    }
                 }
             }
             catch (Exception ex)
@@ -658,10 +722,15 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             // Extract payload
             string stringData = Encoding.UTF8.GetString(pipeState.Buffer, 4, messageLength);
 
+            // Log incoming message from ConvAssist at async receive point
+            _logger.LogDebug("ConvAssist ReadCallback received {Bytes} bytes, MessageLength: {MessageLength}, IsComplete: {IsComplete}", 
+                received, messageLength, pipeState.PipeServer.IsMessageComplete);
+
             pipeState.Message.Append(stringData);
 
             if (pipeState.PipeServer.IsMessageComplete)
             {
+                _logger.LogDebug("ConvAssist message complete, triggering MessageReceived event");
                 OnMessageReceived(new MessageReceivedEventArgs(stringData));
                 pipeState.Message.Clear();
             }

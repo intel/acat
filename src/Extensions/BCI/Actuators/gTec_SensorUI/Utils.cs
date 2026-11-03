@@ -9,7 +9,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     internal class Utils
     {
-        private static readonly ILogger<Utils> _logger = LoggerFactory.GetLogger<Utils>();
+        private static readonly ILogger<Utils> _logger = LoggingConfiguration.CreateLogger<Utils>();
 
         internal static void HandleHelpNavigaion(WebBrowserNavigatingEventArgs e)
         {

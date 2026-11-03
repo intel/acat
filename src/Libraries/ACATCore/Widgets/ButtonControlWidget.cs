@@ -81,7 +81,7 @@ namespace ACAT.Core.Widgets
         {
             base.SetWidgetAttribute(attribute);
 
-            var fontFamily = Fonts.Instance.GetFontFamily(new[]
+            FontFamily fontFamily = Fonts.Instance.GetFontFamily(new[]
                                             {   widgetAttribute.FontName,
                                                 CoreGlobals.AppPreferences.FontName });
 

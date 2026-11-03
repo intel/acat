@@ -39,7 +39,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 
         public CachedLogBCI(string baseFileName, string baseDirPath = null, ILogger<CachedLogBCI> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<CachedLogBCI>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<CachedLogBCI>();
             if (!string.IsNullOrEmpty(baseFileName))
             {
                 LogFileName = baseFileName + ".csv";
@@ -115,7 +115,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
         {
             DateTime now = DateTime.UtcNow;
 
-            var elapsed = now - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime();
+            TimeSpan elapsed = now - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime();
 
             string elapsedTime = ((int)(elapsed.TotalMilliseconds / 1000)).ToString() + "." + (int)(elapsed.TotalMilliseconds % 1000);
 

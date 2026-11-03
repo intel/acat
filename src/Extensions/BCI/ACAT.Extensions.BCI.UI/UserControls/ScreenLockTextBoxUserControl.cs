@@ -12,6 +12,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ThemeManagement;
 using System;
 using System.Threading.Tasks;
@@ -61,11 +62,11 @@ namespace ACAT.Extensions.BCI.UI.UserControls
                 return;
             }
 
-            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
+            ColorScheme colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
             labelPin.BackColor = colorScheme.Background;
             labelPin.ForeColor = colorScheme.Foreground;
 
-            var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+            IActuator actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
             if (actuator is KeyboardActuator)
             {
                 _keyboardActuator = actuator as KeyboardActuator;

@@ -7,6 +7,7 @@
 
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -77,7 +78,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="handled">true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Verbose();
+            _logger.LogDebug("OnFocusChanged");
 
             if (ignoreApp(monitorInfo.FgProcess.ProcessName))
             {
@@ -86,7 +87,7 @@ namespace ACAT.Core.AgentManagement
             }
 
             base.OnFocusChanged(monitorInfo, ref handled);
-            Log.Debug("IsNew: " + monitorInfo.IsNewWindow + ", scannerShown: " + scannerShown);
+            _logger.LogDebug("IsNew: {IsNewWindow}, scannerShown: {ScannerShown}", monitorInfo.IsNewWindow, scannerShown);
             if (monitorInfo.IsNewWindow || !scannerShown)
             {
                 showPanel(this, new PanelRequestEventArgs(PanelClasses.Alphabet, monitorInfo));

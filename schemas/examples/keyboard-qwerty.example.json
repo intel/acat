@@ -1,0 +1,206 @@
+{
+  "$schema": "../json/panel-config.schema.json",
+  "widgetAttributes": [
+    {
+      "name": "B1",
+      "label": "    Q",
+      "value": "q",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": 22,
+      "bold": false
+    },
+    {
+      "name": "B2",
+      "label": "    W",
+      "value": "w",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": 22,
+      "bold": false
+    },
+    {
+      "name": "B3",
+      "label": "    E",
+      "value": "e",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": 22,
+      "bold": false
+    },
+    {
+      "name": "B4",
+      "label": "    R",
+      "value": "r",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": 22,
+      "bold": false
+    },
+    {
+      "name": "B5",
+      "label": "    T",
+      "value": "t",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": 22,
+      "bold": false
+    },
+    {
+      "name": "B6",
+      "label": "h",
+      "value": "@CmdEnterKey",
+      "fontName": "ACAT FONT 1",
+      "fontSize": 32,
+      "bold": false
+    },
+    {
+      "name": "B7",
+      "label": "    A",
+      "value": "a",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": 22,
+      "bold": false
+    },
+    {
+      "name": "B11",
+      "label": "w",
+      "value": "@CmdBackSpace",
+      "fontName": "ACAT FONT 1",
+      "fontSize": 32,
+      "bold": false
+    },
+    {
+      "name": "B16",
+      "label": "Mode",
+      "value": "@CmdEntryModeSelect",
+      "fontName": "Montserrat Black",
+      "fontSize": 22,
+      "bold": false,
+      "italic": true
+    },
+    {
+      "name": "B17",
+      "label": "m",
+      "value": " ",
+      "fontName": "ACAT FONT 1",
+      "fontSize": 32,
+      "bold": false
+    },
+    {
+      "name": "B18",
+      "label": "    .",
+      "value": ".",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": 22,
+      "bold": true
+    },
+    {
+      "name": "B19",
+      "label": "  Y/N",
+      "value": "@CmdYesNoResponse",
+      "fontName": "Montserrat Black",
+      "fontSize": 22,
+      "bold": false,
+      "italic": true
+    },
+    {
+      "name": "B20",
+      "label": "H",
+      "value": "@CmdMainMenu",
+      "fontName": "ACAT FONT 1",
+      "fontSize": 32,
+      "bold": false
+    }
+  ],
+  "layout": {
+    "colorScheme": "Scanner",
+    "widgets": [
+      {
+        "class": "RowWidget",
+        "name": "Row1",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "B1",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B2",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B3",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B4",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B5",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B6",
+            "colorScheme": "ScannerButton"
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row2",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "B7",
+            "colorScheme": "ScannerButton"
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row3",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "B11",
+            "colorScheme": "ScannerButton"
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row4",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "B16",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B17",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B18",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B19",
+            "colorScheme": "ScannerButton"
+          },
+          {
+            "class": "ScannerButton",
+            "name": "B20",
+            "colorScheme": "ScannerButton"
+          }
+        ]
+      }
+    ]
+  },
+  "animations": []
+}

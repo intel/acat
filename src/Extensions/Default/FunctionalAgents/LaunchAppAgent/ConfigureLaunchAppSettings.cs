@@ -202,7 +202,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         {
             var name = dataGridView2.Rows[e.RowIndex].Cells[AppNameColumn.Name].Value as String;
 
-            var result = MessageBox.Show("Delete application " + name, Text, MessageBoxButtons.YesNo,
+            DialogResult result = MessageBox.Show("Delete application " + name, Text, MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
             if (result == DialogResult.No)
@@ -212,7 +212,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
 
             updateDataFromUI();
 
-            foreach (var appInfo in Applications)
+            foreach (AppInfo appInfo in Applications)
             {
                 var tag = dataGridView2.Rows[e.RowIndex].Tag as AppInfo;
                 if (tag == appInfo)
@@ -234,7 +234,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <param name="e">event args</param>
         private void handleEditAppInfo(DataGridViewCellEventArgs e)
         {
-            var row = dataGridView2.Rows[e.RowIndex];
+            DataGridViewRow row = dataGridView2.Rows[e.RowIndex];
 
             Hide();
 
@@ -319,7 +319,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         {
             dataGridView2.Rows.Clear();
 
-            foreach (var appInfo in Applications)
+            foreach (AppInfo appInfo in Applications)
             {
                 addDataGridRow(appInfo);
             }

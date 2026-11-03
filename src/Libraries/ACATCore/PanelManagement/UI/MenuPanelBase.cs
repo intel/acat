@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -12,6 +12,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public partial class MenuPanelBase : Form, IScannerPanel
     {
+        private static readonly ILogger _logger = LogManager.GetLogger(typeof(MenuPanelBase).Name);
+
         /// <summary>
         /// Title of the scanner
         /// </summary>
@@ -188,7 +191,7 @@ namespace ACAT.Core.PanelManagement
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Error($"Could not initialize form {Name}");
+                _logger.LogError("Could not initialize form {FormName}", Name);
                 return false;
             }
 
@@ -369,11 +372,11 @@ namespace ACAT.Core.PanelManagement
 
             for (int columnIndex = 0; columnIndex < panel.ColumnCount; columnIndex++)
             {
-                var control = panel.GetControlFromPosition(columnIndex, rowIndex);
-                var widget = ScannerCommon.RootWidget.Finder.FindChild(control.Handle);
+                Control control = panel.GetControlFromPosition(columnIndex, rowIndex);
+                Widget widget = ScannerCommon.RootWidget.Finder.FindChild(control.Handle);
                 if (widget != null)
                 {
-                    var parent = widget.Parent;
+                    Widget parent = widget.Parent;
                     parent?.Remove(widget);
                 }
                 panel.Controls.Remove(control);
@@ -384,7 +387,7 @@ namespace ACAT.Core.PanelManagement
             {
                 for (int columnIndex = 0; columnIndex < panel.ColumnCount; columnIndex++)
                 {
-                    var control = panel.GetControlFromPosition(columnIndex, i);
+                    Control control = panel.GetControlFromPosition(columnIndex, i);
                     panel.SetRow(control, i - 1);
                 }
             }

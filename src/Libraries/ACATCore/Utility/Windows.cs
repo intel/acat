@@ -27,7 +27,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class Windows
     {
-        private static ILogger<Windows> _logger;
+        private static ILogger<Windows> _logger => LogManager.GetLogger<Windows>();
 
         private const int GCL_HICON = -14;
         private const int GCL_HICONSM = -34;
@@ -540,7 +540,7 @@ namespace ACAT.Core.Utility
             {
                 if (c.Visible && c.Bounds.Contains(pos))
                 {
-                    var child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
+                    Control child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
                     if (child == null)
                     {
                         return c;
@@ -719,7 +719,7 @@ namespace ACAT.Core.Utility
 
             try
             {
-                var osInfo = Environment.OSVersion;
+                OperatingSystem osInfo = Environment.OSVersion;
                 if (osInfo.Version.Major == 6 && osInfo.Version.Minor == 1)
                 {
                     windowsVersion = WindowsVersion.Win7;
@@ -1672,14 +1672,14 @@ namespace ACAT.Core.Utility
             }
             else
             {
-                _logger?.LogDebug(\"fgWnd is zero in SetWindowSizePercent\");
+                _logger?.LogDebug("fgWnd is zero in SetWindowSizePercent");
             }
         }
 
         /// <summary>
         /// Shows the child window, assigns parent as the owner
         /// This is just a helper function that takes care of
-        /// cross-thread invokations that would result in .NET
+        /// cross-thread invocations that would result in .NET
         /// exceptions.
         /// </summary>
         /// <param name="parent"></param>
@@ -1900,7 +1900,7 @@ namespace ACAT.Core.Utility
         {
             try
             {
-                var osVersion = GetOSVersion();
+                WindowsVersion osVersion = GetOSVersion();
 
                 if (osVersion == WindowsVersion.Win8 || osVersion == WindowsVersion.Win10)
                 {

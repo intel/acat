@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Speech.Synthesis;
 
@@ -96,7 +97,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public SAPIEngine(ILogger<SAPIEngine> logger)
+        public SAPIEngine(ILogger<SAPIEngine> logger = null)
         {
             _logger = logger;
             SAPISettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
@@ -281,7 +282,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public bool Init(CultureInfo ci)
         {
-            var ins = Synthesizer.GetInstalledVoices();
+            ReadOnlyCollection<InstalledVoice> ins = Synthesizer.GetInstalledVoices();
 
             foreach (InstalledVoice iv in ins)
             {

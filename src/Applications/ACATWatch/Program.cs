@@ -12,8 +12,10 @@
 
 using ACAT.Applications;
 using ACAT.Applications.ACATWatch;
+using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
@@ -44,12 +46,14 @@ namespace ACATWatch
                 CoreGlobals.AppPreferences.DebugLogMessagesToFile = true;
                 CoreGlobals.AppPreferences.DebugMessagesEnable = true;
 
-                // Initialize legacy logging (existing code)
-                Log.SetupListeners();
-
-                // Initialize modern logging infrastructure (ticket #3)
-                var modernLogger = LoggingConfiguration.CreateLoggerFactory();
-                _logger = modernLogger.CreateLogger(typeof(Program));
+                // Initialize dependency injection with ACAT infrastructure
+                var services = new ServiceCollection();
+                services.AddACATInfrastructure();
+                var serviceProvider = services.BuildServiceProvider();
+                Context.ServiceProvider = serviceProvider;
+                
+                var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+                _logger = loggerFactory.CreateLogger(typeof(Program));
 
                 FileUtils.LogAssemblyInfo(Assembly.GetExecutingAssembly());
 
@@ -59,16 +63,13 @@ namespace ACATWatch
 
                 _logger.LogInformation("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
 
-                Log.Close();
-                modernLogger?.Dispose();
+                (serviceProvider as IDisposable)?.Dispose();
             }
             else
             {
-                Log.SetupListeners();
                 var tempFactory = LoggingConfiguration.CreateLoggerFactory();
                 var tempLogger = tempFactory.CreateLogger(typeof(Program));
                 tempLogger.LogError("Failed to load user preferences. Exiting application.");
-                Log.Close();
                 tempFactory.Dispose();
             }
         }

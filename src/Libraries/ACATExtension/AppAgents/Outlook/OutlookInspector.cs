@@ -40,7 +40,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// <returns>true if it is</returns>
         public OutlookWindowTypes IdentifyWindow(WindowActivityMonitorInfo monitorInfo, ref OutlookControlSubType subType)
         {
-            var windowType = OutlookWindowTypes.Unknown;
+            OutlookWindowTypes windowType = OutlookWindowTypes.Unknown;
 
             bool isNewEmail = false;
 
@@ -113,7 +113,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         {
             var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
 
-            var element = AgentUtils.FindElementByAutomationId(windowElement, "Edit", "ControlType.Edit", "2002") ??
+            AutomationElement element = AgentUtils.FindElementByAutomationId(windowElement, "Edit", "ControlType.Edit", "2002") ??
                             AgentUtils.FindElementByAutomationId(windowElement, "Edit", "ControlType.Edit", "2006") ??
                             AgentUtils.FindElementByAutomationId(windowElement, "Button", "ControlType.Button", "108");
 
@@ -160,7 +160,7 @@ namespace ACAT.Extension.AppAgents.Outlook
             }
 
             var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
-            var element = (AgentUtils.FindElementByAutomationId(windowElement, "OutlookGrid", ControlType.List, "4542") ??
+            AutomationElement element = (AgentUtils.FindElementByAutomationId(windowElement, "OutlookGrid", ControlType.List, "4542") ??
                            AgentUtils.FindElementByAutomationId(windowElement, "Button", ControlType.Button, "4370")) ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4098");
 
@@ -219,13 +219,13 @@ namespace ACAT.Extension.AppAgents.Outlook
             }
 
             var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
-            var element = AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Document, "4099");
-            var toButton = AgentUtils.FindElementByAutomationId(windowElement, "Button", ControlType.Button, "4352");
+            AutomationElement element = AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Document, "4099");
+            AutomationElement toButton = AgentUtils.FindElementByAutomationId(windowElement, "Button", ControlType.Button, "4352");
 
             if (element != null)
             {
-                var patterns = element.GetSupportedPatterns();
-                foreach (var pattern in patterns)
+                AutomationPattern[] patterns = element.GetSupportedPatterns();
+                foreach (AutomationPattern pattern in patterns)
                 {
                     if (String.Compare(pattern.ProgrammaticName, "ValuePatternIdentifiers.Pattern", true) == 0)
                     {
@@ -280,7 +280,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         {
             var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
 
-            var element = AgentUtils.FindElementByAutomationId(windowElement, "SuperGrid", ControlType.Table, "4704");
+            AutomationElement element = AgentUtils.FindElementByAutomationId(windowElement, "SuperGrid", ControlType.Table, "4704");
 
             return element != null;
         }
@@ -311,7 +311,7 @@ namespace ACAT.Extension.AppAgents.Outlook
             }
 
             var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
-            var element = AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4100") ??
+            AutomationElement element = AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4100") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Document, "4100");
 
             bool retVal = element != null;
@@ -345,7 +345,7 @@ namespace ACAT.Extension.AppAgents.Outlook
             }
 
             var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
-            var element = (AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4481") ??
+            AutomationElement element = (AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4481") ??
                            AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4480") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4096"));
 
@@ -373,7 +373,7 @@ namespace ACAT.Extension.AppAgents.Outlook
 
             subType = OutlookControlSubType.Unknown;
 
-            var element = AgentUtils.GetElementOrAncestorByAutomationId(monitorInfo.FocusedElement, "RichEdit20WPT", "ControlType.Document", "4159");
+            AutomationElement element = AgentUtils.GetElementOrAncestorByAutomationId(monitorInfo.FocusedElement, "RichEdit20WPT", "ControlType.Document", "4159");
             if (element != null)
             {
                 var name = element.Current.Name;
@@ -412,7 +412,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 return false;
             }
 
-            var element = (AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4481") ??
+            AutomationElement element = (AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4481") ??
                            AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4480") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4112"));
 

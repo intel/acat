@@ -21,11 +21,14 @@ using ACAT.Core.CoreInterfaces;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace ACAT.Core.ActuatorManagement
 {
@@ -56,6 +59,11 @@ namespace ACAT.Core.ActuatorManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        /// Backing field for <see cref="CreatePanelHandler"/>.
+        /// </summary>
+        private ICommandHandler<CreatePanelCommand> _createPanelHandler;
 
         /// <summary>
         /// Initializes a new instance of the ActuatorBase class
@@ -164,6 +172,20 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         protected State actuatorState { get; set; }
         public Guid Id => Descriptor.Id;
+
+        /// <summary>
+        /// Injectable command handler for creating panels. When set, panel creation
+        /// uses CQRS instead of direct singleton access. Falls back to
+        /// <see cref="PanelManager.Instance"/> when not set.
+        /// Resolved lazily from <see cref="Context.ServiceProvider"/> if available.
+        /// </summary>
+        public ICommandHandler<CreatePanelCommand> CreatePanelHandler
+        {
+            get => _createPanelHandler ??
+                   (Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>))
+                       as ICommandHandler<CreatePanelCommand>);
+            set => _createPanelHandler = value;
+        }
 
         /// <summary>
         /// Class factory to create a switch.  Override this in the
@@ -278,25 +300,25 @@ namespace ACAT.Core.ActuatorManagement
             // enumerate the switches in this actuator and create
             // each switch object using the switch ClassFactory
 
-            Log.Debug("Loading switches");
-            foreach (var switchSetting in switchSettings)
+            _logger?.LogDebug("Loading switches");
+            foreach (SwitchSetting switchSetting in switchSettings)
             {
-                var actuatorSwitch = CreateSwitch();
+                IActuatorSwitch actuatorSwitch = CreateSwitch();
                 if (actuatorSwitch != null)
                 {
-                    Log.Debug("name=" + switchSetting.Name);
+                    _logger?.LogDebug("Loading switch: {SwitchName}", switchSetting.Name);
                     if (!_switches.ContainsKey(switchSetting.Name))
                     {
                         if (actuatorSwitch.Load(switchSetting) && actuatorSwitch.Init())
                         {
-                            Log.Debug("Adding switch " + actuatorSwitch.Name);
+                            _logger?.LogDebug("Adding switch {SwitchName}", actuatorSwitch.Name);
                             actuatorSwitch.Actuator = this;
                             _switches.Add(actuatorSwitch.Name, actuatorSwitch);
                         }
                     }
                     else
                     {
-                        Log.Warn("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
+                        _logger?.LogWarning("Warning. Switch {SwitchName} defined more than once", actuatorSwitch.Name);
                     }
                 }
             }
@@ -426,7 +448,7 @@ namespace ACAT.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing ActuatorBase");
 
                 if (disposing)
                 {
@@ -447,15 +469,14 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>enum value</returns>
         protected SwitchAction getSwitchAction(String action)
         {
-            var retVal = SwitchAction.Unknown;
+            SwitchAction retVal = SwitchAction.Unknown;
             try
             {
                 retVal = (SwitchAction)Enum.Parse(typeof(SwitchAction), action, true);
             }
             catch (Exception e)
             {
-                Log.Warn("VisionAcutator switch, invalid action specified " + action);
-                Log.Exception(e);
+                _logger?.LogWarning(e, "VisionActuator switch, invalid action specified {Action}", action);
             }
 
             return retVal;
@@ -472,12 +493,12 @@ namespace ACAT.Core.ActuatorManagement
                                             String gesture,
                                             IEnumerable<IActuatorSwitch> switches)
         {
-            foreach (var switchObj in switches)
+            foreach (IActuatorSwitch switchObj in switches)
             {
-                var imageSwitch = switchObj;
+                IActuatorSwitch imageSwitch = switchObj;
                 if (String.Compare(imageSwitch.Source, gesture, true) == 0)
                 {
-                    Log.Debug("Found switch object " + switchObj.Name + " for gesture" + gesture);
+                    _logger?.LogDebug("Found switch object {SwitchName} for gesture {Gesture}", switchObj.Name, gesture);
                     return CreateSwitch(switchObj);
                 }
             }
@@ -570,14 +591,14 @@ namespace ACAT.Core.ActuatorManagement
         {
             IActuatorSwitch actuatorSwitch = null;
             String gesture = String.Empty;
-            var switchAction = SwitchAction.Unknown;
+            SwitchAction switchAction = SwitchAction.Unknown;
             String tag = String.Empty;
             int confidence = -1;
             long time = -1;
             bool actuate = true;
             parsedGesture = String.Empty;
 
-            Log.Debug(strData);
+            _logger?.LogDebug("Parsing actuator message: {Data}", strData);
 
             var tokens = strData.Split(';');
             foreach (var token in tokens)
@@ -658,7 +679,23 @@ namespace ACAT.Core.ActuatorManagement
                 return false;
             }
 
-            var form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName, "Adjust Scanning Speed");
+            Form form;
+            var handler = CreatePanelHandler;
+            if (handler != null)
+            {
+                var command = new CreatePanelCommand(
+                    CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName,
+                    "Adjust Scanning Speed");
+                handler.Handle(command);
+                form = command.CreatedPanel as Form;
+            }
+            else
+            {
+                form = PanelManager.Instance.CreatePanel(
+                    CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName,
+                    "Adjust Scanning Speed");
+            }
+
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);
@@ -675,7 +712,23 @@ namespace ACAT.Core.ActuatorManagement
                 return false;
             }
 
-            var form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultTryoutPanelName, "Switch Tryout");
+            Form form;
+            var handler = CreatePanelHandler;
+            if (handler != null)
+            {
+                var command = new CreatePanelCommand(
+                    CoreGlobals.AppPreferences.DefaultTryoutPanelName,
+                    "Switch Tryout");
+                handler.Handle(command);
+                form = command.CreatedPanel as Form;
+            }
+            else
+            {
+                form = PanelManager.Instance.CreatePanel(
+                    CoreGlobals.AppPreferences.DefaultTryoutPanelName,
+                    "Switch Tryout");
+            }
+
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);
@@ -696,7 +749,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="enableConfigure">should the configure button b e enabled</param>
         protected void UpdateCalibrationStatus(String caption, String prompt, int timeout = 0, bool enableConfigure = true, string buttonText = "")
         {
-            Log.Debug("Calling ActuatorManager.Instance.UpdateCalibrationStatus");
+            _logger?.LogDebug("Calling ActuatorManager.Instance.UpdateCalibrationStatus");
             ActuatorManager.Instance.UpdateCalibrationStatus(this, caption, prompt, timeout, enableConfigure, buttonText);
         }
 
@@ -714,7 +767,7 @@ namespace ACAT.Core.ActuatorManagement
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger?.LogError(e, "Exception parsing long value");
             }
 
             return retVal;

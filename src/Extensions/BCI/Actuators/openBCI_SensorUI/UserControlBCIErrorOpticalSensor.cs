@@ -62,7 +62,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         public UserControlBCIErrorOpticalSensor(String stepId, ILogger<UserControlBCIErrorOpticalSensor> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<UserControlBCIErrorOpticalSensor>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<UserControlBCIErrorOpticalSensor>();
             InitializeComponent();
 
             _stepId = stepId;
@@ -116,7 +116,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         private void WebBrowserDesc_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            Utils.HandleHelpNavigaion(e);
+            Utils.HandleHelpNavigation(e);
         }
 
         //// <summary>

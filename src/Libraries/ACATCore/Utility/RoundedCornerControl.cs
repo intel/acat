@@ -169,7 +169,7 @@ namespace ACAT.Core.Utility
         /// <param name="radius">radius of roundness</param>
         public static GraphicsPath CreateRoundedControl(Control control, int radius = 8)
         {
-            var graphicsPath = Create(-1, -1, control.Width, control.Height, radius);
+            GraphicsPath graphicsPath = Create(-1, -1, control.Width, control.Height, radius);
             var reg = new Region(graphicsPath);
             control.Region = reg;
             return graphicsPath;

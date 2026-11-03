@@ -11,6 +11,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Extension.UI;
 using ACATResources;
 using System;
+using System.Windows.Forms;
 
 namespace ACAT.Extension.CommandHandlers
 {
@@ -89,7 +90,7 @@ namespace ACAT.Extension.CommandHandlers
         /// </summary>
         private void switchLanguageHandler()
         {
-            var form = Context.AppPanelManager.CreatePanel("SwitchLanguageScanner");
+            Form form = Context.AppPanelManager.CreatePanel("SwitchLanguageScanner");
             if (form != null)
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);

@@ -266,8 +266,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            _logger.LogTrace();
-
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
 
             _scannerCommon.OnClosing();
@@ -339,8 +337,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnPause()
         {
-            _logger.LogTrace();
-
             _scannerCommon.OnPause();
         }
 
@@ -350,8 +346,6 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnResume()
         {
-            _logger.LogTrace();
-
             _scannerCommon.OnResume();
 
             refreshWordPredictionsAndSetCurrentWord();
@@ -367,17 +361,15 @@ namespace ACAT.Extension.UI
         {
             if (e.SourceWidget is WordListItemWidget)
             {
-                CoreGlobals.Stopwatch1.Reset();
-                CoreGlobals.Stopwatch1.Start();
+                var sw = System.Diagnostics.Stopwatch.StartNew();
 
                 _form.Invoke(new MethodInvoker(delegate
                 {
                     autoComplete(e.SourceWidget as WordListItemWidget);
                 }));
 
-                CoreGlobals.Stopwatch1.Stop();
-
-                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                sw.Stop();
+                UserControlWordPredictionCommon.OnAutoCompleteLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
 
                 handled = true;
             }
@@ -387,17 +379,15 @@ namespace ACAT.Extension.UI
             }
             if (e.SourceWidget is LetterListItemWidget)
             {
-                CoreGlobals.Stopwatch1.Reset();
-                CoreGlobals.Stopwatch1.Start();
+                var sw = System.Diagnostics.Stopwatch.StartNew();
 
                 _form.Invoke(new MethodInvoker(delegate
                 {
                     autoComplete(e.SourceWidget as LetterListItemWidget);
                 }));
 
-                CoreGlobals.Stopwatch1.Stop();
-
-                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                sw.Stop();
+                UserControlWordPredictionCommon.OnAutoCompleteLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
 
                 handled = true;
             }
@@ -496,8 +486,6 @@ namespace ACAT.Extension.UI
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace();
-
                 if (disposing)
                 {
                     // dispose all managed resources.
@@ -518,7 +506,6 @@ namespace ACAT.Extension.UI
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            _logger.LogTrace();
             try
             {
                 if (_form.Visible)
@@ -594,18 +581,16 @@ namespace ACAT.Extension.UI
             // we try it twice in case there is an AgentContext exception
             // the first time around
 
-            CoreGlobals.Stopwatch3.Reset();
-            CoreGlobals.Stopwatch3.Start();
+            var sw = System.Diagnostics.Stopwatch.StartNew();
 
             if (!tryRefreshWordPredictionsAndSetCurrentWord())
             {
-                Log.Debug("AgentContextException.  Retrying refreshing word prediction");
+                _logger.LogDebug("AgentContextException.  Retrying refreshing word prediction");
                 tryRefreshWordPredictionsAndSetCurrentWord();
             }
 
-            CoreGlobals.Stopwatch3.Stop();
-
-            _logger.LogDebug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
+            sw.Stop();
+            UserControlWordPredictionCommon.OnRefreshLatencyMs?.Invoke(sw.Elapsed.TotalMilliseconds);
         }
 
         /// <summary>
@@ -650,7 +635,7 @@ namespace ACAT.Extension.UI
                 string nwords;
                 var charAtCaret = '\0';
 
-                using (var agentContext = Context.AppAgentMgr.ActiveContext())
+                using (AgentContext agentContext = Context.AppAgentMgr.ActiveContext())
                 {
                     // we need the word at the cursor and also the previous n-words
                     // in the current sentence

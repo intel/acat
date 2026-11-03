@@ -154,7 +154,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             dropdownGestureSelect.Items.Clear();
 
-            foreach (var actuatorSwitch in _cameraActuator.Switches)
+            foreach (IActuatorSwitch actuatorSwitch in _cameraActuator.Switches)
             {
                 int index = dropdownGestureSelect.Items.Add(actuatorSwitch.Name);
 

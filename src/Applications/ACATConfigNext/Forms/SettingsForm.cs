@@ -6,6 +6,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension;
 using ACATConfigNext.UserControls;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace ACATConfigNext.Forms
     public class SettingsForm : Form
     {
         private readonly ILogger<SettingsForm> _logger;
+        private readonly IServiceProvider _serviceProvider;
         private TableLayoutPanel basePanel;
         private FlowLayoutPanel leftPanel;
         private TableLayoutPanel navPanel;
@@ -42,13 +44,13 @@ namespace ACATConfigNext.Forms
 
         private bool _isDirty = false;
 
-        public SettingsForm(ILogger<SettingsForm> logger)
+        public SettingsForm(ILogger<SettingsForm> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
+            _serviceProvider = serviceProvider;
             WpfInitializationHelper.EnsureApplicationResources();
 
             InitializeComponent();
-
         }
 
         private FlowLayoutPanel CreateLeftPanel() 
@@ -159,7 +161,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error occurred while saving settings");
                 MessageBox.Show("An error occurred while saving settings.", "Save Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -355,18 +357,18 @@ namespace ACATConfigNext.Forms
 
         private void CancelExtensionChanges(string category)
         {
-            var extensions = LoadSettings(category);
+            IEnumerable<IExtension> extensions = LoadSettings(category);
 
             if (extensions != null)
             {
-                foreach (var extension in extensions)
+                foreach (IExtension extension in extensions)
                 {
                     if (extension is ISupportsPreferences supportsPrefs)
                     {
-                        var defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                        IPreferences defaultPrefs = supportsPrefs.GetDefaultPreferences();
                         if (defaultPrefs != null)
                         {
-                            var currentPrefs = supportsPrefs.GetPreferences();
+                            IPreferences currentPrefs = supportsPrefs.GetPreferences();
                             if (currentPrefs != null)
                             {
                                 CopyPreferencesValues(defaultPrefs, currentPrefs);
@@ -383,19 +385,19 @@ namespace ACATConfigNext.Forms
         {
             if (source == null || target == null) return;
 
-            var sourceType = source.GetType();
-            var targetType = target.GetType();
+            Type sourceType = source.GetType();
+            Type targetType = target.GetType();
 
-            var properties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] properties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-            foreach (var prop in properties)
+            foreach (PropertyInfo prop in properties)
             {
                 if (prop.CanRead && prop.CanWrite)
                 {
                     try
                     {
                         var value = prop.GetValue(source);
-                        var targetProp = targetType.GetProperty(prop.Name);
+                        PropertyInfo targetProp = targetType.GetProperty(prop.Name);
 
                         if (targetProp != null && targetProp.CanWrite && targetProp.PropertyType == prop.PropertyType)
                         {
@@ -408,6 +410,12 @@ namespace ACATConfigNext.Forms
                     }
                 }
             }
+        }
+
+        private object CreateExtensionInstance(Type type)
+        {
+            // Use shared helper method for consistent extension instantiation across all applications
+            return ExtensionHelper.CreateExtensionInstance(_serviceProvider, type, _logger);
         }
 
 
@@ -429,9 +437,9 @@ namespace ACATConfigNext.Forms
                 case "Word Predictors":
                     if (Context.AppWordPredictionManager.LoadExtensions(Context.ExtensionDirs))
                     {
-                        var wordPredictorTypes = Context.AppWordPredictionManager.WordPredictorExtensions;
-                        var wordPredictorExtensions = wordPredictorTypes
-                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                        ICollection<Type> wordPredictorTypes = Context.AppWordPredictionManager.WordPredictorExtensions;
+                        IEnumerable<IExtension> wordPredictorExtensions = wordPredictorTypes
+                            .Select(type => CreateExtensionInstance(type) as IExtension)
                             .Where(instance => instance != null);
                         return wordPredictorExtensions;
 
@@ -441,9 +449,9 @@ namespace ACATConfigNext.Forms
                 case "Text to Speech":
                     if (Context.AppTTSManager.LoadExtensions(Context.ExtensionDirs))
                     {
-                        var ttsEngineTypes = Context.AppTTSManager.GetExtensions();
-                        var ttsExtensions = ttsEngineTypes
-                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                        ICollection<Type> ttsEngineTypes = Context.AppTTSManager.GetExtensions();
+                        IEnumerable<IExtension> ttsExtensions = ttsEngineTypes
+                            .Select(type => CreateExtensionInstance(type) as IExtension)
                             .Where(instance => instance != null);
                         return ttsExtensions;
                     }
@@ -460,7 +468,7 @@ namespace ACATConfigNext.Forms
 
             foreach (var category in categories)
             {
-                var btn = CreateButton(category, true, Category_Click);
+                ScannerRoundedButtonControl btn = CreateButton(category, true, Category_Click);
                 btn.Tag = (Category: category, Settings: LoadSettings(category));
 
                 navPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -514,7 +522,7 @@ namespace ACATConfigNext.Forms
                 // Remove focus immediately so the outline disappears
                 this.ActiveControl = null;
 
-                var (Category, Settings) = ((string Category, IEnumerable<IExtension> Settings))clickedButton.Tag;
+                (string Category, IEnumerable<IExtension> Settings) = ((string Category, IEnumerable<IExtension> Settings))clickedButton.Tag;
                 string category = Category;
 
                 _currentCategory = category;
@@ -630,7 +638,7 @@ namespace ACATConfigNext.Forms
         private void NavigateToBreadcrumb(int index)
         {
             // Get the selected breadcrumb entry
-            var (targetPanel, label) = breadcrumbStack[index];
+            (UserControl targetPanel, string label) = breadcrumbStack[index];
 
             // Trim breadcrumbStack to one step before the target
             breadcrumbStack = breadcrumbStack.Take(index).ToList();

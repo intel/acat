@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -6,6 +6,7 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.ThemeManagement;
@@ -27,9 +28,9 @@ namespace ACAT.Core.UserControlManagement
     {
         private readonly ILogger<UserControlCommon> _logger;
 
-        public UserControlCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, IScannerPanel iScannerPanel, ILogger<UserControlCommon> logger)
+        public UserControlCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, IScannerPanel iScannerPanel, ILogger<UserControlCommon> logger = null)
         {
-            _logger = logger;
+            _logger = logger ?? LogManager.GetLogger<UserControlCommon>();
             ScannerForm = iScannerPanel.Form;
             this.mapEntry = mapEntry;
             ScannerPanel = iScannerPanel;
@@ -141,7 +142,7 @@ namespace ACAT.Core.UserControlManagement
             var buttonList = new List<Widget>();
             RootWidget.Finder.FindAllChildren(buttonList);
 
-            foreach (var widget in buttonList)
+            foreach (Widget widget in buttonList)
             {
                 if (widget is IButtonWidget)
                 {
@@ -286,7 +287,7 @@ namespace ACAT.Core.UserControlManagement
 
         private bool initWidgetManager(UserControlConfigMapEntry mapEntry)
         {
-            WidgetManager = new WidgetManager(UserControl as Control);
+            WidgetManager = new WidgetManager(UserControl as Control, LogManager.GetLogger<WidgetManager>());
             WidgetManager.Layout.SetColorScheme(ColorSchemes.ScannerSchemeName);
             WidgetManager.Layout.SetDisabledButtonColorScheme(ColorSchemes.DisabledScannerButtonSchemeName);
 
@@ -351,7 +352,7 @@ namespace ACAT.Core.UserControlManagement
 
         private void runCommandScanner(String command, ref bool handled)
         {
-            var dispatcher = ScannerPanel.CommandDispatcher;
+            RunCommandDispatcher dispatcher = ScannerPanel.CommandDispatcher;
             if (dispatcher != null)
             {
                 dispatcher.Dispatch(command, ref handled);
@@ -406,7 +407,7 @@ namespace ACAT.Core.UserControlManagement
             var buttonList = new List<Widget>();
             RootWidget.Finder.FindAllChildren(buttonList);
 
-            foreach (var widget in buttonList)
+            foreach (Widget widget in buttonList)
             {
                 if (widget is IButtonWidget)
                 {
@@ -437,7 +438,7 @@ namespace ACAT.Core.UserControlManagement
                 return;
             }
 
-            var widget = e.SourceWidget;
+            Widget widget = e.SourceWidget;
 
             bool handled = false;
 

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -22,6 +22,10 @@ namespace ACAT.Core.AgentManagement
                         "No-op agent")]
     public class NullAgent : AgentBase
     {
+        public NullAgent() : base(LogManager.GetLogger<AgentBase>())
+        {
+        }
+
         /// <summary>
         /// The text interface
         /// </summary>
@@ -47,8 +51,6 @@ namespace ACAT.Core.AgentManagement
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Verbose();
-
             setTextInterface(_textInterface);
 
             handled = true;

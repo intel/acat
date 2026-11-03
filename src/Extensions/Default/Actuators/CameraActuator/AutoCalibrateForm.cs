@@ -13,6 +13,7 @@
 
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -20,6 +21,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 {
     internal partial class AutoCalibrateForm : Form
     {
+        private static readonly ILogger<AutoCalibrateForm> _logger = LoggingConfiguration.CreateLogger<AutoCalibrateForm>();
         private VideoWindowFinder _videoWindowFinder;
         private readonly CameraActuator _visionActuator;
 
@@ -63,7 +65,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private void AutoCalibrateForm_Shown(object sender, EventArgs e)
         {
 
-            _videoWindowFinder = new VideoWindowFinder();
+            _videoWindowFinder = new VideoWindowFinder(null);
             _videoWindowFinder.EvtVideoWindowDisplayed += _videoWindowFinder_EvtVideoWindowDisplayed;
             _videoWindowFinder.Start();
         }
@@ -92,11 +94,11 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 _videoWindowFinder.Dispose();
             }
 
-            Log.Debug("Hiding video window");
+            _logger.LogDebug("Hiding video window");
 
             CameraSensor.hideVideoWindow();
 
-            Log.Debug("Closing calibform");
+            _logger.LogDebug("Closing calibform");
 
             Windows.CloseForm(this);
         }

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -9,18 +9,21 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.Interpreter;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.PanelManagement.Utils;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
-using ACAT.Core.PanelManagement.PanelConfig;
 
 namespace ACAT.Core.PanelManagement.Common
 {
@@ -31,7 +34,7 @@ namespace ACAT.Core.PanelManagement.Common
     /// events are handled and makes it easier for the developer to add
     /// new dialogs to ACAT.
     /// A dialog form will contain a DialogCommon field and
-    /// call the methods in this class whereever they are needed. Refer
+    /// call the methods in this class wherever they are needed. Refer
     /// to the documentation for the methods in this class for info on when these
     /// methods need to be invoked.
     /// This class creates the WidgetManager and PanelAnimationManager objects
@@ -39,6 +42,8 @@ namespace ACAT.Core.PanelManagement.Common
     /// </summary>
     public class DialogCommon : IDisposable, IPanelCommon
     {
+        private static ILogger<DialogCommon> _logger => LogManager.GetLogger<DialogCommon>();
+
         /// <summary>
         /// All dialog forms should derive from IDialogPanel
         /// </summary>
@@ -63,6 +68,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// Has this object been disposed off?
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        /// Backing field for <see cref="CreatePanelHandler"/>.
+        /// </summary>
+        private ICommandHandler<CreatePanelCommand> _createPanelHandler;
 
         /// <summary>
         /// Name of the form in the Panel config map
@@ -140,6 +150,20 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public Widget RootWidget
         { get { return _rootWidget; } }
+
+        /// <summary>
+        /// Injectable command handler for creating panels. When set, panel creation
+        /// uses CQRS instead of direct singleton access. Falls back to
+        /// <see cref="Context.AppPanelManager"/> when not set.
+        /// Resolved lazily from <see cref="Context.ServiceProvider"/> if available.
+        /// </summary>
+        public ICommandHandler<CreatePanelCommand> CreatePanelHandler
+        {
+            get => _createPanelHandler ??
+                   (Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>))
+                       as ICommandHandler<CreatePanelCommand>);
+            set => _createPanelHandler = value;
+        }
 
         /// <summary>
         /// Returns the synchronization object
@@ -231,7 +255,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _panelName = startupArg.PanelClass;
 
-            var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
+            PanelConfigMapEntry panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
             if (panelConfigMapEntry == null) // did not find the panel
             {
                 return false;
@@ -269,15 +293,16 @@ namespace ACAT.Core.PanelManagement.Common
         {
             if (_syncLock.Status != SyncLock.StatusValues.None)
             {
-                Log.Debug(_form.Name + ", _syncObj.Status: " + _syncLock.Status + ", form already closed.  returning");
+                _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, form already closed. returning", 
+                    _form.Name, _syncLock.Status);
                 return;
             }
 
             _syncLock.Status = SyncLock.StatusValues.Closing;
 
-            Log.Debug("Before animationmangoer.stop");
+            _logger?.LogDebug("Before animationmanager.stop");
             _form.Invoke(new StopDelegate(_animationManager.Stop));
-            Log.Debug("After animationmangoer.stop");
+            _logger?.LogDebug("After animationmanager.stop");
 
             unsubscribeFromEvents();
         }
@@ -339,14 +364,14 @@ namespace ACAT.Core.PanelManagement.Common
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing DialogCommon");
 
                 if (disposing)
                 {
                     PanelManager.Instance.EvtScannerShow -= Instance_EvtScannerShow;
 
                     // dispose all managed resources.
-                    Log.Verbose();
+                    _logger?.LogTrace("Disposing managed resources");
 
                     _animationManager?.Dispose();
 
@@ -386,14 +411,26 @@ namespace ACAT.Core.PanelManagement.Common
                 return;
             }
 
-            var startupArg = createStartupArgForScanner(widget);
+            StartupArg startupArg = createStartupArgForScanner(widget);
 
-            Log.Debug("Creating Panel " + widget.Panel);
-            Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
+            _logger?.LogDebug("Creating Panel {PanelName}", widget.Panel);
+            // CQRS: Use command handler instead of direct singleton access
+            Form panel;
+            var handler = CreatePanelHandler;
+            if (handler != null)
+            {
+                var command = new CreatePanelCommand(widget.Panel, string.Empty, startupArg);
+                handler.Handle(command);
+                panel = command.CreatedPanel as Form;
+            }
+            else
+            {
+                panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
+            }
             var child = panel as IScannerPanel;
             if (child != null)
             {
-                var scanner = child;
+                IScannerPanel scanner = child;
                 scanner.SetTargetControl(_form, widget);
                 Context.AppPanelManager.Show((IPanel)_form, child);
             }
@@ -422,12 +459,12 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private bool initAnimationManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _animationManager = new PanelAnimationManager();
+            _animationManager = new PanelAnimationManager(LogManager.GetLogger<PanelAnimationManager>());
 
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)
             {
-                Log.Error("Error initializing animation manager");
+                _logger?.LogError("Error initializing animation manager");
             }
 
             return retVal;
@@ -439,7 +476,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private bool initWidgetManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _widgetManager = new WidgetManager(_form);
+            _widgetManager = new WidgetManager(_form, LogManager.GetLogger<WidgetManager>());
 
             _widgetManager.Layout.SetColorScheme(ColorSchemes.DialogSchemeName);
 
@@ -447,7 +484,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             if (!retVal)
             {
-                Log.Error("Unable to initialize widget manager");
+                _logger?.LogError("Unable to initialize widget manager");
             }
             else
             {
@@ -524,7 +561,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             _rootWidget.Finder.FindAllChildren(widgetList);
 
-            foreach (var widget in widgetList)
+            foreach (Widget widget in widgetList)
             {
                 if (widget is IButtonWidget || !string.IsNullOrEmpty(widget.Panel))
                 {
@@ -555,7 +592,7 @@ namespace ACAT.Core.PanelManagement.Common
                 string value = widget.Value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    Log.Debug("**Actuate** " + widget.Name + " Value: " + value);
+                    _logger?.LogDebug("**Actuate** {WidgetName} Value: {Value}", widget.Name, value);
 
                     _dialogPanel.OnButtonActuated(widget);
                 }
@@ -595,7 +632,7 @@ namespace ACAT.Core.PanelManagement.Common
                     Windows.DockWithScanner(_form, form, Context.AppWindowPosition, false);
                 }
 
-                Log.Debug("Left: " + _form.Left);
+                _logger?.LogDebug("Left: {Left}", _form.Left);
 
                 if (_form.Left < 0)
                 {

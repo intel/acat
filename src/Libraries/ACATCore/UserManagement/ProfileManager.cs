@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
@@ -21,6 +22,8 @@ namespace ACAT.Core.UserManagement
     /// </summary>
     public class ProfileManager
     {
+        private static readonly ILogger<ProfileManager> _logger = LogManager.GetLogger<ProfileManager>();
+
         /// <summary>
         /// Name of the default profile
         /// </summary>
@@ -112,7 +115,7 @@ namespace ACAT.Core.UserManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Failed to create profile directory: {ProfileName}", profileName);
                 retVal = false;
             }
 

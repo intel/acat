@@ -18,11 +18,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
     public class BCIUtils
     {
         private readonly ILogger<BCIUtils> _logger;
-        private readonly ILogger<BCIUtils> _logger;
 
         public BCIUtils(ILogger<BCIUtils> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<BCIUtils>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<BCIUtils>();
         }
 
         /// <summary>

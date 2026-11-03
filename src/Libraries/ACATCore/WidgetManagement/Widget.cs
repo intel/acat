@@ -365,7 +365,7 @@ namespace ACAT.Core.WidgetManagement
 
                 if (oldValue != _enabled)
                 {
-                    foreach (var widget in _children)
+                    foreach (Widget widget in _children)
                     {
                         widget.Enabled = _enabled;
                     }
@@ -786,7 +786,7 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="control">The .NET UI Control</param>
         public void AddChild(Control control)
         {
-            AddChild(new Widget(control));
+            AddChild(new Widget(control, _logger) { });
         }
 
         /// <summary>
@@ -851,7 +851,7 @@ namespace ACAT.Core.WidgetManagement
                     }
                 }
             }
-            //Log.Debug("WidgetName: " + Name + ", retVal : " + retVal);
+            _logger?.LogTrace("CanAddForAnimation: WidgetName={Name}, result={Result}", Name, retVal);
             return retVal;
         }
 
@@ -1178,7 +1178,7 @@ namespace ACAT.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace("");
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {
@@ -1466,7 +1466,7 @@ namespace ACAT.Core.WidgetManagement
         /// <returns></returns>
         private EnabledStates parseEnabledValue(String value)
         {
-            var retVal = value.ToLower() switch
+            EnabledStates retVal = value.ToLower() switch
             {
                 "false" => EnabledStates.Disabled,
                 "contextual" => EnabledStates.Contextual,

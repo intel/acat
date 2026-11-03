@@ -46,7 +46,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators
         /// <returns>SwitchAction enum</returns>
         public static SwitchAction getSwitchAction(string action)
         {
-            var retVal = SwitchAction.Unknown;
+            SwitchAction retVal = SwitchAction.Unknown;
             try
             {
                 retVal = (SwitchAction)Enum.Parse(typeof(SwitchAction), action, true);
@@ -89,7 +89,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators
         {
             IActuatorSwitch actuatorSwitch = null;
             string gesture = string.Empty;
-            var switchAction = SwitchAction.Unknown;
+            SwitchAction switchAction = SwitchAction.Unknown;
             string tag = string.Empty;
             int confidence = -1;
             long time = -1;
@@ -180,9 +180,9 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators
                                             IEnumerable<IActuatorSwitch> switches,
                                             CreateSwitchDelegate createSwitchDel)
         {
-            foreach (var switchObj in switches)
+            foreach (IActuatorSwitch switchObj in switches)
             {
-                var imageSwitch = switchObj;
+                IActuatorSwitch imageSwitch = switchObj;
                 if (string.Compare(imageSwitch.Source, gesture, true) == 0)
                 {
                     _logger?.LogDebug("Found switch object {SwitchName} for gesture {Gesture}", switchObj.Name, gesture);

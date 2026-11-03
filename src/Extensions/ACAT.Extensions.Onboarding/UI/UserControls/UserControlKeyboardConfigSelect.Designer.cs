@@ -90,7 +90,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Montserrat", 32.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Montserrat", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
@@ -172,7 +172,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             // 
             this.labelDescription.AutoSize = true;
             this.labelDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelDescription.Font = new System.Drawing.Font("Montserrat", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDescription.Font = new System.Drawing.Font("Montserrat", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDescription.ForeColor = System.Drawing.Color.White;
             this.labelDescription.Location = new System.Drawing.Point(53, 0);
             this.labelDescription.Name = "labelDescription";
@@ -186,7 +186,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             this.listBoxKeyboardConfigs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listBoxKeyboardConfigs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxKeyboardConfigs.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.listBoxKeyboardConfigs.Font = new System.Drawing.Font("Montserrat", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxKeyboardConfigs.Font = new System.Drawing.Font("Montserrat", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxKeyboardConfigs.FormattingEnabled = true;
             this.listBoxKeyboardConfigs.Location = new System.Drawing.Point(3, 3);
             this.listBoxKeyboardConfigs.Margin = new System.Windows.Forms.Padding(3, 3, 3, 150);

@@ -46,7 +46,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
         public static AppPanelClassConfig Load(string fileName)
         {
-            var retVal = Load<AppPanelClassConfig>(fileName, false, false);
+            AppPanelClassConfig retVal = Load<AppPanelClassConfig>(fileName, false, false);
 
             retVal.FileName = fileName;
 
@@ -64,7 +64,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns></returns>
         public PanelClassConfig Add(string appId, string appName, string appDescription, bool replaceIfExists = false)
         {
-            var panelClassConfig = Find(appId);
+            PanelClassConfig panelClassConfig = Find(appId);
             if (panelClassConfig == null)
             {
                 panelClassConfig = new PanelClassConfig();
@@ -96,7 +96,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="replaceIfExists">set to true if existing entry should be replaced</param>
         public void Add(PanelClassConfig panelClassConfig, bool replaceIfExists = false)
         {
-            var existingEntry = Find(panelClassConfig.AppId);
+            PanelClassConfig existingEntry = Find(panelClassConfig.AppId);
             if (existingEntry == null)
             {
                 PanelClassConfigs.Add(panelClassConfig);
@@ -120,7 +120,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<PanelClassConfig>();
+            PanelClassConfig tmp = LoadDefaults<PanelClassConfig>();
             var res = Save(tmp, FileName);
             Load(FileName);
 

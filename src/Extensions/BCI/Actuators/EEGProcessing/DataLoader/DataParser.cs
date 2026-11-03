@@ -10,8 +10,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader
     [Serializable]
     public class DataParser
     {
+        private static readonly ILogger<DataParser> _logger = LogManager.GetLogger<DataParser>();
+
         /// <summary>
         /// Offset added to targets
         /// (this parameter is typically set in settings)
@@ -264,8 +268,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader
             }
             catch (Exception e)
             {
-                //Log.Exception(e.getClass().getName()); e)
-                Log.Debug(e.Message);
+                _logger.LogDebug("{Message}", e.Message);
             }
         }
 
@@ -288,7 +291,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader
                 remainingData = new double[numColumns, numRemainingSamples];
 
                 string txtLog = "Get " + numRemainingSamples + " remaining data. Input data with Num Columns: " + numColumns + " Num Samples: " + numSamples;
-                Log.Debug(txtLog);
+                _logger.LogDebug("{Message}", txtLog);
                 try
                 {
                     for (int columnIdx = 0; columnIdx < numColumns; columnIdx++)
@@ -296,11 +299,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader
                             remainingData[columnIdx, i] = allData[columnIdx, startingSampleIdx + i];
 
                     txtLog = "Remaining dat. Num Columns: " + remainingData.GetLength(0) + " Num samples: " + remainingData.GetLength(1);
-                    Log.Debug(txtLog);
+                    _logger.LogDebug("{Message}", txtLog);
                 }
                 catch (Exception e)
                 {
-                    Log.Exception(e.Message);
+                    _logger.LogError(e, "{Message}", e.Message);
                 }
             }
 

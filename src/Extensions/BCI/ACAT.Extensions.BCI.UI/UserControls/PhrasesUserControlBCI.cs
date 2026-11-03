@@ -44,7 +44,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         private UserControlWordPredictionCommon _sentencePredictionCommon;
         public PhrasesUserControlBCI(ILogger<PhrasesUserControlBCI> logger = null)
         {
-            _logger = logger ?? LoggerFactory.GetLogger<PhrasesUserControlBCI>();
+            _logger = logger ?? LoggingConfiguration.CreateLogger<PhrasesUserControlBCI>();
             InitializeComponent();
         }
 
@@ -95,7 +95,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
             _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
 
-            _sentencePredictionCommon = new UserControlWordPredictionCommon(this, textController, scanner, new PredictionTypes[] { PredictionTypes.Sentences});
+            _sentencePredictionCommon = new UserControlWordPredictionCommon(this, textController, scanner, new PredictionTypes[] { PredictionTypes.Sentences}, null);
 
             _scanner = scanner;
 

@@ -1,11 +1,13 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.IO;
@@ -20,6 +22,7 @@ namespace ACAT.Core.ThemeManagement
     /// </summary>
     public class ColorScheme : IDisposable
     {
+        private static readonly ILogger<ColorScheme> _logger = LogManager.GetLogger<ColorScheme>();
         /// <summary>
         /// Default bg color to use if not defined in the config file
         /// </summary>
@@ -375,6 +378,72 @@ namespace ACAT.Core.ThemeManagement
         }
 
         /// <summary>
+        /// Creates a ColorScheme object from JSON configuration
+        /// </summary>
+        /// <param name="colorSchemeJson">The JSON color scheme object</param>
+        /// <param name="imageDir">Directory where the image files are located</param>
+        /// <returns>ColorScheme object</returns>
+        public static ColorScheme CreateFromJson(ColorSchemeJson colorSchemeJson, String imageDir)
+        {
+            if (colorSchemeJson == null)
+            {
+                return null;
+            }
+
+            var colorScheme = new ColorScheme(colorSchemeJson.Name ?? "default");
+
+            // Set background color
+            if (!String.IsNullOrEmpty(colorSchemeJson.Background))
+            {
+                colorScheme.SetBackground(colorSchemeJson.Background);
+            }
+
+            // Load background image if specified
+            if (!String.IsNullOrEmpty(colorSchemeJson.BackgroundImage))
+            {
+                colorScheme.BackgroundImage = loadImage(Path.Combine(imageDir, colorSchemeJson.BackgroundImage));
+            }
+
+            // Set foreground color
+            if (!String.IsNullOrEmpty(colorSchemeJson.Foreground))
+            {
+                colorScheme.SetForeground(colorSchemeJson.Foreground);
+            }
+
+            // Set highlight background color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightBackground))
+            {
+                colorScheme.SetHighlightBackground(colorSchemeJson.HighlightBackground);
+            }
+
+            // Load highlight background image if specified
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightBackgroundImage))
+            {
+                colorScheme.HighlightBackgroundImage = loadImage(Path.Combine(imageDir, colorSchemeJson.HighlightBackgroundImage));
+            }
+
+            // Set highlight foreground color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightForeground))
+            {
+                colorScheme.SetHighlightForeground(colorSchemeJson.HighlightForeground);
+            }
+
+            // Set highlight selected background color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightSelectedBackground))
+            {
+                colorScheme.SetHighlightSelectedBackground(colorSchemeJson.HighlightSelectedBackground);
+            }
+
+            // Set highlight selected foreground color
+            if (!String.IsNullOrEmpty(colorSchemeJson.HighlightSelectedForeground))
+            {
+                colorScheme.SetHighlightSelectedForeground(colorSchemeJson.HighlightSelectedForeground);
+            }
+
+            return colorScheme;
+        }
+
+        /// <summary>
         /// Dispose resources
         /// </summary>
         public void Dispose()
@@ -397,7 +466,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetBackground(String strColor)
         {
-            var color = _defaultBackgroundColor;
+            Color color = _defaultBackgroundColor;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -418,7 +487,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetForeground(String strColor)
         {
-            var color = _defaultForegroundColor;
+            Color color = _defaultForegroundColor;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -439,7 +508,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightBackground(String strColor)
         {
-            var color = _defaultHighlightBackground;
+            Color color = _defaultHighlightBackground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -460,7 +529,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightForeground(String strColor)
         {
-            var color = _defaultHighlightForeground;
+            Color color = _defaultHighlightForeground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -482,7 +551,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightSelectedBackground(String strColor)
         {
-            var color = _defaultSelectedBackground;
+            Color color = _defaultSelectedBackground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -503,7 +572,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>true on success, false if invalid color</returns>
         public bool SetHighlightSelectedForeground(String strColor)
         {
-            var color = _defaultSelectedBackground;
+            Color color = _defaultSelectedBackground;
 
             bool retVal = fromString(strColor, ref color);
             if (retVal)
@@ -523,7 +592,7 @@ namespace ACAT.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing ColorScheme");
 
                 if (disposing)
                 {
@@ -564,16 +633,16 @@ namespace ACAT.Core.ThemeManagement
                 return null;
             }
 
-            Log.Debug("imagePath: " + bitmapFile);
+            _logger.LogDebug("imagePath: {BitmapFile}", bitmapFile);
 
             if (File.Exists(bitmapFile))
             {
-                Log.Debug("File exists. Loading image");
+                _logger.LogDebug("File exists. Loading image");
                 retVal = Image.FromFile(bitmapFile);
             }
             else
             {
-                Log.Error($"Could not find bitmap file {bitmapFile}");
+                _logger.LogError("Could not find bitmap file {BitmapFile}", bitmapFile);
             }
 
             return retVal;

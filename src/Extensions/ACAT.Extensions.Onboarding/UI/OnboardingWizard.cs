@@ -96,17 +96,17 @@ namespace ACAT.Extensions.Onboarding.UI
                 return null;
             }
 
-            var currentEntry = _history[_history.Count - 1];
+            OnboardingHistoryEntry currentEntry = _history[_history.Count - 1];
 
             _history.RemoveAt(_history.Count - 1);
 
-            var prevEntry = _history[_history.Count - 1];
+            OnboardingHistoryEntry prevEntry = _history[_history.Count - 1];
 
             if (prevEntry.OnboardingExtension != currentEntry.OnboardingExtension)
             {
                 if (prevEntry.OnboardingExtension.StartOverOnBackwardNavigation)
                 {
-                    var savEntry = prevEntry;
+                    OnboardingHistoryEntry savEntry = prevEntry;
 
                     while (true)
                     {
@@ -170,9 +170,9 @@ namespace ACAT.Extensions.Onboarding.UI
                 _logger.LogDebug("No onboarding sequence items found!!");
                 return false;
             }
-            foreach (var onboardingItem in _onboardingSequence.OnboardingSequenceItems)
+            foreach (OnboardingSequenceItem onboardingItem in _onboardingSequence.OnboardingSequenceItems)
             {
-                var type = findOnboardingType(onboardingItem.Id);
+                Type type = findOnboardingType(onboardingItem.Id);
                 if (type != null)
                 {
                     var assembly = Assembly.LoadFrom(type.Assembly.Location);
@@ -258,9 +258,9 @@ namespace ACAT.Extensions.Onboarding.UI
 
         private Type findOnboardingType(Guid id)
         {
-            foreach (var type in _extensionsTypeCache)
+            foreach (Type type in _extensionsTypeCache)
             {
-                var guid = getId(type);
+                Guid guid = getId(type);
                 if (guid.Equals(id))
                 {
                     return type;

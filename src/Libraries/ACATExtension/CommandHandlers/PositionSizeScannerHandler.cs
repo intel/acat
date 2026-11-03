@@ -19,6 +19,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Extension;
@@ -54,7 +55,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             switch (Command)
             {
                 case "CmdAutoPositionScanner":  // autoposition
-                    var scannerCommon = Dispatcher.Scanner.ScannerCommon;
+                    ScannerCommon scannerCommon = Dispatcher.Scanner.ScannerCommon;
                     scannerCommon.AnimationManager.Interrupt();
                     scannerCommon.PositionSizeController.EvtAutoRepositionScannerStop += PositionSizeController_EvtAutoRepositionScannerStop;
                     scannerCommon.PositionSizeController.AutoRepositionScannerStart();

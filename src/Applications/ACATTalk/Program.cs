@@ -11,19 +11,32 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+#define PERFORMANCE
+
 using ACAT.Applications;
 using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
+using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.Diagnostics;
+using ACAT.Core.Utility.Metrics;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
+using ACAT.Extensions.UI.Diagnostics;
+using ACAT.Extensions.UI.Scanners;
 using ACATResources;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ACATTalk
@@ -34,7 +47,12 @@ namespace ACATTalk
     internal static class Program
     {
         private static Splash splash = null;
+        private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
+        private static IServiceProvider _serviceProvider;
+#if DEBUG
+        private static PerformanceDashboard _performanceDashboard = null;
+#endif
 
         /// <summary>
         /// The main entry point for the application.
@@ -42,6 +60,19 @@ namespace ACATTalk
         [STAThread]
         public static void Main(string[] args)
         {
+#if PERFORMANCE
+            PerformanceMonitor.Initialize();
+            PerformanceMonitor.StartTimer("TotalStartupTime");
+            PerformanceMonitor.LogEvent("Application", "Main entry point");
+#endif
+
+#if DEBUG
+            _performanceDashboard = new PerformanceDashboard(
+                PerformanceMonitor.GetRuntimeCollector(),
+                PerformanceMonitor.GetMemoryProfiler());
+            _performanceDashboard.Show();
+#endif
+
             if (AppCommon.OtherInstancesRunning())
             {
                 return;
@@ -50,33 +81,44 @@ namespace ACATTalk
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //if (!AppCommon.CheckFontsInstalled())
-            //{
-            //    return;
-            //}
-
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
             FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
+#if PERFORMANCE
+            PerformanceMonitor.StartTimer("FileUtilsLogAssemblyInfo");
+#endif
             FileUtils.LogAssemblyInfo();
+#if PERFORMANCE
+            PerformanceMonitor.StopTimer("FileUtilsLogAssemblyInfo", PerformanceMonitor.MetricCategory.Startup);
+#endif
 
+#if PERFORMANCE
+            var swGS = Stopwatch.StartNew();
+#endif
             AppCommon.LoadGlobalSettings();
+#if PERFORMANCE
+            PerformanceMonitor.RecordIoOperation("LoadGlobalSettings", swGS.Elapsed.TotalMilliseconds);
+#endif
 
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
-
-            bool freshInstallForUser = !UserManager.UserExists(UserManager.CurrentUser);
 
             if (!AppCommon.CreateUserAndProfile())
             {
                 return;
             }
 
+#if PERFORMANCE
+            var swUP = Stopwatch.StartNew();
+#endif
             if (!AppCommon.LoadUserPreferences())
             {
                 return;
             }
+#if PERFORMANCE
+            PerformanceMonitor.RecordIoOperation("LoadUserPreferences", swUP.Elapsed.TotalMilliseconds);
+#endif
             if (!AppCommon.SetCulture())
             {
                 return;
@@ -88,14 +130,17 @@ namespace ACATTalk
 
             Common.AppPreferences.AppName = "ACAT Talk";
 
-            // Initialize legacy logging system
-            Log.SetupListeners();
+            // Initialize modern logging infrastructure FIRST - before anything else needs it
+            // Use the shared singleton logger factory to ensure single log file
+            modernLoggingFactory = LoggingConfiguration.GetSharedLoggerFactory();
+            LogManager.Initialize(modernLoggingFactory);  // Initialize global logger manager
 
-            // Initialize modern logging infrastructure (ticket #3)
-            var modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
             _logger = modernLoggingFactory.CreateLogger(typeof(Program));
 
             _logger.LogDebug("ACAT Talk Application Launch");
+
+            // Set up dependency injection for extension instantiation
+            InitializeDependencyInjection();
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
@@ -115,6 +160,9 @@ namespace ACATTalk
             Common.PreInit();
             Context.AppAgentMgr.EnableAppAgentContextSwitch = false;
 
+#if PERFORMANCE
+            var swCtxInit = Stopwatch.StartNew();
+#endif
             if (!Context.Init(Context.StartupFlags.Minimal |
                                 Context.StartupFlags.TextToSpeech |
                                 Context.StartupFlags.WordPrediction |
@@ -139,6 +187,26 @@ namespace ACATTalk
             Context.AppAgentMgr.EnableContextualMenusForMenus = false;
             Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
 
+#if PERFORMANCE
+            PerformanceMonitor.RecordIoOperation("ContextInit", swCtxInit.Elapsed.TotalMilliseconds);
+            // Wire prediction and UI callbacks so library code can feed data into PerformanceMonitor
+            UserControlWordPredictionCommon.OnPredictionLatencyMs =
+                ms => PerformanceMonitor.RecordPredictionLatency(ms);
+            UserControlWordPredictionCommon.OnAutoCompleteLatencyMs =
+                ms => PerformanceMonitor.RecordAutoCompleteLatency(ms);
+            UserControlWordPredictionCommon.OnRefreshLatencyMs =
+                ms => PerformanceMonitor.RecordPredictionRefresh(ms);
+            TalkApplicationScanner.OnUiKeyPressLatencyMs =
+                ms => PerformanceMonitor.RecordUiInputLag(ms);
+            // Wire text-input metrics converted from CoreGlobals.Stopwatch
+            UserControlKeyboardCommon.OnKeyActuationLatencyMs =
+                (type, ms) => PerformanceMonitor.RecordKeyActuationLatency(type, ms);
+            TextController.OnAutoCompletePhaseLatencyMs =
+                (phase, ms) => PerformanceMonitor.RecordAutoCompletePhaseLatency(phase, ms);
+            EditTextControlAgent.OnTextChangeEventLatencyMs =
+                ms => PerformanceMonitor.RecordTextChangeEventLatency(ms);
+#endif
+
             splash?.Close();
             splash = null;
 
@@ -147,6 +215,9 @@ namespace ACATTalk
                 Context.Dispose();
                 return;
             }
+
+            // Start EventBus activity monitoring (demonstrates new EventBus pattern)
+            ActivatePanelActivityMonitor();
 
             Common.Init();
 
@@ -165,7 +236,12 @@ namespace ACATTalk
                     QuitAppOnFormClose = false
                 };
 
-                var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+                // CQRS: Use command handler instead of direct singleton access
+                var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
+                var command = new CreatePanelCommand("TalkApplicationScanner", null, startupArg);
+                createPanelHandler.Handle(command);
+
+                Form form = command.CreatedPanel as Form;
                 if (form != null)
                 {
                     // Add ad-hoc agent that will handle the form
@@ -189,17 +265,25 @@ namespace ACATTalk
                 splash.Show(StringResources.ExitingACAT);
                 AuditLog.Audit(new AuditEvent("Application", "stop"));
 
+#if DEBUG
+                // Close PerformanceDashboard before disposing Context to prevent WPF dispatcher from keeping app alive
+                if (_performanceDashboard != null)
+                {
+                    _performanceDashboard.Dispatcher.InvokeShutdown();
+                    _performanceDashboard.Close();
+                    _performanceDashboard = null;
+                }
+#endif
+
                 Context.Dispose();
 
                 Common.Uninit();
-
 
                 splash?.Close();
                 splash = null;
 
                 _logger.LogDebug("ACATTalk Application shutdown");
 
-                Log.Close();
                 modernLoggingFactory?.Dispose();
             }
             catch (Exception ex)
@@ -207,8 +291,35 @@ namespace ACATTalk
                 MessageBox.Show(ex.ToString());
                 modernLoggingFactory?.Dispose();
             }
+#if PERFORMANCE
+            PerformanceMonitor.StopTimer("TotalStartupTime", PerformanceMonitor.MetricCategory.Startup);
+            PerformanceMonitor.LogEvent("Application", "Exit");
+            PerformanceMonitor.Shutdown();
+#endif
 
             AppCommon.OnExit();
+
+        }
+
+        private static void InitializeDependencyInjection()
+        {
+            // Set up dependency injection using ACAT infrastructure
+            var services = new ServiceCollection();
+
+            // Add logging (reuse existing factory)
+            services.AddSingleton<ILoggerFactory>(modernLoggingFactory);
+            services.AddLogging();
+
+            // Add ACAT core services (managers, factories, etc.)
+            services.AddACATServices();
+
+            _serviceProvider = services.BuildServiceProvider();
+
+            // Resolve Context from DI – this sets Context.ServiceProvider automatically
+            // so all static Context.AppXXX accessors resolve managers through the container.
+            _serviceProvider.GetRequiredService<IContext>();
+
+            _logger.LogDebug("Dependency injection initialized with ACAT services");
         }
 
         /// <summary>
@@ -218,7 +329,6 @@ namespace ACATTalk
         private static void CoreGlobals_EvtFatalError(string reason)
         {
             splash?.Close();
-
 
             if (Context.AppPanelManager != null && Context.AppPanelManager.GetCurrentForm() != null &&
                 Context.AppPanelManager.GetCurrentForm().PanelCommon != null && Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget != null)
@@ -237,6 +347,31 @@ namespace ACATTalk
             Environment.FailFast(reason);
         }
 
+        /// <summary>
+        /// Activates the PanelActivityMonitor to demonstrate EventBus pattern
+        /// This shows real-time panel and actuator activity via EventBus subscriptions
+        /// </summary>
+        private static void ActivatePanelActivityMonitor()
+        {
+            try
+            {
+                if (_serviceProvider != null)
+                {
+                    var monitor = _serviceProvider.GetRequiredService<ACAT.Core.Diagnostics.PanelActivityMonitor>();
+                    _logger.LogInformation("✅ PanelActivityMonitor activated - EventBus subscriptions active");
+                    _logger.LogInformation("📊 You will now see real-time panel and actuator activity logs!");
+                }
+                else
+                {
+                    _logger.LogWarning("ServiceProvider not available - PanelActivityMonitor not activated");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to activate PanelActivityMonitor");
+            }
+        }
+
         private static void showTalkInterfaceDescription()
         {
             if (!Common.AppPreferences.ShowTalkInterfaceDescOnStartup)
@@ -244,10 +379,14 @@ namespace ACATTalk
                 return;
             }
 
-            var form = PanelManager.Instance.CreatePanel("DefaultInterfaceScanner", "ACAT Talk Description");
-            if (form != null)
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePanelCommand>>();
+            var command = new CreatePanelCommand("DefaultInterfaceScanner", "ACAT Talk Description");
+            createPanelHandler.Handle(command);
+
+            if (command.CreatedPanel != null)
             {
-                Context.AppPanelManager.ShowDialog(form as IPanel);
+                Context.AppPanelManager.ShowDialog(command.CreatedPanel);
             }
         }
     }

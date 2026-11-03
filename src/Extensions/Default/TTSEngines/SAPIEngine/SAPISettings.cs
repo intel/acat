@@ -37,7 +37,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Name of the alternate pronunciations file
         /// </summary>
-        public String PronunciationsFile = "SAPIPronunciations.xml";
+        public String PronunciationsFile = "SAPIPronunciations.json";
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -108,7 +108,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public static SAPISettings Load()
         {
-            var retVal = PreferencesBase.Load<SAPISettings>(PreferencesFilePath);
+            SAPISettings retVal = PreferencesBase.Load<SAPISettings>(PreferencesFilePath);
             if (!File.Exists(PreferencesFilePath))
             {
                 retVal.Save();
@@ -134,7 +134,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<SAPISettings>();
+            SAPISettings tmp = LoadDefaults<SAPISettings>();
             var res = Save(tmp, PreferencesFilePath);
             Load();
 

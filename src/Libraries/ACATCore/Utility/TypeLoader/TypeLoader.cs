@@ -10,7 +10,7 @@ namespace ACAT.Core.Utility.TypeLoader
     public class TypeLoader<TInterface> : ITypeLoader<TInterface>
         where TInterface : class, IPluginExtension
     {
-        private readonly ILogger<TypeLoader<TInterface>> _logger;
+        private readonly ILogger<TypeLoader<TInterface>> _logger = LogManager.GetLogger<TypeLoader<TInterface>>();
         private readonly Dictionary<Guid, Type> _typeCache = new();
 
         public IReadOnlyDictionary<Guid, Type> LoadedTypes => _typeCache;
@@ -116,7 +116,7 @@ namespace ACAT.Core.Utility.TypeLoader
                 }
                 if (firstordefault)
                 {
-                    var matchingType = types
+                    Type matchingType = types
                     .Where(type =>
                         type.IsClass && !type.IsAbstract &&
                         typeof(TInterface).IsAssignableFrom(type))
@@ -135,7 +135,7 @@ namespace ACAT.Core.Utility.TypeLoader
                 }
                 else
                 {
-                    var matchingTypes = types
+                    IEnumerable<Type> matchingTypes = types
                         .Where(type =>
                             type.IsClass &&
                             !type.IsAbstract &&
@@ -145,7 +145,7 @@ namespace ACAT.Core.Utility.TypeLoader
 
                     if (matchingTypes != null)
                     {
-                        foreach (var matchingType in matchingTypes)
+                        foreach (Type matchingType in matchingTypes)
                         {
                             //var attr = ClassDescriptorAttribute.GetDescriptor(matchingType);
                             if (matchingType.GUID != null)

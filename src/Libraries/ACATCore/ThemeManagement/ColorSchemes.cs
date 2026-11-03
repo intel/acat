@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -115,7 +116,34 @@ namespace ACAT.Core.ThemeManagement
         }
 
         /// <summary>
-        /// Disposes resoureces
+        /// Creates a color schemes collection from JSON color scheme list
+        /// </summary>
+        /// <param name="colorSchemeJsonList">List of color scheme JSON objects</param>
+        /// <param name="themeDir">path to the assets</param>
+        /// <returns>Color scheme collection</returns>
+        public static ColorSchemes CreateFromJson(List<ColorSchemeJson> colorSchemeJsonList, String themeDir)
+        {
+            var colorSchemes = new ColorSchemes();
+            
+            if (colorSchemeJsonList == null)
+            {
+                return colorSchemes;
+            }
+
+            foreach (ColorSchemeJson colorSchemeJson in colorSchemeJsonList)
+            {
+                var colorScheme = ColorScheme.CreateFromJson(colorSchemeJson, themeDir);
+                if (colorScheme != null)
+                {
+                    colorSchemes._colorsTable[colorScheme.Name.ToLower()] = colorScheme;
+                }
+            }
+
+            return colorSchemes;
+        }
+
+        /// <summary>
+        /// Disposes resources
         /// </summary>
         public void Dispose()
         {
@@ -143,7 +171,7 @@ namespace ACAT.Core.ThemeManagement
         /// <returns>the color scheme object</returns>
         public ColorScheme GetColorScheme(String scheme)
         {
-            var retVal = DefaultColorScheme;
+            ColorScheme retVal = DefaultColorScheme;
 
             var schemeName = scheme.ToLower();
             if (String.IsNullOrEmpty(schemeName))
@@ -188,7 +216,7 @@ namespace ACAT.Core.ThemeManagement
         /// <param name="themeDir">directory where assets are located</param>
         private void loadAndAddColorScheme(XmlNode node, String themeDir)
         {
-            var colorSchemeNodes = node.SelectNodes("ColorScheme");
+            XmlNodeList colorSchemeNodes = node.SelectNodes("ColorScheme");
 
             if (colorSchemeNodes == null)
             {

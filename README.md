@@ -1,5 +1,8 @@
 ## Official release of ACAT is available [here](https://github.com/intel/acat/releases)
 
+[![Build](https://github.com/intel/acat/actions/workflows/build.yml/badge.svg)](https://github.com/intel/acat/actions/workflows/build.yml)
+[![Tests](https://github.com/intel/acat/actions/workflows/test.yml/badge.svg)](https://github.com/intel/acat/actions/workflows/test.yml)
+
 ## Background
 The Assistive Context-Aware Toolkit (ACAT) is an open-source platform created at Intel Labs. It is designed to enhance communication for individuals with restricted speech and typing capabilities. It achieves this by providing functionalities like keyboard simulation, word/sentence prediction, and speech synthesis.
 
@@ -25,6 +28,34 @@ If you are cloning for the first time:
 
 Pull in all the latest changes for the submodules:  
 **$ git pull origin master --recurse-submodules**
+
+## Configuration
+
+ACAT uses JSON configuration files for flexible customization. Key configuration types include:
+
+- **ActuatorSettings** - Input device configurations (keyboard, camera, BCI, switches)
+- **Theme** - Color schemes and UI styling
+- **PanelConfig** - UI panel layouts (scanners, keyboards, menus)
+- **Abbreviations** - Text abbreviation expansions
+- **Pronunciations** - Custom word pronunciations for text-to-speech
+
+### Documentation
+
+- **[JSON Configuration Guide](docs/JSON_CONFIGURATION_GUIDE.md)** - User guide for configuring ACAT
+- **[Developer Guide](docs/JSON_CONFIGURATION_DEVELOPER_GUIDE.md)** - For developers extending the configuration system
+- **[Quick Reference](docs/JSON_CONFIGURATION_QUICK_REFERENCE.md)** - Quick reference card
+- **[Migration Guide](docs/JSON_CONFIGURATION_MIGRATION.md)** - Migrating from XML to JSON
+
+### Modernization Documentation
+
+- **[ACAT Modernization Plan](ACAT_MODERNIZATION_PLAN.md)** - Complete modernization roadmap
+- **[Dependency Injection Guide](DEPENDENCY_INJECTION_GUIDE.md)** - DI architecture and implementation guidance
+- **[Logging Migration Guide](LOGGING_MIGRATION_GUIDE.md)** - Logging migration strategy and implementation details
+- **[Documentation Index](INDEX.md)** - Complete documentation index
+
+### Configuration Files
+
+Configuration files are located in `%APPDATA%\ACAT\Config\` and support VS Code IntelliSense for easy editing. See the [JSON Configuration Guide](docs/JSON_CONFIGURATION_GUIDE.md) for details.
 
 ## License
 ACAT is distributed under the Apache License, Version 2.0.

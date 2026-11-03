@@ -88,7 +88,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<BCIKeyboardRightCalibrationSettings>();
+            BCIKeyboardRightCalibrationSettings tmp = LoadDefaults<BCIKeyboardRightCalibrationSettings>();
             var res = Save(tmp, SettingsFilePath);
             Load();
 

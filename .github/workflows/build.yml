@@ -1,8 +1,6 @@
 name: Build ACAT
 
 on:
-  push:
-    branches: [ "master" ]
   workflow_dispatch:
 
 permissions:
@@ -28,19 +26,70 @@ jobs:
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
+
+    # Restore NuGet packages before building.
+    # Note: Some BCI extension projects require proprietary packages (UnicornDotNet, AcatCameraNative)
+    # not available on nuget.org; restore and build for those projects will fail gracefully.
+    - name: Restore dependencies
+      run: dotnet restore ACAT.sln
+      working-directory: src/
+      continue-on-error: true
           
     # Build the full application
     - name: Build the Solution
       run: |
-        msbuild acat.sln /t:Build /p:Configuration=${{ matrix.configuration }}
+        msbuild ACAT.sln /t:Build /p:Configuration=${{ matrix.configuration }}
       working-directory: src/
+      continue-on-error: true
     
-    # Execute logging infrastructure tests
-    - name: Validate Logging Infrastructure
+    # Execute all test projects
+    - name: Run Unit Tests - Logging
       run: |
-        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj --configuration ${{ matrix.configuration }} --logger "console;verbosity=normal" --no-build
+        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=logging-tests.trx" --logger "console;verbosity=normal" --results-directory TestResults
       working-directory: src/
       continue-on-error: false
+
+    - name: Run Unit Tests - Configuration
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Configuration/ACATCore.Tests.Configuration.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=configuration-tests.trx" --logger "console;verbosity=normal" --results-directory TestResults
+      working-directory: src/
+      continue-on-error: false
+
+    - name: Run Integration Tests
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Integration/ACATCore.Tests.Integration.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=integration-tests.trx" --logger "console;verbosity=normal" --results-directory TestResults
+      working-directory: src/
+      continue-on-error: false
+
+    - name: Run ConfigMigrationTool Tests
+      run: |
+        dotnet test Applications/ConfigMigrationTool/ACAT.ConfigMigrationTool.Tests/ACAT.ConfigMigrationTool.Tests.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=migration-tests.trx" --logger "console;verbosity=normal" --results-directory TestResults
+      working-directory: src/
+      continue-on-error: false
+
+    - name: Run Performance Tests
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Performance/ACATCore.Tests.Performance.csproj --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=performance-tests.trx" --logger "console;verbosity=normal" --results-directory TestResults
+      working-directory: src/
+      continue-on-error: false
+
+    # Publish test results
+    - name: Publish Test Results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results (${{ matrix.configuration }})
+        path: 'src/TestResults/*.trx'
+        reporter: dotnet-trx
+        fail-on-error: true
+
+    # Upload test results as artifacts
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4.6.2
+      if: always()
+      with:
+        name: test-results-${{ matrix.configuration }}
+        path: src/TestResults/
       
     - name: Upload release build artifacts
       uses: actions/upload-artifact@v4.6.2

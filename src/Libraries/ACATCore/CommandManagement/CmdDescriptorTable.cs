@@ -77,7 +77,7 @@ namespace ACAT.Core.CommandManagement
         {
             var cmdDescriptorList = new List<CmdDescriptor>();
 
-            foreach (var cmdDescriptor in _cmdDescriptors)
+            foreach (CmdDescriptor cmdDescriptor in _cmdDescriptors)
             {
                 if (cmdDescriptor.EnableSwitchMap == enabled)
                 {
@@ -90,7 +90,7 @@ namespace ACAT.Core.CommandManagement
 
         public override bool ResetToDefault()
         {
-            var tmp = LoadDefaults<CmdDescriptorTable>();
+            CmdDescriptorTable tmp = LoadDefaults<CmdDescriptorTable>();
             var res = Save(tmp, FilePath);
             Load();
 
@@ -116,7 +116,7 @@ namespace ACAT.Core.CommandManagement
         {
             foreach (var command in commands)
             {
-                var cmdDescriptor = Get(command);
+                CmdDescriptor cmdDescriptor = Get(command);
                 if (cmdDescriptor != null)
                 {
                     cmdDescriptor.EnableSwitchMap = enable;

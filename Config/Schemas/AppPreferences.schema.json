@@ -1,0 +1,354 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/Config/Schemas/AppPreferences.schema.json",
+  "title": "ACAT Application Preferences",
+  "description": "System-wide preference settings for the ACAT application",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["currentUser", "currentProfile"],
+  "properties": {
+    "currentUser": {
+      "type": "string",
+      "description": "Default user name",
+      "default": "DefaultUser",
+      "minLength": 1
+    },
+    "currentProfile": {
+      "type": "string",
+      "description": "Default profile for the user",
+      "default": "Default",
+      "minLength": 1
+    },
+    "defaultLogLevel": {
+      "type": "string",
+      "description": "Default logging verbosity level",
+      "default": "Verbose",
+      "enum": ["Verbose", "Debug", "Information", "Warning", "Error", "Fatal"]
+    },
+    "scannerSettings": {
+      "type": "object",
+      "description": "Scanner timing and behavior settings",
+      "properties": {
+        "scanTime": {
+          "type": "integer",
+          "description": "Scan time in milliseconds",
+          "minimum": 100,
+          "maximum": 3000,
+          "default": 1000
+        },
+        "firstRepeatTime": {
+          "type": "integer",
+          "description": "First repeat time for sticky buttons in milliseconds",
+          "minimum": 200,
+          "maximum": 3000,
+          "default": 1000
+        },
+        "firstPauseTime": {
+          "type": "integer",
+          "description": "Extra time to pause on the first row/column/button in milliseconds",
+          "minimum": 0,
+          "maximum": 3000,
+          "default": 250
+        },
+        "scanDisabledElements": {
+          "type": "boolean",
+          "description": "Include disabled buttons in the scanning cycle",
+          "default": true
+        },
+        "gridScanIterations": {
+          "type": "integer",
+          "description": "Number of times the grid top level is scanned",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 4
+        },
+        "rowScanIterations": {
+          "type": "integer",
+          "description": "Number of times the rows in a grid are scanned",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 1
+        },
+        "columnScanIterations": {
+          "type": "integer",
+          "description": "Number of times the buttons in a row are scanned",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 1
+        },
+        "topLevelScanIncludeEmptyGrids": {
+          "type": "boolean",
+          "description": "Include empty grid elements in the grid level scanning sequence",
+          "default": true
+        },
+        "scannerPosition": {
+          "type": "string",
+          "description": "Default position of the scanner window",
+          "default": "CenterScreen",
+          "enum": [
+            "CenterScreen",
+            "TopLeft",
+            "TopRight",
+            "BottomLeft",
+            "BottomRight",
+            "None"
+          ]
+        },
+        "scannerScaleFactor": {
+          "type": "number",
+          "description": "Scale factor for the scanner display",
+          "default": 10.0
+        },
+        "hideScannerOnIdle": {
+          "type": "boolean",
+          "description": "Auto-hide scanner if the actuator is not triggered for a specified period",
+          "default": false
+        },
+        "hideOnIdleTimeout": {
+          "type": "integer",
+          "description": "Hide the scanner if no actuator switch trigger is detected for this length of time (milliseconds)",
+          "default": 5000
+        },
+        "enableAutoStartScan": {
+          "type": "boolean",
+          "description": "Start scanning automatically",
+          "default": true
+        },
+        "menuDialogScanTime": {
+          "type": "integer",
+          "description": "Scan time for ACAT menus and dialogs in milliseconds",
+          "minimum": 100,
+          "maximum": 3000,
+          "default": 1000
+        }
+      }
+    },
+    "displaySettings": {
+      "type": "object",
+      "description": "Display and UI settings",
+      "properties": {
+        "fontName": {
+          "type": "string",
+          "description": "Default font family name",
+          "default": "Arial"
+        },
+        "fontSize": {
+          "type": "integer",
+          "description": "Default font size in points",
+          "minimum": 8,
+          "maximum": 72,
+          "default": 18
+        },
+        "theme": {
+          "type": "string",
+          "description": "Name of the active UI theme",
+          "default": "Default"
+        },
+        "language": {
+          "type": "string",
+          "description": "UI language code (ISO 639-1)",
+          "default": "en",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "examples": ["en", "es", "fr", "de", "zh-CN"]
+        },
+        "showDisplayScaleMessageOnStartup": {
+          "type": "boolean",
+          "description": "Check display scale factor and display warning if not 100% or 125%",
+          "default": true
+        }
+      }
+    },
+    "actuatorSettings": {
+      "type": "object",
+      "description": "Actuator/input device settings",
+      "properties": {
+        "minActuationHoldTime": {
+          "type": "integer",
+          "description": "Minimum hold time for the actuator switch to trigger in milliseconds",
+          "minimum": 0,
+          "maximum": 2000,
+          "default": 0
+        },
+        "selectClick": {
+          "type": "boolean",
+          "description": "Play a beep on a selection",
+          "default": false
+        },
+        "showSwitchTryoutOnStartup": {
+          "type": "boolean",
+          "description": "Display the actuator switch dialog on startup",
+          "default": true
+        },
+        "showCalibrationHelp": {
+          "type": "boolean",
+          "description": "Display calibration window help",
+          "default": true
+        },
+        "manualScanPreActuatePauseTime": {
+          "type": "integer",
+          "description": "Pre-actuate pause time in milliseconds (only for manual scan)",
+          "default": 2000
+        },
+        "manualScanActuatePauseTime": {
+          "type": "integer",
+          "description": "Actuate pause time in milliseconds (only for manual scan)",
+          "default": 2000
+        },
+        "enableManualScan": {
+          "type": "boolean",
+          "description": "Manual scan mode - user controls the direction of the highlight",
+          "default": false
+        }
+      }
+    },
+    "panelSettings": {
+      "type": "object",
+      "description": "Panel and scanner configuration settings",
+      "properties": {
+        "preferredPanelConfigNames": {
+          "type": "string",
+          "description": "Preferred panel configuration names (comma-separated)",
+          "default": "AlphabetQwerty"
+        },
+        "autoSaveScannerLastPosition": {
+          "type": "boolean",
+          "description": "If the scanner is repositioned, save its position",
+          "default": false
+        },
+        "autoSaveScannerScaleFactor": {
+          "type": "boolean",
+          "description": "If the scanner is resized, save its scale factor",
+          "default": true
+        },
+        "retainTalkWindowContentsOnHide": {
+          "type": "boolean",
+          "description": "Retain text in the Talk window when closed and restore it when displayed again",
+          "default": true
+        },
+        "showTalkInterfaceDescOnStartup": {
+          "type": "boolean",
+          "description": "Display the ACAT Talk application interface description on startup",
+          "default": true
+        }
+      }
+    },
+    "textSettings": {
+      "type": "object",
+      "description": "Text and word expansion settings",
+      "properties": {
+        "expandAbbreviationsOnSeparator": {
+          "type": "boolean",
+          "description": "Expand an abbreviation only if a space, comma, or period is inserted after it",
+          "default": false
+        }
+      }
+    },
+    "ttsSettings": {
+      "type": "object",
+      "description": "Text-to-speech settings",
+      "properties": {
+        "enableTextToSpeech": {
+          "type": "boolean",
+          "description": "Enable text-to-speech",
+          "default": true
+        }
+      }
+    },
+    "loggingSettings": {
+      "type": "object",
+      "description": "Logging and diagnostics settings",
+      "properties": {
+        "enableLogs": {
+          "type": "boolean",
+          "description": "Log application messages to a file (use with caution)",
+          "default": true
+        },
+        "debugLogMessagesToFile": {
+          "type": "boolean",
+          "description": "Log debug messages to file",
+          "default": true
+        },
+        "debugMessagesEnable": {
+          "type": "boolean",
+          "description": "Enable debug logs",
+          "default": false
+        },
+        "debugAssertOnError": {
+          "type": "boolean",
+          "description": "Assert on error conditions during debugging",
+          "default": false
+        },
+        "auditLogEnable": {
+          "type": "boolean",
+          "description": "Enable audit logging of important events",
+          "default": false
+        },
+        "auditLogFilter": {
+          "type": "string",
+          "description": "Filter pattern for audit log events",
+          "default": "*"
+        }
+      }
+    },
+    "performanceSettings": {
+      "type": "object",
+      "description": "Performance monitoring settings",
+      "properties": {
+        "perMonEnable": {
+          "type": "boolean",
+          "description": "Enable performance monitor to log memory and CPU utilization statistics",
+          "default": false
+        },
+        "perMonCPUEnable": {
+          "type": "boolean",
+          "description": "Monitor and log CPU utilization",
+          "default": false
+        },
+        "perMonMemoryEnable": {
+          "type": "boolean",
+          "description": "Monitor and log memory utilization",
+          "default": false
+        },
+        "perfMonLogInterval": {
+          "type": "integer",
+          "description": "How often to monitor and log performance statistics (seconds)",
+          "minimum": 5,
+          "maximum": 3600,
+          "default": 15
+        }
+      }
+    },
+    "systemSettings": {
+      "type": "object",
+      "description": "System behavior settings",
+      "properties": {
+        "disableSystemSleepMode": {
+          "type": "boolean",
+          "description": "Prevent the system from going to sleep and the display from turning off",
+          "default": false
+        },
+        "enableSounds": {
+          "type": "boolean",
+          "description": "Enable in-app sounds",
+          "default": true
+        },
+        "extensions": {
+          "type": "string",
+          "description": "Comma-separated list of enabled extensions",
+          "default": ""
+        },
+        "onboardingComplete": {
+          "type": "boolean",
+          "description": "Whether the first-run onboarding has been completed",
+          "default": false
+        },
+        "firstTimeUser": {
+          "type": "boolean",
+          "description": "Whether this is a first-time user",
+          "default": true
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

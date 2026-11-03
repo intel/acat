@@ -56,9 +56,9 @@ namespace ACAT.Extension.UI.ScannerForms
         protected string _panelClass;
         protected ScannerHelper _scannerHelper;
         private Label label1;
-        public GenericScannerForm(ILogger<GenericScannerForm> logger)
+        public GenericScannerForm(ILogger<GenericScannerForm> logger = null)
         {
-            _logger = logger;
+            _logger = logger ?? LoggingConfiguration.CreateLogger<GenericScannerForm>();
             InitializeComponent();
 
             SubscribeToEvents();
@@ -99,7 +99,7 @@ namespace ACAT.Extension.UI.ScannerForms
 
         public IEnumerable<Control> GetAll(Control control, Type type)
         {
-            var controls = control.Controls.Cast<Control>();
+            IEnumerable<Control> controls = control.Controls.Cast<Control>();
 
             return controls.SelectMany(ctrl => GetAll(ctrl, type))
                                       .Concat(controls)
@@ -240,7 +240,7 @@ namespace ACAT.Extension.UI.ScannerForms
 
         protected virtual void SetColorScheme()
         {
-            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
+            ColorScheme colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
 
             updateControlsFromTheme(colorScheme);
         }

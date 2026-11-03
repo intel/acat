@@ -312,7 +312,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <param name="wordPredictionMode"></param>
         public void SetMode(WordPredictionModes wordPredictionMode)
         {
-            var oldMode = GetMode();
+            WordPredictionModes oldMode = GetMode();
             if (wordPredictionMode != oldMode)
             {
                 _wordPredictionMode = wordPredictionMode;

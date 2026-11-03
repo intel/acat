@@ -19,6 +19,7 @@ using brainflow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
@@ -27,6 +28,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
     /// </summary>
     public abstract class BaseDAQ
     {
+        protected static ILogger<BaseDAQ> _logger;
+
         /// <summary>
         /// Settings file name
         /// </summary>
@@ -313,7 +316,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                     if (saveDataToFile)
                     {
-                        Log.Debug("Creating files for session: " + sessionID);
+                        _logger?.LogDebug("Creating files for session: {SessionID}", sessionID);
 
                         // Creates new file
                         if (sessionID == "")
@@ -329,7 +332,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception("Exception " + e.Message);
+                _logger?.LogError(e, "Exception starting session");
             }
             return result;
         }
@@ -352,12 +355,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     GetData(); // Empty buffer
                 }
-                Log.Debug("Session closed");
+                _logger?.LogDebug("Session closed");
                 result = true;
             }
             catch (Exception e)
             {
-                Log.Exception("Exception " + e.Message);
+                _logger?.LogError(e, "Exception ending session");
             }
 
             return result;
@@ -398,7 +401,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger?.LogError(e, "Exception appending data to buffer");
             }
             return result;
         }
@@ -413,7 +416,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 if (FileWriterObj == null)
                 {
-                    Log.Debug("Creating files for session: " + sessionID);
+                    _logger?.LogDebug("Creating files for session: {SessionID}", sessionID);
 
                     if (sessionID == "")
                         FileWriterObj = new FileWriter();
@@ -433,12 +436,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         {
             try
             {
-                Log.Debug("Config board. Command: " + cmd);
+                _logger?.LogDebug("Config board. Command: {Command}", cmd);
                 DeviceObj.config_board(cmd);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Exception configuring board");
             }
         }
     }

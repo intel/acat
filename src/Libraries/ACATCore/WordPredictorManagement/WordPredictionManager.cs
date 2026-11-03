@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -6,11 +6,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
+using ACAT.Core.EventManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WordPredictorManagement.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -27,9 +29,10 @@ namespace ACAT.Core.WordPredictorManagement
     /// app sets the preferred word predcitor to use.
     /// This is a singleton instance class
     /// </summary>
-    public class WordPredictionManager : IDisposable
+    public class WordPredictionManager : IWordPredictionManager, IDisposable
     {
         private readonly ILogger<WordPredictionManager> _logger;
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
@@ -37,9 +40,16 @@ namespace ACAT.Core.WordPredictorManagement
         public static string WordPredictorsRootName = "";
 
         /// <summary>
-        /// Word prediction manager instance
+        /// Word prediction manager instance - lazy initialized to get logger from DI container
         /// </summary>
-        private static readonly WordPredictionManager _instance = new();
+        private static readonly Lazy<WordPredictionManager> _instance = new Lazy<WordPredictionManager>(() =>
+        {
+            // Get logger from DI container if available, otherwise use LogManager
+            ILogger<WordPredictionManager> logger = Context.ServiceProvider?.GetService(typeof(ILogger<WordPredictionManager>)) as ILogger<WordPredictionManager>
+                ?? LogManager.GetLogger<WordPredictionManager>();
+            IEventBus eventBus = Context.ServiceProvider?.GetService(typeof(IEventBus)) as IEventBus;
+            return new WordPredictionManager(logger, eventBus);
+        });
 
         /// <summary>
         /// Current User's current profile directory
@@ -70,9 +80,10 @@ namespace ACAT.Core.WordPredictorManagement
         /// Initializes and instance of the WordPredictionManager class.
         /// </summary>
         /// <param name="logger">Logger instance</param>
-        private WordPredictionManager(ILogger<WordPredictionManager> logger = null)
+        private WordPredictionManager(ILogger<WordPredictionManager> logger, IEventBus eventBus = null)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus;
 
             AppDomain currentDomain = AppDomain.CurrentDomain;
 
@@ -90,7 +101,7 @@ namespace ACAT.Core.WordPredictorManagement
         /// </summary>
         public static WordPredictionManager Instance
         {
-            get { return _instance; }
+            get { return _instance.Value; }
         }
 
         public IEnumerable<IWordPredictor> WordPredictorsList
@@ -270,7 +281,7 @@ namespace ACAT.Core.WordPredictorManagement
 
             if (_wordPredictors == null)
             {
-                _wordPredictors = new WordPredictors();
+                _wordPredictors = new WordPredictors(LogManager.GetLogger<WordPredictors>());
 
                 retVal = _wordPredictors.Load(extensionDirs);
             }
@@ -283,9 +294,9 @@ namespace ACAT.Core.WordPredictorManagement
         /// </summary>
         public void SavePreferences(object sender, IEnumerable<PreferencesCategory> preferencesCategories)
         {
-            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+            CultureInfo ci = CultureInfo.DefaultThreadCurrentUICulture;
 
-            foreach (var category in preferencesCategories)
+            foreach (PreferencesCategory category in preferencesCategories)
             {
                 if (category.Enable && category.PreferenceObj is IExtension)
                 {
@@ -319,7 +330,7 @@ namespace ACAT.Core.WordPredictorManagement
             bool retVal;
             if (!Equals(guid, Guid.Empty))  // found something for the specific culture
             {
-                var type = _wordPredictors.Lookup(guid);
+                Type type = _wordPredictors.Lookup(guid);
 
                 if (_activeWordPredictor != null)
                 {
@@ -338,7 +349,7 @@ namespace ACAT.Core.WordPredictorManagement
             {
                 if (!Equals(cultureNeutralGuid, Guid.Empty))
                 {
-                    var type = _wordPredictors.Lookup(cultureNeutralGuid);
+                    Type type = _wordPredictors.Lookup(cultureNeutralGuid);
                     retVal = createAndSetActiveWordPredictor(type, ci);
 
                     if (!retVal)
@@ -391,7 +402,7 @@ namespace ACAT.Core.WordPredictorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger?.LogTrace("");
+                _logger.LogTrace("");
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
@@ -433,16 +444,25 @@ namespace ACAT.Core.WordPredictorManagement
 
             try
             {
-                var wordPredictor = (IWordPredictor)Activator.CreateInstance(type);
+                // Use ExtensionInstantiator to create instance with proper dependency injection
+                var wordPredictor = ExtensionInstantiator.CreateExtensionInstance(Context.ServiceProvider, type, _logger) as IWordPredictor;
+
+                if (wordPredictor == null)
+                {
+                    _logger.LogError("Failed to create WordPredictor instance for type {Type}", type);
+                    return false;
+                }
+
                 retVal = wordPredictor.Init(ci);
                 if (retVal)
                 {
                     _activeWordPredictor = wordPredictor;
+                    _eventBus?.Publish(new WordPredictionContextChangedEvent(wordPredictor));
                 }
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Unable to load WordPredictor {Type}, assembly: {Assembly}", type, type.Assembly.FullName);
+                _logger.LogError(ex, "Unable to load WordPredictor {Type}, assembly: {Assembly}", type, type.Assembly.FullName);
                 retVal = false;
             }
 

@@ -4,6 +4,8 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Patterns.CQRS;
+using ACAT.Core.Patterns.CQRS.Samples;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
@@ -148,7 +150,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         protected override void ScannerFormLoaded(object sender, EventArgs e)
         {
-            var icon = ImageUtils.GetEntryAssemblyIcon();
+            Icon icon = ImageUtils.GetEntryAssemblyIcon();
             if (icon != null)
             {
                 Icon = icon;
@@ -182,7 +184,7 @@ namespace ACAT.Extensions.UI.Scanners
 
             if (_launchAppAgent != null) 
             {
-                var uc = panelDashboardControls.Controls.Find("LaunchAppUserControl", true);
+                Control[] uc = panelDashboardControls.Controls.Find("LaunchAppUserControl", true);
                 _launchAppAgent?.Activate(uc.Length > 0 ? uc[0] as IUserControl : null);
             }
 
@@ -206,15 +208,26 @@ namespace ACAT.Extensions.UI.Scanners
                 PredictionMode = mode
             };
 
-            // create the panel instance
-            var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+            // CQRS: Use command handler instead of direct singleton access
+            var createPanelHandler = Context.ServiceProvider?.GetService(typeof(ICommandHandler<CreatePanelCommand>)) as ICommandHandler<CreatePanelCommand>;
+            Form form;
+            if (createPanelHandler != null)
+            {
+                var command = new CreatePanelCommand("TalkApplicationScanner", startupArg: startupArg);
+                createPanelHandler.Handle(command);
+                form = command.CreatedPanel as Form;
+            }
+            else
+            {
+                form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+            }
             if (form == null)
             {
                 _logger.LogError("Could not create TalkApplicationScanner panel.");
                 return false;
             }
 
-            var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+            IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
             if (agent == null)
             {
                 _logger.LogError("Talk Application Agent not found. Ensure it is registered in the ACAT configuration.");
@@ -253,7 +266,7 @@ namespace ACAT.Extensions.UI.Scanners
             ScannerCommon.UserControlManager.StopTopLevelAnimation();
             this.Hide();
 
-            var predictionMode = WordPredictionModes.None;
+            WordPredictionModes predictionMode = WordPredictionModes.None;
             if (Command == "CmdTalkSentenceMode")
             {
                 predictionMode = WordPredictionModes.Sentence;

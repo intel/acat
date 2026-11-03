@@ -18,7 +18,7 @@ namespace ACAT.Core.Utility
 {
     public class HtmlUtils
     {
-        private static ILogger<HtmlUtils> _logger;
+        private static ILogger<HtmlUtils> _logger => LogManager.GetLogger<HtmlUtils>();
         /// <summary>
         /// Paths of the browsers exe
         /// </summary>

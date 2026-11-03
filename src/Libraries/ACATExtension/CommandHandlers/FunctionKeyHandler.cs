@@ -29,10 +29,10 @@ namespace ACAT.Extension.CommandHandlers
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
         /// <param name="logger">Logger instance</param>
-        public FunctionKeyHandler(String cmd, ILogger<FunctionKeyHandler> logger)
+        public FunctionKeyHandler(String cmd, ILogger<FunctionKeyHandler> logger = null)
             : base(cmd)
         {
-            _logger = logger;
+            _logger = logger ?? LoggingConfiguration.CreateLogger<FunctionKeyHandler>();
         }
 
         /// <summary>

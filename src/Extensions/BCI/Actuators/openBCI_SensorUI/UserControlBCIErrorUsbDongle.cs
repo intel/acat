@@ -56,7 +56,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         private void WebBrowserDesc_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            Utils.HandleHelpNavigaion(e);
+            Utils.HandleHelpNavigation(e);
         }
     }
 }

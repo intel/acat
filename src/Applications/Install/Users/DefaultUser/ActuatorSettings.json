@@ -1,0 +1,139 @@
+{
+  "actuatorSettings": [
+    {
+      "name": "Keyboard",
+      "id": "d91a1877-c92b-4d7e-9ab6-f01f30b12df9",
+      "description": "Use the computer keyboard as a switch to control ACAT. You can find more details <a href=$ACAT_USER_GUIDE#KeyboardSwitch>here</a>.",
+      "enabled": true,
+      "imageFileName": "KeyboardSwitch.jpg",
+      "switchSettings": [
+        {
+          "name": "Trigger",
+          "source": "F12",
+          "description": "",
+          "enabled": true,
+          "actuate": true,
+          "command": "@Trigger",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": "beep.wav"
+        },
+        {
+          "name": "Shortcut7",
+          "source": "Ctrl+Alt+W",
+          "description": "",
+          "enabled": true,
+          "actuate": true,
+          "command": "@CmdActuatorToggleCalibrationWindow",
+          "minHoldTime": "",
+          "beepFile": ""
+        }
+      ]
+    },
+    {
+      "name": "Camera",
+      "id": "7da7f870-80dc-47b4-994c-5f46a4dfe538",
+      "description": "Uses your webcam as a switch to control ACAT. You can find more details <a href=$ACAT_USER_GUIDE#CameraSwitch>here</a>.",
+      "enabled": false,
+      "imageFileName": "WebcamSwitch.jpg",
+      "switchSettings": [
+        {
+          "name": "Cheek Twitch",
+          "source": "CT",
+          "description": "Cheek twitch gesture",
+          "enabled": true,
+          "actuate": true,
+          "command": "@Trigger",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": ""
+        },
+        {
+          "name": "Eyebrow Raise",
+          "source": "ER",
+          "description": "Eyebrow raise gesture",
+          "enabled": false,
+          "actuate": true,
+          "command": "@Trigger",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": ""
+        }
+      ]
+    },
+    {
+      "name": "Sample Actuator",
+      "id": "fe3de70b-8084-46c1-bab1-905b215c7738",
+      "description": "",
+      "enabled": false,
+      "imageFileName": "",
+      "switchSettings": [
+        {
+          "name": "G1",
+          "source": "G1",
+          "description": "",
+          "enabled": true,
+          "actuate": true,
+          "command": "@Trigger",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": ""
+        },
+        {
+          "name": "G2",
+          "source": "G2",
+          "description": "",
+          "enabled": true,
+          "actuate": true,
+          "command": "",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": ""
+        },
+        {
+          "name": "G3",
+          "source": "G3",
+          "description": "",
+          "enabled": true,
+          "actuate": true,
+          "command": "",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": ""
+        }
+      ]
+    },
+    {
+      "name": "External",
+      "id": "790324b9-c733-49ca-9a28-c49357bb7c14",
+      "description": "There are many off-the-shelf switch options available to fit your needs. You can find more details <a href=$ACAT_USER_GUIDE#ExternalSwitch>here</a>.",
+      "enabled": false,
+      "imageFileName": "HardwareSwitch.png",
+      "switchSettings": [
+        {
+          "name": "Trigger",
+          "source": "F12",
+          "description": "",
+          "enabled": true,
+          "actuate": true,
+          "command": "@Trigger",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": "beep.wav"
+        }
+      ]
+    },
+    {
+      "name": "BCI",
+      "id": "77809d19-f450-4d36-a633-d818400b3d9a",
+      "description": "Brain Computer Interface (BCI) is technology that reads brain waves to help you interact with your computer. You can find more details <a href=$ACAT_USER_GUIDE#BCISwitch>here</a>",
+      "enabled": false,
+      "imageFileName": "BCISwitch.png",
+      "switchSettings": [
+        {
+          "name": "R1",
+          "source": "R1",
+          "description": "",
+          "enabled": true,
+          "actuate": true,
+          "command": "@Trigger",
+          "minHoldTime": "@MinActuationHoldTime",
+          "beepFile": ""
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
@@ -263,7 +264,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
 
             subscribeToEvents();
 
-            var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+            IActuator actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
             //if (actuator is KeyboardActuator)
             //{
             //    _keyboardActuator = actuator as KeyboardActuator;
@@ -644,7 +645,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
 
             PanelCommon.RootWidget.HighlightOff();
 
-            var panel = PanelManager.Instance.GetCurrentPanel();
+            IPanel panel = PanelManager.Instance.GetCurrentPanel();
             if (panel != null)
             {
                 dockToScanner(panel as Form);
@@ -725,7 +726,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
 
         private void ClearButtons(IEnumerable<Widget> buttons)
         {
-            foreach (var button in buttons)
+            foreach (Widget button in buttons)
             {
                 button.UserData = null;
                 button.SetText(string.Empty);
@@ -756,7 +757,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
 
                 tabButton.SetTabStops(0.0f, new float[] { 0 });
 
-                var app = _appsList[appIndex];
+                AppInfo app = _appsList[appIndex];
                 tabButton.UserData = app;
 
                 // declarative: "here’s the app name, make it fit"
@@ -765,7 +766,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         }
         private void RefreshAppList()
         {
-            var buttons = GetTabStopButtons();
+            List<Widget> buttons = GetTabStopButtons();
             if (buttons.Count == 0)
                 return;
 

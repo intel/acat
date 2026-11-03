@@ -38,7 +38,7 @@ namespace ACAT.Core.PreferencesManagement.UI
 
             while (type != null)
             {
-                foreach (var field in type.GetFields(flags))
+                foreach (FieldInfo field in type.GetFields(flags))
                 {
                     yield return field;
                 }
@@ -49,15 +49,15 @@ namespace ACAT.Core.PreferencesManagement.UI
         protected static List<ObservablePropertyInfo> GetObservableProperties(Type type)
         {
 
-            var fields = GetAllInstanceFields(type)
+            IEnumerable<FieldInfo> fields = GetAllInstanceFields(type)
                 .Where(f => f.GetCustomAttribute<ObservablePropertyAttribute>() != null);
 
             var list = new List<ObservablePropertyInfo>();
 
-            foreach (var field in fields)
+            foreach (FieldInfo field in fields)
             {
                 var propertyName = Char.ToUpper(field.Name[0]) + field.Name.Substring(1);
-                var prop = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public);
+                PropertyInfo prop = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public);
 
                 if (prop != null)
                 {
@@ -84,7 +84,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                 UseLayoutRounding = true,
             };
 
-            var props = GetObservableProperties(prefs.GetType());
+            List<ObservablePropertyInfo> props = GetObservableProperties(prefs.GetType());
 
             var itemsControl = new ItemsControl
             {
@@ -209,7 +209,7 @@ namespace ACAT.Core.PreferencesManagement.UI
             rowGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });                       // control
 
             // --- LEFT: label stack ---
-            var labelStack = BuildLabelStack(prop);
+            UIElement labelStack = BuildLabelStack(prop);
             Grid.SetColumn(labelStack, 0);
             rowGrid.Children.Add(labelStack);
 
@@ -219,7 +219,7 @@ namespace ACAT.Core.PreferencesManagement.UI
             rowGrid.Children.Add(spacer);
 
             // --- RIGHT: input control ---
-            var inputControl = BuildInputControl(prop, value, settingsInstance);
+            UIElement inputControl = BuildInputControl(prop, value, settingsInstance);
             Grid.SetColumn(inputControl, 2);
             rowGrid.Children.Add(inputControl);
 
@@ -320,11 +320,11 @@ namespace ACAT.Core.PreferencesManagement.UI
             {
                 RangeAttribute range = prop.GetAttribute<RangeAttribute>() ?? new RangeAttribute(0, 25);
 
-                var sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
+                StackPanel sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
                 sliderStack.VerticalAlignment = VerticalAlignment.Center;
                 sliderStack.HorizontalAlignment = HorizontalAlignment.Right;
 
-                var slider = sliderStack?.Children?.OfType<Slider>().FirstOrDefault();
+                Slider slider = sliderStack?.Children?.OfType<Slider>().FirstOrDefault();
 
                 if (slider != null)
                 {
@@ -367,7 +367,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
-            var displayAttribute = prop.GetAttribute<DisplayAttribute>();
+            DisplayAttribute displayAttribute = prop.GetAttribute<DisplayAttribute>();
             var label = new TextBlock
             {
                 Text = displayAttribute?.ResourceType != null && !string.IsNullOrEmpty(displayAttribute.Name)

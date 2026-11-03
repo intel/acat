@@ -1,0 +1,45 @@
+{
+  "widgetAttributes": [
+    {
+      "name": "Title",
+      "label": "Test Scanner",
+      "fontName": "Montserrat SemiBold",
+      "fontSize": "18",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "name": "Button1",
+      "label": "A",
+      "fontName": "Arial",
+      "fontSize": "14"
+    }
+  ],
+  "layout": {
+    "colorScheme": "Default",
+    "widgets": [
+      {
+        "class": "RowWidget",
+        "name": "TitleRow",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "Title",
+            "colorScheme": "Title"
+          }
+        ]
+      },
+      {
+        "class": "RowWidget",
+        "name": "Row1",
+        "children": [
+          {
+            "class": "ScannerButton",
+            "name": "Button1"
+          }
+        ]
+      }
+    ]
+  },
+  "animations": []
+}

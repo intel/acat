@@ -8,6 +8,7 @@
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -23,6 +24,8 @@ namespace ACAT.Core.PanelManagement.Common
     /// </summary>
     public class ScannerPositionSizeController
     {
+        private readonly ILogger<ScannerPositionSizeController> _logger;
+
         /// <summary>
         /// Multiplier to calculate the scanner size based
         /// on the scale factor
@@ -102,8 +105,9 @@ namespace ACAT.Core.PanelManagement.Common
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="scannerCommon">ScannerForm object associated with the form</param>
-        internal ScannerPositionSizeController(ScannerCommon scannerCommon)
+        internal ScannerPositionSizeController(ScannerCommon scannerCommon, ILogger<ScannerPositionSizeController> logger = null)
         {
+            _logger = logger;
             AutoPosition = true;
             ManualPosition = Context.AppWindowPosition;
             _prevAutoPositionScannerValue = AutoPosition;
@@ -238,11 +242,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void SaveScaleSetting(SystemPreferences prefs)
         {
-            Log.Debug("saving scale factor. _scaleFactor=" + ScaleFactor);
+            _logger?.LogDebug("Saving scale factor: {ScaleFactor}", ScaleFactor);
             prefs.ScannerScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor = Convert.ToInt16(ScaleFactor * IntMultiplier);
             prefs.Save();
             CoreGlobals.AppPreferences.NotifyPreferencesChanged();
-            Log.Debug("scale factor saved is:" + prefs.ScannerScaleFactor);
+            _logger?.LogDebug("Scale factor saved: {SavedScaleFactor}", prefs.ScannerScaleFactor);
         }
 
         /// <summary>
@@ -250,16 +254,16 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void SaveSettings(SystemPreferences prefs)
         {
-            Log.Debug("saving scale factor. _scaleFactor=" + ScaleFactor);
+            _logger?.LogDebug("Saving scale factor: {ScaleFactor}", ScaleFactor);
             prefs.ScannerScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor = Convert.ToInt16(ScaleFactor * IntMultiplier);
-            Log.Debug("Saving window position as " + Context.AppWindowPosition);
+            _logger?.LogDebug("Saving window position: {WindowPosition}", Context.AppWindowPosition);
             prefs.ScannerPosition = CoreGlobals.AppPreferences.ScannerPosition = Context.AppWindowPosition;
             prefs.Save();
 
             AutoPosition = true;
 
             CoreGlobals.AppPreferences.NotifyPreferencesChanged();
-            Log.Debug("scale factor saved is:" + prefs.ScannerScaleFactor);
+            _logger?.LogDebug("Scale factor saved: {SavedScaleFactor}", prefs.ScannerScaleFactor);
         }
 
         /// <summary>
@@ -277,7 +281,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void ScaleDown()
         {
-            Log.Debug("scaling down. _scaleFactor=" + ScaleFactor + " SCALE_FACTOR_MINIMUM=" + ScaleFactorMinimum);
+            _logger?.LogDebug("Scaling down - current scale factor: {ScaleFactor}, minimum: {Minimum}", ScaleFactor, ScaleFactorMinimum);
             if (ScaleFactor > ScaleFactorMinimum)
             {
                 ScaleFactor -= ScaleFactorAmount;
@@ -308,13 +312,12 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="scaleFactor">the scale factor</param>
         public void ScaleForm(float scaleFactor)
         {
-            Log.Debug("Enter. scaleFactor: " + scaleFactor);
+            _logger?.LogDebug("Scaling form - scale factor: {ScaleFactor}", scaleFactor);
 
             var newSize = new Size(Convert.ToInt32(_originalSize.Width * scaleFactor), Convert.ToInt32(_originalSize.Height * scaleFactor));
 
-            Log.Debug(_form.Name + "," + "scalefactor: " + scaleFactor +
-                        "orig/new width: " + _originalSize.Width + ", " + newSize.Width +
-                        "orig/new height: " + _originalSize.Height + ", " + newSize.Height);
+            _logger?.LogDebug("Form: {FormName}, scale factor: {ScaleFactor}, original width: {OrigWidth}, new width: {NewWidth}, original height: {OrigHeight}, new height: {NewHeight}",
+                _form.Name, scaleFactor, _originalSize.Width, newSize.Width, _originalSize.Height, newSize.Height);
 
             //_rootWidget.Dump();
 
@@ -323,7 +326,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             _form.Size = newSize;
 
-            Log.Debug("Exit");
+            _logger?.LogDebug("Form scaling complete");
         }
 
         /// <summary>
@@ -331,8 +334,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void ScaleUp()
         {
-            Log.Debug("Enter");
-            Log.Debug("scaling up. _scaleFactor=" + ScaleFactor + " SCALE_FACTOR_MAXIMUM=" + ScaleFactorMaximum);
+            _logger?.LogDebug("Scaling up - current scale factor: {ScaleFactor}, maximum: {Maximum}", ScaleFactor, ScaleFactorMaximum);
             if (ScaleFactor < ScaleFactorMaximum)
             {
                 ScaleFactor += ScaleFactorAmount;
@@ -340,7 +342,7 @@ namespace ACAT.Core.PanelManagement.Common
                 SetPositionAndNotify();
             }
 
-            Log.Debug("Exit");
+            _logger?.LogDebug("Scale up complete");
         }
 
         /// <summary>
@@ -374,7 +376,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="e"></param>
         private void _form_ResizeEnd(object sender, EventArgs e)
         {
-            Log.Debug("Formwidth: " + _form.Width + ", originalWidth: " + _originalSize.Width);
+            _logger?.LogDebug("Form resize end - form width: {Width}, original width: {OriginalWidth}", _form.Width, _originalSize.Width);
 
             float aspectRatio = (float)_originalSize.Width / _originalSize.Height;
             float scaleFactor = 0.0f;
@@ -444,7 +446,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _form.Invoke(new MethodInvoker(delegate
             {
-                Log.Debug("Enter. scaleFactor: " + scaleFactor);
+                _logger?.LogDebug("Resizing scanner to fit desktop - scale factor: {ScaleFactor}", scaleFactor);
 
                 var newSize = new Size(Convert.ToInt32(_originalSize.Width * scaleFactor), Convert.ToInt32(_originalSize.Height * scaleFactor));
 

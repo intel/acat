@@ -88,7 +88,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
             _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
 
-            _wordPredictionCommon = new UserControlWordPredictionCommon(this, textController, scanner, new PredictionTypes[] { PredictionTypes.Words });
+            _wordPredictionCommon = new UserControlWordPredictionCommon(this, textController, scanner, new PredictionTypes[] { PredictionTypes.Words }, null);
 
             _scanner = scanner;
 

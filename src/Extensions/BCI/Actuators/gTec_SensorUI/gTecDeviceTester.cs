@@ -173,7 +173,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _endSignalCheckTimer = false;
 
             // Create main form
-            _mainForm = new SensorForm(gTecBCI);
+            _mainForm = new SensorForm(gTecBCI, null);
 
             // Set handlers for main events
             if (_Testing_useSensor)
@@ -190,7 +190,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             else
             {
-                intializeDebugStates(); // Create list of states to show all the different screens for debugging
+                initializeDebugStates(); // Create list of states to show all the different screens for debugging
                 _mainForm.EvtButtonExitClicked += _mainForm_EvtButtonExitClicked_DEBUG; // Handler for button click for debugging mode
             }
 
@@ -453,13 +453,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     // Check if testing parameter set to ignore signal quality check result
                     if (BCIActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
                     {
-                        _logger.LogDebug("BCIGtecActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
+                        _logger.LogDebug("BCIGTECActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
                         exitBCIOnboarding = true;
 
                         if (!userPassedLastSignalQualityCheck)
                         {
                             // Exit anyways regardless of signal quality result
-                            Log.Debug("User did not pass signal quality check but set testing parameter to ignore result. Exiting as if user did pass the check");
+                            _logger.LogDebug("User did not pass signal quality check but set testing parameter to ignore result. Exiting as if user did pass the check");
                         }
                     }
 
@@ -494,7 +494,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     else
                     {
                         // Display message to user prompting them to improve signal quality before moving on
-                        Log.Debug("Not exiting | Did not pass signal quality criteria");
+                        _logger.LogDebug("Not exiting | Did not pass signal quality criteria");
                         bool confirmed = ConfirmBoxOneOption.ShowDialog(StringResources.SignalQualityChecksFailed +
                         "\n" + StringResources.Youneedtocompleteboth + "\n“ +Impedance” tests and get good signals to" + "\n" + "proceed" +
                         "\n" + StringResources.Pleaserefertotheuserguideforhelp, "", StringResources.OK, _mainForm, false);
@@ -512,7 +512,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void runSignalCheckIfRequired()
         {
-            Log.Debug("gTecDeviceTester | runSignalCheckIfRequired");
+            _logger.LogDebug("gTecDeviceTester | runSignalCheckIfRequired");
 
             // Always check time last impedance test was run (all electrodes tested) and update UI accordingly
             long timestampPrevImpedanceTest = BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
@@ -523,8 +523,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             bool maxTimeHasElapsed = false;
             if (minElapsedPrevSignalQualityCheck >= maxTimeMins)
                 maxTimeHasElapsed = true;
-            Log.Debug(String.Format("runSignalCheckIfRequired | timestampPrevImpedanceTest: {0}, timestampNow: {1}, secDiff: {2}", timestampPrevImpedanceTest.ToString(), timestampNow.ToString(), secDiff.ToString()));
-            Log.Debug(String.Format("minElapsedPrevSignalQualityCheck: {0}, maxTimeMins: {1}, maxTimeHasElapsed: {2}", minElapsedPrevSignalQualityCheck.ToString(), maxTimeMins.ToString(), maxTimeHasElapsed.ToString()));
+            _logger.LogDebug("runSignalCheckIfRequired | timestampPrevImpedanceTest: {TimestampPrevImpedanceTest}, timestampNow: {TimestampNow}, secDiff: {SecDiff}", timestampPrevImpedanceTest, timestampNow, secDiff);
+            _logger.LogDebug("minElapsedPrevSignalQualityCheck: {MinElapsedPrevSignalQualityCheck}, maxTimeMins: {MaxTimeMins}, maxTimeHasElapsed: {MaxTimeHasElapsed}", minElapsedPrevSignalQualityCheck, maxTimeMins, maxTimeHasElapsed);
 
             // Always check if user passed the last overall signal quality check that was executed
             // If max time has not passed, but user did not pass their most recent overall signal quality check,
@@ -542,8 +542,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     ["maxTimeMins"] = maxTimeMins
                 };
-                Dictionary<String, object> resultParms = dictionary;
-                updateOnboardingStatus(_currentOnboardingUserState, resultParms);
+                Dictionary<String, object> resultParams = dictionary;
+                updateOnboardingStatus(_currentOnboardingUserState, resultParams);
             }
 
             // Go to screen telling user that signal check required because they failed their most recent one
@@ -566,7 +566,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void buttonRetestHandler(object sender)
         {
-            // Retest BCI connections - can just run function testing usb and bluetooth connections
+            // Retest BCI connections - can just run function testing usb and Bluetooth connections
             // Do not need to handle separate states based on where retest request is coming from
 
             // Go to screen that displays "connecting..." status
@@ -579,7 +579,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         }
 
         /// <summary>
-        /// Handler for Exit button click - dispayed on all device testing screens and does the same thing,
+        /// Handler for Exit button click - displayed on all device testing screens and does the same thing,
         /// completely exits testing process early without completion
         /// </summary>
         private void buttonExitHandler(String buttonExitName)
@@ -645,7 +645,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Initializes debug states to step through all the onboarding screens
         /// </summary>
-        private void intializeDebugStates()
+        private void initializeDebugStates()
         {
             _DebugStates = new OnboardingUserState[8];
             _DebugStates[0] = OnboardingUserState.Testing_BCIConnections;

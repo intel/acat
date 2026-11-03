@@ -1,0 +1,19 @@
+{
+  "abbreviations": [
+    {
+      "word": "btw",
+      "replaceWith": "by the way",
+      "mode": "Write"
+    },
+    {
+      "word": "omg",
+      "replaceWith": "oh my goodness",
+      "mode": "Speak"
+    },
+    {
+      "word": "lol",
+      "replaceWith": "laughing out loud",
+      "mode": "Write"
+    }
+  ]
+}

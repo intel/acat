@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using ACAT.Extensions.Onboarding.UI.UserControls;
 using ACAT.Extensions.Onboarding.UI;
 using ACAT.Core.CoreInterfaces;
+using Microsoft.Extensions.Logging;
 using System.Globalization;
 
 namespace ACAT.Extensions.Onboarding.Onboarding
@@ -25,7 +26,13 @@ namespace ACAT.Extensions.Onboarding.Onboarding
         // TODO - Localize Me
         private const string Step1 = "STEP 1";
 
+        private readonly ILogger<OnboardingLanguageSelect> _logger;
         private IOnboardingWizard _wizard;
+
+        public OnboardingLanguageSelect()
+        {
+            _logger = LoggingConfiguration.CreateLogger<OnboardingLanguageSelect>();
+        }
 
         public override ClassDescriptorAttribute Descriptor
         {
@@ -84,8 +91,8 @@ namespace ACAT.Extensions.Onboarding.Onboarding
             switch (userControl.StepId)
             {
                 case Step1:
-                    var cultureInfo = userControlLang.currentCulture;
-                    Log.Debug ("User selected language: " + cultureInfo.DisplayName);
+                    CultureInfo cultureInfo = userControlLang.currentCulture;
+                    _logger.LogDebug("User selected language: {LanguageName}", cultureInfo.DisplayName);
 
                     CoreGlobals.AppPreferences.Language = cultureInfo.TwoLetterISOLanguageName;
                     CoreGlobals.AppPreferences.Save();

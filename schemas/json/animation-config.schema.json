@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/intel/acat/schemas/animation-config.schema.json",
+  "title": "ACAT Animation Configuration",
+  "description": "Animation sequence configuration for a single ACAT panel. Defines the named scan sequences (animations), widget highlight order, timing, and PCode lifecycle hooks for one panel. JSON-first replacement for the <Animation> XML elements in panel config files.",
+  "type": "object",
+  "required": ["panelName", "sequences"],
+  "properties": {
+    "panelName": {
+      "type": "string",
+      "description": "Name of the panel this configuration applies to. Must match the panel's registered name in PanelConfigMap.",
+      "minLength": 1
+    },
+    "scanStrategy": {
+      "type": "string",
+      "description": "Name of the IScanModeStrategy to use for this panel. Overrides the session default. Use 'auto' for timer-driven row-column scan, 'manual' for directional input, 'bci' for BCI hardware.",
+      "enum": ["auto", "manual", "bci"],
+      "default": "auto"
+    },
+    "sequences": {
+      "type": "array",
+      "description": "List of named animation sequences for this panel. At least one sequence must have isFirst set to true.",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/animationSequence"
+      }
+    }
+  },
+  "definitions": {
+    "animationSequence": {
+      "type": "object",
+      "description": "A named scan sequence: an ordered list of widgets highlighted one at a time. Corresponds to one <Animation> element in the legacy XML format.",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique name for this sequence within the panel. Used as the target of transition() PCode calls and the Transition() API.",
+          "minLength": 1,
+          "examples": ["TopLevelRotation", "Row1Animation", "Row2Animation", "ColumnAnimation"]
+        },
+        "isFirst": {
+          "type": "boolean",
+          "description": "If true, this is the first animation sequence activated when the panel opens. Exactly one sequence per panel should have isFirst=true.",
+          "default": false
+        },
+        "autoStart": {
+          "type": "boolean",
+          "description": "If true, scanning starts automatically when this sequence begins without waiting for input.",
+          "default": false
+        },
+        "iterations": {
+          "type": "string",
+          "description": "Number of times to scan through the widget list before the sequence ends. Supports: a literal integer string ('3'), a preference variable reference ('@GridScanIterations'), or '0' for infinite repeat. When the sequence ends, OnEnd PCode is executed and the session transitions to the next sequence or stops.",
+          "default": "1",
+          "examples": ["1", "3", "0", "@GridScanIterations", "@RowScanIterations"]
+        },
+        "scanTime": {
+          "type": "string",
+          "description": "Time in milliseconds each widget stays highlighted before advancing to the next. Supports literal ms values or preference variable references. If absent, the application default scan time is used.",
+          "examples": ["600", "1000", "@MenuDialogScanTime", "@GridScanTime"]
+        },
+        "firstPauseTime": {
+          "type": "string",
+          "description": "Extra dwell time (ms) applied to the first widget of the sequence (hesitate time). Gives users time to orient before scanning begins. Supports literal ms values or preference variable references.",
+          "examples": ["800", "1200", "@FirstPauseTime"]
+        },
+        "onEnter": {
+          "type": "string",
+          "description": "PCode script executed once when this animation sequence begins. Used for panel transitions, speech, or state updates that should happen at the start of a scan cycle.",
+          "default": "",
+          "examples": ["speech(\"Row 1\");", "transition(MainMenu);", "actuate(HomeButton);"]
+        },
+        "onEnd": {
+          "type": "string",
+          "description": "PCode script executed once when all iterations of this sequence complete. Typically used to transition to the next animation or reset state.",
+          "default": "",
+          "examples": ["transition(TopLevelRotation);", "stop();"]
+        },
+        "widgets": {
+          "type": "array",
+          "description": "Ordered list of widgets to highlight in this animation sequence. Widgets are highlighted in array order. Empty array is valid (sequence with no highlights).",
+          "default": [],
+          "items": {
+            "$ref": "#/definitions/animationWidget"
+          }
+        }
+      }
+    },
+    "animationWidget": {
+      "type": "object",
+      "description": "A single widget step in an animation sequence. Defines which widget to highlight and the action to take when the user selects it.",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the widget to highlight. Supports three forms:\n  - Literal name: 'Row1', 'Button_A' (exact match in the panel widget tree)\n  - Child wildcard: 'Box1/*' (all direct children of the named container widget)\n  - Selected-widget reference: '@SelectedWidget' (the widget the user last selected)\n  - Selected-widget children: '@SelectedWidget/*' (children of the last selected widget)\nWildcard expansion is performed at Start() time, not at config load time.",
+          "minLength": 1,
+          "examples": [
+            "Row1",
+            "Row2",
+            "ItemText1",
+            "Box1/*",
+            "@SelectedWidget",
+            "@SelectedWidget/*"
+          ]
+        },
+        "playBeep": {
+          "type": "boolean",
+          "description": "If true, a beep sound plays when this widget is highlighted.",
+          "default": false
+        },
+        "onSelected": {
+          "type": "string",
+          "description": "PCode script executed when the user actuates (selects) this widget. Typically calls actuate() to trigger the widget action and transition() to move to the next animation. If absent, the default actuate behavior applies.",
+          "default": "",
+          "examples": [
+            "actuate(ItemText1);transition(TopLevelRotation)",
+            "actuate(Row1);transition(Row1Animation)",
+            "transition(KeyboardAnimation)"
+          ]
+        }
+      }
+    }
+  }
+}

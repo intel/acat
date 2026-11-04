@@ -14,7 +14,9 @@ using ACAT.Core.ActuatorManagement;
 using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -97,7 +99,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
                         if (_index == _pin.Length)
                         {
-                            _ = updateUI().ConfigureAwait(false);
+                            updateUI().Forget(ex => Trace.TraceError(ex.ToString()));
                             //_keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
                             //EvtScreenUnlocked?.Invoke(this, new EventArgs());
                         }

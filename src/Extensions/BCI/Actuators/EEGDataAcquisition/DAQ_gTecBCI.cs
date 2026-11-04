@@ -23,6 +23,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
@@ -522,10 +523,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="paired">Whether to get paired Unicorn devices (false = get unpaired devices)</param>
         /// <returns></returns>
-        public async Task<IList<string>> ScanDevicesAsync(bool paired = true)
+        public Task<IList<string>> ScanDevicesAsync(bool paired = true)
         {
+            return ScanDevicesAsync(default, paired);
+        }
+
+        public async Task<IList<string>> ScanDevicesAsync(CancellationToken cancellationToken, bool paired = true)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             return await Task.Run(() =>
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 IList<string> devices = null;
 
                 try
@@ -538,6 +546,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 #else
                     devices = Unicorn.GetAvailableDevices(paired);
 #endif
+                    cancellationToken.ThrowIfCancellationRequested();
                     Dictionary<String, object> eventParams = new()
                     {
                         ["paired"] = paired,
@@ -550,7 +559,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     _logger.LogError(ex, ex.Message);
                 }
                 return devices;
-            });
+            }, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -558,8 +567,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Send results of connection test in EvtBluetoothResult
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> connectionTestAsync()
+        public Task<bool> connectionTestAsync()
         {
+            return connectionTestAsync(default);
+        }
+
+        public async Task<bool> connectionTestAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             // Check if there is a device name saved in settings
             if (string.IsNullOrEmpty(BCIActuatorSettings.Settings.GTecDeviceName))
             {
@@ -575,11 +590,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 // Use Unicorn API to try to initialize device (throws exception if device can't be initialized
                 return await Task.Run(() =>
                 {   
+                    cancellationToken.ThrowIfCancellationRequested();
                     try
                     {
 
 #if !SIMULATIONBOARD
                         _logger.LogDebug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
+                        cancellationToken.ThrowIfCancellationRequested();
                         using Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName);
                         _logger.LogDebug($"Device: {device} is connected...");
                         device.Dispose();
@@ -607,7 +624,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                         return false;
                     }
-                });
+                }, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -623,7 +640,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             switch (bluetoothEvent)
             {
                 case DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST:
-                    _ = ScanDevicesAsync((bool)eventParams["paired"]);
+                    ScanDevicesAsync((bool)eventParams["paired"])
+                        .Forget(ex => _logger.LogError(ex, "Failed to scan for gTec devices"));
                     break;
 
                 default:

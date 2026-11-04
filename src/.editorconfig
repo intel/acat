@@ -6,6 +6,11 @@ dotnet_diagnostic.CS4014.severity = suggestion
 # CS0067: The event 'ACATConfigMainForm.EvtLanguageChanged' is never used
 dotnet_diagnostic.CS0067.severity = suggestion
 
+# Async hygiene analyzers are warnings initially so the existing codebase can be reviewed incrementally.
+dotnet_diagnostic.VSTHRD100.severity = warning
+dotnet_diagnostic.VSTHRD110.severity = warning
+dotnet_diagnostic.VSTHRD111.severity = warning
+
 root = true
 
 [*.{cs,vb}]

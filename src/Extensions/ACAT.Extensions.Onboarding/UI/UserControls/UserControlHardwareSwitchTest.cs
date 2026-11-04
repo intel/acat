@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -164,7 +165,13 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                     _switchTested = true;
                     setButtonBackgroundAndText(true, "Switch\nActivated");
 
-                    Task task = Task.Delay(switchActivationDelay).ContinueWith(t => setButtonBackgroundAndText(false));
+                    Task.Delay(switchActivationDelay)
+                        .ContinueWith(
+                            t => setButtonBackgroundAndText(false),
+                            CancellationToken.None,
+                            TaskContinuationOptions.None,
+                            TaskScheduler.Default)
+                        .Forget(ex => _logger.LogError(ex, "Failed to update switch test button"));
                 }
                 else
                 {

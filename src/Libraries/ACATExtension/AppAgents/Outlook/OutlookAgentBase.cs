@@ -562,54 +562,73 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// Sends a command to bring up the Outlook "Insert File" dialog.
         /// Inserts the filename into the file name field in the dialog
         /// </summary>
-        protected async void attachFile()
+        protected void attachFile()
         {
-            _fileAttachment = String.Empty;
-            await getFileToAttach();
+            attachFileAsync().Forget(ex => _logger.LogError(ex, "Error attaching file in Outlook"));
+        }
 
-            if (String.IsNullOrEmpty(_fileAttachment))
+        protected async Task attachFileAsync(CancellationToken cancellationToken = default)
+        {
+            try
             {
-                return;
-            }
+                cancellationToken.ThrowIfCancellationRequested();
+                _fileAttachment = String.Empty;
+                await getFileToAttachAsync(cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
 
-            Thread.Sleep(500);
-            EnumWindows.RestoreFocusToTopWindowOnDesktop();
-            Thread.Sleep(500);
-
-            AgentManager.Instance.Keyboard.Send(Keys.F10);
-            AgentManager.Instance.Keyboard.Send(Keys.H);
-            AgentManager.Instance.Keyboard.Send(Keys.A);
-            AgentManager.Instance.Keyboard.Send(Keys.F);
-
-            Thread.Sleep(1000);
-
-            for (int ii = 0; ii < 10; ii++)
-            {
-                WindowActivityMonitorInfo info1 = WindowActivityMonitor.CurrentWindowInfo();
-      
-                if (String.Compare(info1.Title, "TODO", true) == 0)
+                if (String.IsNullOrEmpty(_fileAttachment))
                 {
-                    _logger.LogDebug("YES!  Found Attach file window");
-                    AutomationElement automationElement = AgentUtils.GetElementOrAncestorByAutomationId(
-                                                                    info1.FocusedElement,
-                                                                    "Edit",
-                                                                    "ControlType.Edit",
-                                                                    "1148");
-                    if (automationElement != null)
-                    {
-                        _logger.LogDebug("element is not null");
-                        AgentUtils.InsertTextIntoElement(automationElement, _fileAttachment);
-                        SendKeys.Send("{ENTER}");
-                    }
-                    else
-                    {
-                        _logger.LogDebug("element is null");
-                    }
-
-                    break;
+                    return;
                 }
 
                 Thread.Sleep(500);
+                EnumWindows.RestoreFocusToTopWindowOnDesktop();
+                Thread.Sleep(500);
+
+                AgentManager.Instance.Keyboard.Send(Keys.F10);
+                AgentManager.Instance.Keyboard.Send(Keys.H);
+                AgentManager.Instance.Keyboard.Send(Keys.A);
+                AgentManager.Instance.Keyboard.Send(Keys.F);
+
+                Thread.Sleep(1000);
+
+                for (int ii = 0; ii < 10; ii++)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    WindowActivityMonitorInfo info1 = WindowActivityMonitor.CurrentWindowInfo();
+
+                    if (String.Compare(info1.Title, "TODO", true) == 0)
+                    {
+                        _logger.LogDebug("YES!  Found Attach file window");
+                        AutomationElement automationElement = AgentUtils.GetElementOrAncestorByAutomationId(
+                                                                        info1.FocusedElement,
+                                                                        "Edit",
+                                                                        "ControlType.Edit",
+                                                                        "1148");
+                        if (automationElement != null)
+                        {
+                            _logger.LogDebug("element is not null");
+                            AgentUtils.InsertTextIntoElement(automationElement, _fileAttachment);
+                            SendKeys.Send("{ENTER}");
+                        }
+                        else
+                        {
+                            _logger.LogDebug("element is null");
+                        }
+
+                        break;
+                    }
+
+                    Thread.Sleep(500);
+                }
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error attaching file in Outlook");
             }
         }
 
@@ -981,7 +1000,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// name of the file to attach
         /// </summary>
         /// <returns>the task</returns>
-        private async Task getFileToAttach()
+        private async Task getFileToAttachAsync(CancellationToken cancellationToken)
         {
             IApplicationAgent fileBrowserAgent = Context.AppAgentMgr.GetAgentByCategory("FileBrowserAgent");
             if (fileBrowserAgent == null)
@@ -995,7 +1014,7 @@ namespace ACAT.Extension.AppAgents.Outlook
             fileBrowserAgent.GetInvoker().SetValue("ActionVerb", "Attach");
 
             _logger.LogDebug("Calling ActivateAgent");
-            await Context.AppAgentMgr.ActivateAgent(fileBrowserAgent as IFunctionalAgent);
+            await Context.AppAgentMgr.ActivateAgent(fileBrowserAgent as IFunctionalAgent, cancellationToken);
             _logger.LogDebug("Returned from ActivateAgent");
             _fileAttachment = fileBrowserAgent.GetInvoker().GetStringValue("SelectedFile");
         }

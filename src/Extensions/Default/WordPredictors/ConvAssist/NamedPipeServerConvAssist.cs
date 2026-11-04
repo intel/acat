@@ -189,6 +189,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             {
                 return await StartNamedPipeServer(cancellationToken, send_params).ConfigureAwait(false);
             }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Exception in CreatePipeServerAsync: {Exception}", ex);
@@ -236,8 +240,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             return true;
         }
 
-        public async Task SendParams()
+        public Task SendParams()
         {
+            return SendParams(default);
+        }
+
+        public async Task SendParams(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             int waitDelay = 3200;
             //Static Path
             string staticPath = Path.Combine(FileUtils.GetResourcesDir(), "WordPredictors", "ConvAssist");
@@ -268,7 +278,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     _logger.LogDebug("Sending ConvAssist message: {Message}", message);
 
                     //TODO: Check result and handle appropriately.
-                    _ = WriteAsync(message, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
+                    await WriteAsync(message, waitDelay, cancellationToken).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
@@ -281,46 +295,42 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             string msg = JsonSerializer.SerializeForInterop(new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty));
 
             bool clientReady = false;
-            var tcs = new TaskCompletionSource<bool>();
-
-            await Task.Run(async () =>
+            while (!clientReady)
             {
-                while (!clientReady)
+                try
                 {
-                    try
-                    {
-                        var result = WriteAsync(msg, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
+                    var result = await WriteAsync(msg, waitDelay, cancellationToken).ConfigureAwait(false);
 
-                        // Check if we got a valid response
-                        if (string.IsNullOrWhiteSpace(result))
-                        {
-                            _logger.LogDebug("No response from ConvAssist, retrying...");
-                            await Task.Delay(waitDelay);
-                            continue;
-                        }
-
-                        WordAndCharacterPredictionResponse resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
-                        if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
-                        {
-                            clientReady = true;
-                            tcs.SetResult(true);
-                            break;
-                        }
-                    }
-                    catch (System.Text.Json.JsonException jsonEx)
+                    // Check if we got a valid response
+                    if (string.IsNullOrWhiteSpace(result))
                     {
-                        _logger.LogWarning(jsonEx, "Failed to deserialize ConvAssist response, retrying...");
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Error checking ConvAssist ready state");
+                        _logger.LogDebug("No response from ConvAssist, retrying...");
+                        await Task.Delay(waitDelay, cancellationToken).ConfigureAwait(false);
+                        continue;
                     }
 
-                    await Task.Delay(waitDelay);
+                    WordAndCharacterPredictionResponse resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
+                    if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
+                    {
+                        clientReady = true;
+                        break;
+                    }
                 }
-            });
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                {
+                    throw;
+                }
+                catch (System.Text.Json.JsonException jsonEx)
+                {
+                    _logger.LogWarning(jsonEx, "Failed to deserialize ConvAssist response, retrying...");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error checking ConvAssist ready state");
+                }
 
-            bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(100000));
+                await Task.Delay(waitDelay, cancellationToken).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -355,7 +365,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                     try
                     {
-                        success = ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec)).ConfigureAwait(false).GetAwaiter().GetResult();
+                        success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec), token).ConfigureAwait(false);
                     }
                     catch (TimeoutException)
                     {
@@ -368,18 +378,24 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 {
                     try
                     {
-                        Task sendTask = SendParams();
-                        if(await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(60))) != sendTask)
+                        Task sendTask = SendParams(token);
+                        Task timeoutTask = Task.Delay(TimeSpan.FromSeconds(60), token);
+                        if (await Task.WhenAny(sendTask, timeoutTask).ConfigureAwait(false) != sendTask)
                         {
+                            token.ThrowIfCancellationRequested();
                             throw new TimeoutException("SendParam() took too long.");
                         }
-                        await sendTask;
+                        await sendTask.ConfigureAwait(false);
                         success = true;
                     }
                     catch (TimeoutException ex)
                     {
                         success = false;
                         _logger.LogError(ex, "TimeoutException in SendParams");
+                    }
+                    catch (OperationCanceledException) when (token.IsCancellationRequested)
+                    {
+                        throw;
                     }
                     catch (Exception ex)
                     {
@@ -493,8 +509,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
 #nullable enable
-        public async Task<string> WriteAsync(string value, int msDelay)
+        public Task<string> WriteAsync(string value, int msDelay)
         {
+            return WriteAsync(value, msDelay, default);
+        }
+
+        public async Task<string> WriteAsync(string value, int msDelay, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             if (disposed)
                 return string.Empty;
 
@@ -536,7 +558,9 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
             }, null);
 
-            using var source = new CancellationTokenSource(msDelay);
+            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            source.CancelAfter(msDelay);
+            using var cancellationRegistration = cancellationToken.Register(() => writeTcs.TrySetCanceled());
 
             try
             {
@@ -551,7 +575,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
             }
 
-            catch (TaskCanceledException) { }
+            catch (TaskCanceledException) when (!cancellationToken.IsCancellationRequested) { }
 
             finally
             {

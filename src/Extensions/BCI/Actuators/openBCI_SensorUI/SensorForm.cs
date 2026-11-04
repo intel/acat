@@ -331,7 +331,8 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                 // Start task that will launch data processing / plotting (optical sensor or signal check screens)
                 if (OpenBCIDeviceTester._Testing_useSensor)
-                    TaskStartStopDataProcessing(state);
+                    TaskStartStopDataProcessing(state)
+                        .Forget(ex => _logger?.LogError(ex, "Failed to start BCI data processing"));
             }
         }
 
@@ -401,9 +402,14 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         /// <returns></returns>
         /// Run only once per new set of state changes receieved
-        public async Task TaskStartStopDataProcessing(DeviceTestingState state)
+        public Task TaskStartStopDataProcessing(DeviceTestingState state)
         {
-            await Task.Delay(100);
+            return TaskStartStopDataProcessing(state, default);
+        }
+
+        public async Task TaskStartStopDataProcessing(DeviceTestingState state, System.Threading.CancellationToken cancellationToken)
+        {
+            await Task.Delay(100, cancellationToken);
 
             // Start task which processes data for signal status checks
             if (state == DeviceTestingState.BCISignalCheck)

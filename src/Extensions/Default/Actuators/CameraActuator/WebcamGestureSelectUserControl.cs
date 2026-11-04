@@ -122,7 +122,8 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             if (dropdownCameraSelect.Items.Count > 1 && dropdownCameraSelect.SelectedIndex != cameraIndex)
             {
-                Task.Run(() => changeCamera(camera));
+                Task.Run(() => changeCamera(camera))
+                    .Forget(ex => _logger.LogError(ex, "Failed to change camera"));
             }
         }
 

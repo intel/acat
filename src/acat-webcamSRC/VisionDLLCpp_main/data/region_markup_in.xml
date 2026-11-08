@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<objects>
+  <_>
+    <id>playlist</id>
+    <type>589824</type>
+    <internals>
+      <video_ids>
+        <_>
+          <id>videofile</id></_></video_ids>
+      <video_ranges>
+        <_>
+          <source_index>0</source_index>
+          <first_frame>0</first_frame>
+          <last_frame>75</last_frame></_></video_ranges>
+      <id>playlist</id></internals></_>
+  <_>
+    <id>videofile</id>
+    <type>327680</type>
+    <internals>
+      <file>res/smile/smile_1.avi</file>
+      <id>videofile</id></internals></_></objects>
+</opencv_storage>

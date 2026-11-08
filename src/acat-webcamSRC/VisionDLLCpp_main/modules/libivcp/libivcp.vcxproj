@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E3A4B2C1-5D6F-4708-9A1B-2C3D4E5F6071}</ProjectGuid>
+    <RootNamespace>libivcp</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Debug'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Release'">false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="..\..\..\msbuild\acat.native.props" />
+  <PropertyGroup>
+    <TargetName Condition="'$(Configuration)'=='Debug'">$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>IVCP_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\*.cpp" />
+    <ClCompile Include="src\exceptions\*.cpp" />
+    <ClCompile Include="src\classifier\*.cpp" Exclude="src\classifier\libsvm.cpp;src\classifier\liblr.cpp" />
+    <!-- Embedded libsvm/liblinear code; shadowing warnings are intentional upstream. -->
+    <ClCompile Include="src\classifier\libsvm.cpp">
+      <DisableSpecificWarnings>4458;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="src\classifier\liblr.cpp">
+      <DisableSpecificWarnings>4458;4456;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="src\data_source\*.cpp" />
+    <ClCompile Include="src\feature\*.cpp" />
+    <ClCompile Include="src\performance\*.cpp" />
+    <ClCompile Include="src\region_creator\*.cpp" />
+    <ClCompile Include="src\video_source\*.cpp" />
+    <ClCompile Include="src\video_writer\*.cpp" />
+    <ClInclude Include="include\libivcp\**\*.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

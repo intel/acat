@@ -1,0 +1,2 @@
+add_subdirectory(markup)
+add_subdirectory(regions_markup)

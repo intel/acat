@@ -1,0 +1,9 @@
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/VDoxyfile ESCAPE_QUOTES)
+add_custom_target(Documentation ALL doxygen ${CMAKE_CURRENT_BINARY_DIR}/VDoxyfile DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/VDoxyfile)
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html/ DESTINATION doc)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/design/ DESTINATION doc/design)
+
+if (${CREATE_INSTALLER})
+	INCLUDE(CPack)
+endif()

@@ -1,0 +1,61 @@
+# Local third-party installations and models (not repository source).
+/VisionExternalInstalls/*
+!/VisionExternalInstalls/README.md
+
+# Out-of-source CMake builds and IDE state.
+/build/
+/.cmake-validation/
+/.vs/
+**/.vs/
+
+# In-source CMake / Visual Studio builds of the native project.
+/VisionDLLCpp_main/bin/
+/VisionDLLCpp_main/lib/
+/VisionDLLCpp_main/Docs/html/
+/VisionDLLCpp_main/Docs/VDoxyfile
+/VisionDLLCpp_main/Docs/Documentation.dir/
+/VisionDLLCpp_main/Docs/x64/
+/VisionDLLCpp_main/**/x64/
+/VisionDLLCpp_main/**/*.dir/
+/VisionDLLCpp_main/**/*.sln
+/VisionDLLCpp_main/**/Debug/
+/VisionDLLCpp_main/**/Release/
+/VisionDLLCpp_main/**/RelWithDebInfo/
+/VisionDLLCpp_main/**/MinSizeRel/
+
+# Shared solution output and intermediates (acat_webcam.sln).
+/bin/
+/obj/
+
+# .NET Framework Windows Forms build products.
+/VisionWindowsAppCS/bin/
+/VisionWindowsAppCS/obj/
+/VisionHost/bin/
+/VisionHost/obj/
+/VisionContracts/bin/
+/VisionContracts/obj/
+
+# CMake files if configured directly in the source tree.
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/CTestTestfile.cmake
+**/install_manifest.txt
+**/build.ninja
+**/.ninja_deps
+**/.ninja_log
+
+# Visual Studio per-user files and native intermediate outputs.
+*.suo
+*.user
+*.VC.db
+*.VC.opendb
+*.tlog
+*.lastbuildstate
+*.obj
+*.pch
+*.ipch
+*.ilk
+*.idb
+*.pdb
+.fake

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Shared settings for all native projects. Replaces the former CMake build. -->
+  <PropertyGroup>
+    <AcatRepoRoot>$(MSBuildThisFileDirectory)..\</AcatRepoRoot>
+    <AcatPlatformDir Condition="'$(Platform)'=='Win32'">x86</AcatPlatformDir>
+    <AcatPlatformDir Condition="'$(Platform)'=='x64'">x64</AcatPlatformDir>
+    <!-- OpenCV 5.x prebuilt package root (the 'build' folder containing x64\vc16 [and x86\vc16]).
+         Resolution order: OpenCVDir property, OPENCV_DIR environment variable
+         (only when it has the vc16 layout), local fallback.
+         OpenCVVersion is the numeric suffix of the world library, e.g. 500 for 5.0.0, 510 for 5.1.0. -->
+    <OpenCVVersion Condition="'$(OpenCVVersion)'==''">500</OpenCVVersion>
+    <OpenCVVc Condition="'$(OpenCVVc)'==''">vc16</OpenCVVc>
+    <OpenCVDir Condition="'$(OpenCVDir)'=='' and Exists('$(OPENCV_DIR)\x64\$(OpenCVVc)\lib\opencv_world$(OpenCVVersion).lib')">$(OPENCV_DIR)</OpenCVDir>
+    <OpenCVDir Condition="'$(OpenCVDir)'==''">C:\Users\mbeale\source\opencv\opencv-5.0.0\build</OpenCVDir>
+    <OpenCVLibDir>$(OpenCVDir)\$(AcatPlatformDir)\$(OpenCVVc)\lib</OpenCVLibDir>
+    <OpenCVBinDir>$(OpenCVDir)\$(AcatPlatformDir)\$(OpenCVVc)\bin</OpenCVBinDir>
+    <OpenCVLibSuffix Condition="'$(Configuration)'=='Debug'">d</OpenCVLibSuffix>
+    <OpenCVLibs>opencv_world$(OpenCVVersion)$(OpenCVLibSuffix).lib</OpenCVLibs>
+    <DlibDir>$(AcatRepoRoot)VisionExternalInstalls\dlib-20.0</DlibDir>
+    <DlibLandmarksFile>$(AcatRepoRoot)VisionExternalInstalls\shape_predictor_68_face_landmarks.dat</DlibLandmarksFile>
+    <DlibLandmarksFileFwd>$(DlibLandmarksFile.Replace('\','/'))</DlibLandmarksFileFwd>
+    <VisionRoot>$(AcatRepoRoot)VisionDLLCpp_main</VisionRoot>
+    <OutDir>$(AcatRepoRoot)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(AcatRepoRoot)obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;USE_DLIB;_VARIADIC_MAX=10;DLIB_FACE_LANDMARKS_FILE="$(DlibLandmarksFileFwd)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VisionRoot)\include;$(VisionRoot)\modules\libivcp\include;$(VisionRoot)\modules\libpipeline\include;$(VisionRoot)\modules\libinfra\include;$(DlibDir);$(OpenCVDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OpenCVLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(OpenCVLibs);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+    </Link>
+  </ItemDefinitionGroup>
+  <Target Name="AcatCheckOpenCV" BeforeTargets="ClCompile">
+    <Error Condition="!Exists('$(OpenCVLibDir)\opencv_world$(OpenCVVersion)$(OpenCVLibSuffix).lib')"
+           Text="OpenCV 5.x not found at '$(OpenCVLibDir)'. Set the OPENCV_DIR environment variable (or the OpenCVDir MSBuild property) to the OpenCV 'build' folder containing $(AcatPlatformDir)\$(OpenCVVc)\lib, and set OpenCVVersion (e.g. 510) if it is not $(OpenCVVersion)." />
+  </Target>
+</Project>

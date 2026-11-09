@@ -635,8 +635,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 changeDeviceTestingState(DeviceTestingState.Testing_BCIConnections); // display "connecting" screen
 
                 // Start startBCIDeviceTesting() function from separate non-UI thread
-                Thread t = new(() => startBCIDeviceTesting(0));
-                t.Start();
+                startBCIDeviceTesting(0).Forget(ex => _logger.LogError(ex, "Failed to restart BCI device testing"));
 
                 return; // Do not run anything after - device retesting process already started
             }
@@ -647,14 +646,16 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             switch (_daqInstance.deviceStatus)
             {
                 case BaseDAQ.DeviceStatus.DEVICE_STANDBY:
-                    InitDAQ();
-                    _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
+                    InitDAQ().Forget(ex => _logger.LogError(ex, "Failed to initialize DAQ"));
+                    _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections)
+                        .Forget(ex => _logger.LogError(ex, "Failed to update BCI data processing"));
                     break;
 
                 case BaseDAQ.DeviceStatus.DEVICE_ERROR:
                     _daqInstance.Stop(); // close board connection before attempting new one if got error
-                    InitDAQ();
-                    _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
+                    InitDAQ().Forget(ex => _logger.LogError(ex, "Failed to initialize DAQ"));
+                    _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections)
+                        .Forget(ex => _logger.LogError(ex, "Failed to update BCI data processing"));
                     break;
             }
         }
@@ -726,22 +727,29 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Asynchronous task that initializes BCI device testing
         /// </summary>
         /// <returns></returns>
-        public async Task startBCIDeviceTesting(int initialDelaySec = 0)
+        public Task startBCIDeviceTesting(int initialDelaySec = 0)
         {
+            return startBCIDeviceTesting(default, initialDelaySec);
+        }
+
+        public async Task startBCIDeviceTesting(CancellationToken cancellationToken, int initialDelaySec = 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             // Wait until main form fully loaded before starting
-            while (!_FormFullySHown)
+            while (!_FormFullySHown && !cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(500); // 2000, 500, 50, 10
+                await Task.Delay(500, cancellationToken); // 2000, 500, 50, 10
             }
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Extra time to wait before starting testing process
             if (initialDelaySec > 0)
             {
                 DateTime startDatetime = DateTime.UtcNow;
                 double timeElapsed = 0;
-                while (timeElapsed <= initialDelaySec)
+                while (timeElapsed <= initialDelaySec && !cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(50); // 2000, 500, 50, 10
+                    await Task.Delay(50, cancellationToken); // 2000, 500, 50, 10
                     timeElapsed = ((TimeSpan)(DateTime.UtcNow - startDatetime)).TotalSeconds;
                 }
             }
@@ -751,7 +759,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             // Call async function which connects to BCI sensor + starts task that controls TriggerBox flashing and tests optical sensor by request
             if (_Testing_useSensor == true)
             {
-                InitDAQ();
+                await InitDAQ(cancellationToken);
             }
         }
 
@@ -768,8 +776,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             {
                 // Automatically start device testing when main form is shown
                 // Start startBCIDeviceTesting() function from separate non-UI thread
-                Thread t = new(() => startBCIDeviceTesting(0));
-                t.Start();
+                startBCIDeviceTesting(0).Forget(ex => _logger.LogError(ex, "Failed to start BCI device testing"));
             }
         }
 
@@ -819,79 +826,88 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Task to Initialize the DAQ sensor if is already then process skip the init method
         /// </summary>
         /// <returns></returns>
-        public async Task InitDAQ() // Original function
+        public Task InitDAQ()
         {
+            return InitDAQ(default);
+        }
+
+        public async Task InitDAQ(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             _logger.LogDebug("Initializing DAQ");
             _initDAQTaskStopped = false;
 
-            while (!_endTasks)
+            try
             {
-                await Task.Delay(100); // Original delay
-                if (_FormFullySHown)
+                while (!_endTasks && !cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(1500); // Original delay
+                    await Task.Delay(100, cancellationToken); // Original delay
+                    if (_FormFullySHown)
+                    {
+                        await Task.Delay(1500, cancellationToken); // Original delay
 
-                    // Use the DAQ instance instead of static methods
-                    BaseDAQ.ExitCodes exitCode = ((DAQ_OpenBCI)_daqInstance).getUsbDongleConnected();
-                    if (exitCode == BaseDAQ.ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
-                    {
-                        _logger.LogDebug("USB dongle connection error detected, state: ReceivedBCIError_UsbDongle");
-                        _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle;
-                        changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_UsbDongle);
-                    }
-                    else
-                    {
-                        _logger.LogDebug("InitDAQ exit code: {ExitCode}", exitCode);
-                        bool success = _daqInstance.Start("");
-                        if (success)
+                        // Use the DAQ instance instead of static methods
+                        BaseDAQ.ExitCodes exitCode = ((DAQ_OpenBCI)_daqInstance).getUsbDongleConnected();
+                        if (exitCode == BaseDAQ.ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
                         {
-                            _logger.LogDebug("DAQ_OpenBCI started successfully");
-
-                            // Check latency setting of port is set correctly
-                            bool latencyPortOk = ((DAQ_OpenBCI)_daqInstance).CheckLatencyPort();
-                            if (latencyPortOk)
+                            _logger.LogDebug("USB dongle connection error detected, state: ReceivedBCIError_UsbDongle");
+                            _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle;
+                            changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_UsbDongle);
+                        }
+                        else
+                        {
+                            _logger.LogDebug("InitDAQ exit code: {ExitCode}", exitCode);
+                            bool success = _daqInstance.Start("");
+                            if (success)
                             {
-                                _logger.LogDebug("DAQ_OpenBCI latency port check passed");
+                                _logger.LogDebug("DAQ_OpenBCI started successfully");
 
-                                if (_daqInstance.deviceInitialized)
+                                // Check latency setting of port is set correctly
+                                bool latencyPortOk = ((DAQ_OpenBCI)_daqInstance).CheckLatencyPort();
+                                if (latencyPortOk)
                                 {
-                                    _logger.LogDebug("DAQ_OpenBCI device initialized successfully");
+                                    _logger.LogDebug("DAQ_OpenBCI latency port check passed");
 
-         
-                                    // BCI impedence / railing integration - debugging option, go straight to signal check screens without checking optical sensor
-                                    _logger.LogDebug("Testing mode enabled - ignoring optical sensor checks during onboarding");
+                                    if (_daqInstance.deviceInitialized)
+                                    {
+                                        _logger.LogDebug("DAQ_OpenBCI device initialized successfully");
 
-                                    // Go to first stage of signal quality checking process
-                                    startSignalQualityTestingState(DeviceTestingState.BCISignalCheckStartRequired);
-                                    
+                                        // BCI impedence / railing integration - debugging option, go straight to signal check screens without checking optical sensor
+                                        _logger.LogDebug("Testing mode enabled - ignoring optical sensor checks during onboarding");
+
+                                        // Go to first stage of signal quality checking process
+                                        startSignalQualityTestingState(DeviceTestingState.BCISignalCheckStartRequired);
+                                    }
+                                    else
+                                    {
+                                        _logger.LogDebug("DAQ_OpenBCI device initialization failed");
+                                    }
                                 }
                                 else
                                 {
-                                    _logger.LogDebug("DAQ_OpenBCI device initialization failed");
+                                    _logger.LogDebug("DAQ_OpenBCI latency port check failed, state: ReceivedBCIError_PortConfig");
+                                    _daqInstance.Stop();
+                                    _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig;
+                                    changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_PortConfig);
                                 }
                             }
                             else
                             {
-                                _logger.LogDebug("DAQ_OpenBCI latency port check failed, state: ReceivedBCIError_PortConfig");
-                                _daqInstance.Stop();
-                                _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig;
-                                changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_PortConfig);
+                                _logger.LogDebug("Cyton board connection error detected, state: ReceivedBCIError_CytonBoard");
+                                _deviceTestingState = DeviceTestingState.ReceivedBCIError_CytonBoard;
+                                changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_CytonBoard);
                             }
                         }
-                        else
-                        {
-                            _logger.LogDebug("Cyton board connection error detected, state: ReceivedBCIError_CytonBoard");
-                            _deviceTestingState = DeviceTestingState.ReceivedBCIError_CytonBoard;
-                            changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_CytonBoard);
-                        }
-                    }
 
-                    break;
+                        break;
+                    }
                 }
             }
-
-            _initDAQTaskStopped = true;
-            _logger.LogDebug("InitDAQ task stopped");
+            finally
+            {
+                _initDAQTaskStopped = true;
+                _logger.LogDebug("InitDAQ task stopped");
+            }
             // return;
         }
 

@@ -595,21 +595,26 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="boxesData"></param>
         /// <param name="widgets"></param>
         /// <returns></returns>
-        public async Task ChangeUserControlLayout(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgets)
+        public Task ChangeUserControlLayout(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgets)
         {
-            await Task.Delay(20);
+            return ChangeUserControlLayout(boxesData, widgets, default);
+        }
+
+        public async Task ChangeUserControlLayout(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgets, CancellationToken cancellationToken)
+        {
+            await Task.Delay(20, cancellationToken);
             _changeUserControl = true;//like this if a timer uses SharpDx it wont proceed
             _stopAnimation = true;//like this if a timer uses SharpDx it wont proceed
             StopTimers();
-            await Task.Delay(20);
+            await Task.Delay(20, cancellationToken);
             AbortTimers();//Ensure that timers are stopped
-            await Task.Delay(100);
+            await Task.Delay(100, cancellationToken);
             if (!VerifyIfTimersAreStoped()) //Check timers are stopped, if a change is made while SharpDx is working falls into and exception and will break the app
             {
                 StopTimers();
-                await Task.Delay(20);
+                await Task.Delay(20, cancellationToken);
                 AbortTimers();
-                await Task.Delay(100);
+                await Task.Delay(100, cancellationToken);
             }
             if (_ChangeTimings && _sessionMode == BCIModes.TYPING)//If a change of user control occur and has to fall into a specific box
                 RequestParameters(new BCIMode { BciMode = _sessionMode, BciCalibrationMode = _ScanningSection });
@@ -738,7 +743,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _amountOfKeyboards = 0;
             _nextTarget = GetButtomFromIndex(1);
 
-            _ = UpdateStringsFromButtons().ConfigureAwait(false);//Task to update strings for SharpDX since it uses strings and not the Windows buttons properties
+            UpdateStringsFromButtons().Forget(ex => _logger.LogError(ex, "Failed to update animation button strings"));//Task to update strings for SharpDX since it uses strings and not the Windows buttons properties
             _actuator = Context.AppActuatorManager.GetActuator(new Guid("77809D19-F450-4D36-A633-D818400B3D9A"));
             if (_actuator != null)
                 _actuator.EvtIoctlResponse += Evt_ResponseActuator;
@@ -2022,7 +2027,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                                 ShowDecision(decision, true);//This method is the one that shows the decision made and start the next sequences
 
                                                 if (!_ReturnToBoxScanning && !_changeUserControl)
-                                                    _ = ActuateWidgetFromID(_decidedID).ConfigureAwait(false);
+                                                    ActuateWidgetFromID(_decidedID).Forget(ex => _logger.LogError(ex, "Failed to actuate animation widget"));
                                                 if (!_lockAnimation)//If not lock then continue with box scanning otherwise it will continue with keyboard scanning
                                                 {
                                                     _numberOfSequences = _flashingSequenceBoxList.Length;
@@ -2146,7 +2151,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             if (_StartSequences)
             {// if delay is to have a time before animations starts
                 if (delayAfterLayoutChange)
-                    _ = ResetWaitingDelay();
+                    ResetWaitingDelay().Forget(ex => _logger.LogError(ex, "Failed to reset animation waiting delay"));
                 else
                     StartEpoch();
             }

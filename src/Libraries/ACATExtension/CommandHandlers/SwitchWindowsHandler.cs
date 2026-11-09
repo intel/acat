@@ -28,6 +28,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Extension.CommandHandlers
 {
@@ -81,7 +82,8 @@ namespace ACAT.Extension.CommandHandlers
 
                     extension.GetInvoker().SetValue("FilterByProcessName", process.ProcessName);
 
-                    using Task _ = Context.AppAgentMgr.ActivateAgent(switchWindowsAgent as IFunctionalAgent);
+                    Context.AppAgentMgr.ActivateAgent(switchWindowsAgent as IFunctionalAgent)
+                        .Forget(ex => LogManager.GetLogger<SwitchWindowsHandler>().LogError(ex, "Failed to activate switch windows agent"));
 
                     WindowActivityMonitor.Refresh();
                 }

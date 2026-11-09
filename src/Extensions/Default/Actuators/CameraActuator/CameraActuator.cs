@@ -589,9 +589,11 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
                 IsCalibrating = false;
 
-                Task.Run(() => setVisionSettings());
+                Task.Run(() => setVisionSettings())
+                    .Forget(ex => _logger.LogError(ex, "Failed to set vision settings"));
 
-                Task.Run(() => EvtCameraSensorInitDone?.Invoke(this, null));
+                Task.Run(() => EvtCameraSensorInitDone?.Invoke(this, null))
+                    .Forget(ex => _logger.LogError(ex, "Failed to notify camera sensor initialization"));
             }
             else if (gesture == "CALIB_START") // begin camera calibration
             {

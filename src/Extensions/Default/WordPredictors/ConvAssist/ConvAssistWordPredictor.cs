@@ -340,9 +340,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         public Task<string> ConvAssistLearnAsync(string text, WordPredictorMessageTypes requestType)
         {
+            return ConvAssistLearnAsync(text, requestType, default);
+        }
+
+        public Task<string> ConvAssistLearnAsync(string text, WordPredictorMessageTypes requestType, CancellationToken cancellationToken)
+        {
             ConvAssistMessage message = new(requestType, WordPredictionModes.None, text);
             string jsonMessage = JsonSerializer.SerializeForInterop(message);
-            return namedPipe.WriteAsync(jsonMessage, 10000);
+            return namedPipe.WriteAsync(jsonMessage, 10000, cancellationToken);
         }
 
         /// <summary>
@@ -364,9 +369,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         public Task<string> SendMessageConvAssistSentencePredictionAsync(string text, WordPredictionModes mode)
         {
+            return SendMessageConvAssistSentencePredictionAsync(text, mode, default);
+        }
+
+        public Task<string> SendMessageConvAssistSentencePredictionAsync(string text, WordPredictionModes mode, CancellationToken cancellationToken)
+        {
             ConvAssistMessage message = new(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
             string jsonMessage = JsonSerializer.SerializeForInterop(message);
-            return namedPipe.WriteAsync(jsonMessage, 10000);
+            return namedPipe.WriteAsync(jsonMessage, 10000, cancellationToken);
         }
 
         /// <summary>
@@ -388,9 +398,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         public Task<string> SendMessageConvAssistWordPredictionAsync(string text, WordPredictionModes mode)
         {
+            return SendMessageConvAssistWordPredictionAsync(text, mode, default);
+        }
+
+        public Task<string> SendMessageConvAssistWordPredictionAsync(string text, WordPredictionModes mode, CancellationToken cancellationToken)
+        {
             ConvAssistMessage message = new(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
             string jsonMessage = JsonSerializer.SerializeForInterop(message);
-            return namedPipe.WriteAsync(jsonMessage, 10000);
+            return namedPipe.WriteAsync(jsonMessage, 10000, cancellationToken);
         }
 
         /// <summary>

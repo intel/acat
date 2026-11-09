@@ -468,6 +468,7 @@
     <Compile Include="Utility\VerifyDigitalSignature.cs" />
     <Compile Include="Utility\WpfUserControlUtilities.cs" />
     <Compile Include="Utility\XmlUtils.cs" />
+    <Compile Include="Utility\TaskExtensions.cs" />
     <Compile Include="Utility\ClassDescriptorAttribute.cs" />
     <Compile Include="Utility\DirectoryWalker.cs" />
     <Compile Include="Utility\FileUtils.cs" />

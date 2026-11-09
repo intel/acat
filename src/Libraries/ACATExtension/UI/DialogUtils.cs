@@ -13,6 +13,8 @@ using ACAT.Core.Utility;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ACAT.Extension.UI
@@ -125,15 +127,32 @@ namespace ACAT.Extension.UI
         /// Runs the volume settings agent to control the volume of
         /// text to speech
         /// </summary>
-        public static async void LaunchVolumeSettingsAgent()
+        public static void LaunchVolumeSettingsAgent()
         {
-            IApplicationAgent volumeSettingsAgent = Context.AppAgentMgr.GetAgentByCategory("VolumeSettingsAgent");
-            if (volumeSettingsAgent == null)
-            {
-                return;
-            }
+            LaunchVolumeSettingsAgentAsync().Forget(ex => _logger.LogError(ex, "Error launching volume settings agent"));
+        }
 
-            await Context.AppAgentMgr.ActivateAgent(volumeSettingsAgent as IFunctionalAgent);
+        public static async Task LaunchVolumeSettingsAgentAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                IApplicationAgent volumeSettingsAgent = Context.AppAgentMgr.GetAgentByCategory("VolumeSettingsAgent");
+                if (volumeSettingsAgent == null)
+                {
+                    return;
+                }
+
+                await Context.AppAgentMgr.ActivateAgent(volumeSettingsAgent as IFunctionalAgent, cancellationToken);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error launching volume settings agent");
+            }
         }
 
         /// <summary>
@@ -178,10 +197,16 @@ namespace ACAT.Extension.UI
         /// Activates the functional agent responsible for launching
         /// applications
         /// </summary>
-        public static async void ShowAppLauncher()
+        public static void ShowAppLauncher()
+        {
+            ShowAppLauncherAsync().Forget(ex => _logger.LogError(ex, "Error launching app"));
+        }
+
+        public static async Task ShowAppLauncherAsync(CancellationToken cancellationToken = default)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (!Context.AppAgentMgr.CanActivateFunctionalAgent())
                 {
                     return;
@@ -193,7 +218,11 @@ namespace ACAT.Extension.UI
                     return;
                 }
 
-                await Context.AppAgentMgr.ActivateAgent(launchAppAgent as IFunctionalAgent);
+                await Context.AppAgentMgr.ActivateAgent(launchAppAgent as IFunctionalAgent, cancellationToken);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -204,10 +233,16 @@ namespace ACAT.Extension.UI
         /// <summary>
         /// Activates the File Browser functional agent.
         /// </summary>
-        public static async void ShowFileBrowser(string action)
+        public static void ShowFileBrowser(string action)
+        {
+            ShowFileBrowserAsync(action).Forget(ex => _logger.LogError(ex, "Error launching file browser"));
+        }
+
+        public static async Task ShowFileBrowserAsync(string action, CancellationToken cancellationToken = default)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (!Context.AppAgentMgr.CanActivateFunctionalAgent())
                 {
                     return;
@@ -222,7 +257,11 @@ namespace ACAT.Extension.UI
                 fileBrowserAgent.GetInvoker().SetValue("AutoLaunchFile", true);
                 fileBrowserAgent.GetInvoker().SetValue("Action", action);
 
-                await Context.AppAgentMgr.ActivateAgent(fileBrowserAgent as IFunctionalAgent);
+                await Context.AppAgentMgr.ActivateAgent(fileBrowserAgent as IFunctionalAgent, cancellationToken);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -237,10 +276,16 @@ namespace ACAT.Extension.UI
         /// notepad, word)
         /// </summary>
         /// <param name="taskName">filter by this process name</param>
-        public static async void ShowTaskSwitcher(string taskName = "")
+        public static void ShowTaskSwitcher(string taskName = "")
+        {
+            ShowTaskSwitcherAsync(taskName).Forget(ex => _logger.LogError(ex, "Error switching tasks"));
+        }
+
+        public static async Task ShowTaskSwitcherAsync(string taskName = "", CancellationToken cancellationToken = default)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (!Context.AppAgentMgr.CanActivateFunctionalAgent())
                 {
                     return;
@@ -254,8 +299,12 @@ namespace ACAT.Extension.UI
 
                 IExtension extension = switchWindowsAgent;
                 extension.GetInvoker().SetValue("FilterByProcessName", taskName);
-                await Context.AppAgentMgr.ActivateAgent(switchWindowsAgent as IFunctionalAgent);
+                await Context.AppAgentMgr.ActivateAgent(switchWindowsAgent as IFunctionalAgent, cancellationToken);
                 _logger.LogDebug("Returned from activate agent");
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
             }
             catch (Exception ex)
             {

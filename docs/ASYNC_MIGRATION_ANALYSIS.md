@@ -104,6 +104,16 @@ opportunities:
   Use `StreamReader.ReadToEndAsync()` and `StreamWriter.WriteAsync()` instead.
 - `ConfigureAwait(false)` is applied on every `await` in library code to prevent
   `SynchronizationContext` deadlocks when called from WinForms UI threads.
+- UI-affine methods are intentional exceptions: `AgentManager` resumes on the UI
+  thread to update agents and close forms; `ConfirmBoxTimer`, `DialogUtils`, and
+  Outlook agent workflows resume to update or interact with WinForms/UI Automation.
+  Async methods in WinForms extension projects and `AnimationSharpManagerV2`
+  likewise preserve the UI context.
+- `Microsoft.VisualStudio.Threading.Analyzers` is enabled for ACATCore and extension
+  library projects. The async-void, unobserved-task, and ConfigureAwait diagnostics
+  are warnings initially to review existing UI-context exceptions before escalation.
+- Cancellation-token overloads retain the original public signatures for binary
+  compatibility; the token-bearing overloads require an explicit token.
 - `IAsyncDisposable` is **not available** on .NET Framework 4.8.1. Cleanup uses
   `Task`-returning patterns or regular `IDisposable`.
 - `Task.Run()` is used as a fallback for operations backed by blocking APIs

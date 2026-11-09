@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ACAT.Extensions.WordPredictors.ConvAssist
@@ -137,16 +138,20 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         }
 
 
-        public static async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
+        public static Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
         {
-            if (task == await Task.WhenAny(task, Task.Delay(timeout)))
+            return WithTimeout(task, timeout, default);
+        }
+
+        public static async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout, CancellationToken cancellationToken)
+        {
+            if (task == await Task.WhenAny(task, Task.Delay(timeout, cancellationToken)).ConfigureAwait(false))
             {
-                return await task; // Task completed within timeout
+                return await task.ConfigureAwait(false); // Task completed within timeout
             }
-            else
-            {
-                throw new TimeoutException("The task did not complete within the given time.");
-            }
+
+            cancellationToken.ThrowIfCancellationRequested();
+            throw new TimeoutException("The task did not complete within the given time.");
         }
     }
 }

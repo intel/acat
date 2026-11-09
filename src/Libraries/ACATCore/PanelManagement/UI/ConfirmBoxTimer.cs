@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -47,13 +48,19 @@ namespace ACAT.Core.PanelManagement
             return result;
         }
 
-        public async Task startCountdown()
+        public Task startCountdown()
+        {
+            return startCountdown(default);
+        }
+
+        public async Task startCountdown(CancellationToken cancellationToken)
         {
             String promptText;
 
-            await Task.Delay(25);
+            await Task.Delay(25, cancellationToken);
             while (SecondsCounter > 0)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 promptText = Prompt + SecondsCounter + (SecondsCounter > 1 ? " seconds" : " second");
 
                 if (labelPrompt.InvokeRequired)
@@ -67,18 +74,18 @@ namespace ACAT.Core.PanelManagement
                 {
                     labelPrompt.Text = promptText;
                 }
-                await Task.Delay(1000);
+                await Task.Delay(1000, cancellationToken);
                 SecondsCounter -= 1;
             }
             Result = true;
             Close();
         }
 
-        private void ConfirmBox_Load(object sender, EventArgs e)
+        private async void ConfirmBox_Load(object sender, EventArgs e)
         {
             CenterToScreen();
             labelPrompt.Text = Prompt;
-            _ = startCountdown().ConfigureAwait(false);
+            await startCountdown();
         }
     }
 }

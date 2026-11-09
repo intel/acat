@@ -100,6 +100,10 @@
     <PackageReference Include="System.Resources.Extensions" Version ="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'ACAT.Core' Or '$(MSBuildProjectName)' == 'ACAT.Extension' Or $([System.String]::Copy('$(MSBuildProjectName)').StartsWith('ACAT.Extensions.'))">
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.10.48" PrivateAssets="all" />
+  </ItemGroup>
+
   <!-- Fix NETSDK1022: Exclude auto-generated files from obj and bin folders -->
   <!-- This prevents duplicate compilation of SDK-generated files -->
   <PropertyGroup>

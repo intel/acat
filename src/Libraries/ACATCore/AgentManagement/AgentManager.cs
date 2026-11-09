@@ -415,8 +415,14 @@ namespace ACAT.Core.AgentManagement
         /// <param name="caller">The calling agent (can be null)</param>
         /// <param name="agent">Functional agent to activate</param>
         /// <returns>the task to wait on</returns>
-        public async Task ActivateAgent(IApplicationAgent caller, IFunctionalAgent agent)
+        public Task ActivateAgent(IApplicationAgent caller, IFunctionalAgent agent)
         {
+            return ActivateAgent(caller, agent, default);
+        }
+
+        public async Task ActivateAgent(IApplicationAgent caller, IFunctionalAgent agent, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             EvtPreActivateAgent?.Invoke(this, new EventArgs());
 
             lock (_syncActivateAgent)
@@ -476,15 +482,21 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="agent">agent to activate</param>
         /// <returns>Task to wait on</returns>
-        public async Task ActivateAgent(IFunctionalAgent agent)
+        public Task ActivateAgent(IFunctionalAgent agent)
         {
+            return ActivateAgent(agent, default);
+        }
+
+        public async Task ActivateAgent(IFunctionalAgent agent, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             if (_currentAgent is IFunctionalAgent)
             {
                 _logger?.LogDebug("Cannot activate functional agent " + agent.Name + ", functional agent " + _currentAgent.Name + " is currently active");
                 return;
             }
 
-            await ActivateAgent(null, agent);
+            await ActivateAgent(null, agent, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

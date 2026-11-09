@@ -11,8 +11,11 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
 using ACATResources;
 using ACAT.Core.PreferencesManagement.Attributes;
+using ACAT.Core.PreferencesManagement;
 
 namespace ACAT.Extension
 {
@@ -142,6 +145,14 @@ namespace ACAT.Extension
                     LoadDefaultSettings();
         }
 
+        public static Task<ACATPreferences> LoadAsync(bool loadDefaultsOnFail = true, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return !String.IsNullOrEmpty(PreferencesFilePath)
+                ? PreferencesBase.LoadAsync<ACATPreferences>(PreferencesFilePath, loadDefaultsOnFail, cancellationToken: cancellationToken)
+                : Task.FromResult(LoadDefaultSettings());
+        }
+
         /// <summary>
         /// Loads default factory settings
         /// </summary>
@@ -159,6 +170,14 @@ namespace ACAT.Extension
         {
             return !String.IsNullOrEmpty(PreferencesFilePath) &&
                 Save(this, PreferencesFilePath);
+        }
+
+        public Task<bool> SaveAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return !String.IsNullOrEmpty(PreferencesFilePath)
+                ? PreferencesBase.SaveAsync(this, PreferencesFilePath, cancellationToken)
+                : Task.FromResult(false);
         }
 
         /// <summary>

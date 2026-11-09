@@ -82,18 +82,22 @@ namespace ACAT.Extensions.UI.UserControls
             }
         }
 
-        private void ttsAndLearn(String text)
+        private async void ttsAndLearn(String text)
         {
             if (String.IsNullOrEmpty(text))
             {
                 return;
             }
 
-            textToSpeech(text);
-
-            if (WordPredictionManager.Instance.ActiveWordPredictor.SupportsLearning)
+            try
             {
-                WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnCanned);
+                textToSpeech(text);
+                await WordPredictorLearning.LearnAsync(WordPredictionManager.Instance.ActiveWordPredictor,
+                    text, WordPredictorMessageTypes.LearnCanned).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error learning canned phrase");
             }
         }
     }

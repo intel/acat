@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ACAT.Core.PanelManagement
 {
@@ -531,6 +533,127 @@ namespace ACAT.Core.PanelManagement
 
             LogManager.GetLogger<Context>().LogDebug("Returning {RetVal} from context init", retVal);
             return retVal;
+        }
+
+        /// <summary>
+        /// Initializes core services asynchronously. Call on the owning STA thread
+        /// with an installed UI SynchronizationContext when UI/plugins are enabled.
+        /// </summary>
+        public static async Task<bool> InitAsync(StartupFlags startup = StartupFlags.All)
+        {
+            bool requiresUiThread = (startup & StartupFlags.NoUI) == 0 ||
+                (startup & StartupFlags.NoActuator) == 0 ||
+                (startup & (StartupFlags.AgentManager | StartupFlags.WordPrediction | StartupFlags.TextToSpeech | StartupFlags.SpellChecker)) != 0;
+            if (requiresUiThread && (SynchronizationContext.Current == null ||
+                Thread.CurrentThread.GetApartmentState() != ApartmentState.STA))
+            {
+                throw new InvalidOperationException("Context.InitAsync must start on the UI thread with a SynchronizationContext.");
+            }
+
+            var dispatcher = new StartupDispatcher();
+            getExtensionDirs();
+            _startupFlags = startup;
+            AppWindowPosition = CoreGlobals.AppPreferences.ScannerPosition;
+            bool result = AppCommandManager.Init();
+            if (result)
+            {
+                result = createAgentManager();
+            }
+            if (result && !isEnabled(StartupFlags.NoUI))
+            {
+                result = await AppThemeManager.InitAsync().ConfigureAwait(false);
+                if (result)
+                {
+                    // Keep the legacy fallback/status behavior: theme selection failure is nonfatal.
+                    await AppThemeManager.SetActiveThemeAsync(CoreGlobals.AppPreferences.Theme).ConfigureAwait(false);
+                    result = await dispatcher.InvokeAsync(createPanelManager).ConfigureAwait(false);
+                    if (result)
+                    {
+                        result = await dispatcher.InvokeAsync(initWidgetManager).ConfigureAwait(false);
+                    }
+                }
+                else
+                {
+                    setCompletionStatus("Error initializing Theme Manager");
+                }
+            }
+            if (result && !isEnabled(StartupFlags.NoActuator))
+            {
+                result = await dispatcher.InvokeAsync(() => AppActuatorManager.LoadExtensionsAsync(ExtensionDirs))
+                    .ConfigureAwait(false);
+                if (result)
+                {
+                    result = await dispatcher.InvokeAsync(() => AppActuatorManager.Init(ExtensionDirs)).ConfigureAwait(false);
+                }
+                if (!result)
+                {
+                    setCompletionStatus("Error initializing actuator manager");
+                }
+            }
+
+            Task<bool> abbreviations = Task.FromResult(true);
+            if (result)
+            {
+                // These configuration files are independent; neither load constructs UI objects.
+                var loads = await dispatcher.InvokeAsync(() =>
+                {
+                    Task<bool> predictorLoad = isEnabled(StartupFlags.WordPrediction)
+                        ? AppWordPredictionManager.InitAsync(ExtensionDirs) : Task.FromResult(true);
+                    Task<bool> abbreviationLoad = isEnabled(StartupFlags.Abbreviations)
+                        ? AppAbbreviationsManager.InitAsync() : Task.FromResult(true);
+                    return (predictorLoad, abbreviationLoad);
+                }).ConfigureAwait(false);
+                Task<bool> predictors = loads.predictorLoad;
+                abbreviations = loads.abbreviationLoad;
+                await Task.WhenAll(predictors, abbreviations).ConfigureAwait(false);
+                result = await predictors.ConfigureAwait(false);
+                if (!result)
+                {
+                    setCompletionStatus("Error initializing Word Predition engine");
+                }
+                else if (isEnabled(StartupFlags.WordPrediction))
+                {
+                    result = await dispatcher.InvokeAsync(() =>
+                        AppWordPredictionManager.SetActiveWordPredictorAsync(CultureInfo.CurrentUICulture)).ConfigureAwait(false);
+                    if (!result)
+                    {
+                        setCompletionStatus("Error setting active word prediction engine");
+                    }
+                }
+            }
+            if (result && isEnabled(StartupFlags.TextToSpeech) && CoreGlobals.AppPreferences.EnableTextToSpeech)
+            {
+                bool ttsResult = await dispatcher.InvokeAsync(() =>
+                    AppTTSManager.LoadExtensions(ExtensionDirs) && AppTTSManager.Init(ExtensionDirs)).ConfigureAwait(false);
+                if (ttsResult)
+                {
+                    ttsResult = await dispatcher.InvokeAsync(() => AppTTSManager.SetActiveEngineAsync()).ConfigureAwait(false);
+                }
+                if (!ttsResult)
+                {
+                    setCompletionStatus("Error initializing text to speech.  TTS will be disabled", false);
+                    _initWarning = true;
+                }
+            }
+            if (result && isEnabled(StartupFlags.SpellChecker))
+            {
+                result = await dispatcher.InvokeAsync(createSpellCheckManager).ConfigureAwait(false);
+            }
+            if (result)
+            {
+                result = await abbreviations.ConfigureAwait(false);
+                if (!result)
+                {
+                    setCompletionStatus("Abbreviations load error.  Abbreviations will be disabled", false);
+                }
+            }
+            if (result)
+            {
+                startPerformanceMonitor();
+            }
+            result &= !_initWarning;
+            LogManager.GetLogger<Context>().LogDebug("Returning {RetVal} from context init", result);
+            return result;
         }
 
         /// <summary>

@@ -16,6 +16,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ACAT.Extensions.WordPredictors.ConvAssist
@@ -96,6 +98,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             Settings retVal = Load<Settings>(PreferencesFilePath);
             Save(retVal, PreferencesFilePath);
             return retVal;
+        }
+
+        public static Task<Settings> LoadAsync(CancellationToken cancellationToken = default)
+        {
+            return PreferencesBase.LoadAsync<Settings>(PreferencesFilePath, cancellationToken: cancellationToken);
         }
 
         /// <summary>

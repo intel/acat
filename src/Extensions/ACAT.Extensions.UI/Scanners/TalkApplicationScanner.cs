@@ -273,38 +273,46 @@ namespace ACAT.Extensions.UI.Scanners
             return text.Substring(startPos, endPos - startPos + 1);
         }
 
-        private void LearnCannedPhrases()
+        private async void LearnCannedPhrases()
         {
-            var text = _textBoxTalkWindow.Text;
-            if (String.IsNullOrEmpty(_textBoxTalkWindow.Text.Trim()))
+            try
             {
-                return;
-            }
-            String textToLearn = String.Empty;
-            using (AgentContext context = Context.AppAgentMgr.ActiveContext())
-            {
-                int caretPos = context.TextAgent().GetCaretPos();
-                var start = TextUtils.GetStartIndexCurrOrPrevSentence(text, caretPos);
-                int end = -1;
-                if (start >= 0)
+                var text = _textBoxTalkWindow.Text;
+                if (String.IsNullOrEmpty(_textBoxTalkWindow.Text.Trim()))
                 {
-                    end = TextUtils.GetIndexNextSentence(text, start);
+                    return;
                 }
+                String textToLearn = String.Empty;
+                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                {
+                    int caretPos = context.TextAgent().GetCaretPos();
+                    var start = TextUtils.GetStartIndexCurrOrPrevSentence(text, caretPos);
+                    int end = -1;
+                    if (start >= 0)
+                    {
+                        end = TextUtils.GetIndexNextSentence(text, start);
+                    }
 
-                if (start >= 0 && end >= 0 && (end - start) > 0)
+                    if (start >= 0 && end >= 0 && (end - start) > 0)
+                    {
+                        textToLearn = text.Substring(start, end - start);
+                    }
+                }
+                if (!String.IsNullOrEmpty(textToLearn))
                 {
-                    textToLearn = text.Substring(start, end - start);
+                    var shortenedText = TextUtils.EmbedEllipses(textToLearn, 60);
+                    var prompt = "Save this text to Canned Phrases?\r\n\r\n" + shortenedText;
+
+                    if (DialogUtils.ConfirmScanner(this, prompt))
+                    {
+                        await WordPredictorLearning.LearnAsync(WordPredictionManager.Instance.ActiveWordPredictor,
+                            textToLearn, WordPredictorMessageTypes.LearnCanned).ConfigureAwait(false);
+                    }
                 }
             }
-            if (!String.IsNullOrEmpty(textToLearn))
+            catch (Exception ex)
             {
-                var shortenedText = TextUtils.EmbedEllipses(textToLearn, 60);
-                var prompt = "Save this text to Canned Phrases?\r\n\r\n" + shortenedText;
-
-                if (DialogUtils.ConfirmScanner(this, prompt))
-                {
-                    WordPredictionManager.Instance.ActiveWordPredictor.Learn(textToLearn, WordPredictorMessageTypes.LearnCanned);
-                }
+                _logger.LogError(ex, "Error learning canned phrase");
             }
         }
         private void setModeLabel(WordPredictionModes mode)
@@ -401,33 +409,41 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        private void ttsAndLearn(String text)
+        private async void ttsAndLearn(String text)
         {
-            if (!String.IsNullOrEmpty(text))
+            try
             {
-                textToSpeech(text);
-
-                _logger.LogDebug("tts {Text}", text);
-
-                if (WordPredictionManager.Instance.ActiveWordPredictor.SupportsLearning)
+                if (!String.IsNullOrEmpty(text))
                 {
-                    switch (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode())
+                    textToSpeech(text);
+
+                    _logger.LogDebug("tts {Text}", text);
+
+                    var predictor = WordPredictionManager.Instance.ActiveWordPredictor;
+                    if (predictor.SupportsLearning)
                     {
-                        case WordPredictionModes.Sentence:
-                            WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnWords);
-                            break;
+                        switch (predictor.GetMode())
+                        {
+                            case WordPredictionModes.Sentence:
+                                await WordPredictorLearning.LearnAsync(predictor, text, WordPredictorMessageTypes.LearnWords).ConfigureAwait(false);
+                                break;
 
-                        case WordPredictionModes.Shorthand:
-                            WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnShorthand);
-                            break;
+                            case WordPredictionModes.Shorthand:
+                                await WordPredictorLearning.LearnAsync(predictor, text, WordPredictorMessageTypes.LearnShorthand).ConfigureAwait(false);
+                                break;
 
-                        case WordPredictionModes.CannedPhrases:
-                            WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnCanned);
-                            break;
+                            case WordPredictionModes.CannedPhrases:
+                                await WordPredictorLearning.LearnAsync(predictor, text, WordPredictorMessageTypes.LearnCanned).ConfigureAwait(false);
+                                break;
+                        }
+                        _logger.LogDebug("Learn {Text}", text);
+                        await WordPredictorLearning.LearnAsync(predictor, text, WordPredictorMessageTypes.LearnSentence).ConfigureAwait(false);
                     }
-                    _logger.LogDebug("Learn {Text}", text);
-                    WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnSentence);
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error learning spoken text");
             }
         }
 

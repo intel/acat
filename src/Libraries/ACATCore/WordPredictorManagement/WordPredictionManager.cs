@@ -243,6 +243,30 @@ namespace ACAT.Core.WordPredictorManagement
             return true;
         }
 
+        public System.Threading.Tasks.Task<bool> LearnAsync(string text, WordPredictorMessageTypes requestType)
+        {
+            var predictor = _activeWordPredictor;
+            return predictor is IAsyncWordPredictorLearning asyncLearning
+                ? asyncLearning.LearnAsync(text, requestType)
+                : System.Threading.Tasks.Task.FromResult(predictor?.Learn(text, requestType) ?? false);
+        }
+
+        public async System.Threading.Tasks.Task<bool> InitAsync(IEnumerable<string> extensionDirs)
+        {
+            var dispatcher = new StartupDispatcher();
+            if (_wordPredictors != null)
+            {
+                return true;
+            }
+
+            var preferred = await WordPredictors.LoadPreferredAsync().ConfigureAwait(false);
+            return await dispatcher.InvokeAsync(() =>
+            {
+                _wordPredictors = new WordPredictors(LogManager.GetLogger<WordPredictors>(), preferred);
+                return _wordPredictors.Load(extensionDirs);
+            }).ConfigureAwait(false);
+        }
+
         public bool PostInit()
         {
             if (_activeWordPredictor != null)
@@ -375,6 +399,81 @@ namespace ACAT.Core.WordPredictorManagement
             }
 
             return retVal;
+        }
+
+        public async System.Threading.Tasks.Task<bool> SetActiveWordPredictorAsync(CultureInfo ci = null)
+        {
+            var dispatcher = new StartupDispatcher();
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
+            Guid guid = _wordPredictors.GetPreferredOrDefaultByCulture(ci);
+            Guid neutralGuid = _wordPredictors.GetPreferredOrDefaultByCulture(null);
+            bool result = false;
+
+            if (guid != Guid.Empty)
+            {
+                _activeWordPredictor?.Dispose();
+                _activeWordPredictor = null;
+                result = await createAndSetActiveWordPredictorAsync(_wordPredictors.Lookup(guid), ci, dispatcher)
+                    .ConfigureAwait(false);
+            }
+            else if (neutralGuid != Guid.Empty)
+            {
+                result = await createAndSetActiveWordPredictorAsync(_wordPredictors.Lookup(neutralGuid), ci, dispatcher)
+                    .ConfigureAwait(false);
+                if (!result)
+                {
+                    ci = new CultureInfo("en");
+                    guid = _wordPredictors.GetDefaultByCulture(ci);
+                    if (guid != Guid.Empty)
+                    {
+                        result = await createAndSetActiveWordPredictorAsync(_wordPredictors.Lookup(guid), ci, dispatcher)
+                            .ConfigureAwait(false);
+                    }
+                }
+            }
+
+            if (!result)
+            {
+                await dispatcher.InvokeAsync(() => _activeWordPredictor = WordPredictors.NullWordPredictor)
+                    .ConfigureAwait(false);
+            }
+            return result;
+        }
+
+        private async System.Threading.Tasks.Task<bool> createAndSetActiveWordPredictorAsync(
+            Type type, CultureInfo ci, StartupDispatcher dispatcher)
+        {
+            try
+            {
+                IWordPredictor predictor = null;
+                bool result = await dispatcher.InvokeAsync(() =>
+                {
+                    predictor = ExtensionInstantiator.CreateExtensionInstance(Context.ServiceProvider, type, _logger) as IWordPredictor;
+                    if (predictor == null)
+                    {
+                        return System.Threading.Tasks.Task.FromResult(false);
+                    }
+                    return predictor is IAsyncInitializer<CultureInfo> asyncInitializer
+                        ? asyncInitializer.InitAsync(ci)
+                        : System.Threading.Tasks.Task.FromResult(predictor.Init(ci));
+                }).ConfigureAwait(false);
+
+                if (result)
+                {
+                    await dispatcher.InvokeAsync(() =>
+                    {
+                        _activeWordPredictor = predictor;
+                        _eventBus?.Publish(new WordPredictionContextChangedEvent(predictor));
+                        return true;
+                    }).ConfigureAwait(false);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unable to load WordPredictor {Type}", type);
+                return false;
+            }
         }
 
         /// <summary>

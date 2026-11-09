@@ -65,6 +65,7 @@
       <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ITalkWindowTextBox.cs" />
+    <Compile Include="UI\WordPredictorLearning.cs" />
     <Compile Include="UI\ScannerForms\GenericScannerForm.cs" />
     <Compile Include="UI\ScanTimeAdjustForm.cs">
       <SubType>Form</SubType>

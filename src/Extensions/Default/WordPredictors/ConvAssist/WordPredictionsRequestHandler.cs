@@ -22,6 +22,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
@@ -152,6 +153,45 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
 
             return response;
+        }
+
+        public async Task<WordPredictionResponse> ProcessPredictionRequestAsync(WordPredictionRequest request)
+        {
+            if (request.PredictionType != PredictionTypes.Words)
+            {
+                return new WordPredictionResponse(request, new List<string>(), false);
+            }
+            try
+            {
+                if (_prevMode == WordPredictor.GetMode() &&
+                    PrevPrevWords != null && PrevCurrentWord != null &&
+                    String.Compare(PrevPrevWords, request.PrevWords) == 0 &&
+                    String.Compare(PrevCurrentWord, request.CurrentWord) == 0)
+                {
+                    return new WordPredictionResponse(request, PrevWordPredictionResults, true);
+                }
+
+                _prevMode = WordPredictor.GetMode();
+                PrevPrevWords = request.PrevWords;
+                PrevCurrentWord = request.CurrentWord;
+                try
+                {
+                    var predictions = await WordPredictor.SendMessageConvAssistWordPredictionAsync(
+                        request.PrevWords + request.CurrentWord, request.WordPredictionMode).ConfigureAwait(false);
+                    PrevWordPredictionResults = ProcessWordPredictions(WordPredictor, predictions, request.CurrentWord);
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError(ex, "ConvAssist Predict Words");
+                    PrevWordPredictionResults = new List<string>();
+                }
+                return new WordPredictionResponse(request, PrevWordPredictionResults, true);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "ConvAssist Predict Exception");
+                return new WordPredictionResponse(request, new List<string>(), false);
+            }
         }
 
         /// <summary>

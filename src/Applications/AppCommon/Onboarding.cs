@@ -10,12 +10,37 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ACAT.Applications
 {
     public partial class AppCommon
     {
         public static bool DoOnboarding()
+        {
+            using (var onboardingForm = createOnboardingForm())
+            {
+                Application.Run(onboardingForm);
+                return completeOnboarding(onboardingForm);
+            }
+        }
+
+        public static async Task<bool> DoOnboardingAsync()
+        {
+            using (var onboardingForm = createOnboardingForm())
+            {
+                await ShowFormAsync(onboardingForm);
+                return completeOnboarding(onboardingForm);
+            }
+        }
+
+        private static bool completeOnboarding(OnboardingForm onboardingForm)
+        {
+            Context.AppActuatorManager.Dispose();
+            return !onboardingForm.QuitOnboarding;
+        }
+
+        private static OnboardingForm createOnboardingForm()
         {
             Guid welcome = new("6d8da00e-5035-4b7f-a646-ed9f840a13bf");
             Guid languageSelect = new("{F2803F8A-D639-459C-9F27-5742BAD4E405}");
@@ -31,21 +56,11 @@ namespace ACAT.Applications
             onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(keyboardConfig));
             onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(finish));
 
-            var onboardingForm = new OnboardingForm
+            return new OnboardingForm
             {
                 Sequence = onboardingSequence
             };
 
-            Application.Run(onboardingForm);
-
-            Context.AppActuatorManager.Dispose();
-
-            if (onboardingForm.QuitOnboarding)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         public static bool ResetAllPreferences(List<PreferencesCategory> currentCategory)
@@ -53,39 +68,63 @@ namespace ACAT.Applications
             ILogger<AppCommon> logger = LoggingConfiguration.CreateLogger<AppCommon>();
             try
             {
-                // Reset general preferences  
-                if (CoreGlobals.AppPreferences != null)
+                foreach (var preferences in resetPreferences(currentCategory))
                 {
-                    var defaultPrefs = ACATPreferences.LoadDefaultSettings();
-                    if (defaultPrefs != null)
-                    {
-                        // Copy default values to current preferences  
-                        CopyPreferencesValues(defaultPrefs, CoreGlobals.AppPreferences);
-                        CoreGlobals.AppPreferences.Save();
-                    }
+                    preferences.Save();
                 }
-
-                foreach (PreferencesCategory category in currentCategory)
-                {
-                    if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
-                    {
-                        IPreferences defaultPrefs = supportsPrefs.GetDefaultPreferences();
-                        IPreferences currentPrefs = supportsPrefs.GetPreferences();
-
-                        if (defaultPrefs != null && currentPrefs != null)
-                        {
-                            CopyPreferencesValues(defaultPrefs, currentPrefs);
-                            currentPrefs.Save();
-                        }
-                    }
-                }
-
                 return true;
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error resetting preferences");
                 return false;
+            }
+        }
+
+        public static async Task<bool> ResetAllPreferencesAsync(List<PreferencesCategory> currentCategory)
+        {
+            ILogger<AppCommon> logger = LoggingConfiguration.CreateLogger<AppCommon>();
+            try
+            {
+                foreach (var preferences in resetPreferences(currentCategory))
+                {
+                    // Preserve UI-affine synchronous extension preference contracts.
+                    var saved = preferences is ACATPreferences acatPreferences
+                        ? await acatPreferences.SaveAsync()
+                        : preferences.Save();
+                    if (!saved)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error resetting preferences");
+                return false;
+            }
+        }
+
+        private static IEnumerable<IPreferences> resetPreferences(List<PreferencesCategory> currentCategory)
+        {
+            if (CoreGlobals.AppPreferences != null)
+            {
+                CopyPreferencesValues(ACATPreferences.LoadDefaultSettings(), CoreGlobals.AppPreferences);
+                yield return CoreGlobals.AppPreferences;
+            }
+            foreach (PreferencesCategory category in currentCategory)
+            {
+                if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                {
+                    IPreferences defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                    IPreferences currentPrefs = supportsPrefs.GetPreferences();
+                    if (defaultPrefs != null && currentPrefs != null)
+                    {
+                        CopyPreferencesValues(defaultPrefs, currentPrefs);
+                        yield return currentPrefs;
+                    }
+                }
             }
         }
 

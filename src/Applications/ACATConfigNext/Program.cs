@@ -1,9 +1,12 @@
 ﻿using ACAT.Core.Utility;
+using ACAT.Core.PanelManagement;
 using ACATConfigNext.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
+using ACAT.Applications;
+using System.Threading.Tasks;
 
 namespace ACATConfigNext
 {
@@ -17,15 +20,30 @@ namespace ACATConfigNext
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            AppCommon.RunApplication(StartApplicationAsync);
+        }
+
+        private static async Task StartApplicationAsync()
+        {
+            await AppCommon.LoadGlobalSettingsAsync();
+            await AppCommon.SetUserNameAsync();
+            AppCommon.SetProfileName();
+            if (!AppCommon.CreateUserAndProfile() ||
+                !await AppCommon.LoadUserPreferencesAsync())
+            {
+                return;
+            }
+            AppCommon.SetCulture();
 
             // Set up dependency injection
             var services = new ServiceCollection();
             ConfigureServices(services);
-            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            using ServiceProvider serviceProvider = services.BuildServiceProvider();
+            Context.ServiceProvider = serviceProvider;
 
             // Get SettingsForm from DI container
-            SettingsForm settingsForm = serviceProvider.GetRequiredService<SettingsForm>();
-            Application.Run(settingsForm);
+            using SettingsForm settingsForm = serviceProvider.GetRequiredService<SettingsForm>();
+            await AppCommon.ShowFormAsync(settingsForm);
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -34,7 +52,8 @@ namespace ACATConfigNext
             services.AddACATInfrastructure();
 
             // Register SettingsForm - IServiceProvider will be injected automatically
-            services.AddTransient<SettingsForm>();
+            services.AddTransient(provider => new SettingsForm(
+                provider.GetRequiredService<ILogger<SettingsForm>>(), provider, preferencesLoaded: true));
         }
     }
 }

@@ -84,14 +84,17 @@ namespace ACAT.Core.ThemeManagement
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _themeRepository = themeRepository ?? new ThemeRepository(logger);
             ActiveThemeName = DefaultThemeName;
-            DefaultTheme = Theme.Create(ActiveThemeName);
-            _activeTheme = Theme.Create(ActiveThemeName);
         }
 
         /// <summary>
         /// Gets or sets the default theme
         /// </summary>
-        public static Theme DefaultTheme { get; set; }
+        private static Theme _defaultTheme = Theme.Create(DefaultThemeName);
+        public static Theme DefaultTheme
+        {
+            get { return _defaultTheme; }
+            set { _defaultTheme = value; }
+        }
 
         /// <summary>
         /// Gets the singleton instance
@@ -108,6 +111,7 @@ namespace ACAT.Core.ThemeManagement
         {
             get
             {
+                _activeTheme ??= Theme.Create(DefaultThemeName);
                 _logger?.LogDebug("Active Theme name is {ThemeName}", _activeTheme.Name);
                 return _activeTheme;
             }
@@ -190,6 +194,12 @@ namespace ACAT.Core.ThemeManagement
             walker.Walk(new OnFileFoundDelegate(onFileFound));
             
             return true;
+        }
+
+        public Task<bool> InitAsync()
+        {
+            // Discovery only enumerates paths; actual configuration reads happen in SetActiveThemeAsync.
+            return Task.FromResult(Init());
         }
 
         /// <summary>

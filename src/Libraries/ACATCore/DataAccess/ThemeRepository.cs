@@ -13,6 +13,8 @@
 
 using ACAT.Core.ThemeManagement;
 using Microsoft.Extensions.Logging;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ACAT.Core.DataAccess
 {
@@ -55,6 +57,23 @@ namespace ACAT.Core.DataAccess
             }
 
             return theme;
+        }
+
+        public override async Task<Theme> LoadAsync(string themeFilePath, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (string.IsNullOrEmpty(themeFilePath))
+            {
+                Logger.LogWarning("ThemeRepository.LoadAsync called with null/empty path");
+                return null;
+            }
+
+            string themeDir = System.IO.Path.GetDirectoryName(themeFilePath);
+            string themeName = string.IsNullOrEmpty(themeDir)
+                ? ThemeManager.DefaultThemeName
+                : System.IO.Path.GetFileName(themeDir);
+            return await Theme.CreateAsync(themeName, themeDir, themeFilePath, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>

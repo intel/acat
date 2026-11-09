@@ -32,6 +32,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ACATApp
 {
@@ -45,6 +46,9 @@ namespace ACATApp
         private static ILoggerFactory modernLoggingFactory = null;
         private static ILogger _logger;
         private static IServiceProvider _serviceProvider;
+        private static bool _commonInitialized;
+        private static bool _preferencesInitialized;
+        private static bool _contextInitialized;
 #if DEBUG
         private static PerformanceDashboard _performanceDashboard = null;
 #endif
@@ -63,58 +67,67 @@ namespace ACATApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            InitializeGlobals();
-            InitializeUser();
-            InitializeLogging();
-            InitializeDependencyInjection();
-            InitializeContext();
-
-            if (!PerformOnboarding())
-            {
-                return;
-            }
-
-#if DEBUG
-            var collector = new RuntimeMetricsCollector();
-            var profiler = new MemoryProfiler();
-            collector.Start(intervalMs: 5000);
-
-            _performanceDashboard = new PerformanceDashboard(collector, profiler);
-            _performanceDashboard.Show();
-#endif
-
-            ShowSplashScreen("Starting ACAT");
-
-            var initialized = InitializeApplication();
-
-            if (!initialized)
-            {
-                Context.Dispose();
-                return;
-            }
-
-            CloseSplashScreen();
-
-            if (!PostInitialization())
-            {
-                Context.Dispose();
-                return;
-            }
-
-            ShowMainPanel();
-
-            ShowSplashScreen("Closing ACAT");
-            ShutdownApplication();
+            AppCommon.RunApplication(StartApplicationAsync);
         }
 
-        private static void InitializeGlobals()
+        private static async Task StartApplicationAsync()
+        {
+            try
+            {
+                await InitializeGlobalsAsync();
+                await InitializeUserAsync();
+                AppCommon.SetCulture();
+                InitializeLogging();
+                InitializeDependencyInjection();
+                await InitializeContextAsync();
+
+                if (!await AppCommon.DoOnboardingAsync())
+                {
+                    return;
+                }
+                AppCommon.SetCulture();
+
+#if DEBUG
+                var collector = new RuntimeMetricsCollector();
+                var profiler = new MemoryProfiler();
+                collector.Start(intervalMs: 5000);
+
+                _performanceDashboard = new PerformanceDashboard(collector, profiler);
+                _performanceDashboard.Show();
+#endif
+
+                ShowSplashScreen("Starting ACAT");
+
+                var initialized = await InitializeApplicationAsync();
+
+                if (!initialized)
+                {
+                    return;
+                }
+
+                CloseSplashScreen();
+
+                if (!PostInitialization())
+                {
+                    return;
+                }
+
+                ShowMainPanel();
+            }
+            finally
+            {
+                ShutdownApplication();
+            }
+        }
+
+        private static async Task InitializeGlobalsAsync()
         {
             CoreGlobals.AppId = "ACATDashboard";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
             FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
             FileUtils.LogAssemblyInfo();
 
-            AppCommon.LoadGlobalSettings();
+            await AppCommon.LoadGlobalSettingsAsync();
         }
 
         private static void InitializeLogging()
@@ -172,23 +185,23 @@ namespace ACATApp
             _logger.LogDebug("Dependency injection initialized with ACAT services");
         }
 
-        private static void InitializeUser()
+        private static async Task InitializeUserAsync()
         {
-            AppCommon.SetUserName();
+            await AppCommon.SetUserNameAsync();
             AppCommon.SetProfileName();
 
             if (!AppCommon.CreateUserAndProfile() ||
-                !AppCommon.LoadUserPreferences() ||
-                !AppCommon.SetCulture())
+                !await AppCommon.LoadUserPreferencesAsync())
             {
                 throw new Exception("Failed to initialize user");
             }
+            _preferencesInitialized = true;
         }
 
-        private static void InitializeContext()
+        private static async Task InitializeContextAsync()
         {
             User32Interop.SetProcessDPIAware();
-            AppCommon.CheckDisplayScalingAndResolution();
+            await AppCommon.CheckDisplayScalingAndResolutionAsync();
             Common.AppPreferences.AppName = "ACAT Dashboard";
 
             CommandDescriptors.Init();
@@ -196,13 +209,9 @@ namespace ACATApp
 
             Context.PreInit();
             Common.PreInit();
+            _commonInitialized = true;
 
             Context.AppAgentMgr.EnableAppAgentContextSwitch = true;
-        }
-
-        private static bool PerformOnboarding()
-        {
-            return AppCommon.DoOnboarding();
         }
 
         private static void ShowSplashScreen(string message, int durationMs = 2000)
@@ -217,14 +226,15 @@ namespace ACATApp
             splash = null;
         }
 
-        private static bool InitializeApplication()
+        private static async Task<bool> InitializeApplicationAsync()
         {
-            return Context.Init(Context.StartupFlags.Minimal |
+            _contextInitialized = await Context.InitAsync(Context.StartupFlags.Minimal |
                                 Context.StartupFlags.TextToSpeech |
                                 Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.AgentManager |
                                 Context.StartupFlags.WindowsActivityMonitor |
                                 Context.StartupFlags.Abbreviations);
+            return _contextInitialized;
         }
 
         private static bool PostInitialization()
@@ -267,12 +277,6 @@ namespace ACATApp
             }
 
 
-            form.FormClosed += (s, e) =>
-            {
-                ShutdownApplication();
-            };
-
-
             Context.AppAgentMgr.AddAgent(form.Handle, agent);
             Context.AppPanelManager.ShowDialog(form as IPanel);
             //Application.Run(form as Form);
@@ -305,24 +309,52 @@ namespace ACATApp
 
         private static void ShutdownApplication()
         {
-            AuditLog.Audit(new AuditEvent("Application", "stop"));
+            if (_preferencesInitialized)
+            {
+                TryCleanup(() => AuditLog.Audit(new AuditEvent("Application", "stop")));
+            }
 
 #if DEBUG
-            // Close PerformanceDashboard before disposing Context to prevent WPF dispatcher from keeping app alive
             if (_performanceDashboard != null)
             {
-                _performanceDashboard.Dispatcher.InvokeShutdown();
-                _performanceDashboard.Close();
+                TryCleanup(() => _performanceDashboard.Dispatcher.InvokeShutdown());
+                TryCleanup(() => _performanceDashboard.Close());
                 _performanceDashboard = null;
             }
 #endif
 
-            Context.Dispose();
-            Common.Uninit();
-            CloseSplashScreen();
-            _logger.LogDebug("ACAT Dashboard Application shutdown");
-            modernLoggingFactory?.Dispose();
-            AppCommon.OnExit();
+            if (_contextInitialized)
+            {
+                TryCleanup(Context.Dispose);
+            }
+            if (_commonInitialized)
+            {
+                TryCleanup(Common.Uninit);
+            }
+            TryCleanup(CloseSplashScreen);
+            TryCleanup(() => FatalErrorHandler.EvtFatalError -= CoreGlobals_EvtFatalError);
+            TryCleanup(() => _logger?.LogDebug("ACAT Dashboard Application shutdown"));
+            TryCleanup(() => (_serviceProvider as IDisposable)?.Dispose());
+            TryCleanup(() => modernLoggingFactory?.Dispose());
+        }
+
+        private static void TryCleanup(Action cleanup)
+        {
+            try
+            {
+                cleanup();
+            }
+            catch (Exception ex)
+            {
+                // Cleanup must not replace a startup exception or skip later resources.
+                try
+                {
+                    _logger?.LogError(ex, "Application cleanup failed");
+                }
+                catch
+                {
+                }
+            }
         }
 
         /// <summary>

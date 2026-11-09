@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ACATConfigNext.Forms
 {
@@ -43,14 +44,20 @@ namespace ACATConfigNext.Forms
         private UserControl currentSettingsPanel;
 
         private bool _isDirty = false;
+        private bool _isSaving;
 
         public SettingsForm(ILogger<SettingsForm> logger, IServiceProvider serviceProvider)
+            : this(logger, serviceProvider, false)
+        {
+        }
+
+        public SettingsForm(ILogger<SettingsForm> logger, IServiceProvider serviceProvider, bool preferencesLoaded)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
             WpfInitializationHelper.EnsureApplicationResources();
 
-            InitializeComponent();
+            InitializeComponent(preferencesLoaded);
         }
 
         private FlowLayoutPanel CreateLeftPanel() 
@@ -149,15 +156,11 @@ namespace ACATConfigNext.Forms
             return breadcrumbPanel;
         }
 
-        private void ButtonClicked_Save(object sender, EventArgs e)
+        private async void ButtonClicked_Save(object sender, EventArgs e)
         {
             try
             {
-                var prefsPanel = currentSettingsPanel as SettingsPanel;
-                prefsPanel?.Save();
-                _isDirty = false;
-                saveButton.Enabled = _isDirty;
-                cancelButton.Enabled = _isDirty;
+                await SaveCurrentSettingsAsync();
             }
             catch (Exception ex)
             {
@@ -167,8 +170,55 @@ namespace ACATConfigNext.Forms
             }
         }
 
-        private void ButtonClicked_Cancel(object sender, EventArgs e)
+        private async Task<bool> SaveCurrentSettingsAsync()
         {
+            if (_isSaving)
+            {
+                return false;
+            }
+
+            _isSaving = true;
+            Enabled = false;
+            try
+            {
+                if (currentSettingsPanel is SettingsPanel prefsPanel && !await prefsPanel.SaveAsync())
+                {
+                    MessageBox.Show("Unable to save settings.", "Save Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                _isDirty = false;
+                saveButton.Enabled = false;
+                cancelButton.Enabled = false;
+                return true;
+            }
+            finally
+            {
+                _isSaving = false;
+                if (!IsDisposed)
+                {
+                    Enabled = true;
+                }
+            }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            if (_isSaving)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private async void ButtonClicked_Cancel(object sender, EventArgs e)
+        {
+            if (_isSaving)
+            {
+                return;
+            }
+            _isSaving = true;
+            Enabled = false;
             try
             {
                 if (CoreGlobals.AppPreferences != null)
@@ -180,7 +230,7 @@ namespace ACATConfigNext.Forms
                     }
                 }
 
-                CancelExtensionChanges(_currentCategory);
+                await CancelExtensionChangesAsync(_currentCategory);
 
                 _isDirty = false;
                 saveButton.Enabled = _isDirty;
@@ -192,9 +242,17 @@ namespace ACATConfigNext.Forms
                 MessageBox.Show("An error occurred while canceling changes.", "Cancel Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                _isSaving = false;
+                if (!IsDisposed)
+                {
+                    Enabled = true;
+                }
+            }
         }
 
-        private void ButtonClicked_Exit(object sender, EventArgs e)
+        private async void ButtonClicked_Exit(object sender, EventArgs e)
         {
             try
             {
@@ -203,9 +261,10 @@ namespace ACATConfigNext.Forms
                     if (!ConfirmBoxTwoOption.ShowDialog("You have unsaved changes.",
                         "Save changes before exiting?", "Save", "Don't Save"))
                     {
-                        var prefsPanel = currentSettingsPanel as SettingsPanel;
-                        prefsPanel?.Save();
-                        Close();
+                        if (await SaveCurrentSettingsAsync())
+                        {
+                            Close();
+                        }
                     }
                     else
                     {
@@ -316,7 +375,7 @@ namespace ACATConfigNext.Forms
             return panel;
         }
 
-        private void InitializeComponent()
+        private void InitializeComponent(bool preferencesLoaded)
         {
             SuspendLayout();
             Text = "ACAT Settings";
@@ -350,13 +409,21 @@ namespace ACATConfigNext.Forms
             basePanel.Controls.Add(mainPanel, 1, 0);
 
             Controls.Add(basePanel);
-            LoadNavigation();
+            LoadNavigation(preferencesLoaded);
             ResumeLayout(false);
         }
 
 
-        private void CancelExtensionChanges(string category)
+        private async Task CancelExtensionChangesAsync(string category)
         {
+            if (category == "General")
+            {
+                if (!await AppCommon.LoadUserPreferencesAsync())
+                {
+                    throw new InvalidOperationException("Unable to reload preferences.");
+                }
+                return;
+            }
             IEnumerable<IExtension> extensions = LoadSettings(category);
 
             if (extensions != null)
@@ -419,12 +486,15 @@ namespace ACATConfigNext.Forms
         }
 
 
-        private IEnumerable<IExtension> LoadSettings(string category)
+        private IEnumerable<IExtension> LoadSettings(string category, bool loadGeneralPreferences = true)
         {
             switch (category)
             {
                 case "General":
-                    AppCommon.LoadUserPreferences();
+                    if (loadGeneralPreferences)
+                    {
+                        AppCommon.LoadUserPreferences();
+                    }
                     break;
 
                 case "Actuators":
@@ -461,7 +531,7 @@ namespace ACATConfigNext.Forms
             return null;
         }
 
-        private void LoadNavigation()
+        private void LoadNavigation(bool preferencesLoaded)
         {
 
             string[] categories = { "General", "Actuators", "Word Predictors", "Text to Speech" };
@@ -469,7 +539,7 @@ namespace ACATConfigNext.Forms
             foreach (var category in categories)
             {
                 ScannerRoundedButtonControl btn = CreateButton(category, true, Category_Click);
-                btn.Tag = (Category: category, Settings: LoadSettings(category));
+                btn.Tag = (Category: category, Settings: LoadSettings(category, !preferencesLoaded));
 
                 navPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 navPanel.Controls.Add(btn);

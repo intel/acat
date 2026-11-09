@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using ACAT.Extension;
+using System.Threading.Tasks;
 
 namespace ACATConfigNext.UserControls
 {
@@ -19,6 +21,14 @@ namespace ACATConfigNext.UserControls
         public bool Save()
         {
             return _prefs.Save();
+        }
+
+        public Task<bool> SaveAsync()
+        {
+            // Extension preferences still expose only the synchronous plugin contract.
+            return _prefs is ACATPreferences preferences
+                ? preferences.SaveAsync()
+                : Task.FromResult(_prefs.Save());
         }
 
         public SettingsPanel(Action<UserControl, string> showPanel, PreferencesBase prefs, PropertyChangedEventHandler settingsChangedHandler)

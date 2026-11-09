@@ -39,7 +39,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
     [ClassDescriptor("1505D4A3-26AD-451F-9FD3-44EC92271AF3",
                             "ConvAssist Word Predictor (English)",
                             "The ConvAssist predictive text engine with enhanced language modeling capabilities fine-tuned for AAC uses")]
-    public class ConvAssistWordPredictor : ConvAssistWordPredictorBase
+    public class ConvAssistWordPredictor : ConvAssistWordPredictorBase, IAsyncInitializer<CultureInfo>, IAsyncWordPredictorLearning
     {
         /// <summary>
         /// Name of the named pipe to communicate with ConvAssist
@@ -68,10 +68,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         private readonly object _syncObj = new();
 
-        private readonly object _writeSyncObj = new();
-
         private readonly CancellationTokenSource cts = new();
-        private readonly ManualResetEvent mEvent = new(false);
+        private readonly SemaphoreSlim predictionSignal = new(0);
         private readonly Stack<object> sentenceStack;
         private readonly Stack<object> wpStack;
         private readonly SentencePredictionsRequestHandler _sentencePredictionsRequestHandler;
@@ -91,6 +89,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         private NamedPipeServerConvAssist namedPipe;
 
         private bool pipeCreated;
+        private bool preferencesLoaded;
         private Task wordPredictionTask;
 
         /// <summary>
@@ -109,7 +108,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Settings.PreferencesFilePath = getUserRelativePath(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, SettingsFileName, true);
 
-            settings = Settings.Load();
+            settings = new Settings();
 
             convAssistSettings = settings;
 
@@ -151,6 +150,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>preferences object</returns>
         public override IPreferences GetPreferences()
         {
+            if (!preferencesLoaded)
+            {
+                settings = Settings.Load();
+                convAssistSettings = settings;
+                preferencesLoaded = true;
+            }
             return settings;
         }
 
@@ -166,6 +171,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public override bool Init(CultureInfo ci)
         {
+            settings = Settings.Load();
+            convAssistSettings = settings;
+            preferencesLoaded = true;
+            if (settings == null)
+            {
+                return false;
+            }
+
             Attributions.Add("CONVASSIST",
                     "The ConvAssist predictive text functionality is derived from Pressagio, the " +
                     "intelligent predictive text and characters. ");
@@ -216,10 +229,15 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             if (pipeCreated)
             {
-                wordPredictionTask = Task.Factory.StartNew(WordPredictionTaskProcess, TaskCreationOptions.LongRunning);
+                wordPredictionTask = WordPredictionTaskProcessAsync();
             }
 
             return pipeCreated;
+        }
+
+        Task<bool> IAsyncInitializer<CultureInfo>.InitAsync(CultureInfo ci)
+        {
+            return InitAsync(ci);
         }
 
         /// <summary>
@@ -232,6 +250,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns><c>true</c> on success.</returns>
         public async Task<bool> InitAsync(CultureInfo ci, CancellationToken cancellationToken = default)
         {
+            settings = await Settings.LoadAsync(cancellationToken).ConfigureAwait(false);
+            convAssistSettings = settings;
+            preferencesLoaded = true;
+            if (settings == null)
+            {
+                return false;
+            }
+
             Attributions.Add("CONVASSIST",
                     "The ConvAssist predictive text functionality is derived from Pressagio, the " +
                     "intelligent predictive text and characters. ");
@@ -273,7 +299,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             if (pipeCreated)
             {
-                wordPredictionTask = Task.Factory.StartNew(WordPredictionTaskProcess, TaskCreationOptions.LongRunning);
+                wordPredictionTask = WordPredictionTaskProcessAsync();
             }
 
             return pipeCreated;
@@ -300,23 +326,26 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             _logger.LogInformation(">>> PredictAsync called - Type: {Type}, Mode: {Mode}, PrevWords: '{PrevWords}', CurrentWord: '{CurrentWord}'",
                 req.PredictionType, req.WordPredictionMode, req.PrevWords ?? "", req.CurrentWord ?? "");
 
-            if (req.PredictionType == PredictionTypes.Words)
+            lock (_syncObj)
             {
-                _logger.LogDebug("Pushing to wpStack (word predictions)");
-                wpStack.Push(req);
-                mEvent.Set();
+                if (cts.IsCancellationRequested)
+                {
+                    return false;
+                }
+                if (req.PredictionType == PredictionTypes.Words)
+                {
+                    wpStack.Push(req);
+                }
+                else if (req.PredictionType == PredictionTypes.Sentences)
+                {
+                    sentenceStack.Push(req);
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else if (req.PredictionType == PredictionTypes.Sentences)
-            {
-                _logger.LogInformation("Pushing to sentenceStack (sentence predictions)");
-                sentenceStack.Push(req);
-                mEvent.Set();
-            }
-            else
-            {
-                _logger.LogWarning("Unknown prediction type: {Type}, returning false", req.PredictionType);
-                return false;
-            }
+            predictionSignal.Release();
 
             return true;
         }
@@ -420,15 +449,39 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             return result;
         }
 
+        public async Task<bool> LearnAsync(string text, WordPredictorMessageTypes requestType)
+        {
+            if (!ACAT.Extension.Common.AppPreferences.WordPredictionEnableLearn)
+            {
+                return true;
+            }
+            try
+            {
+                var response = await ConvAssistLearnAsync(text, requestType).ConfigureAwait(false);
+                return response.Length > 1;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in LearnAsync");
+                return false;
+            }
+        }
+
         private void Close(bool waitOnCompletion = true)
         {
-            wpStack.Push(null);
-            sentenceStack.Push(null);
-            mEvent.Set();
+            lock (_syncObj)
+            {
+                wpStack.Push(null);
+                sentenceStack.Push(null);
+            }
+            predictionSignal.Release();
 
             if (waitOnCompletion)
             {
-                Task.WaitAll(wordPredictionTask);
+                if (wordPredictionTask != null)
+                {
+                    Task.WaitAll(wordPredictionTask);
+                }
             }
         }
 
@@ -441,28 +494,24 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <param name="currentWord">current word (may be partially spelt out</param>
         /// <param name="success">true if the function was successsful</param>
         /// <returns>A list of predicted words</returns>
-        private WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
+        private async Task<WordPredictionResponse> ProcessPredictionRequestAsync(WordPredictionRequest request)
         {
             _logger.LogDebug("Predict for: {PrevWords} {CurrentWord}", request.PrevWords, request.CurrentWord);
             WordPredictionResponse response = null;
 
             try
             {
-                lock (_writeSyncObj)
+                if (!namedPipe.clientConected)
                 {
-                    if (!namedPipe.clientConected)
-                    {
-                        return new WordPredictionResponse(request, new List<String>(), false);
-                    }
-
-                    if (request.PredictionType == PredictionTypes.Words)
-                    {
-                        response = _wordPredictionsRequestHandler.ProcessPredictionRequest(request);
-                    }
-                    else if (request.PredictionType == PredictionTypes.Sentences)
-                    {
-                        response = _sentencePredictionsRequestHandler.ProcessPredictionRequest(request);
-                    }
+                    return new WordPredictionResponse(request, new List<String>(), false);
+                }
+                if (request.PredictionType == PredictionTypes.Words)
+                {
+                    response = await _wordPredictionsRequestHandler.ProcessPredictionRequestAsync(request).ConfigureAwait(false);
+                }
+                else if (request.PredictionType == PredictionTypes.Sentences)
+                {
+                    response = await _sentencePredictionsRequestHandler.ProcessPredictionRequestAsync(request).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -486,77 +535,38 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             return lockTaken;
         }
 
-        private void WordPredictionTaskProcess()
+        private async Task WordPredictionTaskProcessAsync()
         {
-            _logger.LogInformation("WordPredictionTaskProcess started");
-
             while (true)
             {
-                WordPredictionRequest item = null;
-                WordPredictionResponse response;
-
-                if (wpStack.Count == 0 && sentenceStack.Count == 0)
+                await predictionSignal.WaitAsync().ConfigureAwait(false);
+                while (true)
                 {
-                    _logger.LogDebug("Both stacks empty, waiting for event");
-                    mEvent.WaitOne();
-                    _logger.LogDebug("Event signaled, wpStack count: {WpCount}, sentenceStack count: {SentenceCount}", 
-                        wpStack.Count, sentenceStack.Count);
-                }
-
-                while (wpStack.Count > 0)
-                {
+                    WordPredictionRequest item;
                     lock (_syncObj)
                     {
                         if (wpStack.Count > 0)
                         {
-                            _logger.LogDebug("Processing word prediction from wpStack, count: {Count}", wpStack.Count);
                             item = wpStack.Pop() as WordPredictionRequest;
-                            if (item == null)
-                            {
-                                _logger.LogWarning("wpStack.Pop returned null, exiting task");
-                                mEvent.Reset();
-                                return;
-                            }
-
                             wpStack.Clear();
                         }
+                        else if (sentenceStack.Count > 0)
+                        {
+                            item = sentenceStack.Pop() as WordPredictionRequest;
+                            sentenceStack.Clear();
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-
-                    response = ProcessPredictionRequest(item);
-
+                    if (item == null)
+                    {
+                        return;
+                    }
+                    var response = await ProcessPredictionRequestAsync(item).ConfigureAwait(false);
                     notifyPredictionResults(response);
                 }
-
-                lock (_syncObj)
-                {
-                    if (sentenceStack.Count > 0)
-                    {
-                        _logger.LogInformation("Processing sentence prediction from sentenceStack, count: {Count}", sentenceStack.Count);
-                        item = sentenceStack.Pop() as WordPredictionRequest;
-                        if (item == null)
-                        {
-                            _logger.LogWarning("sentenceStack.Pop returned null, exiting task");
-                            mEvent.Reset();
-                            return;
-                        }
-                        sentenceStack.Clear();
-                    }
-                }
-
-                if (item == null)
-                {
-                    _logger.LogDebug("No sentence item to process, resetting event");
-                    mEvent.Reset();
-                    return;
-                }
-
-                _logger.LogInformation("Calling ProcessPredictionRequest for sentence");
-                response = ProcessPredictionRequest(item);
-                _logger.LogInformation("ProcessPredictionRequest returned, notifying results");
-
-                notifyPredictionResults(response);
-
-                mEvent.Reset();
             }
         }
 

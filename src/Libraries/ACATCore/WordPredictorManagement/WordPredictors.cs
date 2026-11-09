@@ -71,13 +71,29 @@ namespace ACAT.Core.WordPredictorManagement
         /// </summary>
         /// <param name="logger">Logger instance</param>
         public WordPredictors(ILogger<WordPredictors> logger)
+            : this(logger, LoadPreferred())
+        {
+        }
+
+        internal WordPredictors(ILogger<WordPredictors> logger, PreferredWordPredictors preferred)
         {
             _logger = logger;
             _wordPredictors = new List<IWordPredictor>();
             _wordPredictorsTypeCache = new Dictionary<Guid, Tuple<string, Type>>();
 
+            _preferredWordPredictors = preferred;
+        }
+
+        private static PreferredWordPredictors LoadPreferred()
+        {
             PreferredWordPredictors.FilePath = UserManager.GetFullPath(PreferredConfigFile);
-            _preferredWordPredictors = PreferredWordPredictors.Load();
+            return PreferredWordPredictors.Load();
+        }
+
+        internal static System.Threading.Tasks.Task<PreferredWordPredictors> LoadPreferredAsync()
+        {
+            PreferredWordPredictors.FilePath = UserManager.GetFullPath(PreferredConfigFile);
+            return PreferredWordPredictors.LoadAsync();
         }
 
         /// <summary>

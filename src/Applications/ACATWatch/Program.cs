@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ACATWatch
 {
@@ -38,7 +39,14 @@ namespace ACATWatch
                 return;
             }
 
-            if (AppCommon.LoadUserPreferences())
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            AppCommon.RunApplication(StartApplicationAsync);
+        }
+
+        private static async Task StartApplicationAsync()
+        {
+            if (await AppCommon.LoadUserPreferencesAsync())
             {
                 CoreGlobals.AppId = "ACATWatcher";
                 Common.AppPreferences.AppName = "ACAT Watcher";
@@ -49,7 +57,7 @@ namespace ACATWatch
                 // Initialize dependency injection with ACAT infrastructure
                 var services = new ServiceCollection();
                 services.AddACATInfrastructure();
-                var serviceProvider = services.BuildServiceProvider();
+                using var serviceProvider = services.BuildServiceProvider();
                 Context.ServiceProvider = serviceProvider;
                 
                 var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
@@ -57,13 +65,11 @@ namespace ACATWatch
 
                 FileUtils.LogAssemblyInfo(Assembly.GetExecutingAssembly());
 
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new ACATWatchForm(_logger));
+                using var form = new ACATWatchForm(_logger);
+                await AppCommon.ShowFormAsync(form);
 
                 _logger.LogInformation("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
 
-                (serviceProvider as IDisposable)?.Dispose();
             }
             else
             {
